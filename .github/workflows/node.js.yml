@@ -1,0 +1,56 @@
+name: App CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install dependencies
+      run: cd app && npm install
+
+    # - name: Install Plotly
+    #   run : cd app && npm i plotly.js
+      
+    # - name: Run tests
+    #   run: cd app && npm test
+
+    - name: Build React app
+      env:
+        CI: ""
+      run: cd app && npm run build
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+        path: build
+
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+
+  #   - name: Download build artifacts
+  #     uses: actions/download-artifact@v2
+  #     with:
+  #       name: build-artifact
+  #       path: build
