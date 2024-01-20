@@ -1,0 +1,224 @@
+// Accounts with the service. 
+// Each user will be tied to an account, max 5
+table Accounts {
+  id UUID [primary key, unique, not null]
+  userCount INT [not null, default:0]
+}
+
+table Users {
+  id UUID [primary key, unique, not null]
+  username VARCHAR(MAX) [not null]
+  passwordHash VARCHAR(MAX) [not null]
+  accountId UUID
+}
+
+table Teams {
+  id UUID [primary key, unique, not null]
+  accountId UUID [not null]
+  name VARCHAR(MAX)
+}
+
+table Members {
+  id UUID [primary key, not null, unique]
+  firstName VARCHAR(MAX) [not null]
+  lastName VARCHAR(MAX) [not null]
+  memberHash VARCHAR(MAX) [note: 'Used to prevent one player from being entered multiple times']
+  position VARCHAR(MAX) [not null]
+}
+
+table Defense {
+  id UUID [primary key, not null, unique]
+  teamId UUID [not null]
+  memberId UUID [not null]
+  assists INT [default:0]
+  caughtStealingPercentage DECIMAL(15,2) [default:0.0]
+  doublePlays INT [default:0]
+  errors INT [default:0]
+  fieldingPercentage DECIMAL(15,2) [default:0.0]
+  inningsPlayed INT [default:0]
+  outs INT [default:0]
+  outfieldAssists INT [default:0]
+  passedBalls INT [default:0]
+  putouts INT [default:0]
+  totalChances INT [default:0]
+  triplePlays INT [default:0]
+}
+
+table OffenseLeft {
+  id UUID [not null, unique, primary key]
+  teamId UUID [not null]
+  memberId UUID [not null]
+  atBats INT [default:0]
+  average DECIMAL(15,2) [default:0.0]
+  caughtStealingPercentage DECIMAL [default:0.0]
+  doubles INT [default:0]
+  extraBaseHits INT [default:0]
+  gamesPlayed INT [default:0]
+  grandSlams INT [default:0]
+  groundIntoDoublePlay INT [default:0]
+  groundOutVsFlyOut DECIMAL(15,2) [default:0.0]
+  hitByPitch INT [default:0]
+  hits INT [default:0]
+  homeruns INT [default:0]
+  intentionalWalks INT [default:0]
+  leftOnBase INT [default:0]
+  onBasePercentage DECIMAL(15,2) [default:0.0]
+  onBasePlusSlugging DECIMAL(15,2) [default:0.0]
+  plateAppearances INT [default:0]
+  reachedOnError INT [default:0]
+  runs INT [default:0]
+  runsBattedIn INT [default:0]
+  scarificeBunts INT [default:0]
+  sacrificeFlies INT [default:0]
+  singles INT [default:0]
+  slugging DECIMAL [default:0.0]
+  stolenBases INT [default:0]
+  totalBases INT [default:0]
+  triples INT [default:0]
+  walks INT [default:0]
+  walkOffs INT [default:0]
+}
+
+table OffenseRight {
+  id UUID [not null, unique, primary key]
+  teamId UUID [not null]
+  memberId UUID [not null]
+  atBats INT [default:0]
+  average DECIMAL(15,2) [default:0.0]
+  caughtStealingPercentage DECIMAL [default:0.0]
+  doubles INT [default:0]
+  extraBaseHits INT [default:0]
+  gamesPlayed INT [default:0]
+  grandSlams INT [default:0]
+  groundIntoDoublePlay INT [default:0]
+  groundOutVsFlyOut DECIMAL(15,2) [default:0.0]
+  hitByPitch INT [default:0]
+  hits INT [default:0]
+  homeruns INT [default:0]
+  intentionalWalks INT [default:0]
+  leftOnBase INT [default:0]
+  onBasePercentage DECIMAL(15,2) [default:0.0]
+  onBasePlusSlugging DECIMAL(15,2) [default:0.0]
+  plateAppearances INT [default:0]
+  reachedOnError INT [default:0]
+  runs INT [default:0]
+  runsBattedIn INT [default:0]
+  scarificeBunts INT [default:0]
+  sacrificeFlies INT [default:0]
+  singles INT [default:0]
+  slugging DECIMAL [default:0.0]
+  stolenBases INT [default:0]
+  totalBases INT [default:0]
+  triples INT [default:0]
+  walks INT [default:0]
+  walkOffs INT [default:0]
+}
+
+table RHP {
+  id UUID [primary key, unique, not null]
+  teamId UUID [not null]
+  memberId UUID [not null]
+  appearances INT [default:0]
+  balks INT [default:0]
+  battersFaced INT [default:0]
+  blownSaves INT [default:0]
+  completeGames INT [default:0]
+  earnedRunsAllowed INT [default:0]
+  earnedRunAverage DECIMAL(15,2) [default:0.0]
+  flyouts INT [default:0]
+  gamesFinished INT [default:0]
+  gamesStarted INT [default:0]
+  groundouts INT [default:0]
+  holds INT [default:0]
+  inheritedRunners INT [default:0]
+  iningsPitched DECIMAL [default:0.0]
+  losses INT [default:0]
+  numberOfPitches INT [default:0]
+  pickoffs INT [default:0]
+  qualityStarts INT [default:0]
+  reliefWins INT [default:0]
+  saves INT [default:0]
+  saveOpportunities INT [default:0]
+  savePercentage DECIMAL(15,2) [default:0.0]
+  shutouts INT [default:0]
+  strikeouts INT [default:0]
+  unearnedRuns INT [default:0]
+  walksAndHitsPerInningsPitched DECIMAL [default:0.0]
+  wildPitches INT [default:0]
+  wins INT [default:0]
+  winningPercentage DECIMAL(15,2) [default:0.0]
+}
+
+table LHP {
+  id UUID [primary key, unique, not null]
+  teamId UUID [not null]
+  memberId UUID [not null]
+  appearances INT [default:0]
+  balks INT [default:0]
+  battersFaced INT [default:0]
+  blownSaves INT [default:0]
+  completeGames INT [default:0]
+  earnedRunsAllowed INT [default:0]
+  earnedRunAverage DECIMAL(15,2) [default:0.0]
+  flyouts INT [default:0]
+  gamesFinished INT [default:0]
+  gamesStarted INT [default:0]
+  groundouts INT [default:0]
+  holds INT [default:0]
+  inheritedRunners INT [default:0]
+  iningsPitched DECIMAL [default:0.0]
+  losses INT [default:0]
+  numberOfPitches INT [default:0]
+  pickoffs INT [default:0]
+  qualityStarts INT [default:0]
+  reliefWins INT [default:0]
+  saves INT [default:0]
+  saveOpportunities INT [default:0]
+  savePercentage DECIMAL(15,2) [default:0.0]
+  shutouts INT [default:0]
+  strikeouts INT [default:0]
+  unearnedRuns INT [default:0]
+  walksAndHitsPerInningsPitched DECIMAL [default:0.0]
+  wildPitches INT [default:0]
+  wins INT [default:0]
+  winningPercentage DECIMAL(15,2) [default:0.0]
+}
+
+table Rosters {
+  id UUID [not null, unique, primary key]
+  managerId UUID [not null]
+  expiry DATE [not null, default:'7 days from current date']
+  catcher UUID [not null]
+  firstBase UUID [not null]
+  secondBase UUID [not null]
+  thirdBase UUID [not null]
+  shortstop UUID [not null]
+  leftField UUID [not null]
+  rightField UUID [not null]
+  centerField UUID [not null]
+  startingPitcher UUID [not null]
+}
+
+Ref: Users.accountId > Accounts.id
+Ref: Teams.accountId > Accounts.id
+Ref: Defense.teamId  > Teams.id
+Ref: Defense.memberId  > Members.id
+Ref: OffenseLeft.teamId  > Teams.id
+Ref: OffenseLeft.memberId  > Members.id
+Ref: OffenseRight.teamId  > Teams.id
+Ref: OffenseRight.memberId  > Members.id
+Ref: LHP.memberId > Members.id
+Ref: RHP.memberId > Members.id
+Ref: LHP.teamId > Teams.id
+Ref: RHP.teamId > Teams.id
+
+Ref: Rosters.managerId > Users.id
+Ref: Rosters.startingPitcher > Members.id 
+Ref: Rosters.catcher > Members.id
+Ref: Rosters.firstBase > Members.id
+Ref: Rosters.secondBase > Members.id
+Ref: Rosters.thirdBase > Members.id
+Ref: Rosters.shortstop > Members.id
+Ref: Rosters.leftField > Members.id
+Ref: Rosters.centerField > Members.id
+Ref: Rosters.rightField > Members.id
