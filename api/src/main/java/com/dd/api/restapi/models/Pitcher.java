@@ -1,6 +1,6 @@
-package com.dd.api.models;
+package com.dd.api.restapi.models;
 
-import com.dd.api.util.PitcherPreference;
+import com.dd.api.restapi.util.PitcherPreference;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -1,6 +1,6 @@
-package com.dd.api.builders;
+package com.dd.api.restapi.builders;
 
-import com.dd.api.models.DefensivePlayer;
+import com.dd.api.restapi.models.DefensivePlayer;
 
 import java.util.UUID;
 

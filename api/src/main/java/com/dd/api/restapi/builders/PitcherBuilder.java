@@ -1,7 +1,7 @@
-package com.dd.api.builders;
+package com.dd.api.restapi.builders;
 
-import com.dd.api.models.Pitcher;
-import com.dd.api.util.PitcherPreference;
+import com.dd.api.restapi.models.Pitcher;
+import com.dd.api.restapi.util.PitcherPreference;
 
 import java.util.UUID;
 

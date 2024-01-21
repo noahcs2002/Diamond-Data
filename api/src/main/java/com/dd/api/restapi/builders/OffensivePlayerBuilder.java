@@ -1,7 +1,7 @@
-package com.dd.api.builders;
+package com.dd.api.restapi.builders;
 
-import com.dd.api.models.OffensivePlayer;
-import com.dd.api.util.BatterPreference;
+import com.dd.api.restapi.models.OffensivePlayer;
+import com.dd.api.restapi.util.BatterPreference;
 
 import java.util.UUID;
 

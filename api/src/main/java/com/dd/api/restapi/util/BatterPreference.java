@@ -1,4 +1,4 @@
-package com.dd.api.util;
+package com.dd.api.restapi.util;
 
 public enum BatterPreference {
     LEFT,

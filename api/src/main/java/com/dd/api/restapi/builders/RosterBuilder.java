@@ -1,6 +1,6 @@
-package com.dd.api.builders;
+package com.dd.api.restapi.builders;
 
-import com.dd.api.models.Roster;
+import com.dd.api.restapi.models.Roster;
 
 import java.util.Date;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.dd.api.models;
+package com.dd.api.restapi.models;
 
 import java.util.Objects;
 import java.util.UUID;
