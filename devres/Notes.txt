@@ -13,8 +13,10 @@ Pages:
     - one modal where you click on a name and it opens their data
 - Team generation page
     - where you can hand make a roster or have AI make it based on stats
-- User management page
+- Player management page
     - add or remove players from the database
+- Change team 
+    - Logo, colors, name (themes for website)
 
 
 - Navbar
