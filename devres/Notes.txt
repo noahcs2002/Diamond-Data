@@ -21,3 +21,7 @@ Pages:
 
 - Navbar
     - ? waffle where you click it and a side bar pops out with all the pages?
+
+- PDF
+    - Creates a PDF that the coach can print that has the lineup data, and they can fill in 
+    information that they can enter in later.
