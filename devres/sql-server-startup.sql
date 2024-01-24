@@ -1,26 +1,27 @@
-CREATE TABLE [Accounts] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
+
+CREATE TABLE [sp24].[dd_accounts] (
+  [id] uniqueidentifier UNIQUE PRIMARY KEY NOT NULL,
   [userCount] INT NOT NULL DEFAULT (0)
 )
 GO
 
-CREATE TABLE [Users] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
+CREATE TABLE [sp24].[dd_users] (
+  [id] uniqueidentifier UNIQUE PRIMARY KEY NOT NULL,
   [username] VARCHAR(MAX) NOT NULL,
   [passwordHash] VARCHAR(MAX) NOT NULL,
-  [accountId] UUID
+  [accountId] uniqueidentifier
 )
 GO
 
-CREATE TABLE [Teams] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
-  [accountId] UUID NOT NULL,
+CREATE TABLE [sp24].[dd_teams] (
+  [id] uniqueidentifier UNIQUE PRIMARY KEY NOT NULL,
+  [accountId] uniqueidentifier NOT NULL,
   [name] VARCHAR(MAX)
 )
 GO
 
-CREATE TABLE [Members] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
+CREATE TABLE [sp24].[dd_members] (
+  [id] uniqueidentifier UNIQUE PRIMARY KEY NOT NULL,
   [firstName] VARCHAR(MAX) NOT NULL,
   [lastName] VARCHAR(MAX) NOT NULL,
   [memberHash] VARCHAR(MAX),
@@ -28,10 +29,11 @@ CREATE TABLE [Members] (
 )
 GO
 
-CREATE TABLE [Defense] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
-  [teamId] UUID NOT NULL,
-  [memberId] UUID NOT NULL,
+
+CREATE TABLE [sp24].[dd_defense] (
+  [id] uniqueidentifier   PRIMARY KEY NOT NULL,
+  [teamId] uniqueidentifier NOT NULL,
+  [memberId] uniqueidentifier NOT NULL,
   [assists] INT DEFAULT (0),
   [caughtStealingPercentage] DECIMAL(15,2) DEFAULT (0),
   [doublePlays] INT DEFAULT (0),
@@ -45,12 +47,12 @@ CREATE TABLE [Defense] (
   [totalChances] INT DEFAULT (0),
   [triplePlays] INT DEFAULT (0)
 )
-GO
+ 
 
-CREATE TABLE [OffenseLeft] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
-  [teamId] UUID NOT NULL,
-  [memberId] UUID NOT NULL,
+CREATE TABLE [sp24].[dd_offense_left] (
+  [id] uniqueidentifier   PRIMARY KEY NOT NULL,
+  [teamId] uniqueidentifier NOT NULL,
+  [memberId] uniqueidentifier NOT NULL,
   [atBats] INT DEFAULT (0),
   [average] DECIMAL(15,2) DEFAULT (0),
   [caughtStealingPercentage] DECIMAL DEFAULT (0),
@@ -81,12 +83,12 @@ CREATE TABLE [OffenseLeft] (
   [walks] INT DEFAULT (0),
   [walkOffs] INT DEFAULT (0)
 )
-GO
+ 
 
-CREATE TABLE [OffenseRight] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
-  [teamId] UUID NOT NULL,
-  [memberId] UUID NOT NULL,
+CREATE TABLE [sp24].[dd_offense_right] (
+  [id] uniqueidentifier   PRIMARY KEY NOT NULL,
+  [teamId] uniqueidentifier NOT NULL,
+  [memberId] uniqueidentifier NOT NULL,
   [atBats] INT DEFAULT (0),
   [average] DECIMAL(15,2) DEFAULT (0),
   [caughtStealingPercentage] DECIMAL DEFAULT (0),
@@ -117,12 +119,12 @@ CREATE TABLE [OffenseRight] (
   [walks] INT DEFAULT (0),
   [walkOffs] INT DEFAULT (0)
 )
-GO
+ 
 
-CREATE TABLE [RHP] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
-  [teamId] UUID NOT NULL,
-  [memberId] UUID NOT NULL,
+CREATE TABLE [sp24].[dd_rhp] (
+  [id] uniqueidentifier   PRIMARY KEY NOT NULL,
+  [teamId] uniqueidentifier NOT NULL,
+  [memberId] uniqueidentifier NOT NULL,
   [appearances] INT DEFAULT (0),
   [balks] INT DEFAULT (0),
   [battersFaced] INT DEFAULT (0),
@@ -153,12 +155,12 @@ CREATE TABLE [RHP] (
   [wins] INT DEFAULT (0),
   [winningPercentage] DECIMAL(15,2) DEFAULT (0)
 )
-GO
+ 
 
-CREATE TABLE [LHP] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
-  [teamId] UUID NOT NULL,
-  [memberId] UUID NOT NULL,
+CREATE TABLE [sp24].[dd_lhp] (
+  [id] uniqueidentifier   PRIMARY KEY NOT NULL,
+  [teamId] uniqueidentifier NOT NULL,
+  [memberId] uniqueidentifier NOT NULL,
   [appearances] INT DEFAULT (0),
   [balks] INT DEFAULT (0),
   [battersFaced] INT DEFAULT (0),
@@ -189,94 +191,94 @@ CREATE TABLE [LHP] (
   [wins] INT DEFAULT (0),
   [winningPercentage] DECIMAL(15,2) DEFAULT (0)
 )
-GO
+ 
 
-CREATE TABLE [Rosters] (
-  [id] UUID UNIQUE PRIMARY KEY NOT NULL,
-  [managerId] UUID NOT NULL,
+CREATE TABLE [sp24].[dd_rosters] (
+  [id] uniqueidentifier   PRIMARY KEY NOT NULL,
+  [managerId] uniqueidentifier NOT NULL,
   [expiry] DATE NOT NULL DEFAULT '7 days from current date',
-  [catcher] UUID NOT NULL,
-  [firstBase] UUID NOT NULL,
-  [secondBase] UUID NOT NULL,
-  [thirdBase] UUID NOT NULL,
-  [shortstop] UUID NOT NULL,
-  [leftField] UUID NOT NULL,
-  [rightField] UUID NOT NULL,
-  [centerField] UUID NOT NULL,
-  [startingPitcher] UUID NOT NULL
+  [catcher] uniqueidentifier NOT NULL,
+  [firstBase] uniqueidentifier NOT NULL,
+  [secondBase] uniqueidentifier NOT NULL,
+  [thirdBase] uniqueidentifier NOT NULL,
+  [shortstop] uniqueidentifier NOT NULL,
+  [leftField] uniqueidentifier NOT NULL,
+  [rightField] uniqueidentifier NOT NULL,
+  [centerField] uniqueidentifier NOT NULL,
+  [startingPitcher] uniqueidentifier NOT NULL
 )
-GO
+ 
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
 @value = 'Used to prevent one player from being entered multiple times',
 @level0type = N'Schema', @level0name = 'dbo',
-@level1type = N'Table',  @level1name = 'Members',
+@level1type = N'Table',  @level1name = 'dd_members',
 @level2type = N'Column', @level2name = 'memberHash';
-GO
+ 
 
-ALTER TABLE [Users] ADD FOREIGN KEY ([accountId]) REFERENCES [Accounts] ([id])
-GO
+ALTER TABLE [dd_users] ADD FOREIGN KEY ([accountId]) REFERENCES [dd_accounts] ([id])
+ 
 
-ALTER TABLE [Teams] ADD FOREIGN KEY ([accountId]) REFERENCES [Accounts] ([id])
-GO
+ALTER TABLE [dd_teams] ADD FOREIGN KEY ([accountId]) REFERENCES [dd_accounts] ([id])
+ 
 
-ALTER TABLE [Defense] ADD FOREIGN KEY ([teamId]) REFERENCES [Teams] ([id])
-GO
+ALTER TABLE [dd_defense] ADD FOREIGN KEY ([teamId]) REFERENCES [dd_teams] ([id])
+ 
 
-ALTER TABLE [Defense] ADD FOREIGN KEY ([memberId]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_defense] ADD FOREIGN KEY ([memberId]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [OffenseLeft] ADD FOREIGN KEY ([teamId]) REFERENCES [Teams] ([id])
-GO
+ALTER TABLE [dd_offense_left] ADD FOREIGN KEY ([teamId]) REFERENCES [dd_teams] ([id])
+ 
 
-ALTER TABLE [OffenseLeft] ADD FOREIGN KEY ([memberId]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_offense_left] ADD FOREIGN KEY ([memberId]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [OffenseRight] ADD FOREIGN KEY ([teamId]) REFERENCES [Teams] ([id])
-GO
+ALTER TABLE [dd_offense_right] ADD FOREIGN KEY ([teamId]) REFERENCES [dd_teams] ([id])
+ 
 
-ALTER TABLE [OffenseRight] ADD FOREIGN KEY ([memberId]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_offense_right] ADD FOREIGN KEY ([memberId]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [LHP] ADD FOREIGN KEY ([memberId]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_lhp] ADD FOREIGN KEY ([memberId]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [RHP] ADD FOREIGN KEY ([memberId]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rhp] ADD FOREIGN KEY ([memberId]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [LHP] ADD FOREIGN KEY ([teamId]) REFERENCES [Teams] ([id])
-GO
+ALTER TABLE [dd_lhp] ADD FOREIGN KEY ([teamId]) REFERENCES [dd_teams] ([id])
+ 
 
-ALTER TABLE [RHP] ADD FOREIGN KEY ([teamId]) REFERENCES [Teams] ([id])
-GO
+ALTER TABLE [dd_rhp] ADD FOREIGN KEY ([teamId]) REFERENCES [dd_teams] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([managerId]) REFERENCES [Users] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([managerId]) REFERENCES [dd_users] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([startingPitcher]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([startingPitcher]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([catcher]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([catcher]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([firstBase]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([firstBase]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([secondBase]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([secondBase]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([thirdBase]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([thirdBase]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([shortstop]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([shortstop]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([leftField]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([leftField]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([centerField]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([centerField]) REFERENCES [dd_members] ([id])
+ 
 
-ALTER TABLE [Rosters] ADD FOREIGN KEY ([rightField]) REFERENCES [Members] ([id])
-GO
+ALTER TABLE [dd_rosters] ADD FOREIGN KEY ([rightField]) REFERENCES [dd_members] ([id])
+ 
