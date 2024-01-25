@@ -1,7 +1,42 @@
 package com.dd.api.database;
 
+import com.dd.api.util.PropertyFileReader;
+
+import java.util.HashMap;
+
 public class ConnectionSettings {
-    private static final String username = "";
-    private static final String password = "";
-    private static final String connectionString = "";
+    private final String username;
+    private final String password;
+    private final String connectionString;
+    
+    private final PropertyFileReader reader;
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public String getConnectionString() {
+        return connectionString;
+    }
+    
+    public ConnectionSettings() {
+        this.reader = new PropertyFileReader("src/main/resources/db_connection.lock");
+        HashMap<String, String> properties = this.reader.getContents();
+        
+        try {
+            this.username = properties.get("username");
+            this.password = properties.get("password");
+            this.connectionString = properties.get("connection_string");
+            
+        }
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        
+    }
 }
