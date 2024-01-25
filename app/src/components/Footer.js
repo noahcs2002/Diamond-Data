@@ -1,0 +1,16 @@
+import React from 'react'
+import SportsBaseballIcon from '@mui/icons-material/SportsBaseball';
+import '../styles/Footer.css';
+
+function Footer() {
+  return (
+    <div className="footer">
+        <div className="container">
+            <SportsBaseballIcon />
+        </div>
+        <p> &copy; 2024 diamonddata.com </p>
+    </div>
+  )
+}
+
+export default Footer
