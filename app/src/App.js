@@ -7,6 +7,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
 import TeamStats from "./pages/TeamStats";
 import UserManagement from "./pages/UserManagement";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route  path="/playerManagement" exact element={<PlayerManagement />} />
           <Route  path="/teamStats" exact element={<TeamStats />} />
           <Route  path="/userManagement" exact element={<UserManagement />} />
+          <Route  path="/Settings" exact element={<Settings />} />
         </Routes>
         <Footer />
       </Router>
