@@ -40,8 +40,8 @@
     height: 40px;
     width: 80%;
     border: none;
-    border-bottom: 1px solid #121619;
-    color: black;
+    border-bottom: 1px solid #000F08;
+    color: #000F08;
   }
   
   form textarea {
@@ -49,13 +49,13 @@
     height: 70px;
     width: 80%;
     border: none;
-    border-bottom: 1px solid #121619;
-    color: black;
+    border-bottom: 1px solid #000F08;
+    color: #000F08;
   }
   input::placeholder,
   textarea::placeholder {
     font-weight: bold;
-    color: black;
+    color: #000F08;
     font-family: Arial, Helvetica, sans-serif;
   }
   form input:focus,
@@ -65,7 +65,7 @@
   
   form label {
     margin-top: 15px;
-    color: grey;
+    color: #4D4847;
   }
   
   form button {
@@ -73,8 +73,8 @@
     width: 140px;
     height: 40px;
     border: none;
-    background-color: #121619;
-    color: whitesmoke;
+    background-color: #000F08;
+    color: #F4FFF8;
     font-size: 15px;
     cursor: pointer;
   }

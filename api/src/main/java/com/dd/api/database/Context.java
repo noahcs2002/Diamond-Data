@@ -9,8 +9,6 @@ public class Context {
     private final String password;
     private final String connectionString;
     
-    private final PropertyFileReader reader;
-    
     public String getUsername() {
         return username;
     }
@@ -24,8 +22,8 @@ public class Context {
     }
     
     public Context() {
-        this.reader = new PropertyFileReader("src/main/resources/db_connection.lock");
-        HashMap<String, String> properties = this.reader.getContents();
+	PropertyFileReader reader = new PropertyFileReader("src/main/resources/db_connection.lock");
+        HashMap<String, String> properties = reader.getContents();
         
         try {
             this.username = properties.get("username");
@@ -36,5 +34,7 @@ public class Context {
         catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+        
+        
     }
 }

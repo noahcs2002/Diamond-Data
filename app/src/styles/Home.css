@@ -22,23 +22,23 @@
     font-size: 90px;
     height: 60px;
     font-weight: 50;
-    color: black;
+    color: #000F08;
   }
   
   .headerContainer p {
     padding: 0;
     font-size: 40px;
     font-weight: lighter;
-    color: black;
+    color: #000F08;
   }
   
   .headerContainer button {
-    color: black;
+    color: #000F08;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     justify-content: center;
-    background-color: #121619;
+    background-color: #000F08;
     height: 50px;
     width: 180px;
     color: white;
@@ -47,7 +47,7 @@
   }
   
   .headerContainer button:hover {
-    background-color: #07090a;
+    background-color: #000F08;
     cursor: pointer;
     transition: 0.3s ease-in;
   }
@@ -67,29 +67,29 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      background-color: #121619;
-      color: white;
+      background-color: #000F08;
+      color: #F4FFF8;
     }
   
     .headerContainer h1 {
       font-size: 40px;
       height: 30px;
-      color: white;
+      color: #F4FFF8;
     }
   
     .headerContainer p {
       font-size: 30px;
-      color: white;
+      color: #F4FFF8;
     }
   
     .headerContainer button {
-      background-color: white;
-      color: #121619;
+      background-color: #F4FFF8;
+      color: #000F08;
       margin-bottom: 30px;
     }
   
     .headerContainer button:hover {
-      background-color: rgb(225, 225, 225);
-      color: #121619;
+      background-color: #8BAAAD;
+      color: #000F08;
     }
   }
