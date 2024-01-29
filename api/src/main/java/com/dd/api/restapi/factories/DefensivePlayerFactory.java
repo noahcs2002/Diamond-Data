@@ -2,9 +2,7 @@ package com.dd.api.restapi.factories;
 
 import com.dd.api.restapi.builders.DefensivePlayerBuilder;
 import com.dd.api.restapi.models.DefensivePlayer;
-import com.sun.source.tree.BreakTree;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.dd.api.util.TimeProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,11 +13,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class DefensivePlayerFactory {
+
     public static DefensivePlayer getPlayerById(UUID userId, Connection connection) {
     
         DefensivePlayer player = null;
         
-        String sql = "USE web3_530; SELECT * from sp24.dd_defense WHERE id = ?";
+        String sql = "USE web3_530; SELECT * from sp24.dd_defense WHERE id = ? and ghosted_date=0";
         
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userId.toString());
@@ -104,7 +103,7 @@ public class DefensivePlayerFactory {
     }
     
     public static List<DefensivePlayer> getAll(Connection connection) {
-        String sql = "SELECT * FROM sp24.dd_defense";
+        String sql = "SELECT * FROM sp24.dd_defense where ghosted_date=0";
         DefensivePlayerBuilder builder = new DefensivePlayerBuilder();
         
         try(Statement statement = connection.createStatement()) {
@@ -138,7 +137,7 @@ public class DefensivePlayerFactory {
     
     public static List<DefensivePlayer> getByTeam(UUID teamId, Connection connection) {
         
-        String sql = "SELECT * FROM sp24.dd_defense where teamId = ?";
+        String sql = "SELECT * FROM sp24.dd_defense where teamId = ? and ghosted_date=0";
         DefensivePlayerBuilder builder = new DefensivePlayerBuilder();
         
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -176,7 +175,7 @@ public class DefensivePlayerFactory {
        String fetchScript = """
             UPDATE sp24.dd_defense SET teamId=?,assists=?,caughtStealingPercentage=?,
             doublePlays=?, errors=?, fieldingPercentage=?,inningsPlayed=?,outs=?,outfieldAssists=?,
-            passedBalls=?,putouts=?, totalChances=?, triplePlays=? where id=?;
+            passedBalls=?,putouts=?, totalChances=?, triplePlays=?, ghosted_date=0 where id=?;
        """;
        
        DefensivePlayerBuilder builder = new DefensivePlayerBuilder();
@@ -204,5 +203,20 @@ public class DefensivePlayerFactory {
            System.out.println(ex.getMessage());
            return null;
        }
+    }
+
+    public static boolean deletePlayer(UUID playerId, TimeProvider provider, Connection connection) {
+        String sql = "UPDATE sp24.dd_defense SET ghosted_date = ? WHERE id = ?";
+
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, provider.provideTime());
+            statement.setString(2, playerId.toString());
+            statement.executeUpdate();
+            return true;
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
 }
