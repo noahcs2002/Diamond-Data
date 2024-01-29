@@ -68,4 +68,22 @@ public class DefensivePlayerController {
 	    return false;
 	}
     }
+    
+    /**
+     * Pass in the player's ID and the most up-to-date model of their statistics, and it will be
+     * updated within persistence.
+     * @param playerId The ID of the player you wish to modify.
+     * @param player The model that you want to update the player to.
+     * @return An updated player model
+     */
+    @PutMapping
+    public DefensivePlayer updatePlayer(@RequestParam UUID playerId, @RequestBody DefensivePlayer player) {
+	try {
+	    Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+	    return DefensivePlayerFactory.update(playerId, player, connection);
+	}
+	catch (Exception ex) {
+	    return null;
+	}
+    }
 }

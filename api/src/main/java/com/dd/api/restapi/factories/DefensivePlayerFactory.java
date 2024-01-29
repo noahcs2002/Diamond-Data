@@ -170,4 +170,39 @@ public class DefensivePlayerFactory {
             return List.of();
         }
     }
+    
+    public static DefensivePlayer update(UUID playerId, DefensivePlayer player, Connection connection) {
+       
+       String fetchScript = """
+            UPDATE sp24.dd_defense SET teamId=?,assists=?,caughtStealingPercentage=?,
+            doublePlays=?, errors=?, fieldingPercentage=?,inningsPlayed=?,outs=?,outfieldAssists=?,
+            passedBalls=?,putouts=?, totalChances=?, triplePlays=? where id=?;
+       """;
+       
+       DefensivePlayerBuilder builder = new DefensivePlayerBuilder();
+       try(PreparedStatement statement = connection.prepareStatement(fetchScript)) {
+           statement.setString(1, player.getTeamId().toString());
+           statement.setInt(2, player.getAssists());
+           statement.setDouble(3, player.getCaughtStealingPercentage());
+           statement.setInt(4, player.getDoublePlays());
+           statement.setInt(5, player.getErrors());
+           statement.setDouble(6, player.getFieldingPercentage());
+           statement.setDouble(7, player.getInningsPlayed());
+           statement.setInt(8, player.getOuts());
+           statement.setInt(9, player.getOutfieldAssists());
+           statement.setInt(10, player.getPassedBalls());
+           statement.setInt(11, player.getPutouts());
+           statement.setInt(12, player.getTotalChances());
+           statement.setInt(13, player.getTriplePlays());
+           statement.setString(14, playerId.toString());
+           
+           statement.executeUpdate();
+           return player;
+           
+       }
+       catch (Exception ex) {
+           System.out.println(ex.getMessage());
+           return null;
+       }
+    }
 }
