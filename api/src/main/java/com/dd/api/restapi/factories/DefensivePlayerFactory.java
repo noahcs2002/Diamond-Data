@@ -24,7 +24,7 @@ public class DefensivePlayerFactory {
             
             while(set.next()) {
                 DefensivePlayerBuilder builder = new DefensivePlayerBuilder();
-                return builder.setId(userId)
+                return builder
                     .setTeamId(UUID.fromString(set.getString("teamId")))
                     .setMemberId(UUID.fromString(set.getString("memberId")))
                     .setAssists(set.getInt("assists"))
@@ -50,13 +50,12 @@ public class DefensivePlayerFactory {
     }
     
     
-    public static DefensivePlayer createPlayer(DefensivePlayer player, Connection connection) {
+    public static boolean createPlayer(DefensivePlayer player, Connection connection) {
     
          String sql = """
              INSERT INTO sp24.dd_defense  (
                [id],
                [teamId],
-               [memberId],
                [assists],
                [caughtStealingPercentage],
                [doublePlays],
@@ -73,19 +72,31 @@ public class DefensivePlayerFactory {
                         ?, ?, ?,
                         ?, ?, ?,
                         ?, ?, ?,
-                        ?, ?, ? );
+                        ?, ? );
          """;
          
          try(PreparedStatement statement = connection.prepareStatement(sql)) {
              statement.setString(1, player.getId().toString());
              statement.setString(2, player.getTeamId().toString());
-             statement.setString(3, player.getMemberId().toString());
+             statement.setInt(3, player.getAssists());
+             statement.setDouble(4, player.getCaughtStealingPercentage());
+             statement.setInt(5, player.getDoublePlays());
+             statement.setInt(6, player.getErrors());
+             statement.setDouble(7, player.getFieldingPercentage());
+             statement.setDouble(8, player.getInningsPlayed());
+             statement.setInt(9, player.getOuts());
+             statement.setInt(10, player.getOutfieldAssists());
+             statement.setInt(11, player.getPassedBalls());
+             statement.setInt(12, player.getPutouts());
+             statement.setInt(13, player.getTotalChances());
+             statement.setInt(14, player.getTriplePlays());
+             
+             statement.executeUpdate();
+             return true;
          }
          catch (Exception ex) {
-         
+             System.out.println(ex.getMessage());
+             return false;
          }
-    
-        return  null;
-        
     }
 }

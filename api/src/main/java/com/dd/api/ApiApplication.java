@@ -8,10 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ApiApplication {
 
 	public static void main(String[] args) {
-	    Context settings = new Context();
-	    System.out.println("Username: " + settings.getUsername());
-	    System.out.println("Password: " + settings.getPassword());
-	    System.out.println("Connection String: " + settings.getConnectionString());
 	    SpringApplication.run(ApiApplication.class, args);
 	}
 

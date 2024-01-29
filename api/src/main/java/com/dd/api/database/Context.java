@@ -36,7 +36,5 @@ public class Context {
         catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        
-        
     }
 }

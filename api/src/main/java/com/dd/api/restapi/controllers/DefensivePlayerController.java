@@ -3,8 +3,6 @@ package com.dd.api.restapi.controllers;
 import com.dd.api.database.Context;
 import com.dd.api.restapi.factories.DefensivePlayerFactory;
 import com.dd.api.restapi.models.DefensivePlayer;
-import jakarta.annotation.security.DenyAll;
-import org.apache.coyote.http11.filters.IdentityInputFilter;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
@@ -38,13 +36,13 @@ public class DefensivePlayerController {
     
     @PostMapping
     @RequestMapping("/create")
-    public DefensivePlayer createPlayer(@RequestParam DefensivePlayer player) {
+    public boolean createPlayer(@RequestBody DefensivePlayer player) {
 	try {
 	    Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
 	    return DefensivePlayerFactory.createPlayer(player, connection);
 	}
 	catch (Exception ex) {
-	    return null;
+	    return false;
 	}
     }
 }
