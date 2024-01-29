@@ -9,8 +9,6 @@ public class ConnectionSettings {
     private final String password;
     private final String connectionString;
     
-    private final PropertyFileReader reader;
-    
     public String getUsername() {
         return username;
     }
@@ -24,8 +22,8 @@ public class ConnectionSettings {
     }
     
     public ConnectionSettings() {
-        this.reader = new PropertyFileReader("src/main/resources/db_connection.lock");
-        HashMap<String, String> properties = this.reader.getContents();
+	PropertyFileReader reader = new PropertyFileReader("src/main/resources/db_connection.lock");
+        HashMap<String, String> properties = reader.getContents();
         
         try {
             this.username = properties.get("username");
