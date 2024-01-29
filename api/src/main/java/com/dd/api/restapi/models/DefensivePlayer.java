@@ -39,6 +39,24 @@ public class DefensivePlayer {
         this.totalChances = totalChances;
         this.triplePlays = triplePlays;
     }
+    
+    public DefensivePlayer(UUID playerId, UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
+        this.id = playerId;
+        this.teamId = teamId;
+        this.assists = assists;
+        this.caughtStealingPercentage = caughtStealingPercentage;
+        this.doublePlays = doublePlays;
+        this.errors = errors;
+        this.fieldingPercentage = fieldingPercentage;
+        this.inningsPlayed = inningsPlayed;
+        this.outs = outs;
+        this.outfieldAssists = outfieldAssists;
+        this.passedBalls = passedBalls;
+        this.putouts = putouts;
+        this.totalChances = totalChances;
+        this.triplePlays = triplePlays;
+    }
+    
 
     public DefensivePlayer(UUID id, UUID teamId) {
         this.id = id;

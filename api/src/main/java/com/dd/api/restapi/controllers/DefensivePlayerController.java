@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -34,8 +35,30 @@ public class DefensivePlayerController {
 	}
     }
     
+    @GetMapping
+    public List<DefensivePlayer> getAll() {
+	try {
+	    Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+	    return DefensivePlayerFactory.getAll(connection);
+	}
+	catch (Exception ex) {
+	    return List.of();
+	}
+    }
+    
+    @GetMapping
+    @RequestMapping("/by-team")
+    public List<DefensivePlayer> getPlayersByTeam(@RequestParam UUID teamId) {
+	try {
+	    Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+	    return DefensivePlayerFactory.getByTeam(teamId, connection);
+	}
+	catch (Exception ex) {
+	    return List.of();
+	}
+    }
+    
     @PostMapping
-    @RequestMapping("/create")
     public boolean createPlayer(@RequestBody DefensivePlayer player) {
 	try {
 	    Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());

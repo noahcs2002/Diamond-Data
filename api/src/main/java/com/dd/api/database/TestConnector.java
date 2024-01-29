@@ -7,10 +7,10 @@ import java.sql.Statement;
 
 public class TestConnector {
     
-    private final ConnectionSettings settings;
+    private final Context settings;
     
     public TestConnector() {
-        this.settings = new ConnectionSettings();
+        this.settings = new Context();
     }
     
     private void establishConnection() {

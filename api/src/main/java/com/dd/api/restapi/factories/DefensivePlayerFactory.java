@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DefensivePlayerFactory {
@@ -76,7 +79,7 @@ public class DefensivePlayerFactory {
          """;
          
          try(PreparedStatement statement = connection.prepareStatement(sql)) {
-             statement.setString(1, player.getId().toString());
+             statement.setString(1, UUID.randomUUID().toString());
              statement.setString(2, player.getTeamId().toString());
              statement.setInt(3, player.getAssists());
              statement.setDouble(4, player.getCaughtStealingPercentage());
@@ -98,5 +101,73 @@ public class DefensivePlayerFactory {
              System.out.println(ex.getMessage());
              return false;
          }
+    }
+    
+    public static List<DefensivePlayer> getAll(Connection connection) {
+        String sql = "SELECT * FROM sp24.dd_defense";
+        DefensivePlayerBuilder builder = new DefensivePlayerBuilder();
+        
+        try(Statement statement = connection.createStatement()) {
+            ResultSet set = statement.executeQuery(sql);
+            List<DefensivePlayer> players = new ArrayList<>();
+            while(set.next()) {
+                players.add(builder
+                    .setId(UUID.fromString(set.getString("id")))
+                    .setTeamId(UUID.fromString(set.getString("teamId")))
+                    .setAssists(set.getInt("assists"))
+                    .setCaughtStealingPercentage(set.getDouble("caughtStealingPercentage"))
+                    .setDoublePlays(set.getInt("doublePlays"))
+                    .setErrors(set.getInt("errors"))
+                    .setInningsPlayed(set.getInt("inningsPlayed"))
+                    .setOuts(set.getInt("outs"))
+                    .setOutfieldAssists(set.getInt("outfieldAssists"))
+                    .setPassedBalls(set.getInt("passedBalls"))
+                    .setPutouts(set.getInt("putouts"))
+                    .setTotalChances(set.getInt("totalChances"))
+                    .setTriplePlays(set.getInt("triplePlays"))
+                    .createDefensivePlayer());
+            }
+            
+            return players;
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return List.of();
+        }
+    }
+    
+    public static List<DefensivePlayer> getByTeam(UUID teamId, Connection connection) {
+        
+        String sql = "SELECT * FROM sp24.dd_defense where teamId = ?";
+        DefensivePlayerBuilder builder = new DefensivePlayerBuilder();
+        
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, teamId.toString());
+            ResultSet set = statement.executeQuery();
+            List<DefensivePlayer> players = new ArrayList<>();
+            while(set.next()) {
+                players.add(builder
+                    .setId(UUID.fromString(set.getString("id")))
+                    .setTeamId(UUID.fromString(set.getString("teamId")))
+                    .setAssists(set.getInt("assists"))
+                    .setCaughtStealingPercentage(set.getDouble("caughtStealingPercentage"))
+                    .setDoublePlays(set.getInt("doublePlays"))
+                    .setErrors(set.getInt("errors"))
+                    .setInningsPlayed(set.getInt("inningsPlayed"))
+                    .setOuts(set.getInt("outs"))
+                    .setOutfieldAssists(set.getInt("outfieldAssists"))
+                    .setPassedBalls(set.getInt("passedBalls"))
+                    .setPutouts(set.getInt("putouts"))
+                    .setTotalChances(set.getInt("totalChances"))
+                    .setTriplePlays(set.getInt("triplePlays"))
+                    .createDefensivePlayer());
+            }
+            
+            return players;
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return List.of();
+        }
     }
 }

@@ -20,6 +20,11 @@ public class DefensivePlayerBuilder {
     private int putouts;
     private int totalChances;
     private int triplePlays;
+    
+    public DefensivePlayerBuilder setId(UUID id) {
+        this.id = id;
+        return this;
+    }
 
     public DefensivePlayerBuilder setTeamId(UUID teamId) {
         this.teamId = teamId;
