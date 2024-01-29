@@ -1,7 +1,7 @@
 .navbar {
     width: 100%;
     height: 100px;
-    background-color: #121619;
+    background-color: #1C3738;
     display: flex;
     flex-direction: row;
   }
@@ -27,7 +27,7 @@
   }
   
   .navbar a {
-    color: white;
+    color: #F4FFF8;
     text-decoration: none;
     margin: 20px;
   }
@@ -35,7 +35,7 @@
   .navbar .rightSide button {
     background-color: transparent;
     border: none;
-    color: white;
+    color: #F4FFF8;
     cursor: pointer;
   }
   
