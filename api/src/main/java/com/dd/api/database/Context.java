@@ -4,7 +4,7 @@ import com.dd.api.util.PropertyFileReader;
 
 import java.util.HashMap;
 
-public class ConnectionSettings {
+public class Context {
     private final String username;
     private final String password;
     private final String connectionString;
@@ -23,7 +23,7 @@ public class ConnectionSettings {
         return connectionString;
     }
     
-    public ConnectionSettings() {
+    public Context() {
         this.reader = new PropertyFileReader("src/main/resources/db_connection.lock");
         HashMap<String, String> properties = this.reader.getContents();
         
