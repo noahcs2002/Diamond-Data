@@ -13,10 +13,8 @@ public class TestConnector {
     }
 
     private void establishConnection() {
-        
-        
         try(Connection connection = DriverManager.getConnection(settings.getConnectionString(), settings.getUsername(), settings.getPassword())) {
-        System.out.println("Connection established");
+            System.out.println("Connection established");
         }
         catch (Exception ex) {
             System.out.println("Error connecting to database: " + ex.getLocalizedMessage());
