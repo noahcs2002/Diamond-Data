@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class OffensivePlayer {
+    
     private UUID id;
     private UUID teamId;
     private UUID memberId;

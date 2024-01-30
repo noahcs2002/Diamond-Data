@@ -6,7 +6,6 @@ import java.util.UUID;
 public class DefensivePlayer {
     private UUID id;
     private UUID teamId;
-    private UUID memberId;
     private int assists;
     private double caughtStealingPercentage;
     private int doublePlays;
@@ -19,11 +18,14 @@ public class DefensivePlayer {
     private int putouts;
     private int totalChances;
     private int triplePlays;
+    
+    public DefensivePlayer() {
+        // Empty for Jackson Binding (Spring Boot) - NS
+    }
 
-    public DefensivePlayer(UUID id, UUID teamId, UUID memberId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
-        this.id = id;
+    public DefensivePlayer(UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
+        this.id = UUID.randomUUID();
         this.teamId = teamId;
-        this.memberId = memberId;
         this.assists = assists;
         this.caughtStealingPercentage = caughtStealingPercentage;
         this.doublePlays = doublePlays;
@@ -37,11 +39,28 @@ public class DefensivePlayer {
         this.totalChances = totalChances;
         this.triplePlays = triplePlays;
     }
+    
+    public DefensivePlayer(UUID playerId, UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
+        this.id = playerId;
+        this.teamId = teamId;
+        this.assists = assists;
+        this.caughtStealingPercentage = caughtStealingPercentage;
+        this.doublePlays = doublePlays;
+        this.errors = errors;
+        this.fieldingPercentage = fieldingPercentage;
+        this.inningsPlayed = inningsPlayed;
+        this.outs = outs;
+        this.outfieldAssists = outfieldAssists;
+        this.passedBalls = passedBalls;
+        this.putouts = putouts;
+        this.totalChances = totalChances;
+        this.triplePlays = triplePlays;
+    }
+    
 
-    public DefensivePlayer(UUID id, UUID teamId, UUID memberId) {
+    public DefensivePlayer(UUID id, UUID teamId) {
         this.id = id;
         this.teamId = teamId;
-        this.memberId = memberId;
         this.assists = 0;
         this.caughtStealingPercentage = 0;
         this.doublePlays = 0;
@@ -70,14 +89,6 @@ public class DefensivePlayer {
 
     public void setTeamId(UUID teamId) {
         this.teamId = teamId;
-    }
-
-    public UUID getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(UUID memberId) {
-        this.memberId = memberId;
     }
 
     public int getAssists() {
@@ -181,7 +192,6 @@ public class DefensivePlayer {
         return "DefensivePlayer{" +
                 "id=" + id +
                 ", teamId=" + teamId +
-                ", memberId=" + memberId +
                 ", assists=" + assists +
                 ", caughtStealingPercentage=" + caughtStealingPercentage +
                 ", doublePlays=" + doublePlays +
@@ -202,11 +212,11 @@ public class DefensivePlayer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DefensivePlayer that = (DefensivePlayer) o;
-        return assists == that.assists && Double.compare(that.caughtStealingPercentage, caughtStealingPercentage) == 0 && doublePlays == that.doublePlays && errors == that.errors && Double.compare(that.fieldingPercentage, fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId) && Objects.equals(memberId, that.memberId);
+        return assists == that.assists && Double.compare(that.caughtStealingPercentage, caughtStealingPercentage) == 0 && doublePlays == that.doublePlays && errors == that.errors && Double.compare(that.fieldingPercentage, fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, teamId, memberId, assists, caughtStealingPercentage, doublePlays, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays);
+        return Objects.hash(id, teamId,  assists, caughtStealingPercentage, doublePlays, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays);
     }
 }
