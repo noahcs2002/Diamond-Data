@@ -6,7 +6,6 @@ import com.dd.api.restapi.util.PitcherPreference;
 import java.util.UUID;
 
 public class PitcherBuilder {
-    private UUID id;
     private UUID teamId;
     private UUID memberId;
     private int appearances;
@@ -42,11 +41,6 @@ public class PitcherBuilder {
 
     public PitcherBuilder setPreference(PitcherPreference preference) {
         this.preference = preference;
-        return this;
-    }
-
-    public PitcherBuilder setId(UUID id) {
-        this.id = id;
         return this;
     }
 
@@ -206,6 +200,6 @@ public class PitcherBuilder {
     }
 
     public Pitcher createPitcher() {
-        return new Pitcher(id, teamId, memberId, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage, flyOuts, gamesFinished, gamesStarted, groundOuts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickOffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningsPitched, wildPitches, wins, winningPercentage, preference);
+        return new Pitcher(teamId, memberId, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage, flyOuts, gamesFinished, gamesStarted, groundOuts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickOffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningsPitched, wildPitches, wins, winningPercentage, preference);
     }
 }

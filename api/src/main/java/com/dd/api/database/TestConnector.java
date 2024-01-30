@@ -1,16 +1,15 @@
 package com.dd.api.database;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class TestConnector {
     
-    private final Context settings;
+    private final SqlServerContext settings;
     
     public TestConnector() {
-        this.settings = new Context();
+        this.settings = new SqlServerContext();
     }
 
     private void establishConnection() {

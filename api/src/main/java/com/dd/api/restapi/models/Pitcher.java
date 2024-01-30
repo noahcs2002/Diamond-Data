@@ -41,8 +41,8 @@ public class Pitcher {
     private double winningPercentage;
     private PitcherPreference preference;
 
-    public Pitcher(UUID id, UUID teamId, UUID memberId, int appearances,  int balks, int battersFaced, int blownSaves, int completeGames, int earnedRunsAllowed, double earnedRunAverage, int flyOuts, int gamesFinished, int gamesStarted, int groundOuts, int holds, int inheritedRunners, double inningsPitched, int losses, int numberOfPitches, int pickOffs, int qualityStarts, int reliefWins, int saves, int saveOpportunities, double savePercentage, int shutouts, int strikeouts, int unearnedRuns, double walksAndHitsPerInningsPitched, int wildPitches, int wins, double winningPercentage, PitcherPreference preference) {
-        this.id = id;
+    public Pitcher(UUID teamId, UUID memberId, int appearances,  int balks, int battersFaced, int blownSaves, int completeGames, int earnedRunsAllowed, double earnedRunAverage, int flyOuts, int gamesFinished, int gamesStarted, int groundOuts, int holds, int inheritedRunners, double inningsPitched, int losses, int numberOfPitches, int pickOffs, int qualityStarts, int reliefWins, int saves, int saveOpportunities, double savePercentage, int shutouts, int strikeouts, int unearnedRuns, double walksAndHitsPerInningsPitched, int wildPitches, int wins, double winningPercentage, PitcherPreference preference) {
+        this.id = UUID.randomUUID();
         this.teamId = teamId;
         this.memberId = memberId;
         this.appearances = appearances;
@@ -75,42 +75,6 @@ public class Pitcher {
         this.wins = wins;
         this.winningPercentage = winningPercentage;
         this.preference = preference;
-    }
-
-    public Pitcher(UUID id, UUID teamId, UUID memberId) {
-        this.id = id;
-        this.teamId = teamId;
-        this.memberId = memberId;
-        this.appearances = 0;
-        this.balks = 0;
-        this.battersFaced = 0;
-        this.blownSaves = 0;
-        this.completeGames = 0;
-        this.earnedRunsAllowed = 0;
-        this.earnedRunAverage = 0;
-        this.flyOuts = 0;
-        this.gamesFinished = 0;
-        this.gamesStarted = 0;
-        this.groundOuts = 0;
-        this.holds = 0;
-        this.inheritedRunners = 0;
-        this.inningsPitched = 0;
-        this.losses = 0;
-        this.numberOfPitches = 0;
-        this.pickOffs = 0;
-        this.qualityStarts = 0;
-        this.reliefWins = 0;
-        this.saves = 0;
-        this.saveOpportunities = 0;
-        this.savePercentage = 0;
-        this.shutouts = 0;
-        this.strikeouts = 0;
-        this.unearnedRuns = 0;
-        this.walksAndHitsPerInningsPitched = 0;
-        this.wildPitches = 0;
-        this.wins = 0;
-        this.winningPercentage = 0;
-        this.preference = PitcherPreference.UNKNOWN;
     }
 
     public UUID getId() {
