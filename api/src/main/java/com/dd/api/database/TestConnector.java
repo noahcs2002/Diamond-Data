@@ -6,11 +6,8 @@ import java.sql.Statement;
 
 public class TestConnector {
     
-    private final SqlServerContext settings;
+    private final Context settings = new Context();
     
-    public TestConnector() {
-        this.settings = new SqlServerContext();
-    }
 
     private void establishConnection() {
         try(Connection connection = DriverManager.getConnection(settings.getConnectionString(), settings.getUsername(), settings.getPassword())) {

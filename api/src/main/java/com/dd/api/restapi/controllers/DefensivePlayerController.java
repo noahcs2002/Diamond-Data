@@ -112,6 +112,7 @@ public class DefensivePlayerController {
     @PutMapping
     @RequestMapping("update")
     public DefensivePlayer updatePlayer(@RequestParam UUID playerId, @RequestBody DefensivePlayer player) {
+	try (Connection connection = DriverManager.getConnection(sqlServerContext.getConnectionString(), sqlServerContext.getUsername(), sqlServerContext.getPassword())){
 	    return DefensivePlayerFactory.update(playerId, player, connection);
 	}
 	catch (Exception ex) {
