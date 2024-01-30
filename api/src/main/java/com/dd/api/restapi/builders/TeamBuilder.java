@@ -7,7 +7,6 @@ import java.util.UUID;
 
 public class TeamBuilder {
     private String name;
-    private UUID id;
     private UUID accountId;
     private Color primaryColour;
     private Color secondaryColour;
@@ -15,11 +14,6 @@ public class TeamBuilder {
 
     public TeamBuilder setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public TeamBuilder setId(UUID id) {
-        this.id = id;
         return this;
     }
 
@@ -43,6 +37,6 @@ public class TeamBuilder {
         return this;
     }
     public Team createTeam() {
-        return new Team(name, id, accountId, primaryColour, secondaryColour, accentColour);
+        return new Team(accountId, name, primaryColour, secondaryColour, accentColour);
     }
 }

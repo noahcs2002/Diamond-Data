@@ -1,11 +1,7 @@
 package com.dd.api.restapi.models;
 
 public class Color {
-    private char[] hexCode;
-
-    public Color() {
-        // Empty constructor for Jackson processor.
-    }
+    private final char[] hexCode;
 
     public Color(String color) {
         hexCode = new char[6];

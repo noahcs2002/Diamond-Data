@@ -7,29 +7,16 @@ public class Team {
     private String name;
     private UUID id;
     private UUID accountId;
+    private Color primaryColor;
+    private Color secondaryColor;
+    private Color accentColor;
 
-    private Color primaryColour;
-    private Color secondaryColour;
-    private Color accentColour;
-
-    public Team(String name, UUID id, UUID accountId, Color primaryColour, Color secondaryColour, Color accentColour) {
-        this.name = name;
-        this.id = id;
-        this.accountId = accountId;
-        this.primaryColour = primaryColour;
-        this.secondaryColour = secondaryColour;
-        this.accentColour = accentColour;
-    }
-
-    public Team(String name, UUID accountId, Color primaryColour, Color secondaryColour, Color accentColour) {
+    public Team(UUID accountId, String name, Color primaryColour, Color secondaryColour, Color accentColour) {
         this.name = name;
         this.accountId = accountId;
-        this.primaryColour = primaryColour;
-        this.secondaryColour = secondaryColour;
-        this.accentColour = accentColour;
-    }
-
-    public Team() {
+        this.primaryColor = primaryColour;
+        this.secondaryColor = secondaryColour;
+        this.accentColor = accentColour;
         this.id = UUID.randomUUID();
     }
 
@@ -57,28 +44,28 @@ public class Team {
         this.accountId = accountId;
     }
 
-    public Color getPrimaryColour() {
-        return primaryColour;
+    public Color getPrimaryColor() {
+        return primaryColor;
     }
 
-    public void setPrimaryColour(Color primaryColour) {
-        this.primaryColour = primaryColour;
+    public void setPrimaryColor(Color primaryColor) {
+        this.primaryColor = primaryColor;
     }
 
-    public Color getSecondaryColour() {
-        return secondaryColour;
+    public Color getSecondaryColor() {
+        return secondaryColor;
     }
 
-    public void setSecondaryColour(Color secondaryColour) {
-        this.secondaryColour = secondaryColour;
+    public void setSecondaryColor(Color secondaryColor) {
+        this.secondaryColor = secondaryColor;
     }
 
-    public Color getAccentColour() {
-        return accentColour;
+    public Color getAccentColor() {
+        return accentColor;
     }
 
-    public void setAccentColour(Color accentColour) {
-        this.accentColour = accentColour;
+    public void setAccentColor(Color accentColor) {
+        this.accentColor = accentColor;
     }
 
     @Override
@@ -86,11 +73,11 @@ public class Team {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return Objects.equals(name, team.name) && Objects.equals(id, team.id) && Objects.equals(accountId, team.accountId) && Objects.equals(primaryColour, team.primaryColour) && Objects.equals(secondaryColour, team.secondaryColour) && Objects.equals(accentColour, team.accentColour);
+        return Objects.equals(name, team.name) && Objects.equals(id, team.id) && Objects.equals(accountId, team.accountId) && Objects.equals(primaryColor, team.primaryColor) && Objects.equals(secondaryColor, team.secondaryColor) && Objects.equals(accentColor, team.accentColor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, accountId, primaryColour, secondaryColour, accentColour);
+        return Objects.hash(name, id, accountId, primaryColor, secondaryColor, accentColor);
     }
 }
