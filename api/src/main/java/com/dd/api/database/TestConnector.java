@@ -12,7 +12,7 @@ public class TestConnector {
     public TestConnector() {
         this.settings = new Context();
     }
-    
+
     private void establishConnection() {
         
         
