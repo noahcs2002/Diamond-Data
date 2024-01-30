@@ -1,0 +1,61 @@
+
+.Settings {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+  }
+  
+  .Settings h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #263238;
+  }
+  
+  form {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .formContainer {
+    background-color: #ECEFF1;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  label {
+    font-size: 16px;
+    color: #263238;
+  }
+  
+  input,
+  select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #B0BEC5;
+    border-radius: 5px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 15px;
+    background-color: #1C3738;
+    color: #F4FFF8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  button:hover {
+    background-color: #0E2A2B;
+    transition: 0.3s ease-in;
+  }
+  
