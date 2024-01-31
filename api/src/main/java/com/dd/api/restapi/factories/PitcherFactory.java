@@ -11,11 +11,11 @@ public class PitcherFactory {
         
         String sql = (pitcher.getPreference().equals(PitcherPreference.LEFT)) ?
         """
-            INSERT INTO sp24.dd_lhp (id, teamId, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage,
-            flyouts, gamesFinished, gamesStarted, groundouts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches,
-            pickoffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns,
-            walksAndHitsPerInningPitched, wildPitches, wins, winningPercentage, ghosted_date)
-            VALUES (?, ?, ?, ?,
+           INSERT INTO sp24.dd_lhp (id, teamId, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage,
+           flyouts, gamesFinished, gamesStarted, groundouts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches,
+           pickoffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns,
+           walksAndHitsPerInningPitched, wildPitches, wins, winningPercentage, ghosted_date)
+           VALUES (?, ?, ?, ?,
                    ?, ?, ?, ?,
                    ?, ?, ?, ?,
                    ?, ?, ?, ?,
