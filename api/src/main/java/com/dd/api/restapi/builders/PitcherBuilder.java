@@ -49,11 +49,6 @@ public class PitcherBuilder {
         return this;
     }
 
-    public PitcherBuilder setMemberId(UUID memberId) {
-        this.memberId = memberId;
-        return this;
-    }
-
     public PitcherBuilder setAppearances(int appearances) {
         this.appearances = appearances;
         return this;
@@ -200,6 +195,6 @@ public class PitcherBuilder {
     }
 
     public Pitcher createPitcher() {
-        return new Pitcher(teamId, memberId, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage, flyOuts, gamesFinished, gamesStarted, groundOuts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickOffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningsPitched, wildPitches, wins, winningPercentage, preference);
+        return new Pitcher(teamId, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage, flyOuts, gamesFinished, gamesStarted, groundOuts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickOffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningsPitched, wildPitches, wins, winningPercentage, preference);
     }
 }

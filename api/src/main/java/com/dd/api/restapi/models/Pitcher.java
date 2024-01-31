@@ -41,10 +41,39 @@ public class Pitcher {
     private double winningPercentage;
     private PitcherPreference preference;
 
-    public Pitcher(UUID teamId, UUID memberId, int appearances,  int balks, int battersFaced, int blownSaves, int completeGames, int earnedRunsAllowed, double earnedRunAverage, int flyOuts, int gamesFinished, int gamesStarted, int groundOuts, int holds, int inheritedRunners, double inningsPitched, int losses, int numberOfPitches, int pickOffs, int qualityStarts, int reliefWins, int saves, int saveOpportunities, double savePercentage, int shutouts, int strikeouts, int unearnedRuns, double walksAndHitsPerInningsPitched, int wildPitches, int wins, double winningPercentage, PitcherPreference preference) {
+    public Pitcher(UUID teamId,
+                   int appearances,
+                   int balks,
+                   int battersFaced,
+                   int blownSaves,
+                   int completeGames,
+                   int earnedRunsAllowed,
+                   double earnedRunAverage,
+                   int flyOuts,
+                   int gamesFinished,
+                   int gamesStarted,
+                   int groundOuts,
+                   int holds,
+                   int inheritedRunners,
+                   double inningsPitched,
+                   int losses,
+                   int numberOfPitches,
+                   int pickOffs,
+                   int qualityStarts,
+                   int reliefWins,
+                   int saves,
+                   int saveOpportunities,
+                   double savePercentage,
+                   int shutouts,
+                   int strikeouts,
+                   int unearnedRuns,
+                   double walksAndHitsPerInningsPitched,
+                   int wildPitches,
+                   int wins,
+                   double winningPercentage,
+                   PitcherPreference preference) {
         this.id = UUID.randomUUID();
         this.teamId = teamId;
-        this.memberId = memberId;
         this.appearances = appearances;
         this.balks = balks;
         this.battersFaced = battersFaced;
