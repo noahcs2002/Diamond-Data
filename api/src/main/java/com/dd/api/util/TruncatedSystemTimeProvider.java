@@ -5,7 +5,7 @@ package com.dd.api.util;
  * the integer standard. This provides a smaller storage medium with minimal loss of relevant info.
  * @author noahsternbrg
  */
-public class TruncatedSystemTimeProvider implements TimeProvider{
+public class TruncatedSystemTimeProvider implements TimeProvider {
 
     @Override
     public long provideTime() {

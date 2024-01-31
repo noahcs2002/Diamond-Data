@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class PitcherBuilder {
     private UUID teamId;
-    private UUID memberId;
+    private UUID id;
     private int appearances;
     private int balks;
     private int battersFaced;
@@ -38,9 +38,26 @@ public class PitcherBuilder {
     private int wins;
     private double winningPercentage;
     private PitcherPreference preference;
+    private String firstName;
+    private String lastName;
+    
+    public PitcherBuilder setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+    
+    public PitcherBuilder setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
 
     public PitcherBuilder setPreference(PitcherPreference preference) {
         this.preference = preference;
+        return this;
+    }
+    
+    public PitcherBuilder setId(UUID id) {
+        this.id = id;
         return this;
     }
 
@@ -195,6 +212,6 @@ public class PitcherBuilder {
     }
 
     public Pitcher createPitcher() {
-        return new Pitcher(teamId, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage, flyOuts, gamesFinished, gamesStarted, groundOuts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickOffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningsPitched, wildPitches, wins, winningPercentage, preference);
+        return new Pitcher(id, teamId, firstName, lastName, appearances, balks, battersFaced, blownSaves, completeGames, earnedRunsAllowed, earnedRunAverage, flyOuts, gamesFinished, gamesStarted, groundOuts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickOffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningsPitched, wildPitches, wins, winningPercentage, preference);
     }
 }

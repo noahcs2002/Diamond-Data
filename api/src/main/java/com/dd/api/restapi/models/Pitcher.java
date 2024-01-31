@@ -1,6 +1,7 @@
 package com.dd.api.restapi.models;
 
 import com.dd.api.restapi.util.PitcherPreference;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -8,6 +9,11 @@ import java.util.UUID;
 public class Pitcher {
 
     private UUID id;
+    
+   
+    
+    private String firstName;
+    private String lastName;
     private UUID teamId;
     private UUID memberId;
     private int appearances;
@@ -41,6 +47,9 @@ public class Pitcher {
     private double winningPercentage;
     private PitcherPreference preference;
 
+    // Annotated as a JSON creator to allow the HTTP calls to access
+    // this ctor as the creator.
+    @JsonCreator
     public Pitcher(UUID teamId,
                    int appearances,
                    int balks,
@@ -105,7 +114,93 @@ public class Pitcher {
         this.winningPercentage = winningPercentage;
         this.preference = preference;
     }
-
+    
+    
+    public Pitcher(UUID id,
+                   UUID teamId,
+                   String firstName,
+                   String lastName,
+                   int appearances,
+                   int balks,
+                   int battersFaced,
+                   int blownSaves,
+                   int completeGames,
+                   int earnedRunsAllowed,
+                   double earnedRunAverage,
+                   int flyOuts,
+                   int gamesFinished,
+                   int gamesStarted,
+                   int groundOuts,
+                   int holds,
+                   int inheritedRunners,
+                   double inningsPitched,
+                   int losses,
+                   int numberOfPitches,
+                   int pickOffs,
+                   int qualityStarts,
+                   int reliefWins,
+                   int saves,
+                   int saveOpportunities,
+                   double savePercentage,
+                   int shutouts,
+                   int strikeouts,
+                   int unearnedRuns,
+                   double walksAndHitsPerInningsPitched,
+                   int wildPitches,
+                   int wins,
+                   double winningPercentage,
+                   PitcherPreference preference) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.teamId = teamId;
+        this.appearances = appearances;
+        this.balks = balks;
+        this.battersFaced = battersFaced;
+        this.blownSaves = blownSaves;
+        this.completeGames = completeGames;
+        this.earnedRunsAllowed = earnedRunsAllowed;
+        this.earnedRunAverage = earnedRunAverage;
+        this.flyOuts = flyOuts;
+        this.gamesFinished = gamesFinished;
+        this.gamesStarted = gamesStarted;
+        this.groundOuts = groundOuts;
+        this.holds = holds;
+        this.inheritedRunners = inheritedRunners;
+        this.inningsPitched = inningsPitched;
+        this.losses = losses;
+        this.numberOfPitches = numberOfPitches;
+        this.pickOffs = pickOffs;
+        this.qualityStarts = qualityStarts;
+        this.reliefWins = reliefWins;
+        this.saves = saves;
+        this.saveOpportunities = saveOpportunities;
+        this.savePercentage = savePercentage;
+        this.shutouts = shutouts;
+        this.strikeouts = strikeouts;
+        this.unearnedRuns = unearnedRuns;
+        this.walksAndHitsPerInningsPitched = walksAndHitsPerInningsPitched;
+        this.wildPitches = wildPitches;
+        this.wins = wins;
+        this.winningPercentage = winningPercentage;
+        this.preference = preference;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
+    }
+    
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
     public UUID getId() {
         return id;
     }
