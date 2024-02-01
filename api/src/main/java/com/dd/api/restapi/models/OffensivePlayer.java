@@ -1,6 +1,7 @@
 package com.dd.api.restapi.models;
 
 import com.dd.api.restapi.util.BatterPreference;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -40,8 +41,44 @@ public class OffensivePlayer {
     private int walks ;
     private int walkOffs ;
     private BatterPreference preference;
+    private String firstName;
+    private String lastName;
 
-    public OffensivePlayer(UUID id, UUID teamId, UUID memberId, int atBats, double average, double caughtStealingPercentage, int doubles, int extraBaseHits, int gamesPlayed, int grandSlams, int groundIntoDoublePlay, double groundOutVsFlyOut, int hitByPitch, int hits, int homeRuns, int intentionalWalks, int leftOnBase, double onBasePercentage, double onBasePlusSlugging, int plateAppearances, int reachedOnError, int runs, int runsBattedIn, int sacrificeBunts, int sacrificeFlies, int singles, double slugging, int stolenBases, int totalBases, int triples, int walks, int walkOffs, BatterPreference preference) {
+    public OffensivePlayer(UUID id,
+                           UUID teamId,
+                           UUID memberId,
+                           int atBats,
+                           double average,
+                           double caughtStealingPercentage,
+                           int doubles,
+                           int extraBaseHits,
+                           int gamesPlayed,
+                           int grandSlams,
+                           int groundIntoDoublePlay,
+                           double groundOutVsFlyOut,
+                           int hitByPitch,
+                           int hits,
+                           int homeRuns,
+                           int intentionalWalks,
+                           int leftOnBase,
+                           double onBasePercentage,
+                           double onBasePlusSlugging,
+                           int plateAppearances,
+                           int reachedOnError,
+                           int runs,
+                           int runsBattedIn,
+                           int sacrificeBunts,
+                           int sacrificeFlies,
+                           int singles,
+                           double slugging,
+                           int stolenBases,
+                           int totalBases,
+                           int triples,
+                           int walks,
+                           int walkOffs,
+                           BatterPreference preference,
+                           String firstName,
+                           String lastName) {
         this.id = id;
         this.teamId = teamId;
         this.memberId = memberId;
@@ -75,42 +112,82 @@ public class OffensivePlayer {
         this.walks = walks;
         this.walkOffs = walkOffs;
         this.preference = preference;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
-
-    public OffensivePlayer(UUID id, UUID teamId, UUID memberId) {
-        this.id = id;
+    
+    // Jackson requires a JSON creator when there are multiple ctors
+    @JsonCreator
+    public OffensivePlayer(
+                           UUID teamId,
+                           UUID memberId,
+                           int atBats,
+                           double average,
+                           double caughtStealingPercentage,
+                           int doubles,
+                           int extraBaseHits,
+                           int gamesPlayed,
+                           int grandSlams,
+                           int groundIntoDoublePlay,
+                           double groundOutVsFlyOut,
+                           int hitByPitch,
+                           int hits,
+                           int homeRuns,
+                           int intentionalWalks,
+                           int leftOnBase,
+                           double onBasePercentage,
+                           double onBasePlusSlugging,
+                           int plateAppearances,
+                           int reachedOnError,
+                           int runs,
+                           int runsBattedIn,
+                           int sacrificeBunts,
+                           int sacrificeFlies,
+                           int singles,
+                           double slugging,
+                           int stolenBases,
+                           int totalBases,
+                           int triples,
+                           int walks,
+                           int walkOffs,
+                           BatterPreference preference,
+                           String firstName,
+                           String lastName) {
+        this.id = UUID.randomUUID();
         this.teamId = teamId;
         this.memberId = memberId;
-        this.atBats = 0;
-        this.average = 0;
-        this.caughtStealingPercentage = 0;
-        this.doubles = 0;
-        this.extraBaseHits = 0;
-        this.gamesPlayed = 0;
-        this.grandSlams = 0;
-        this.groundIntoDoublePlay = 0;
-        this.groundOutVsFlyOut = 0;
-        this.hitByPitch = 0;
-        this.hits = 0;
-        this.homeRuns = 0;
-        this.intentionalWalks = 0;
-        this.leftOnBase = 0;
-        this.onBasePercentage = 0;
-        this.onBasePlusSlugging = 0;
-        this.plateAppearances = 0;
-        this.reachedOnError = 0;
-        this.runs = 0;
-        this.runsBattedIn = 0;
-        this.sacrificeBunts = 0;
-        this.sacrificeFlies = 0;
-        this.singles = 0;
-        this.slugging = 0;
-        this.stolenBases = 0;
-        this.totalBases = 0;
-        this.triples = 0;
-        this.walks = 0;
-        this.walkOffs = 0;
-        this.preference = BatterPreference.NONE;
+        this.atBats = atBats;
+        this.average = average;
+        this.caughtStealingPercentage = caughtStealingPercentage;
+        this.doubles = doubles;
+        this.extraBaseHits = extraBaseHits;
+        this.gamesPlayed = gamesPlayed;
+        this.grandSlams = grandSlams;
+        this.groundIntoDoublePlay = groundIntoDoublePlay;
+        this.groundOutVsFlyOut = groundOutVsFlyOut;
+        this.hitByPitch = hitByPitch;
+        this.hits = hits;
+        this.homeRuns = homeRuns;
+        this.intentionalWalks = intentionalWalks;
+        this.leftOnBase = leftOnBase;
+        this.onBasePercentage = onBasePercentage;
+        this.onBasePlusSlugging = onBasePlusSlugging;
+        this.plateAppearances = plateAppearances;
+        this.reachedOnError = reachedOnError;
+        this.runs = runs;
+        this.runsBattedIn = runsBattedIn;
+        this.sacrificeBunts = sacrificeBunts;
+        this.sacrificeFlies = sacrificeFlies;
+        this.singles = singles;
+        this.slugging = slugging;
+        this.stolenBases = stolenBases;
+        this.totalBases = totalBases;
+        this.triples = triples;
+        this.walks = walks;
+        this.walkOffs = walkOffs;
+        this.preference = preference;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public UUID getId() {
@@ -376,17 +453,37 @@ public class OffensivePlayer {
     public void setPreference(BatterPreference preference) {
         this.preference = preference;
     }
-
+    
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
+    }
+    
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         OffensivePlayer that = (OffensivePlayer) o;
-        return atBats == that.atBats && Double.compare(that.average, average) == 0 && Double.compare(that.caughtStealingPercentage, caughtStealingPercentage) == 0 && doubles == that.doubles && extraBaseHits == that.extraBaseHits && gamesPlayed == that.gamesPlayed && grandSlams == that.grandSlams && groundIntoDoublePlay == that.groundIntoDoublePlay && Double.compare(that.groundOutVsFlyOut, groundOutVsFlyOut) == 0 && hitByPitch == that.hitByPitch && hits == that.hits && homeRuns == that.homeRuns && intentionalWalks == that.intentionalWalks && leftOnBase == that.leftOnBase && Double.compare(that.onBasePercentage, onBasePercentage) == 0 && Double.compare(that.onBasePlusSlugging, onBasePlusSlugging) == 0 && plateAppearances == that.plateAppearances && reachedOnError == that.reachedOnError && runs == that.runs && runsBattedIn == that.runsBattedIn && sacrificeBunts == that.sacrificeBunts && sacrificeFlies == that.sacrificeFlies && singles == that.singles && Double.compare(that.slugging, slugging) == 0 && stolenBases == that.stolenBases && totalBases == that.totalBases && triples == that.triples && walks == that.walks && walkOffs == that.walkOffs && Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId) && Objects.equals(memberId, that.memberId) && preference == that.preference;
+        return atBats == that.atBats && Double.compare(average, that.average) == 0 && Double.compare(caughtStealingPercentage, that.caughtStealingPercentage) == 0 && doubles == that.doubles && extraBaseHits == that.extraBaseHits && gamesPlayed == that.gamesPlayed && grandSlams == that.grandSlams && groundIntoDoublePlay == that.groundIntoDoublePlay && Double.compare(groundOutVsFlyOut, that.groundOutVsFlyOut) == 0 && hitByPitch == that.hitByPitch && hits == that.hits && homeRuns == that.homeRuns && intentionalWalks == that.intentionalWalks && leftOnBase == that.leftOnBase && Double.compare(onBasePercentage, that.onBasePercentage) == 0 && Double.compare(onBasePlusSlugging, that.onBasePlusSlugging) == 0 && plateAppearances == that.plateAppearances && reachedOnError == that.reachedOnError && runs == that.runs && runsBattedIn == that.runsBattedIn && sacrificeBunts == that.sacrificeBunts && sacrificeFlies == that.sacrificeFlies && singles == that.singles && Double.compare(slugging, that.slugging) == 0 && stolenBases == that.stolenBases && totalBases == that.totalBases && triples == that.triples && walks == that.walks && walkOffs == that.walkOffs && Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId) && Objects.equals(memberId, that.memberId) && preference == that.preference && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
     }
-
+    
     @Override
     public int hashCode() {
-        return Objects.hash(id, teamId, memberId, atBats, average, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutVsFlyOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunts, sacrificeFlies, singles, slugging, stolenBases, totalBases, triples, walks, walkOffs, preference);
+        return Objects.hash(id, teamId, memberId, atBats, average, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutVsFlyOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunts, sacrificeFlies, singles, slugging, stolenBases, totalBases, triples, walks, walkOffs, preference, firstName, lastName);
     }
 }
