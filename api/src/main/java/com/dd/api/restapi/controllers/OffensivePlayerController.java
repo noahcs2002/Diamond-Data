@@ -1,15 +1,21 @@
 package com.dd.api.restapi.controllers;
 
+import com.dd.api.database.Context;
+import com.dd.api.restapi.factories.OffensivePlayerFactory;
 import com.dd.api.restapi.models.OffensivePlayer;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/diamond-data/api/offensive-players")
 public class OffensivePlayerController {
+    
+    private final Context context = new Context();
     
     /**
      * Test endpoint to establish connection to controller
@@ -26,7 +32,6 @@ public class OffensivePlayerController {
      * @return A list of all players
      */
     @GetMapping
-    @RequestMapping("/all")
     public List<OffensivePlayer> getAllOffensivePlayers() {
 	return List.of();
     }
@@ -42,21 +47,22 @@ public class OffensivePlayerController {
 	return null;
     }
     
+    // TODO: This method breaks Jackson bindings for some reason????
     /**
      * Get all players on a team
      * @param teamId The id of the team to get for
      * @return List of players on the team
      */
-    @GetMapping
-    @RequestMapping("/by-team")
-    public List<OffensivePlayer> getOffensivePlayersByTeam(@RequestParam UUID teamId) {
-	return List.of();
-    }
+//    @GetMapping
+//    @RequestMapping("/by-team")
+//    public List<OffensivePlayer> getOffensivePlayersByTeam(@RequestParam UUID teamId) {
+//	return List.of();
+//    }
     
     /**
      * Utility endpoint for collecting multiple offensive players at once
      * @param ids The list of ids you wish to collect
-     * @return
+     * @return The players found.
      */
     @GetMapping
     @RequestMapping("/get-multiple")
@@ -82,7 +88,13 @@ public class OffensivePlayerController {
      */
     @PostMapping
     public OffensivePlayer create(@RequestBody OffensivePlayer player) {
-        return null;
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.createPlayer(player, connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
     /**
