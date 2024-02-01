@@ -33,7 +33,7 @@ visualisation tab will be available to allow the manager to see their stats visu
 ## Developer Roles
 - Jaylee Baker: Scrum Master, Front End Engineer
 - Noah Sternberg: DevOps Engineer, Back End Engineer
-- Max Thompson: Field Expert
+- Max Thompson: Full Stack Developer, Field Expert
 
 ## Housekeeping
 Standup: Mondays, 8:45 - 9:00
