@@ -33,7 +33,13 @@ public class OffensivePlayerController {
      */
     @GetMapping
     public List<OffensivePlayer> getAllOffensivePlayers() {
-	return List.of();
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.getAllOffensivePlayers(connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
     /**
@@ -42,9 +48,15 @@ public class OffensivePlayerController {
      * @return The player found.
      */
     @GetMapping
-    @RequestMapping("/by-id")
+    @RequestMapping("/get-by-id")
     public OffensivePlayer getOffensivePlayer(@RequestParam UUID id) {
-	return null;
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.getOffensivePlayer(id, connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
     /**
@@ -55,29 +67,25 @@ public class OffensivePlayerController {
     @GetMapping
     @RequestMapping("/get-by-team")
     public List<OffensivePlayer> getOffensivePlayersByTeam(@RequestParam UUID teamId) {
-	return List.of();
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.getAllForTeam(teamId, connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
-    /**
-     * Utility endpoint for collecting multiple offensive players at once
-     * @param ids The list of ids you wish to collect
-     * @return The players found.
-     */
-    @GetMapping
-    @RequestMapping("/get-multiple")
-    public List<OffensivePlayer> getMultipleOffensivePlayers(@RequestBody List<UUID> ids) {
-	return List.of();
-    }
-    
-    /**
-     * Auditing endpoint for collecting all records in the table
-     * regardless of auditing status
-     * @return All records in the table
-     */
     @GetMapping
     @RequestMapping("/audit")
     public List<OffensivePlayer> audit() {
-        return List.of();
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.audit(connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
     /**
@@ -137,7 +145,13 @@ public class OffensivePlayerController {
      */
     @DeleteMapping
     public boolean delete(@RequestParam UUID id) {
-        return false;
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.deletePlayer(id, connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
     
     /**
@@ -148,6 +162,12 @@ public class OffensivePlayerController {
     @DeleteMapping
     @RequestMapping("/del-by-team")
     public boolean deleteAllForTeam(@RequestParam UUID teamId) {
-        return false;
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.deleteAllPlayersOnTeam(teamId, connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
 }

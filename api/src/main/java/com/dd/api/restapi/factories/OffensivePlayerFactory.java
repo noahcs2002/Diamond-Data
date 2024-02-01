@@ -1,10 +1,14 @@
 package com.dd.api.restapi.factories;
 
+import com.dd.api.restapi.builders.OffensivePlayerBuilder;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.util.BatterPreference;
+import com.dd.api.util.TruncatedSystemTimeProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -810,5 +814,257 @@ public class OffensivePlayerFactory {
 	}
 	
 	return newModel;
+    }
+    
+    public static List<OffensivePlayer> getAllOffensivePlayers(Connection connection) {
+	String sql = "SELECT * FROM sp24.dd_offense_left WHERE ghosted_date=0 UNION SELECT * FROM sp24.dd_offense_right WHERE ghosted_date=0";
+	OffensivePlayerBuilder builder = new OffensivePlayerBuilder();
+	List<OffensivePlayer> players = new ArrayList<>();
+	
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    ResultSet set = statement.executeQuery();
+	    while(set.next()) {
+		players.add(
+		    builder
+			.setId(UUID.fromString(set.getString("id")))
+			.setTeamId(UUID.fromString(set.getString("teamId")))
+			.setAtBats(set.getInt("atBats"))
+			.setAverage(set.getDouble("average"))
+			.setCaughtStealingPercentage(set.getDouble("caughtStealingPercentage"))
+			.setDoubles(set.getInt("doubles"))
+			.setExtraBaseHits(set.getInt("extraBaseHits"))
+			.setGamesPlayed(set.getInt("gamesPlayed"))
+			.setGrandSlams(set.getInt("grandSlams"))
+			.setGroundIntoDoublePlay(set.getInt("groundIntoDoublePlay"))
+			.setGroundOutVsFlyOut(set.getDouble("groundOutVsFlyOut"))
+			.setHitByPitch(set.getInt("hitByPitch"))
+			.setHits(set.getInt("hits"))
+			.setHomeRuns(set.getInt("homeruns"))
+			.setIntentionalWalks(set.getInt("intentionalWalks"))
+			.setLeftOnBase(set.getInt("leftOnBase"))
+			.setOnBasePercentage(set.getInt("onBasePercentage"))
+			.setOnBasePlusSlugging(set.getDouble("onBasePlusSlugging"))
+			.setPlateAppearances(set.getInt("plateAppearances"))
+			.setReachedOnError(set.getInt("reachedOnError"))
+			.setRuns(set.getInt("runs"))
+			.setRunsBattedIn(set.getInt("runsBattedIn"))
+			.setSacrificeBunts(set.getInt("sacrificeBunts"))
+			.setSacrificeFlies(set.getInt("sacrificeFlies"))
+			.setSingles(set.getInt("singles"))
+			.setSlugging(set.getDouble("slugging"))
+			.setStolenBases(set.getInt("stolenBases"))
+			.setTotalBases(set.getInt("totalBases"))
+			.setTriples(set.getInt("triples"))
+			.setWalks(set.getInt("walks"))
+			.setWalkOffs(set.getInt("walkOffs"))
+			.setFirstName(set.getString("firstName"))
+			.setLastName(set.getString("lastName"))
+			.createOffensivePlayer()
+		);
+	    }
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	}
+	return players;
+    }
+    
+    public static OffensivePlayer getOffensivePlayer(UUID id, Connection connection) {
+	String sql =
+	    "SELECT * FROM sp24.dd_offense_left WHERE ghosted_date=0 AND id=? UNION SELECT * FROM sp24.dd_offense_right WHERE ghosted_date=0 AND id=?";
+	OffensivePlayerBuilder builder = new OffensivePlayerBuilder();
+	
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.setString(1, id.toString());
+	    statement.setString(2, id.toString());
+	    
+	    ResultSet set = statement.executeQuery();
+	    while(set.next()) {
+		return
+		    builder
+			.setId(UUID.fromString(set.getString("id")))
+			.setTeamId(UUID.fromString(set.getString("teamId")))
+			.setAtBats(set.getInt("atBats"))
+			.setAverage(set.getDouble("average"))
+			.setCaughtStealingPercentage(set.getDouble("caughtStealingPercentage"))
+			.setDoubles(set.getInt("doubles"))
+			.setExtraBaseHits(set.getInt("extraBaseHits"))
+			.setGamesPlayed(set.getInt("gamesPlayed"))
+			.setGrandSlams(set.getInt("grandSlams"))
+			.setGroundIntoDoublePlay(set.getInt("groundIntoDoublePlay"))
+			.setGroundOutVsFlyOut(set.getDouble("groundOutVsFlyOut"))
+			.setHitByPitch(set.getInt("hitByPitch"))
+			.setHits(set.getInt("hits"))
+			.setHomeRuns(set.getInt("homeruns"))
+			.setIntentionalWalks(set.getInt("intentionalWalks"))
+			.setLeftOnBase(set.getInt("leftOnBase"))
+			.setOnBasePercentage(set.getInt("onBasePercentage"))
+			.setOnBasePlusSlugging(set.getDouble("onBasePlusSlugging"))
+			.setPlateAppearances(set.getInt("plateAppearances"))
+			.setReachedOnError(set.getInt("reachedOnError"))
+			.setRuns(set.getInt("runs"))
+			.setRunsBattedIn(set.getInt("runsBattedIn"))
+			.setSacrificeBunts(set.getInt("sacrificeBunts"))
+			.setSacrificeFlies(set.getInt("sacrificeFlies"))
+			.setSingles(set.getInt("singles"))
+			.setSlugging(set.getDouble("slugging"))
+			.setStolenBases(set.getInt("stolenBases"))
+			.setTotalBases(set.getInt("totalBases"))
+			.setTriples(set.getInt("triples"))
+			.setWalks(set.getInt("walks"))
+			.setWalkOffs(set.getInt("walkOffs"))
+			.setFirstName(set.getString("firstName"))
+			.setLastName(set.getString("lastName"))
+			.createOffensivePlayer();
+	    }
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	    return null;
+	}
+	
+	return null;
+    }
+    
+    public static List<OffensivePlayer> getAllForTeam(UUID teamId, Connection connection) {
+	String sql = "SELECT * FROM sp24.dd_offense_left WHERE ghosted_date=0 AND teamId=? UNION SELECT * FROM sp24.dd_offense_right WHERE ghosted_date=0 AND teamId=?";
+	OffensivePlayerBuilder builder = new OffensivePlayerBuilder();
+	List<OffensivePlayer> players = new ArrayList<>();
+	
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.setString(1, teamId.toString());
+	    statement.setString(2, teamId.toString());
+	    ResultSet set = statement.executeQuery();
+	    while(set.next()) {
+		players.add(
+		    builder
+			.setId(UUID.fromString(set.getString("id")))
+			.setTeamId(UUID.fromString(set.getString("teamId")))
+			.setAtBats(set.getInt("atBats"))
+			.setAverage(set.getDouble("average"))
+			.setCaughtStealingPercentage(set.getDouble("caughtStealingPercentage"))
+			.setDoubles(set.getInt("doubles"))
+			.setExtraBaseHits(set.getInt("extraBaseHits"))
+			.setGamesPlayed(set.getInt("gamesPlayed"))
+			.setGrandSlams(set.getInt("grandSlams"))
+			.setGroundIntoDoublePlay(set.getInt("groundIntoDoublePlay"))
+			.setGroundOutVsFlyOut(set.getDouble("groundOutVsFlyOut"))
+			.setHitByPitch(set.getInt("hitByPitch"))
+			.setHits(set.getInt("hits"))
+			.setHomeRuns(set.getInt("homeruns"))
+			.setIntentionalWalks(set.getInt("intentionalWalks"))
+			.setLeftOnBase(set.getInt("leftOnBase"))
+			.setOnBasePercentage(set.getInt("onBasePercentage"))
+			.setOnBasePlusSlugging(set.getDouble("onBasePlusSlugging"))
+			.setPlateAppearances(set.getInt("plateAppearances"))
+			.setReachedOnError(set.getInt("reachedOnError"))
+			.setRuns(set.getInt("runs"))
+			.setRunsBattedIn(set.getInt("runsBattedIn"))
+			.setSacrificeBunts(set.getInt("sacrificeBunts"))
+			.setSacrificeFlies(set.getInt("sacrificeFlies"))
+			.setSingles(set.getInt("singles"))
+			.setSlugging(set.getDouble("slugging"))
+			.setStolenBases(set.getInt("stolenBases"))
+			.setTotalBases(set.getInt("totalBases"))
+			.setTriples(set.getInt("triples"))
+			.setWalks(set.getInt("walks"))
+			.setWalkOffs(set.getInt("walkOffs"))
+			.setFirstName(set.getString("firstName"))
+			.setLastName(set.getString("lastName"))
+			.createOffensivePlayer()
+		);
+	    }
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	}
+	return players;
+    }
+    
+    public static List<OffensivePlayer> audit(Connection connection) {
+	String sql = "SELECT * FROM sp24.dd_offense_left UNION SELECT * FROM sp24.dd_offense_right";
+	OffensivePlayerBuilder builder = new OffensivePlayerBuilder();
+	List<OffensivePlayer> players = new ArrayList<>();
+	
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    ResultSet set = statement.executeQuery();
+	    while(set.next()) {
+		players.add(
+		    builder
+			.setId(UUID.fromString(set.getString("id")))
+			.setTeamId(UUID.fromString(set.getString("teamId")))
+			.setAtBats(set.getInt("atBats"))
+			.setAverage(set.getDouble("average"))
+			.setCaughtStealingPercentage(set.getDouble("caughtStealingPercentage"))
+			.setDoubles(set.getInt("doubles"))
+			.setExtraBaseHits(set.getInt("extraBaseHits"))
+			.setGamesPlayed(set.getInt("gamesPlayed"))
+			.setGrandSlams(set.getInt("grandSlams"))
+			.setGroundIntoDoublePlay(set.getInt("groundIntoDoublePlay"))
+			.setGroundOutVsFlyOut(set.getDouble("groundOutVsFlyOut"))
+			.setHitByPitch(set.getInt("hitByPitch"))
+			.setHits(set.getInt("hits"))
+			.setHomeRuns(set.getInt("homeruns"))
+			.setIntentionalWalks(set.getInt("intentionalWalks"))
+			.setLeftOnBase(set.getInt("leftOnBase"))
+			.setOnBasePercentage(set.getInt("onBasePercentage"))
+			.setOnBasePlusSlugging(set.getDouble("onBasePlusSlugging"))
+			.setPlateAppearances(set.getInt("plateAppearances"))
+			.setReachedOnError(set.getInt("reachedOnError"))
+			.setRuns(set.getInt("runs"))
+			.setRunsBattedIn(set.getInt("runsBattedIn"))
+			.setSacrificeBunts(set.getInt("sacrificeBunts"))
+			.setSacrificeFlies(set.getInt("sacrificeFlies"))
+			.setSingles(set.getInt("singles"))
+			.setSlugging(set.getDouble("slugging"))
+			.setStolenBases(set.getInt("stolenBases"))
+			.setTotalBases(set.getInt("totalBases"))
+			.setTriples(set.getInt("triples"))
+			.setWalks(set.getInt("walks"))
+			.setWalkOffs(set.getInt("walkOffs"))
+			.setFirstName(set.getString("firstName"))
+			.setLastName(set.getString("lastName"))
+			.createOffensivePlayer()
+		);
+	    }
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	}
+	return players;
+    }
+    
+    public static boolean deletePlayer(UUID id, Connection connection) {
+	String sql = "UPDATE sp24.dd_offense_left SET ghosted_date=? WHERE id=? ; UPDATE sp24.dd_offense_right SET ghosted_date=? WHERE id=?";
+	TruncatedSystemTimeProvider provider = new TruncatedSystemTimeProvider();
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.setLong(1, provider.provideTime());
+	    statement.setString(2, id.toString());
+	    statement.setLong(3, provider.provideTime());
+	    statement.setString(4, id.toString());
+	    statement.executeUpdate();
+	    return true;
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	    return false;
+	}
+    }
+    
+    public static boolean deleteAllPlayersOnTeam(UUID teamId, Connection connection) {
+	String sql = "UPDATE sp24.dd_offense_left SET ghosted_date=? WHERE teamId=? ; UPDATE sp24.dd_offense_right SET ghosted_date=? WHERE teamId=?";
+	TruncatedSystemTimeProvider provider = new TruncatedSystemTimeProvider();
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.setLong(1, provider.provideTime());
+	    statement.setString(2, teamId.toString());
+	    statement.setLong(3, provider.provideTime());
+	    statement.setString(4, teamId.toString());
+	    statement.executeUpdate();
+	    return true;
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	    return false;
+	}
     }
 }
