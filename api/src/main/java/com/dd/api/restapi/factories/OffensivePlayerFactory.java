@@ -6,6 +6,7 @@ import com.dd.api.restapi.util.BatterPreference;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.UUID;
 
 public class OffensivePlayerFactory {
     
@@ -641,5 +642,173 @@ public class OffensivePlayerFactory {
 	}
 	
 	return players;
+    }
+    
+    public static OffensivePlayer editPlayer(UUID id, OffensivePlayer newModel, Connection connection) {
+	String sql = """
+	   UPDATE sp24.dd_offense_left SET
+	   id = ?,
+	   teamId = ?,
+	   atBats = ?,
+	   average = ?,
+	   caughtStealingPercentage = ?,
+	   doubles = ?,
+	   extraBaseHits = ?,
+	   gamesPlayed = ?,
+	   grandSlams = ?,
+	   groundIntoDoublePlay = ?,
+	   groundOutVsFlyOut = ?,
+	   hitByPitch = ?,
+	   hits = ?,
+	   homeruns = ?,
+	   intentionalWalks = ?,
+	   leftOnBase = ?,
+	   onBasePercentage = ?,
+	   onBasePlusSlugging = ?,
+	   plateAppearances = ?,
+	   reachedOnError = ?,
+	   runs = ?,
+	   runsBattedIn = ?,
+	   sacrificeBunts = ?,
+	   sacrificeFlies = ?,
+	   singles = ?,
+	   slugging = ?,
+	   stolenBases = ?,
+	   totalBases = ?,
+	   triples = ?,
+	   walks = ?,
+	   walkOffs = ?,
+	   ghosted_date = ?,
+	   firstName = ?,
+	   lastName = ?
+	   WHERE id = ?
+	""";
+	
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.setString(1, id.toString());
+	    statement.setString(2, newModel.getTeamId().toString());
+	    statement.setInt(3, newModel.getAtBats());
+	    statement.setDouble(4, newModel.getAverage());
+	    statement.setDouble(5, newModel.getCaughtStealingPercentage());
+	    statement.setInt(6, newModel.getDoubles());
+	    statement.setInt(7, newModel.getExtraBaseHits());
+	    statement.setInt(8, newModel.getGamesPlayed());
+	    statement.setInt(9, newModel.getGrandSlams());
+	    statement.setInt(10, newModel.getGroundIntoDoublePlay());
+	    statement.setDouble(11, newModel.getGroundOutVsFlyOut());
+	    statement.setInt(12, newModel.getHitByPitch());
+	    statement.setInt(13, newModel.getHits());
+	    statement.setInt(14, newModel.getHomeRuns());
+	    statement.setInt(15, newModel.getIntentionalWalks());
+	    statement.setInt(16, newModel.getLeftOnBase());
+	    statement.setDouble(17, newModel.getOnBasePercentage());
+	    statement.setDouble(18, newModel.getOnBasePlusSlugging());
+	    statement.setInt(19, newModel.getPlateAppearances());
+	    statement.setInt(20, newModel.getReachedOnError());
+	    statement.setInt(21, newModel.getRuns());
+	    statement.setInt(22, newModel.getRunsBattedIn());
+	    statement.setInt(23, newModel.getSacrificeBunts());
+	    statement.setInt(24, newModel.getSacrificeFlies());
+	    statement.setInt(25, newModel.getSingles());
+	    statement.setDouble(26, newModel.getSlugging());
+	    statement.setInt(27, newModel.getStolenBases());
+	    statement.setInt(28, newModel.getTotalBases());
+	    statement.setInt(29, newModel.getTriples());
+	    statement.setInt(30, newModel.getWalkOffs());
+	    statement.setInt(31, newModel.getWalkOffs());
+	    statement.setInt(32, 0);
+	    statement.setString(33, newModel.getFirstName());
+	    statement.setString(34, newModel.getLastName());
+	    statement.setString(35, id.toString());
+	    statement.executeUpdate();
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	    return null;
+	}
+	
+	sql = """
+	   UPDATE sp24.dd_offense_right SET
+	   id = ?,
+	   teamId = ?,
+	   atBats = ?,
+	   average = ?,
+	   caughtStealingPercentage = ?,
+	   doubles = ?,
+	   extraBaseHits = ?,
+	   gamesPlayed = ?,
+	   grandSlams = ?,
+	   groundIntoDoublePlay = ?,
+	   groundOutVsFlyOut = ?,
+	   hitByPitch = ?,
+	   hits = ?,
+	   homeruns = ?,
+	   intentionalWalks = ?,
+	   leftOnBase = ?,
+	   onBasePercentage = ?,
+	   onBasePlusSlugging = ?,
+	   plateAppearances = ?,
+	   reachedOnError = ?,
+	   runs = ?,
+	   runsBattedIn = ?,
+	   sacrificeBunts = ?,
+	   sacrificeFlies = ?,
+	   singles = ?,
+	   slugging = ?,
+	   stolenBases = ?,
+	   totalBases = ?,
+	   triples = ?,
+	   walks = ?,
+	   walkOffs = ?,
+	   ghosted_date = ?,
+	   firstName = ?,
+	   lastName = ?
+	   WHERE id = ?
+	""";
+	
+	try(PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.setString(1, id.toString());
+	    statement.setString(2, newModel.getTeamId().toString());
+	    statement.setInt(3, newModel.getAtBats());
+	    statement.setDouble(4, newModel.getAverage());
+	    statement.setDouble(5, newModel.getCaughtStealingPercentage());
+	    statement.setInt(6, newModel.getDoubles());
+	    statement.setInt(7, newModel.getExtraBaseHits());
+	    statement.setInt(8, newModel.getGamesPlayed());
+	    statement.setInt(9, newModel.getGrandSlams());
+	    statement.setInt(10, newModel.getGroundIntoDoublePlay());
+	    statement.setDouble(11, newModel.getGroundOutVsFlyOut());
+	    statement.setInt(12, newModel.getHitByPitch());
+	    statement.setInt(13, newModel.getHits());
+	    statement.setInt(14, newModel.getHomeRuns());
+	    statement.setInt(15, newModel.getIntentionalWalks());
+	    statement.setInt(16, newModel.getLeftOnBase());
+	    statement.setDouble(17, newModel.getOnBasePercentage());
+	    statement.setDouble(18, newModel.getOnBasePlusSlugging());
+	    statement.setInt(19, newModel.getPlateAppearances());
+	    statement.setInt(20, newModel.getReachedOnError());
+	    statement.setInt(21, newModel.getRuns());
+	    statement.setInt(22, newModel.getRunsBattedIn());
+	    statement.setInt(23, newModel.getSacrificeBunts());
+	    statement.setInt(24, newModel.getSacrificeFlies());
+	    statement.setInt(25, newModel.getSingles());
+	    statement.setDouble(26, newModel.getSlugging());
+	    statement.setInt(27, newModel.getStolenBases());
+	    statement.setInt(28, newModel.getTotalBases());
+	    statement.setInt(29, newModel.getTriples());
+	    statement.setInt(30, newModel.getWalkOffs());
+	    statement.setInt(31, newModel.getWalkOffs());
+	    statement.setInt(32, 0);
+	    statement.setString(33, newModel.getFirstName());
+	    statement.setString(34, newModel.getLastName());
+	    statement.setString(35, id.toString());
+	    statement.executeUpdate();
+	}
+	catch (Exception ex) {
+	    System.out.println(ex.getMessage());
+	    return null;
+	}
+	
+	return newModel;
     }
 }

@@ -47,17 +47,16 @@ public class OffensivePlayerController {
 	return null;
     }
     
-    // TODO: This method breaks Jackson bindings for some reason????
     /**
      * Get all players on a team
      * @param teamId The id of the team to get for
      * @return List of players on the team
      */
-//    @GetMapping
-//    @RequestMapping("/by-team")
-//    public List<OffensivePlayer> getOffensivePlayersByTeam(@RequestParam UUID teamId) {
-//	return List.of();
-//    }
+    @GetMapping
+    @RequestMapping("/get-by-team")
+    public List<OffensivePlayer> getOffensivePlayersByTeam(@RequestParam UUID teamId) {
+	return List.of();
+    }
     
     /**
      * Utility endpoint for collecting multiple offensive players at once
@@ -122,7 +121,13 @@ public class OffensivePlayerController {
      */
     @PutMapping
     public OffensivePlayer edit(@RequestParam UUID id, @RequestBody OffensivePlayer newModel) {
-        return null;
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.editPlayer(id, newModel, connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
     /**
@@ -141,7 +146,7 @@ public class OffensivePlayerController {
      * @return true if successful, else false
      */
     @DeleteMapping
-    @RequestMapping("/by-team")
+    @RequestMapping("/del-by-team")
     public boolean deleteAllForTeam(@RequestParam UUID teamId) {
         return false;
     }
