@@ -105,7 +105,13 @@ public class OffensivePlayerController {
     @PostMapping
     @RequestMapping("/create-multiple")
     public List<OffensivePlayer> createMultiple(@RequestBody List<OffensivePlayer> players) {
-        return List.of();
+        try(Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
+            return OffensivePlayerFactory.createMultiplePlayers(players, connection);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
     
     /**
