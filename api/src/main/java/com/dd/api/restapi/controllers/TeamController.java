@@ -35,8 +35,7 @@ public class TeamController {
     @GetMapping
     @RequestMapping("/by-id")
     public Team getTeam(@RequestParam UUID teamId) {
-        try{
-            Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())){
             return TeamFactory.getTeam(teamId, connection);
         }
         catch (Exception ex) {
@@ -53,8 +52,7 @@ public class TeamController {
     @GetMapping
     @RequestMapping("/by-account")
     public List<Team> getTeamsByAccount(@RequestParam UUID accountId) {
-        try{
-            Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())){
             return TeamFactory.getTeamByAccountId(accountId, connection);
         }
         catch (Exception ex) {
@@ -70,8 +68,7 @@ public class TeamController {
     @GetMapping
     @RequestMapping("/all")
     public List<Team> getAllTeams() {
-        try{
-            Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())){
             return TeamFactory.getAllTeams(connection);
         }
         catch (Exception ex) {
@@ -88,8 +85,7 @@ public class TeamController {
     @PostMapping
     @RequestMapping("/no-id")
     public Team createTeam(@RequestBody Team team) {
-        try{
-            Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())){
             return TeamFactory.createTeam(team, connection);
         }
         catch (Exception ex) {
@@ -106,8 +102,7 @@ public class TeamController {
     @DeleteMapping
     @RequestMapping("/del")
     public boolean deleteTeam(@RequestParam UUID id) {
-        try{
-            Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())){
             return TeamFactory.delete(id, connection);
         }
         catch (Exception ex) {
@@ -125,8 +120,7 @@ public class TeamController {
     @PutMapping
     @RequestMapping("/edit")
     public Team edit(@RequestParam UUID id, @RequestBody Team team) {
-        try{
-            Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword());
+        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())){
             return TeamFactory.edit(id, team, connection);
         }
         catch (Exception ex) {

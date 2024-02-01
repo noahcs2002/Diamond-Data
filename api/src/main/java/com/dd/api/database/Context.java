@@ -29,7 +29,6 @@ public class Context {
             this.username = properties.get("username");
             this.password = properties.get("password");
             this.connectionString = properties.get("connection_string");
-
         }
         catch (Exception ex) {
             throw new RuntimeException(ex);
