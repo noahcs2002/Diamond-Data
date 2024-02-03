@@ -1,5 +1,7 @@
 package com.dd.api.restapi.models;
 
+import com.dd.api.util.ann.UtilityConstructor;
+
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -18,6 +20,7 @@ public class Roster {
     private UUID centerField;
     private UUID startingPitcher;
 
+    @UtilityConstructor
     public Roster(UUID id, UUID managerId, Date expiry, UUID catcher, UUID firstBase, UUID secondBase, UUID thirdBase, UUID shortstop, UUID leftField, UUID rightField, UUID centerField, UUID startingPitcher) {
         this.id = id;
         this.managerId = managerId;
