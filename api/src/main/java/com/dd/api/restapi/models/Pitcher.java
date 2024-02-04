@@ -1,6 +1,7 @@
 package com.dd.api.restapi.models;
 
 import com.dd.api.restapi.util.PitcherPreference;
+import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Objects;
@@ -9,9 +10,6 @@ import java.util.UUID;
 public class Pitcher {
 
     private UUID id;
-    
-   
-    
     private String firstName;
     private String lastName;
     private UUID teamId;
@@ -115,7 +113,7 @@ public class Pitcher {
         this.preference = preference;
     }
     
-    
+    @UtilityConstructor
     public Pitcher(UUID id,
                    UUID teamId,
                    String firstName,
