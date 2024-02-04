@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
-import '../styles/Settings.css';
+import '../styles/Settings.scss';
 
 function Settings() {
   const [formData, setFormData] = useState({

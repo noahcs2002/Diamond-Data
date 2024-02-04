@@ -3,7 +3,7 @@ import Diamond_Data_Logo_White from "../assets/Diamond_Data_Logo_White.PNG";
 import { Link } from 'react-router-dom';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import SettingsIcon from '@mui/icons-material/Settings'; // Import the Settings icon
-import '../styles/Navbar.css';
+import '../styles/Navbar.scss';
 
 function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);

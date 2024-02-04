@@ -1,0 +1,104 @@
+/* Styling for Login.js */
+@import './Global.scss';
+
+body {
+    background-color: #20212c;
+}
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Put everything in div containers to make it easier to divide up and style */
+
+.title-container {
+    text-align: center;
+    margin: 30px auto 0;
+    /* border: 2px solid red; */
+}
+
+.center {
+    text-align: center;
+    margin: 30px auto 0;
+    height: 100px;
+    width: 100px;
+}
+
+/* This is the main container for the login section, containing 
+  the box and the button, as well as the link to the sign in page */
+
+.login-container {
+    width: 500px;
+    margin: 65px auto 0;
+    padding: 20px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #aeaeae;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* height: 40vh; */
+  }
+  
+h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+  
+  /* Login button styling */
+  
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+    transition: backgrounf-color 0.3s;
+    &:hover {
+        background-color: #0061c9;
+    }
+  } 
+
+.title {
+    font-size: 4rem; 
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-bottom: 10px; 
+    color: #007bff; 
+  }
+
+  footer {
+    background-color: #2b2c37;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+
+  a {
+    color: blue;
+  }
+
+  p {
+    font-size: 15px;
+  }

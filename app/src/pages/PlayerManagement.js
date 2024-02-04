@@ -1,7 +1,7 @@
 import React from 'react'
 import { PositionList } from '../helpers/PositionList';
 import PlayerItem from '../components/PlayerItem';
-import '../styles/PlayerManagement.css';
+import '../styles/PlayerManagement.scss';
 
 function PlayerManagement() {
   return (

@@ -1,6 +1,6 @@
 import React from 'react'
 import SportsBaseballIcon from '@mui/icons-material/SportsBaseball';
-import '../styles/Footer.css';
+import '../styles/Footer.scss';
 
 function Footer() {
   return (

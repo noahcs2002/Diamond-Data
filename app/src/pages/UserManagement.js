@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/UserManagement.css'
+import '../styles/UserManagement.scss'
 
 function UserManagement() {
   return (

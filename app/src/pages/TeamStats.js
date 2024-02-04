@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/TeamStats.css'
+import '../styles/TeamStats.scss'
 
 function TeamStats() {
   return (
