@@ -1,5 +1,8 @@
 package com.dd.api.restapi.models;
 
+import com.dd.api.util.ann.UtilityConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,11 +21,8 @@ public class DefensivePlayer {
     private int putouts;
     private int totalChances;
     private int triplePlays;
-    
-    public DefensivePlayer() {
-        // Empty for Jackson Binding (Spring Boot) - NS
-    }
 
+    @JsonCreator
     public DefensivePlayer(UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
         this.id = UUID.randomUUID();
         this.teamId = teamId;
@@ -39,7 +39,8 @@ public class DefensivePlayer {
         this.totalChances = totalChances;
         this.triplePlays = triplePlays;
     }
-    
+
+    @UtilityConstructor
     public DefensivePlayer(UUID playerId, UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
         this.id = playerId;
         this.teamId = teamId;
@@ -58,6 +59,7 @@ public class DefensivePlayer {
     }
     
 
+    @UtilityConstructor
     public DefensivePlayer(UUID id, UUID teamId) {
         this.id = id;
         this.teamId = teamId;

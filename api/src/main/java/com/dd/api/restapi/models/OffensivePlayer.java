@@ -1,6 +1,7 @@
 package com.dd.api.restapi.models;
 
 import com.dd.api.restapi.util.BatterPreference;
+import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Objects;
@@ -44,6 +45,7 @@ public class OffensivePlayer {
     private String firstName;
     private String lastName;
 
+    @UtilityConstructor
     public OffensivePlayer(UUID id,
                            UUID teamId,
                            UUID memberId,
@@ -116,7 +118,6 @@ public class OffensivePlayer {
         this.lastName = lastName;
     }
     
-    // Jackson requires a JSON creator when there are multiple ctors
     @JsonCreator
     public OffensivePlayer(
                            UUID teamId,

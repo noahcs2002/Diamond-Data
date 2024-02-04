@@ -23,6 +23,11 @@ public class SecurityUtilityTool {
         return hasSpecialChar && hasUpperCase && hasLowerCase && password.length() < requirements.getLengthRequirement();
     }
 
+    /**
+     * Takes a password and protects it with salt.
+     * @param password The password to protect.
+     * @return The protected password.
+     */
     public static String protect(String password) {
         return Salt.applyDoubleEndedSalt(Salt.applySalt(password));
     }

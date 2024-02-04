@@ -1,19 +1,31 @@
 package com.dd.api.auth.models;
 
+import com.dd.api.util.ann.UtilityConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public class User {
     private UUID id;
     private String username;
-    private String passwordHash;
+    private String password;
     private UUID accountId;
 
-    public User(UUID id, String username, String passwordHash, UUID accountId) {
+    @UtilityConstructor(description = "Used for SQL queries")
+    public User(UUID id, String username, String password, UUID accountId) {
         this.id = id;
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.accountId = accountId;
+    }
+
+    @JsonCreator
+    public User(String username, String password, UUID accountId) {
+        this.username = username;
+        this.password = password;
+        this.accountId = accountId;
+        this.id = UUID.randomUUID();
     }
 
     public UUID getId() {
@@ -32,12 +44,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UUID getAccountId() {
@@ -53,12 +65,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(accountId, user.accountId);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(accountId, user.accountId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, passwordHash, accountId);
+        return Objects.hash(id, username, password, accountId);
     }
 
     public static User EMPTY_USER() {

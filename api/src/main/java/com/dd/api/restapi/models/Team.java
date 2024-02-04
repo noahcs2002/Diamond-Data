@@ -1,5 +1,7 @@
 package com.dd.api.restapi.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,6 +13,7 @@ public class Team {
     private Color secondaryColor;
     private Color accentColor;
 
+    @JsonCreator
     public Team(UUID accountId, String name, Color primaryColour, Color secondaryColour, Color accentColour) {
         this.name = name;
         this.accountId = accountId;
@@ -18,6 +21,15 @@ public class Team {
         this.secondaryColor = secondaryColour;
         this.accentColor = accentColour;
         this.id = UUID.randomUUID();
+    }
+
+    public Team(UUID id, UUID accountId, String name, Color primaryColour, Color secondaryColour, Color accentColour) {
+        this.name = name;
+        this.accountId = accountId;
+        this.primaryColor = primaryColour;
+        this.secondaryColor = secondaryColour;
+        this.accentColor = accentColour;
+        this.id = id;
     }
 
     public String getName() {

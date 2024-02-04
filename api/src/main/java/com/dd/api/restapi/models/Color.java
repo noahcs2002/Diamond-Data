@@ -1,8 +1,11 @@
 package com.dd.api.restapi.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class Color {
     private final char[] hexCode;
 
+    @JsonCreator
     public Color(String color) {
         hexCode = new char[6];
 
