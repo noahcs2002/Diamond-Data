@@ -1,12 +1,12 @@
 import React from 'react'
 import SportsBaseballIcon from '@mui/icons-material/SportsBaseball';
-import '../styles/Footer.css';
+import '../styles/Footer.scss';
 
 function Footer() {
   return (
     <div className="footer">
         <div className="container">
-            <SportsBaseballIcon />
+            <SportsBaseballIcon />  
         </div>
         <p> &copy; 2024 diamonddata.com </p>
     </div>

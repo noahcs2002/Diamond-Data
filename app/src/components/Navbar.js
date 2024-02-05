@@ -3,7 +3,7 @@ import Diamond_Data_Logo_White from "../assets/Diamond_Data_Logo_White.PNG";
 import { Link } from 'react-router-dom';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import SettingsIcon from '@mui/icons-material/Settings'; // Import the Settings icon
-import '../styles/Navbar.css';
+import '../styles/Navbar.scss';
 
 function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);
@@ -17,7 +17,7 @@ function Navbar() {
             <div className="leftSide" id={openLinks ? "open" : "close"}>
                 <img src={Diamond_Data_Logo_White} />
                 <div className="hiddenLinks">
-                    <Link to="/"> Home </Link>
+                    <Link to="/Home"> Home </Link>
                     <Link to="/PlayerManagement"> PlayerManagement </Link>
                     <Link to="/TeamStats"> TeamStats </Link>
                     <Link to="/UserManagement"> UserManagement </Link>
@@ -27,7 +27,7 @@ function Navbar() {
                 </div>
             </div>
             <div className="rightSide">
-                <Link to="/"> Home </Link>
+                <Link to="/Home"> Home </Link>
                 <Link to="/PlayerManagement"> PlayerManagement </Link>
                 <Link to="/TeamStats"> TeamStats </Link>
                 <Link to="/UserManagement"> UserManagement </Link>

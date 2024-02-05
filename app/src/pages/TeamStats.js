@@ -1,10 +1,14 @@
 import React from 'react'
-import '../styles/TeamStats.css'
+import '../styles/TeamStats.scss'
+import Navbar from '../components/Navbar'
 
 function TeamStats() {
   return (
-    <div className="teamStats">
+    <div>
+      <Navbar/>
+      <div className="teamStats">
         <h1> Team Stats</h1>
+        {/* Filler text */}
         <p> 
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
             mollitia, molestiae quas vel sint commodi repudiandae consequuntur
@@ -20,7 +24,8 @@ function TeamStats() {
             Perspiciatis minima nesciunt dolorem! Officiis iure rerum voluptates a
             cumque velit
         </p>
-    </div>
+      </div>  
+    </div> 
   )
 }
 

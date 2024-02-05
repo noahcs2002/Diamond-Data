@@ -1,0 +1,116 @@
+/* Styling for CreateAccount.js */
+@import './Global.scss';
+
+// CREATE ACCOUNT PAGE
+
+.createAccount-page {
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+  // justify-content: center;
+  height: 100vh;
+  background-color: var(--background2-color);
+
+  // TITLE
+
+  .title-container {
+    text-align: center;
+    margin: 30px auto 0;
+
+    .title {
+      font-size: 4rem; 
+      font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      margin-bottom: 10px; 
+      color: var(--text-color); 
+    }
+  }
+
+  // CREATE ACCOUNT CONTAINER
+
+  .create-account-container {
+    width:900px;
+    margin: 65px auto 0;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background-color: #aeaeae;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* height: 40vh; */
+
+    // FORM    
+
+    .create-account-form {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .create-account-form label {
+      display: block;
+      // margin-bottom: 10px;
+      text-align: right;
+      margin-right: 30px;
+    }
+      
+    .create-account-form input {
+        width: calc(100% - 175px); 
+        padding: 15px;
+        margin-bottom: 15px;
+        margin-right: 20px;
+        margin-left: 15px;
+        box-sizing: border-box;
+      }
+      
+    .create-account-form button {
+      width: 150px;
+      margin-bottom: 10px;
+      background-color: var(--button2-color);
+      color: var(--text-color);
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      align-self: center;
+      transition: background-color 0.3s;
+      &:hover {
+          background-color: var(--hover-color);
+      }
+    } 
+
+    a {
+      color: blue;
+    }
+  
+    p {
+      font-size: 15px;
+    }
+  }
+
+// EXTRA FOR CREATE ACCOUNT CONTAINER
+
+  .create-account-container h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+  }
+
+// FOOTER
+
+  footer {
+    background-color: var(--footer-color);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: var(--text-color);
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+
+
+
+

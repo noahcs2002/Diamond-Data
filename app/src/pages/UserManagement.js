@@ -1,16 +1,19 @@
 import React from 'react'
-import '../styles/UserManagement.css'
+import '../styles/UserManagement.scss'
+import Navbar from '../components/Navbar'
 
 function UserManagement() {
   return (
-    <div className="userManagement">
+    <div>
+      <Navbar/>
+      <div className="userManagement">
         <div className="leftSide">
 
         </div>
         <div className="rightSide">
             <h1> Form </h1>
-
-            <form id="contact-form" method="POST">
+            {/* Form setup */}
+            <form id="contact-form" method="POST" className='contactForm'>
                 <label htmlFor="name">Full Name</label>
                 <input name="name" placeholder="Enter full name.." type="text" />
                 <label htmlFor="email">Email</label>
@@ -26,7 +29,8 @@ function UserManagement() {
                 <button type="submit">Send</button>
             </form>
         </div>
-    </div>
+      </div>
+    </div> 
   )
 }
 
