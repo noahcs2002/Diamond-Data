@@ -1,9 +1,12 @@
+/* Styling for Navbar.js */
 @import './Global.scss';
+
+// NAVBAR
 
 .navbar {
     width: 100%;
     height: 100px;
-    background-color: #1C3738;
+    background-color: var(--navbar-color);
     display: flex;
     flex-direction: row;
   }
@@ -29,7 +32,7 @@
   }
   
   .navbar a {
-    color: #F4FFF8;
+    color: var(--text-color);
     text-decoration: none;
     margin: 20px;
   }
@@ -37,7 +40,7 @@
   .navbar .rightSide button {
     background-color: transparent;
     border: none;
-    color: #F4FFF8;
+    color: var(--button-color);
     cursor: pointer;
   }
   

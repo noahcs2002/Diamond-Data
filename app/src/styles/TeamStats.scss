@@ -1,16 +1,22 @@
+/* Styling for TeamStats.js */
+@import './Global.scss';
+
+// TEAM STATS
+
 .teamStats {
     width: 100%;
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .teamStats h1 {
-    font-weight: 400;
-    font-size: 70px;
-    color: #000F08;
-    height: 30px;
+    height: auto;
     display: flex;
     justify-content: center;
-    transform: translateY(-40px);
+    align-items: center;
+    flex-direction: column;
+  }
+
+  // HEADING
+  
+  .teamStats h1 {
+    font-size: 4rem; 
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-bottom: 10px; 
+    color: var(--text3-color); 
   }

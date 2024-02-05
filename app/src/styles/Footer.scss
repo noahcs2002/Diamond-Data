@@ -1,4 +1,7 @@
+/* Styling for Footer.js */
 @import './Global.scss';
+
+// FOOTER
 
 .footer {
     width: 100%;
@@ -9,15 +12,15 @@
     align-items: center;
     flex-direction: column;
     padding-top: 10px;
+
+    .container svg {
+      color: var(--background-color);
+      margin: 0px;
+      font-size: 70px;
+      cursor: pointer;
+    }
   }
-  
-  .container svg {
-    color: var(--background-color);
-    margin: 0px;
-    font-size: 70px;
-    cursor: pointer;
-  }
-  
+
   .footer p {
     color: var(--text-color);
     margin-top: 5px;

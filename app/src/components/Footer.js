@@ -6,7 +6,7 @@ function Footer() {
   return (
     <div className="footer">
         <div className="container">
-            <SportsBaseballIcon />
+            <SportsBaseballIcon />  
         </div>
         <p> &copy; 2024 diamonddata.com </p>
     </div>

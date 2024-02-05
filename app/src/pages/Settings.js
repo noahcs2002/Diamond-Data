@@ -24,7 +24,7 @@ function Settings() {
       <Navbar/>
       <div className="Settings">
         <h1>Settings</h1>
-        <form>
+        <form className="settings-form">
           <label>
             Name:
             <input

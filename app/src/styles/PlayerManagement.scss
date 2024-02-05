@@ -1,3 +1,8 @@
+/* Styling for PlayerManagement.js */
+@import './Global.scss';
+
+// PLAYER MANAGEMENT
+
 .playerManagement {
     width: 100%;
     height: auto;
@@ -5,57 +10,63 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
-  .playerManagement .title {
-    font-family: arial;
-    font-size: 60px;
-  }
-  
-  .positionList {
-    width: 70vw;
-    height: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    place-items: center;
+
+    .title {
+      font-size: 4rem; 
+      font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      margin-bottom: 10px; 
+      color: var(--text3-color); 
+    }
+
+    // POSITION LIST
+
+    .positionList {
+      width: 70vw;
+      height: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      place-items: center;
+
+      // PLAYER ITEM
+
+      .playerItem {
+        border-radius: 15px;
+        width: 300px;
+        height: 350px;
+        margin: 20px;
+        box-shadow: 0px 3px 15px var(--box-shadow-color);
+      }
+      .playerItem:hover {
+        box-shadow: 0px 3px 15px var(--box-shadow-color);
+        transition: 0.3s ease-in;
+        cursor: pointer;
+      }
+      
+      .playerItem div {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        width: 100%;
+        height: 200px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      
+      .playerItem h1,
+      .playerItem p {
+        margin-left: 20px;
+      }
+    }
   }
 
+  // @media only screen and (max-width: 1300px) {
+  //   .positionList {
+  //     grid-template-columns: 1fr 1fr;
+  //   }
+  // }
   
-  .playerItem {
-    border-radius: 15px;
-    width: 300px;
-    height: 350px;
-    margin: 20px;
-    box-shadow: 0px 3px 15px #4D4847;
-  }
-  .playerItem:hover {
-    box-shadow: 0px 3px 15px #4D4847;
-    transition: 0.3s ease-in;
-    cursor: pointer;
-  }
-  
-  .playerItem div {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    width: 100%;
-    height: 200px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  
-  .playerItem h1,
-  .playerItem p {
-    margin-left: 20px;
-  }
-  
-  @media only screen and (max-width: 1300px) {
-    .playerList {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  
-  @media only screen and (max-width: 800px) {
-    .playerList {
-      grid-template-columns: 1fr;
-    }
-  }
+  // @media only screen and (max-width: 800px) {
+  //   .positionList {
+  //     grid-template-columns: 1fr;
+  //   }
+  // }

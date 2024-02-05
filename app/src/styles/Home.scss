@@ -1,4 +1,8 @@
+/* Styling for Home.js */
 @import './Global.scss';
+
+
+// HOME
 
 .home {
     width: 100%;
@@ -11,87 +15,87 @@
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  }
-  
-  .headerContainer {
-    width: auto;
-    margin-left: 50px;
-  }
-  
-  .headerContainer h1 {
-    justify-content: center;
-    align-items: center;
-    font-size: 90px;
-    height: 60px;
-    font-weight: 50;
-    color: #000F08;
-  }
-  
-  .headerContainer p {
-    padding: 0;
-    font-size: 40px;
-    font-weight: lighter;
-    color: #000F08;
-  }
-  
-  .headerContainer button {
-    color: #000F08;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    justify-content: center;
-    background-color: #000F08;
-    height: 50px;
-    width: 180px;
-    color: #F4FFF8;
-    text-decoration: none;
-    font-size: 20px;
-  }
-  
-  .headerContainer button:hover {
-    background-color: #000F08;
-    cursor: pointer;
-    transition: 0.3s ease-in;
-  }
-  
-  @media only screen and (max-width: 650px) {
-    .home {
-      justify-content: center;
-      align-items: center;
-    }
-  
+
+    // HEADER
+
     .headerContainer {
-      margin-left: 0px;
-      border-radius: 10px;
-      padding: 10px;
-      width: 80%;
-      display: flex;
+      width: auto;
+      margin-left: 50px;
+    }
+    
+    .headerContainer h1 {
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-      background-color: #000F08;
-      color: var(--navbar-color);
+      font-size: 90px;
+      height: 60px;
+      font-weight: 50;
+      color: var(--text3-color);
     }
-  
-    .headerContainer h1 {
-      font-size: 40px;
-      height: 30px;
-      color: #F4FFF8;
-    }
-  
+    
     .headerContainer p {
-      font-size: 30px;
-      color: #F4FFF8;
+      padding: 0;
+      font-size: 40px;
+      font-weight: lighter;
+      color: var(--text3-color);
     }
-  
+    
     .headerContainer button {
-      background-color: #F4FFF8;
-      color: #000F08;
-      margin-bottom: 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      justify-content: center;
+      background-color: var(--button2-color);
+      height: 50px;
+      width: 180px;
+      text-decoration: none;
+      font-size: 20px;
     }
-  
+    
     .headerContainer button:hover {
-      background-color: #8BAAAD;
-      color: #000F08;
+      background-color: var(--hover-color);
+      cursor: pointer;
+      transition: 0.3s ease-in;
     }
+    
+    // @media only screen and (max-width: 650px) {
+    //   .home {
+    //     justify-content: center;
+    //     align-items: center;
+    //   }
+    
+    //   .headerContainer {
+    //     margin-left: 0px;
+    //     border-radius: 10px;
+    //     padding: 10px;
+    //     width: 80%;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     flex-direction: column;
+    //     background-color: var(--navbar-color);
+    //     color: var(--navbar-color);
+    //   }
+    
+    //   .headerContainer h1 {
+    //     font-size: 40px;
+    //     height: 30px;
+    //     color: var(--text-color);
+    //   }
+    
+    //   .headerContainer p {
+    //     font-size: 30px;
+    //     color: var(--text-color);
+    //   }
+    
+    //   .headerContainer button {
+    //     background-color: var(--button2-color);
+    //     margin-bottom: 30px;
+    //   }
+    
+    //   .headerContainer button:hover {
+    //     background-color: var(--hover-color);
+    //   }
+    // }
   }
+  
+  

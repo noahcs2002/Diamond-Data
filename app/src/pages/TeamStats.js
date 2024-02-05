@@ -8,6 +8,7 @@ function TeamStats() {
       <Navbar/>
       <div className="teamStats">
         <h1> Team Stats</h1>
+        {/* Filler text */}
         <p> 
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
             mollitia, molestiae quas vel sint commodi repudiandae consequuntur

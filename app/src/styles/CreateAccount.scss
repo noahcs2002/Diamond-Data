@@ -1,4 +1,7 @@
+/* Styling for CreateAccount.js */
 @import './Global.scss';
+
+// CREATE ACCOUNT PAGE
 
 .createAccount-page {
   display: flex;
@@ -8,10 +11,11 @@
   height: 100vh;
   background-color: var(--background2-color);
 
+  // TITLE
+
   .title-container {
     text-align: center;
     margin: 30px auto 0;
-    /* border: 2px solid red; */
 
     .title {
       font-size: 4rem; 
@@ -20,6 +24,8 @@
       color: var(--text-color); 
     }
   }
+
+  // CREATE ACCOUNT CONTAINER
 
   .create-account-container {
     width:900px;
@@ -34,7 +40,7 @@
     justify-content: center;
     /* height: 40vh; */
 
-    
+    // FORM    
 
     .create-account-form {
       width: 100%;
@@ -83,11 +89,15 @@
     }
   }
 
+// EXTRA FOR CREATE ACCOUNT CONTAINER
+
   .create-account-container h2 {
     text-align: center;
     font-size: 1.5rem;
     margin-bottom: 40px;
   }
+
+// FOOTER
 
   footer {
     background-color: var(--footer-color);
