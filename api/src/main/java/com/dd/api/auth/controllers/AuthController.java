@@ -20,6 +20,7 @@ public class AuthController {
     @GetMapping
     @RequestMapping("xyz")
     public String connected() {
+        System.out.println("Endpoint hit");
         return "AuthController Online";
     }
 

@@ -10,7 +10,7 @@ function UserManagement() {
         <div className="rightSide">
             <h1> Form </h1>
 
-            <form id="contact-form" method="POST">
+            <form id="contact-form" method="POST" className='contactForm'>
                 <label htmlFor="name">Full Name</label>
                 <input name="name" placeholder="Enter full name.." type="text" />
                 <label htmlFor="email">Email</label>

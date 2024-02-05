@@ -15,13 +15,13 @@ function CreateAccount({stateFunction, onDismiss}) {
     }
 
     return (
-        <div className="title-page">
+        <div className="createAccount-page">
             <div className="title-container">
-                <h1 className="title">EasySprint</h1>
+                <h1 className="title">Diamond Data</h1>
             </div>
             <div className="create-account-container">
                 <h2>Create Account</h2>
-                <form>
+                <form className="create-account-form">
                     <label>Email:
                         <input
                         type="text"
@@ -50,7 +50,7 @@ function CreateAccount({stateFunction, onDismiss}) {
                 </form>
             </div>
             <footer>
-                2024 Diamond Data
+                &copy; 2024 Diamond Data
             </footer>
         </div>
     );

@@ -43,7 +43,7 @@
     background-color: #000F08;
     height: 50px;
     width: 180px;
-    color: white;
+    color: #F4FFF8;
     text-decoration: none;
     font-size: 20px;
   }
@@ -70,7 +70,7 @@
       align-items: center;
       flex-direction: column;
       background-color: #000F08;
-      color: var(--background-color);
+      color: var(--navbar-color);
     }
   
     .headerContainer h1 {

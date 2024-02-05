@@ -1,7 +1,9 @@
+@import './Global.scss';
+
 .footer {
     width: 100%;
     height: 100px;
-    background-color: #1C3738;
+    background-color: var(--footer-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,13 +12,13 @@
   }
   
   .container svg {
-    color: #F4FFF8;
+    color: var(--background-color);
     margin: 0px;
     font-size: 70px;
     cursor: pointer;
   }
   
   .footer p {
-    color: #F4FFF8;
+    color: var(--text-color);
     margin-top: 5px;
   }
