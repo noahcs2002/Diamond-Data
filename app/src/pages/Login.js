@@ -1,49 +1,62 @@
 import React, { useState } from "react";
 import '../styles/Login.scss';
+import { useNavigate } from "react-router-dom";
 
-function Login({stateFunction, signUpFunction}) {
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const nav = useNavigate();
 
     const handleLogin = async () => {
+
+        // nav("/home");
+        // console.log('hit')
         const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/login';
-        let username = "root@dd-devs";
-        let password = "rootPassword1234$$";
+        // let username = "root@dd-devs";
+        // let password = "rootPassword1234$$";
+
         // Construct the URL with query parameters
         const url = new URL(endpointUrl);
-        url.searchParams.append('username', username);
+        url.searchParams.append('username', email);
         url.searchParams.append('password', password);
 
         // Make the HTTP GET request
-        fetch(url, {
+        await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 // Add any additional headers if needed
             },
         })
+        // Start chaining responses
+        // We take a response and move forward with it
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
         })
+        // IF we have data, go to the home screen and transport that data with it
         .then(data => {
-            // Log the result
-            console.log(data);
+            if (data) {
+                nav('/home', {
+                    state: {
+                        data: data
+                    }
+                })
+            }
         })
         .catch(error => {
-            console.error('Error:', error);
+            alert('Invalid username or password')
         });
     };
 
     const handleDebug = () => {
-        stateFunction(true);
+    
     }
 
     const handleSignUp = () => {
         console.log('clicked');
-        signUpFunction(true);
     };
 
     return (
@@ -74,14 +87,14 @@ function Login({stateFunction, signUpFunction}) {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     </label>
-                    <button onClick={handleDebug}>Login</button>
+                    <button onClick={handleLogin} type='button'>Login</button>
                     <p>Don't have an account? <a onClick={handleSignUp}>Sign up</a></p>     {/* Adding a link to signup */}
                 </form>
             </div>
             <div>
-                <button onClick={handleLogin}>
+                {/* <button onClick={() => {handleLogin("root@dd-devs", "rootPassword1234$$")} }>
                     click me
-                </button>
+                </button> */}
             </div>
 
             <footer>
