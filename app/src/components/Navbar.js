@@ -17,7 +17,7 @@ function Navbar() {
             <div className="leftSide" id={openLinks ? "open" : "close"}>
                 <img src={Diamond_Data_Logo_White} />
                 <div className="hiddenLinks">
-                    <Link to="/"> Home </Link>
+                    <Link to="/Home"> Home </Link>
                     <Link to="/PlayerManagement"> PlayerManagement </Link>
                     <Link to="/TeamStats"> TeamStats </Link>
                     <Link to="/UserManagement"> UserManagement </Link>
@@ -27,7 +27,7 @@ function Navbar() {
                 </div>
             </div>
             <div className="rightSide">
-                <Link to="/"> Home </Link>
+                <Link to="/Home"> Home </Link>
                 <Link to="/PlayerManagement"> PlayerManagement </Link>
                 <Link to="/TeamStats"> TeamStats </Link>
                 <Link to="/UserManagement"> UserManagement </Link>

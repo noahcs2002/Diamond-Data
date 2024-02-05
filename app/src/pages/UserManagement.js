@@ -1,9 +1,12 @@
 import React from 'react'
 import '../styles/UserManagement.scss'
+import Navbar from '../components/Navbar'
 
 function UserManagement() {
   return (
-    <div className="userManagement">
+    <div>
+      <Navbar/>
+      <div className="userManagement">
         <div className="leftSide">
 
         </div>
@@ -26,7 +29,8 @@ function UserManagement() {
                 <button type="submit">Send</button>
             </form>
         </div>
-    </div>
+      </div>
+    </div> 
   )
 }
 
