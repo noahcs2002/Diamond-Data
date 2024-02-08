@@ -52,14 +52,14 @@ public class OffensivePlayerFactory {
 		    walkOffs,
 		    ghosted_date,
 		    firstName,
-		    lastName ) VALUES (
+		    lastName, stolenBaseAttempts ) VALUES (
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
-		    ?, ?, ?, ? )
+		    ?, ?, ?, ?, ? )
 	    """;
 	    
 	    try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -97,6 +97,7 @@ public class OffensivePlayerFactory {
 		statement.setInt(32, 0);
 		statement.setString(33, player.getFirstName());
 		statement.setString(34, player.getLastName());
+		statement.setInt(45, player.getStolenBaseAttempts());
 		statement.executeUpdate();
 	    }
 	    catch (Exception ex) {
@@ -139,14 +140,14 @@ public class OffensivePlayerFactory {
 		    walkOffs,
 		    ghosted_date,
 		    firstName,
-		    lastName ) VALUES (
+		    lastName, stolenBaseAttempts ) VALUES (
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
-		    ?, ?, ?, ? )
+		    ?, ?, ?, ?, ? )
 	"""    ;
 	    
 	    try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -184,6 +185,7 @@ public class OffensivePlayerFactory {
 		statement.setInt(32, 0);
 		statement.setString(33, player.getFirstName());
 		statement.setString(34, player.getLastName());
+		statement.setInt(35, player.getStolenBaseAttempts());
 		statement.executeUpdate();
 		return player;
 	    }
@@ -230,14 +232,14 @@ public class OffensivePlayerFactory {
 		    walkOffs,
 		    ghosted_date,
 		    firstName,
-		    lastName ) VALUES (
+		    lastName, stolenBaseAttempts ) VALUES (
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
-		    ?, ?, ?, ? )
+		    ?, ?, ?, ?, ? )
 	        """
 		:
 		"""
@@ -275,14 +277,14 @@ public class OffensivePlayerFactory {
 		    walkOffs,
 		    ghosted_date,
 		    firstName,
-		    lastName ) VALUES (
+		    lastName, stolenBaseAttempts ) VALUES (
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
-		    ?, ?, ?, ? )
+		    ?, ?, ?, ?, ? )
 	"""    ;
  
 	    try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -320,6 +322,7 @@ public class OffensivePlayerFactory {
 		statement.setInt(32, 0);
 		statement.setString(33, player.getFirstName());
 		statement.setString(34, player.getLastName());
+		statement.setInt(35, player.getStolenBaseAttempts());
 		statement.executeUpdate();
 		return player;
 	    }
@@ -369,14 +372,14 @@ public class OffensivePlayerFactory {
 		    walkOffs,
 		    ghosted_date,
 		    firstName,
-		    lastName ) VALUES (
+		    lastName, stolenBaseAttempts ) VALUES (
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
-		    ?, ?, ?, ? )
+		    ?, ?, ?, ?, ? )
 	    """;
 		
 		try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -414,6 +417,7 @@ public class OffensivePlayerFactory {
 		    statement.setInt(32, 0);
 		    statement.setString(33, player.getFirstName());
 		    statement.setString(34, player.getLastName());
+		    statement.setInt(35, player.getStolenBaseAttempts());
 		    statement.executeUpdate();
 		}
 		catch (Exception ex) {
@@ -456,14 +460,14 @@ public class OffensivePlayerFactory {
 		    walkOffs,
 		    ghosted_date,
 		    firstName,
-		    lastName ) VALUES (
+		    lastName, stolenBaseAttempts ) VALUES (
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
 		    ?, ?, ?, ?, ?,
-		    ?, ?, ?, ? )
+		    ?, ?, ?, ?, ? )
 	"""    ;
 		
 		try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -501,6 +505,7 @@ public class OffensivePlayerFactory {
 		    statement.setInt(32, 0);
 		    statement.setString(33, player.getFirstName());
 		    statement.setString(34, player.getLastName());
+		    statement.setInt(35, player.getStolenBaseAttempts());
 		    statement.executeUpdate();
 		}
 		catch (Exception ex) {
@@ -546,14 +551,14 @@ public class OffensivePlayerFactory {
 			walkOffs,
 			ghosted_date,
 			firstName,
-			lastName ) VALUES (
+			lastName, stolenBaseAttempts ) VALUES (
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
-			?, ?, ?, ? )
+			?, ?, ?, ?, ? )
 		    """
 		    :
 		    """
@@ -591,14 +596,14 @@ public class OffensivePlayerFactory {
 			walkOffs,
 			ghosted_date,
 			firstName,
-			lastName ) VALUES (
+			lastName, stolenBaseAttempts ) VALUES (
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
-			?, ?, ?, ? )
+			?, ?, ?, ?, ? )
 	    """    ;
 		
 		try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -636,6 +641,7 @@ public class OffensivePlayerFactory {
 		    statement.setInt(32, 0);
 		    statement.setString(33, player.getFirstName());
 		    statement.setString(34, player.getLastName());
+		    statement.setInt(35, player.getStolenBaseAttempts());
 		    statement.executeUpdate();
 		}
 		catch (Exception ex) {
@@ -684,8 +690,9 @@ public class OffensivePlayerFactory {
 	   walkOffs = ?,
 	   ghosted_date = ?,
 	   firstName = ?,
-	   lastName = ?
-	   WHERE id = ?
+	   lastName = ?,
+	   stolenBaseAttempts = ?
+	   WHERE id = ?o
 	""";
 	
 	try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -723,7 +730,8 @@ public class OffensivePlayerFactory {
 	    statement.setInt(32, 0);
 	    statement.setString(33, newModel.getFirstName());
 	    statement.setString(34, newModel.getLastName());
-	    statement.setString(35, id.toString());
+	    statement.setInt(35, newModel.getStolenBaseAttempts());
+	    statement.setString(36, id.toString());
 	    statement.executeUpdate();
 	}
 	catch (Exception ex) {
@@ -766,7 +774,8 @@ public class OffensivePlayerFactory {
 	   walkOffs = ?,
 	   ghosted_date = ?,
 	   firstName = ?,
-	   lastName = ?
+	   lastName = ?,
+	   stolenBaseAttempts = ?
 	   WHERE id = ?
 	""";
 	
@@ -805,7 +814,8 @@ public class OffensivePlayerFactory {
 	    statement.setInt(32, 0);
 	    statement.setString(33, newModel.getFirstName());
 	    statement.setString(34, newModel.getLastName());
-	    statement.setString(35, id.toString());
+	    statement.setInt(35, newModel.getStolenBaseAttempts());
+	    statement.setString(36, id.toString());
 	    statement.executeUpdate();
 	}
 	catch (Exception ex) {
@@ -859,6 +869,7 @@ public class OffensivePlayerFactory {
 			.setWalkOffs(set.getInt("walkOffs"))
 			.setFirstName(set.getString("firstName"))
 			.setLastName(set.getString("lastName"))
+			.setStolenBaseAttempts(set.getInt("stolenBaseAttempts"))
 			.createOffensivePlayer()
 		);
 	    }
@@ -915,6 +926,7 @@ public class OffensivePlayerFactory {
 			.setWalkOffs(set.getInt("walkOffs"))
 			.setFirstName(set.getString("firstName"))
 			.setLastName(set.getString("lastName"))
+			.setStolenBaseAttempts(set.getInt("stolenBaseAttempts"))
 			.createOffensivePlayer();
 	    }
 	}
@@ -971,6 +983,7 @@ public class OffensivePlayerFactory {
 			.setWalkOffs(set.getInt("walkOffs"))
 			.setFirstName(set.getString("firstName"))
 			.setLastName(set.getString("lastName"))
+			.setStolenBaseAttempts(set.getInt("stolenBaseAttempts"))
 			.createOffensivePlayer()
 		);
 	    }
@@ -1024,6 +1037,7 @@ public class OffensivePlayerFactory {
 			.setWalkOffs(set.getInt("walkOffs"))
 			.setFirstName(set.getString("firstName"))
 			.setLastName(set.getString("lastName"))
+			.setStolenBaseAttempts(set.getInt("stolenBaseAttempts"))
 			.createOffensivePlayer()
 		);
 	    }

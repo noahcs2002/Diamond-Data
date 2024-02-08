@@ -34,6 +34,7 @@ public class OffensivePlayerBuilder {
     private int singles;
     private double slugging;
     private int stolenBases;
+    private int stolenBaseAttempts;
     private int totalBases;
     private int triples;
     private int walks;
@@ -216,8 +217,13 @@ public class OffensivePlayerBuilder {
         this.preference = preference;
         return this;
     }
+    
+    public OffensivePlayerBuilder setStolenBaseAttempts(int stolenBaseAttempts) {
+       this.stolenBaseAttempts = stolenBaseAttempts;
+       return this;
+    }
 
     public OffensivePlayer createOffensivePlayer() {
-        return new OffensivePlayer(id, teamId, memberId, atBats, average, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutVsFlyOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunts, sacrificeFlies, singles, slugging, stolenBases, totalBases, triples, walks, walkOffs, preference, firstName, lastName);
+        return new OffensivePlayer(id, teamId, memberId, atBats, average, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutVsFlyOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunts, sacrificeFlies, singles, slugging, stolenBases, stolenBaseAttempts, totalBases, triples, walks, walkOffs, preference, firstName, lastName);
     }
 }

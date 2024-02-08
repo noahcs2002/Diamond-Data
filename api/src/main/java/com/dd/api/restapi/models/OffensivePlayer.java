@@ -1,6 +1,7 @@
 package com.dd.api.restapi.models;
 
 import com.dd.api.restapi.util.BatterPreference;
+import com.dd.api.util.ann.TestConstructor;
 import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -37,6 +38,7 @@ public class OffensivePlayer {
     private int singles ;
     private double slugging  ;
     private int stolenBases ;
+    private int stolenBaseAttempts;
     private int totalBases ;
     private int triples ;
     private int walks ;
@@ -73,6 +75,7 @@ public class OffensivePlayer {
                            int sacrificeFlies,
                            int singles,
                            double slugging,
+                           int stolenBaseAttempts,
                            int stolenBases,
                            int totalBases,
                            int triples,
@@ -109,6 +112,7 @@ public class OffensivePlayer {
         this.singles = singles;
         this.slugging = slugging;
         this.stolenBases = stolenBases;
+        this.stolenBaseAttempts = stolenBaseAttempts;
         this.totalBases = totalBases;
         this.triples = triples;
         this.walks = walks;
@@ -147,6 +151,7 @@ public class OffensivePlayer {
                            int singles,
                            double slugging,
                            int stolenBases,
+                           int stolenBaseAttempts,
                            int totalBases,
                            int triples,
                            int walks,
@@ -182,6 +187,7 @@ public class OffensivePlayer {
         this.singles = singles;
         this.slugging = slugging;
         this.stolenBases = stolenBases;
+        this.stolenBaseAttempts = stolenBaseAttempts;
         this.totalBases = totalBases;
         this.triples = triples;
         this.walks = walks;
@@ -189,6 +195,11 @@ public class OffensivePlayer {
         this.preference = preference;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+    
+    @TestConstructor
+    public OffensivePlayer() {
+        // Left empty for simpler testing.
     }
 
     public UUID getId() {
@@ -238,7 +249,15 @@ public class OffensivePlayer {
     public void setCaughtStealingPercentage(double caughtStealingPercentage) {
         this.caughtStealingPercentage = caughtStealingPercentage;
     }
-
+    
+    public int getStolenBaseAttempts() {
+        return stolenBaseAttempts;
+    }
+    
+    public void setStolenBaseAttempts(int stolenBaseAttempts) {
+        this.stolenBaseAttempts = stolenBaseAttempts;
+    }
+    
     public int getDoubles() {
         return doubles;
     }

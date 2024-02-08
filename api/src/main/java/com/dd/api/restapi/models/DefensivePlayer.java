@@ -1,5 +1,6 @@
 package com.dd.api.restapi.models;
 
+import com.dd.api.util.ann.TestConstructor;
 import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -7,6 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class DefensivePlayer {
+    // TODO: Need to add data on caughtStealingAttempts and caughtStealingSuccesses
     private UUID id;
     private UUID teamId;
     private int assists;
@@ -21,6 +23,10 @@ public class DefensivePlayer {
     private int putouts;
     private int totalChances;
     private int triplePlays;
+    
+    @TestConstructor
+    public DefensivePlayer() {
+    }
 
     @JsonCreator
     public DefensivePlayer(UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
