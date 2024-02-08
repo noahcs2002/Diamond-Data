@@ -1,95 +1,88 @@
 .home {
-    width: 100%;
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: left;
-    flex-direction: column;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  }
-  
-  .headerContainer {
-    width: auto;
-    margin-left: 50px;
-  }
-  
-  .headerContainer h1 {
-    justify-content: center;
-    align-items: center;
-    font-size: 90px;
-    height: 60px;
-    font-weight: 50;
-    color: #000F08;
-  }
-  
-  .headerContainer p {
-    padding: 0;
-    font-size: 40px;
-    font-weight: lighter;
-    color: #000F08;
-  }
-  
-  .headerContainer button {
-    color: #000F08;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    justify-content: center;
-    background-color: #000F08;
-    height: 50px;
-    width: 180px;
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-  }
-  
-  .headerContainer button:hover {
-    background-color: #000F08;
-    cursor: pointer;
-    transition: 0.3s ease-in;
-  }
-  
-  @media only screen and (max-width: 650px) {
-    .home {
-      justify-content: center;
-      align-items: center;
-    }
-  
-    .headerContainer {
-      margin-left: 0px;
-      border-radius: 10px;
-      padding: 10px;
-      width: 80%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      background-color: #000F08;
-      color: #F4FFF8;
-    }
-  
-    .headerContainer h1 {
-      font-size: 40px;
-      height: 30px;
-      color: #F4FFF8;
-    }
-  
-    .headerContainer p {
-      font-size: 30px;
-      color: #F4FFF8;
-    }
-  
-    .headerContainer button {
-      background-color: #F4FFF8;
-      color: #000F08;
-      margin-bottom: 30px;
-    }
-  
-    .headerContainer button:hover {
-      background-color: #8BAAAD;
-      color: #000F08;
-    }
-  }
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.headerContainer {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.headerContainer h1 {
+  font-size: 40px;
+  color: #000F08;
+}
+
+.buttonsContainer {
+  margin-top: 40px;
+}
+
+.button {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #000F08;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #8BAAAD;
+}
+
+.startingLineup {
+  margin-top: 40px;
+}
+
+.lineup {
+  display: flex;
+}
+
+.player {
+  flex: 1;
+  text-align: center;
+  border: 1px solid #000F08;
+  padding: 10px;
+  margin: 0px;
+  height: 60px;
+}
+
+.calendar {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.calendar h2 {
+  color: #000F08;
+}
+
+.daysContainer {
+  display: flex;
+}
+
+.day {
+  flex: 1;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #ccc;
+  height: 130px;
+}
+.teamDropdown {
+  margin-bottom: 10px;
+}
+
+.teamDropdown select {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+}
