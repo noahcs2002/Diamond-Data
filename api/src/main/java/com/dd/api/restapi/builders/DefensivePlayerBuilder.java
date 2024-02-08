@@ -20,7 +20,7 @@ public class DefensivePlayerBuilder {
     private int putouts;
     private int totalChances;
     private int triplePlays;
-
+    
     public DefensivePlayerBuilder setId(UUID id) {
         this.id = id;
         return this;
@@ -97,6 +97,6 @@ public class DefensivePlayerBuilder {
     }
 
     public DefensivePlayer createDefensivePlayer() {
-        return new DefensivePlayer(id, teamId, memberId, assists, caughtStealingPercentage, doublePlays, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays);
+        return new DefensivePlayer(teamId, assists, caughtStealingPercentage, doublePlays, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays);
     }
 }

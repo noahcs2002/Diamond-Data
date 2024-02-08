@@ -1,19 +1,14 @@
 package com.dd.api;
 
-import com.dd.api.database.ConnectionSettings;
-import com.dd.api.util.PropertyFileReader;
+import com.dd.api.database.TestConnector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class ApiApplication {
-
-	public static void main(String[] args) {
-	    ConnectionSettings settings = new ConnectionSettings();
-	    System.out.println("Username: " + settings.getUsername());
-	    System.out.println("Password: " + settings.getPassword());
-	    System.out.println("Connection String: " + settings.getConnectionString());
-	    SpringApplication.run(ApiApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        new TestConnector().performTest();
+        SpringApplication.run(ApiApplication.class, args);
+    }
 }

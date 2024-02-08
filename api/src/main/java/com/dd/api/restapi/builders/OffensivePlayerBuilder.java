@@ -34,14 +34,27 @@ public class OffensivePlayerBuilder {
     private int singles;
     private double slugging;
     private int stolenBases;
+    private int stolenBaseAttempts;
     private int totalBases;
     private int triples;
     private int walks;
     private int walkOffs;
     private BatterPreference preference;
+    private String firstName;
+    private String lastName;
 
     public OffensivePlayerBuilder setId(UUID id) {
         this.id = id;
+        return this;
+    }
+    
+    public OffensivePlayerBuilder setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+    
+    public OffensivePlayerBuilder setLastName(String lastName) {
+        this.lastName = lastName;
         return this;
     }
 
@@ -204,8 +217,13 @@ public class OffensivePlayerBuilder {
         this.preference = preference;
         return this;
     }
+    
+    public OffensivePlayerBuilder setStolenBaseAttempts(int stolenBaseAttempts) {
+       this.stolenBaseAttempts = stolenBaseAttempts;
+       return this;
+    }
 
     public OffensivePlayer createOffensivePlayer() {
-        return new OffensivePlayer(id, teamId, memberId, atBats, average, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutVsFlyOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunts, sacrificeFlies, singles, slugging, stolenBases, totalBases, triples, walks, walkOffs, preference);
+        return new OffensivePlayer(id, teamId, memberId, atBats, average, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutVsFlyOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunts, sacrificeFlies, singles, slugging, stolenBases, stolenBaseAttempts, totalBases, triples, walks, walkOffs, preference, firstName, lastName);
     }
 }

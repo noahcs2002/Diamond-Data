@@ -1,0 +1,123 @@
+/* Styling for Login.js */
+@import './Global.scss';
+
+// LOGIN PAGE
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    height: 100vh;
+    background-color: var(--background2-color);
+
+    // TITLE
+
+    .title-container {
+      text-align: center;
+      margin: 30px auto 0;
+
+      // .center {
+      // text-align: center;
+      // margin: 30px auto 0;
+      // height: 100px;
+      // width: 100px;
+      // }
+
+      .title {
+        font-size: 4rem; 
+        font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        margin-bottom: 10px; 
+        color: var(--text-color); 
+      }
+  }
+
+  // LOGIN CONTAINER
+
+  .login-container {
+    width: 900px;
+    margin: 65px auto 0;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background-color: #aeaeae;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+
+    .loginForm {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+    
+    .loginForm label {
+        display: block;
+        // margin-top: 10px;
+        text-align: right;
+        margin-right: 30px;
+      }
+      
+    .loginForm input {
+      width: calc(100% - 175px); 
+      padding: 15px;
+      margin-bottom: 15px;
+      margin-right: 45px;
+      margin-left: 15px;
+      box-sizing: border-box;
+    }
+    
+    .loginForm button {
+      width: 100px;
+      margin-bottom: 10px;
+      // margin-left: 20px; 
+      background-color: var(--button2-color);
+      color: var(--text-color);
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      align-self: center;
+      transition: background-color 0.3s;
+      &:hover {
+          background-color: var(--hover-color);
+      }
+    }
+
+    // h2 {
+    //   text-align: center;
+    //   font-size: 1.5rem;
+    //   margin-bottom: 10px;
+    // }
+    
+    a {
+      color: blue;
+    }
+  
+    p {
+      font-size: 15px;
+    }
+  }
+
+  .login-container h2 {
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  // FOOTER
+
+  footer {
+    background-color: var(--footer-color);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: var(--text-color);
+    padding: 10px;
+    text-align: center;
+  }
+
+}
+

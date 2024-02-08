@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import '../styles/TeamStats.css';
+import React from 'react'
+import '../styles/TeamStats.scss'
+import Navbar from '../components/Navbar'
+import { useState } from 'react';
 
 function TeamStats() {
   const [teams, setTeams] = useState([

@@ -1,4 +1,4 @@
-package com.dd.api.auth.providers;
+package com.dd.api.auth.builders;
 
 import com.dd.api.auth.models.User;
 

@@ -1,8 +1,32 @@
-import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import '../styles/Home.css';
+import React, { useEffect } from 'react'
+import { Link, useLocation, useHistory, useNavigate } from "react-router-dom";
+import '../styles/Home.scss';
+import Navbar from '../components/Navbar';
+import { useState } from 'react';
 
 function Home() {
+
+// Use location to get where we are
+const location = useLocation();
+let data = {};
+
+useEffect(() => {
+  // if location has a state, we have come here from login screen
+  // store the session information in the cache (localStorage)
+  if (location.state) {
+    data = location.state.data;
+    localStorage.setItem('data', JSON.stringify(location.state.data));
+  }
+  // If we don't have a state, we are here from a different screen, load it from the cache
+  else {
+    data = JSON.parse(localStorage.getItem('data'));
+  }
+
+  // Do whatever with it
+  console.log(data);
+
+}, [])
+
   const [selectedTeam, setSelectedTeam] = useState('Saint Louis Cardinals');
 
   const teams = ['Saint Louis Cardinals', 'Dodgers Stink', 'Dodgers Overrated', 'Dodgers Suck'];
@@ -72,6 +96,4 @@ function Home() {
     </div>
   );
 }
-
 export default Home;
-

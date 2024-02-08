@@ -1,3 +1,7 @@
+/* Styling for TeamStats.js */
+@import './Global.scss';
+
+// TEAM STATS
 
 .teamStats {
   width: 100%;
@@ -102,3 +106,21 @@ h1 {
 .toggleSwitch:hover {
   background-color: #163033;
 }
+
+.teamStats {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  // HEADING
+  
+  .teamStats h1 {
+    font-size: 4rem; 
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-bottom: 10px; 
+    color: var(--text3-color); 
+  }
