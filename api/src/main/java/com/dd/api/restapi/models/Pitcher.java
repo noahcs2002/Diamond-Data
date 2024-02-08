@@ -1,6 +1,7 @@
 package com.dd.api.restapi.models;
 
 import com.dd.api.restapi.util.PitcherPreference;
+import com.dd.api.util.ann.TestConstructor;
 import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -44,6 +45,11 @@ public class Pitcher {
     private int wins;
     private double winningPercentage;
     private PitcherPreference preference;
+    
+    @TestConstructor
+    public Pitcher() {
+    
+    }
 
     // Annotated as a JSON creator to allow the HTTP calls to access
     // this ctor as the creator.

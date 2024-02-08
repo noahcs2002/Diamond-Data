@@ -6,7 +6,6 @@ import com.dd.api.restapi.models.Roster;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 
 @RestController
