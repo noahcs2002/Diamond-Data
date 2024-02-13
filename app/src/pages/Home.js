@@ -53,6 +53,7 @@ useEffect(() => {
 
   return (
     <div className="home" style={{ backgroundImage: 'url(${})'}}>
+        <Navbar/>
       <div className="headerContainer">
         <h1>Welcome {selectedTeam}</h1>
         <div className="teamDropdown">

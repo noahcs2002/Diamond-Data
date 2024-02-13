@@ -38,6 +38,7 @@ function TeamStats() {
 
   return (
     <div className="teamStats">
+      <Navbar/>
       <h1>Team Stats</h1>
       <div className="teamList">
         {teams.map((team) => (
