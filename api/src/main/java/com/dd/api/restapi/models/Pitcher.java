@@ -49,6 +49,7 @@ public class Pitcher {
     private int strikeouts;
     private int unearnedRuns;
     private double walksAndHitsPerInningPitched;
+    private double walks;
     private int wildPitches;
     private int wins;
     private double winningPercentage;
@@ -83,6 +84,7 @@ public class Pitcher {
 		   int shutouts,
 		   int strikeouts,
 		   int unearnedRuns,
+		   int walks,
 		   double walksAndHitsPerInningPitched,
 		   int wildPitches,
 		   int wins,
@@ -120,6 +122,7 @@ public class Pitcher {
 	this.wins = wins;
 	this.winningPercentage = winningPercentage;
 	this.team = team;
+	this.walks = walks;
     }
     
     public Pitcher(Long id,
@@ -153,6 +156,7 @@ public class Pitcher {
 		   int shutouts,
 		   int strikeouts,
 		   int unearnedRuns,
+		   int walks,
 		   double walksAndHitsPerInningPitched,
 		   int wildPitches,
 		   int wins,
@@ -192,6 +196,7 @@ public class Pitcher {
 	this.wildPitches = wildPitches;
 	this.wins = wins;
 	this.winningPercentage = winningPercentage;
+	this.walks = walks;
     }
     
     public Pitcher() {
@@ -492,6 +497,14 @@ public class Pitcher {
     
     public void setUnearnedRuns(int unearnedRuns) {
 	this.unearnedRuns = unearnedRuns;
+    }
+    
+    public double getWalks() {
+	return walks;
+    }
+    
+    public void setWalks(double walks) {
+	this.walks = walks;
     }
     
     @Override
