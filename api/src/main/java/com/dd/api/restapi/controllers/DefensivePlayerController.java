@@ -76,7 +76,7 @@ public class DefensivePlayerController {
     @RequestMapping("/by-team")
     public List<DefensivePlayer> getPlayersByTeam(@RequestParam UUID teamId) {
 	try (Connection connection = DriverManager.getConnection(sqlServerContext.getConnectionString(), sqlServerContext.getUsername(), sqlServerContext.getPassword())){
-	    return DefensivePlayerFactory.getByTeam(teamId, connection);
+		return DefensivePlayerFactory.getByTeam(teamId, connection);
 	}
 	catch (Exception ex) {
 	    return List.of();

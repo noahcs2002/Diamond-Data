@@ -1,29 +1,113 @@
-import React from 'react'
-import '../styles/TeamStats.scss'
-import Navbar from '../components/Navbar'
+import React, { useEffect, useState } from 'react';
+import '../styles/TeamStats.scss';
+import Navbar from '../components/Navbar';
+import { useTable } from 'react-table';
 
 function TeamStats() {
+
+  const [offensiveData, setOffensiveData] = useState({});
+  const [defensiveData, setDefensiveData] = useState({});
+  const [pitcherData, setPitcherData] = useState({});
+
+  useEffect(() => {
+    getOffensiveData()
+    getDefensiveData()
+    getPitcherData()
+  }, [])
+
+  const getOffensiveData = async () => {
+    const id = 'E9123497-4899-49EB-A26B-1D09B81B0693';
+    const endpointUrl = 'http://localhost:8080/diamond-data/api/offensive-players/get-by-team';
+    
+    const url = new URL(endpointUrl);
+    url.searchParams.append('teamId', id);
+
+    await fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(res => {
+      if(!res.ok) {
+        console.log('error');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if(data) {
+        setOffensiveData(data);
+        console.log(data);
+      }
+    })
+  }
+
+  const getDefensiveData = async () => {
+    const id = 'E9123497-4899-49EB-A26B-1D09B81B0693';
+    const endpointUrl = 'http://localhost:8080/diamond-data/api/defensive-players/by-team';
+    
+    const url = new URL(endpointUrl);
+    url.searchParams.append('teamId', id);
+
+    await fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(res => {
+      if(!res.ok) {
+        console.log('error');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if(data) {
+        setDefensiveData(data);
+        console.log(data);
+      }
+    })
+  }
+
+  const getPitcherData = async () => {
+    const id = 'E9123497-4899-49EB-A26B-1D09B81B0693';
+    const endpointUrl = 'http://localhost:8080/diamond-data/api/pitchers/by-team';
+    
+    const url = new URL(endpointUrl);
+    url.searchParams.append('teamId', id);
+
+    await fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(res => {
+      if(!res.ok) {
+        console.log('error');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if(data) {
+        setPitcherData(data);
+        console.log(data);
+      }
+    })
+  }
+
+  // console.log(offensiveData)
+  // const data = React
+
   return (
     <div>
       <Navbar/>
       <div className="teamStats">
         <h1> Team Stats</h1>
-        {/* Filler text */}
-        <p> 
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-            mollitia, molestiae quas vel sint commodi repudiandae consequuntur
-            voluptatum laborum numquam blanditiis harum quisquam eius sed odit
-            fugiat iusto fuga praesentium optio, eaque rerum! Provident similique
-            accusantium nemo autem. Veritatis obcaecati tenetur iure eius earum ut
-            molestias architecto voluptate aliquam nihil, eveniet aliquid culpa
-            officia aut! Impedit sit sunt quaerat, odit, tenetur error, harum
-            nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Quo neque
-            error repudiandae fuga? Ipsa laudantium molestias eos sapiente
-            officiis modi at sunt excepturi expedita sint? Sed quibusdam
-            recusandae alias error harum maxime adipisci amet laborum.
-            Perspiciatis minima nesciunt dolorem! Officiis iure rerum voluptates a
-            cumque velit
-        </p>
+        <button onClick={getOffensiveData}>Offensive</button>
+        <button onClick={getDefensiveData}>Defensive</button>
+        <button onClick={getPitcherData}>Pitchers</button>
+        
       </div>  
     </div> 
   )
