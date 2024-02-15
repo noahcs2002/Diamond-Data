@@ -2,54 +2,68 @@ package com.dd.api.restapi.services;
 
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.repositories.PitcherRepository;
+import com.dd.api.restapi.repositories.TeamRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class PitcherService {
     
-    private final PitcherRepository repository;
+    @Autowired
+    private final PitcherRepository pitcherRepository;
+    
     
     @Autowired
-    public PitcherService(PitcherRepository repository) {
-	this.repository = repository;
+    public PitcherService(PitcherRepository pitcherRepository) {
+	this.pitcherRepository = pitcherRepository;
     }
     
     @Transactional
     public Pitcher createPitcher(Pitcher pitcher) {
-	return this.repository.saveAndFlush(pitcher);
+	return this.pitcherRepository.saveAndFlush(pitcher);
     }
     
     @Transactional
     public Pitcher getPitcherById(Long id) {
-	Optional<Pitcher> pitcher = this.repository.findById(id);
+	Optional<Pitcher> pitcher = this.pitcherRepository.findById(id);
 	return pitcher.orElse(null);
     }
     
     @Transactional
-    public Iterable<Pitcher> getAll() {
-	return this.repository.findAll();
+    public List<Pitcher> getAll() {
+	List<Pitcher> pitchers = this.pitcherRepository.findAll();
+	return pitchers.stream().filter(p -> p.getGhostedDate() == 0).toList();
     }
     
     @Transactional
     public Pitcher updatePitcher(Long id, Pitcher newModel) {
-	Pitcher pitcher = this.repository.getReferenceById(id);
+	Pitcher pitcher = this.pitcherRepository.getReferenceById(id);
 	newModel.setId(pitcher.getId());
 	pitcher = newModel;
-	this.repository.save(pitcher);
+	this.pitcherRepository.save(pitcher);
 	return pitcher;
     }
     
     @Transactional
     public boolean deletePitcher(Long id) {
-	Pitcher pitcher = this.repository.getReferenceById(id);
+	Pitcher pitcher = this.pitcherRepository.getReferenceById(id);
 	pitcher.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
-	this.repository.save(pitcher);
+	this.pitcherRepository.save(pitcher);
 	return true;
-	
+    }
+    
+    public List<Pitcher> getPitchersByTeam(Long teamId) {
+	List<Pitcher> pitchers = this.pitcherRepository.findAll();
+	return pitchers.stream()
+	    .filter(p -> p.getGhostedDate() == 0)
+	    .filter(p -> Objects.equals(p.getTeam().getId(), teamId))
+	    .toList();
     }
 }

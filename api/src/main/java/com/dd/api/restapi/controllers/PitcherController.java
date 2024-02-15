@@ -5,6 +5,8 @@ import com.dd.api.restapi.services.PitcherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/diamond-data/api/pitchers")
 public class PitcherController {
@@ -20,6 +22,18 @@ public class PitcherController {
     @GetMapping
     public Pitcher get(@RequestParam Long id) {
 	return this.service.getPitcherById(id);
+    }
+    
+    @RequestMapping("/get-all")
+    @GetMapping
+    public List<Pitcher> getAll() {
+	return this.service.getAll();
+    }
+    
+    @RequestMapping("/get-by-team")
+    @GetMapping
+    public List<Pitcher> getByTeam(@RequestParam Long teamId) {
+	return this.service.getPitchersByTeam(teamId);
     }
     
     @RequestMapping("/create")
