@@ -12,13 +12,14 @@ public class Pitcher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private long ghostedDate;
     
     @ManyToOne
     @JoinColumn(name="team_id", referencedColumnName="id")
     private Team team;
+    
+    private String firstName;
+    private String lastName;
+    private long ghostedDate;
     
     // L, R, S
     private Character preference;
