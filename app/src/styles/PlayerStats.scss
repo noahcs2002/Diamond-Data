@@ -1,9 +1,9 @@
-/* Styling for TeamStats.js */
+/* Styling for PlayerStats.js */
 @import './Global.scss';
 
-// TEAM STATS
+// PLAYER STATS
 
-.teamStats {
+.playerStats {
   width: 100%;
   height: auto;
   display: flex;
@@ -18,7 +18,7 @@ h1 {
   color: #263238;
 }
 
-.teamList {
+.playerList {
   width: 80%;
   margin: 0 auto;
   display: flex;
@@ -26,7 +26,7 @@ h1 {
   gap: 10px;
 }
 
-.teamItem {
+.playerItem {
   width: 100%;
   background-color: #f5f5f5;
   border-radius: 10px;
@@ -35,23 +35,23 @@ h1 {
   transition: 0.3s ease-in;
 }
 
-.teamItem:hover {
+.playerItem:hover {
   background-color: #e0e0e0;
 }
 
-.teamInfo {
+.playerInfo {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
 }
 
-.teamLabel {
+.playerLabel {
   flex: 1;
   padding-left: 10px;
 }
 
-.teamRecord {
+.playerRecord {
   padding-right: 10px;
 }
 
@@ -107,7 +107,7 @@ h1 {
   background-color: #163033;
 }
 
-.teamStats {
+.playerStats {
     width: 100%;
     height: auto;
     display: flex;
@@ -118,7 +118,7 @@ h1 {
 
   // HEADING
   
-  .teamStats h1 {
+  .playerStats h1 {
     font-size: 4rem; 
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     margin-bottom: 10px; 
