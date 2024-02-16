@@ -1,96 +1,56 @@
 package com.dd.api.restapi.controllers;
 
-import com.dd.api.database.Context;
-import com.dd.api.restapi.factories.PitcherFactory;
 import com.dd.api.restapi.models.Pitcher;
+import com.dd.api.restapi.services.PitcherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/diamond-data/api/pitchers")
 public class PitcherController {
 
-    private final Context context = new Context();
+    private final PitcherService service;
 
-    @GetMapping
-    @RequestMapping("xyz")
-    public String connect() {
-        return "PitcherController Online";
+    @Autowired
+    public PitcherController(PitcherService service) {
+        this.service = service;
     }
 
+    @RequestMapping("/get")
+    @GetMapping
+    public Pitcher get(@RequestParam Long id) {
+        return this.service.getPitcherById(id);
+    }
+
+    @RequestMapping("/get-all")
+    @GetMapping
+    public List<Pitcher> getAll() {
+        return this.service.getAll();
+    }
+
+    @RequestMapping("/get-by-team")
+    @GetMapping
+    public List<Pitcher> getByTeam(@RequestParam Long teamId) {
+        return this.service.getPitchersByTeam(teamId);
+    }
+
+    @RequestMapping("/create")
     @PostMapping
-    public Pitcher createPitcher(@RequestBody Pitcher pitcher) {
-        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
-            return PitcherFactory.createPitcher(pitcher, connection);
-        }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+    public Pitcher create(@RequestBody Pitcher pitcher) {
+        return this.service.createPitcher(pitcher);
     }
-    
-    @GetMapping
-    @RequestMapping("/by-id")
-    // Returns as a list in case there is a switch pitcher.
-    public List<Pitcher> getPitcherById(@RequestParam UUID id) {
-        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
-            return PitcherFactory.getPitcherById(id, connection);
-        }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return List.of();
-        }
-    }
-    
-    @GetMapping
-    @RequestMapping("/by-team")
-    public List<Pitcher> getPitcherByTeam(@RequestParam UUID teamId) {
-        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
-            return PitcherFactory.getPitchersByTeam(teamId, connection);
-        }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return List.of();
-        }
-    }
-    
+
+    @RequestMapping("/update")
     @PutMapping
-    @RequestMapping("/edit")
-    public Pitcher editPitcher(@RequestParam UUID id, @RequestBody Pitcher newModel) {
-        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
-            return PitcherFactory.editPitcher(id, newModel, connection);
-        }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+    public Pitcher update(@RequestParam Long id, @RequestBody Pitcher newModel) {
+        return this.service.updatePitcher(id, newModel);
     }
-    
+
+    @RequestMapping("/delete")
     @DeleteMapping
-    @RequestMapping("/del")
-    public boolean deletePitcher(@RequestParam UUID id) {
-        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
-            return PitcherFactory.deletePitcher(id, connection);
-        }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
-    }
-    
-    @DeleteMapping
-    @RequestMapping("/del-by-team")
-    public boolean deleteAllPitchersForTeam(@RequestParam UUID teamId) {
-        try (Connection connection = DriverManager.getConnection(context.getConnectionString(), context.getUsername(), context.getPassword())) {
-            return PitcherFactory.deleteTeamPitchers(teamId, connection);
-        }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
+    public boolean delete(@RequestParam Long id) {
+        return this.service.deletePitcher(id);
     }
 }

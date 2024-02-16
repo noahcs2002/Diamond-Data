@@ -1,65 +1,65 @@
 package com.dd.api.restapi.models;
 
-import com.dd.api.restapi.util.BatterPreference;
-import com.dd.api.util.ann.TestConstructor;
-import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.persistence.*;
 
-import java.util.Objects;
-import java.util.UUID;
-
+@Entity
+@Table(name = "dd_offense", schema = "sp24")
 public class OffensivePlayer {
-    
-    private UUID id;
-    private UUID teamId;
-    private UUID memberId;
-    private int atBats ;
-    private double average  ;
-    private double caughtStealingPercentage  ;
-    private int doubles ;
-    private int extraBaseHits ;
-    private int gamesPlayed ;
-    private int grandSlams ;
-    private int groundIntoDoublePlay ;
-    private double groundOutVsFlyOut  ;
-    private int hitByPitch ;
-    private int hits ;
-    private int homeRuns ;
-    private int intentionalWalks ;
-    private int leftOnBase ;
-    private double onBasePercentage  ;
-    private double onBasePlusSlugging  ;
-    private int plateAppearances ;
-    private int reachedOnError ;
-    private int runs ;
-    private int runsBattedIn ;
-    private int sacrificeBunts ;
-    private int sacrificeFlies ;
-    private int singles ;
-    private double slugging  ;
-    private int stolenBases ;
-    private int stolenBaseAttempts;
-    private int totalBases ;
-    private int triples ;
-    private int walks ;
-    private int walkOffs ;
-    private BatterPreference preference;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private Team team;
+    private int atBats;
     private String firstName;
     private String lastName;
+    private double battingAverage;
+    private int caughtStealing;
+    private int doubles;
+    private int extraBaseHits;
+    private int gamesPlayed;
+    private int grandSlams;
+    private int groundIntoDoublePlay;
+    private double groundOutAirOut;
+    private int hitByPitch;
+    private int hits;
+    private int homeRuns;
+    private int intentionalWalks;
+    private int leftOnBase;
+    private double onBasePercentage;
+    private double onBasePlusSlugging;
+    private int plateAppearances;
+    private int reachedOnError;
+    private int runs;
+    private int runsBattedIn;
+    private int sacrificeBunt;
+    private int sacrificeFly;
+    private int singles;
+    private double sluggingPercentage;
+    private int stolenBases;
+    private int totalBases;
+    private int triples;
+    private int walks;
+    private int walkOffs;
+    private long ghostedDate;
 
-    @UtilityConstructor
-    public OffensivePlayer(UUID id,
-                           UUID teamId,
-                           UUID memberId,
+    public OffensivePlayer(Long id,
+                           Team team,
                            int atBats,
-                           double average,
-                           double caughtStealingPercentage,
+                           String firstName,
+                           String lastName,
+                           double battingAverage,
+                           int caughtStealing,
                            int doubles,
                            int extraBaseHits,
                            int gamesPlayed,
                            int grandSlams,
                            int groundIntoDoublePlay,
-                           double groundOutVsFlyOut,
+                           double groundOutAirOut,
                            int hitByPitch,
                            int hits,
                            int homeRuns,
@@ -71,31 +71,28 @@ public class OffensivePlayer {
                            int reachedOnError,
                            int runs,
                            int runsBattedIn,
-                           int sacrificeBunts,
-                           int sacrificeFlies,
+                           int sacrificeBunt,
+                           int sacrificeFly,
                            int singles,
-                           double slugging,
-                           int stolenBaseAttempts,
+                           double sluggingPercentage,
                            int stolenBases,
                            int totalBases,
                            int triples,
                            int walks,
-                           int walkOffs,
-                           BatterPreference preference,
-                           String firstName,
-                           String lastName) {
+                           int walkOffs) {
         this.id = id;
-        this.teamId = teamId;
-        this.memberId = memberId;
+        this.team = team;
         this.atBats = atBats;
-        this.average = average;
-        this.caughtStealingPercentage = caughtStealingPercentage;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.battingAverage = battingAverage;
+        this.caughtStealing = caughtStealing;
         this.doubles = doubles;
         this.extraBaseHits = extraBaseHits;
         this.gamesPlayed = gamesPlayed;
         this.grandSlams = grandSlams;
         this.groundIntoDoublePlay = groundIntoDoublePlay;
-        this.groundOutVsFlyOut = groundOutVsFlyOut;
+        this.groundOutAirOut = groundOutAirOut;
         this.hitByPitch = hitByPitch;
         this.hits = hits;
         this.homeRuns = homeRuns;
@@ -107,34 +104,31 @@ public class OffensivePlayer {
         this.reachedOnError = reachedOnError;
         this.runs = runs;
         this.runsBattedIn = runsBattedIn;
-        this.sacrificeBunts = sacrificeBunts;
-        this.sacrificeFlies = sacrificeFlies;
+        this.sacrificeBunt = sacrificeBunt;
+        this.sacrificeFly = sacrificeFly;
         this.singles = singles;
-        this.slugging = slugging;
+        this.sluggingPercentage = sluggingPercentage;
         this.stolenBases = stolenBases;
-        this.stolenBaseAttempts = stolenBaseAttempts;
         this.totalBases = totalBases;
         this.triples = triples;
         this.walks = walks;
         this.walkOffs = walkOffs;
-        this.preference = preference;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.ghostedDate = 0;
     }
-    
+
     @JsonCreator
-    public OffensivePlayer(
-                           UUID teamId,
-                           UUID memberId,
+    public OffensivePlayer(Team team,
                            int atBats,
-                           double average,
-                           double caughtStealingPercentage,
+                           String firstName,
+                           String lastName,
+                           double battingAverage,
+                           int caughtStealing,
                            int doubles,
                            int extraBaseHits,
                            int gamesPlayed,
                            int grandSlams,
                            int groundIntoDoublePlay,
-                           double groundOutVsFlyOut,
+                           double groundOutAirOut,
                            int hitByPitch,
                            int hits,
                            int homeRuns,
@@ -146,31 +140,27 @@ public class OffensivePlayer {
                            int reachedOnError,
                            int runs,
                            int runsBattedIn,
-                           int sacrificeBunts,
-                           int sacrificeFlies,
+                           int sacrificeBunt,
+                           int sacrificeFly,
                            int singles,
-                           double slugging,
+                           double sluggingPercentage,
                            int stolenBases,
-                           int stolenBaseAttempts,
                            int totalBases,
                            int triples,
                            int walks,
-                           int walkOffs,
-                           BatterPreference preference,
-                           String firstName,
-                           String lastName) {
-        this.id = UUID.randomUUID();
-        this.teamId = teamId;
-        this.memberId = memberId;
+                           int walkOffs) {
+        this.team = team;
         this.atBats = atBats;
-        this.average = average;
-        this.caughtStealingPercentage = caughtStealingPercentage;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.battingAverage = battingAverage;
+        this.caughtStealing = caughtStealing;
         this.doubles = doubles;
         this.extraBaseHits = extraBaseHits;
         this.gamesPlayed = gamesPlayed;
         this.grandSlams = grandSlams;
         this.groundIntoDoublePlay = groundIntoDoublePlay;
-        this.groundOutVsFlyOut = groundOutVsFlyOut;
+        this.groundOutAirOut = groundOutAirOut;
         this.hitByPitch = hitByPitch;
         this.hits = hits;
         this.homeRuns = homeRuns;
@@ -182,48 +172,35 @@ public class OffensivePlayer {
         this.reachedOnError = reachedOnError;
         this.runs = runs;
         this.runsBattedIn = runsBattedIn;
-        this.sacrificeBunts = sacrificeBunts;
-        this.sacrificeFlies = sacrificeFlies;
+        this.sacrificeBunt = sacrificeBunt;
+        this.sacrificeFly = sacrificeFly;
         this.singles = singles;
-        this.slugging = slugging;
+        this.sluggingPercentage = sluggingPercentage;
         this.stolenBases = stolenBases;
-        this.stolenBaseAttempts = stolenBaseAttempts;
         this.totalBases = totalBases;
         this.triples = triples;
         this.walks = walks;
         this.walkOffs = walkOffs;
-        this.preference = preference;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-    
-    @TestConstructor
-    public OffensivePlayer() {
-        // Left empty for simpler testing.
     }
 
-    public UUID getId() {
+    public OffensivePlayer() {
+        // Empty for Hibernate
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public UUID getTeamId() {
-        return teamId;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setTeamId(UUID teamId) {
-        this.teamId = teamId;
-    }
-
-    public UUID getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(UUID memberId) {
-        this.memberId = memberId;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public int getAtBats() {
@@ -234,30 +211,38 @@ public class OffensivePlayer {
         this.atBats = atBats;
     }
 
-    public double getAverage() {
-        return average;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setAverage(double average) {
-        this.average = average;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public double getCaughtStealingPercentage() {
-        return caughtStealingPercentage;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setCaughtStealingPercentage(double caughtStealingPercentage) {
-        this.caughtStealingPercentage = caughtStealingPercentage;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
-    
-    public int getStolenBaseAttempts() {
-        return stolenBaseAttempts;
+
+    public double getBattingAverage() {
+        return battingAverage;
     }
-    
-    public void setStolenBaseAttempts(int stolenBaseAttempts) {
-        this.stolenBaseAttempts = stolenBaseAttempts;
+
+    public void setBattingAverage(double battingAverage) {
+        this.battingAverage = battingAverage;
     }
-    
+
+    public int getCaughtStealing() {
+        return caughtStealing;
+    }
+
+    public void setCaughtStealing(int caughtStealing) {
+        this.caughtStealing = caughtStealing;
+    }
+
     public int getDoubles() {
         return doubles;
     }
@@ -298,12 +283,12 @@ public class OffensivePlayer {
         this.groundIntoDoublePlay = groundIntoDoublePlay;
     }
 
-    public double getGroundOutVsFlyOut() {
-        return groundOutVsFlyOut;
+    public double getGroundOutAirOut() {
+        return groundOutAirOut;
     }
 
-    public void setGroundOutVsFlyOut(double groundOutVsFlyOut) {
-        this.groundOutVsFlyOut = groundOutVsFlyOut;
+    public void setGroundOutAirOut(double groundOutAirOut) {
+        this.groundOutAirOut = groundOutAirOut;
     }
 
     public int getHitByPitch() {
@@ -394,20 +379,20 @@ public class OffensivePlayer {
         this.runsBattedIn = runsBattedIn;
     }
 
-    public int getSacrificeBunts() {
-        return sacrificeBunts;
+    public int getSacrificeBunt() {
+        return sacrificeBunt;
     }
 
-    public void setSacrificeBunts(int sacrificeBunts) {
-        this.sacrificeBunts = sacrificeBunts;
+    public void setSacrificeBunt(int sacrificeBunt) {
+        this.sacrificeBunt = sacrificeBunt;
     }
 
-    public int getSacrificeFlies() {
-        return sacrificeFlies;
+    public int getSacrificeFly() {
+        return sacrificeFly;
     }
 
-    public void setSacrificeFlies(int sacrificeFlies) {
-        this.sacrificeFlies = sacrificeFlies;
+    public void setSacrificeFly(int sacrificeFly) {
+        this.sacrificeFly = sacrificeFly;
     }
 
     public int getSingles() {
@@ -418,12 +403,12 @@ public class OffensivePlayer {
         this.singles = singles;
     }
 
-    public double getSlugging() {
-        return slugging;
+    public double getSluggingPercentage() {
+        return sluggingPercentage;
     }
 
-    public void setSlugging(double slugging) {
-        this.slugging = slugging;
+    public void setSluggingPercentage(double sluggingPercentage) {
+        this.sluggingPercentage = sluggingPercentage;
     }
 
     public int getStolenBases() {
@@ -466,44 +451,11 @@ public class OffensivePlayer {
         this.walkOffs = walkOffs;
     }
 
-    public BatterPreference getPreference() {
-        return preference;
+    public long getGhostedDate() {
+        return ghostedDate;
     }
 
-    public void setPreference(BatterPreference preference) {
-        this.preference = preference;
-    }
-    
-    public String getFirstName() {
-        return firstName;
-    }
-    
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    
-    public String getLastName() {
-        return lastName;
-    }
-    
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        OffensivePlayer that = (OffensivePlayer) o;
-        return atBats == that.atBats && Double.compare(average, that.average) == 0 && Double.compare(caughtStealingPercentage, that.caughtStealingPercentage) == 0 && doubles == that.doubles && extraBaseHits == that.extraBaseHits && gamesPlayed == that.gamesPlayed && grandSlams == that.grandSlams && groundIntoDoublePlay == that.groundIntoDoublePlay && Double.compare(groundOutVsFlyOut, that.groundOutVsFlyOut) == 0 && hitByPitch == that.hitByPitch && hits == that.hits && homeRuns == that.homeRuns && intentionalWalks == that.intentionalWalks && leftOnBase == that.leftOnBase && Double.compare(onBasePercentage, that.onBasePercentage) == 0 && Double.compare(onBasePlusSlugging, that.onBasePlusSlugging) == 0 && plateAppearances == that.plateAppearances && reachedOnError == that.reachedOnError && runs == that.runs && runsBattedIn == that.runsBattedIn && sacrificeBunts == that.sacrificeBunts && sacrificeFlies == that.sacrificeFlies && singles == that.singles && Double.compare(slugging, that.slugging) == 0 && stolenBases == that.stolenBases && totalBases == that.totalBases && triples == that.triples && walks == that.walks && walkOffs == that.walkOffs && Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId) && Objects.equals(memberId, that.memberId) && preference == that.preference && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
-    }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, teamId, memberId, atBats, average, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutVsFlyOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunts, sacrificeFlies, singles, slugging, stolenBases, totalBases, triples, walks, walkOffs, preference, firstName, lastName);
+    public void setGhostedDate(long ghostedDate) {
+        this.ghostedDate = ghostedDate;
     }
 }

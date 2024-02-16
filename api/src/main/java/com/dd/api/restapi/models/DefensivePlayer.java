@@ -1,19 +1,27 @@
 package com.dd.api.restapi.models;
 
-import com.dd.api.util.ann.TestConstructor;
-import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.persistence.*;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.List;
 
+@Entity
+@Table(name = "dd_defense", schema = "sp24")
 public class DefensivePlayer {
-    // TODO: Need to add data on caughtStealingAttempts and caughtStealingSuccesses
-    private UUID id;
-    private UUID teamId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private Team team;
+    private String firstName;
+    private String lastName;
+    private List<String> positions;
     private int assists;
-    private double caughtStealingPercentage;
-    private int doublePlays;
+    private double caughtStealingPercent;
+    private int doublePlay;
     private int errors;
     private double fieldingPercentage;
     private int inningsPlayed;
@@ -23,18 +31,68 @@ public class DefensivePlayer {
     private int putouts;
     private int totalChances;
     private int triplePlays;
-    
-    @TestConstructor
-    public DefensivePlayer() {
+    private long ghostedDate;
+
+    public DefensivePlayer(Long id,
+                           Team team,
+                           String firstName,
+                           String lastName,
+                           List<String> positions,
+                           int assists,
+                           double caughtStealingPercent,
+                           int doublePlay,
+                           int errors,
+                           double fieldingPercentage,
+                           int inningsPlayed,
+                           int outs,
+                           int outfieldAssists,
+                           int passedBalls,
+                           int putouts,
+                           int totalChances,
+                           int triplePlays) {
+        this.id = id;
+        this.team = team;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.positions = positions;
+        this.assists = assists;
+        this.caughtStealingPercent = caughtStealingPercent;
+        this.doublePlay = doublePlay;
+        this.errors = errors;
+        this.fieldingPercentage = fieldingPercentage;
+        this.inningsPlayed = inningsPlayed;
+        this.outs = outs;
+        this.outfieldAssists = outfieldAssists;
+        this.passedBalls = passedBalls;
+        this.putouts = putouts;
+        this.totalChances = totalChances;
+        this.triplePlays = triplePlays;
     }
 
     @JsonCreator
-    public DefensivePlayer(UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
-        this.id = UUID.randomUUID();
-        this.teamId = teamId;
+    public DefensivePlayer(String firstName,
+                           String lastName,
+                           List<String> positions,
+                           Team team,
+                           int assists,
+                           double caughtStealingPercent,
+                           int doublePlay,
+                           int errors,
+                           double fieldingPercentage,
+                           int inningsPlayed,
+                           int outs,
+                           int outfieldAssists,
+                           int passedBalls,
+                           int putouts,
+                           int totalChances,
+                           int triplePlays) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.positions = positions;
+        this.team = team;
         this.assists = assists;
-        this.caughtStealingPercentage = caughtStealingPercentage;
-        this.doublePlays = doublePlays;
+        this.caughtStealingPercent = caughtStealingPercent;
+        this.doublePlay = doublePlay;
         this.errors = errors;
         this.fieldingPercentage = fieldingPercentage;
         this.inningsPlayed = inningsPlayed;
@@ -46,57 +104,24 @@ public class DefensivePlayer {
         this.triplePlays = triplePlays;
     }
 
-    @UtilityConstructor
-    public DefensivePlayer(UUID playerId, UUID teamId, int assists, double caughtStealingPercentage, int doublePlays, int errors, double fieldingPercentage, int inningsPlayed, int outs, int outfieldAssists, int passedBalls, int putouts, int totalChances, int triplePlays) {
-        this.id = playerId;
-        this.teamId = teamId;
-        this.assists = assists;
-        this.caughtStealingPercentage = caughtStealingPercentage;
-        this.doublePlays = doublePlays;
-        this.errors = errors;
-        this.fieldingPercentage = fieldingPercentage;
-        this.inningsPlayed = inningsPlayed;
-        this.outs = outs;
-        this.outfieldAssists = outfieldAssists;
-        this.passedBalls = passedBalls;
-        this.putouts = putouts;
-        this.totalChances = totalChances;
-        this.triplePlays = triplePlays;
-    }
-    
-
-    @UtilityConstructor
-    public DefensivePlayer(UUID id, UUID teamId) {
-        this.id = id;
-        this.teamId = teamId;
-        this.assists = 0;
-        this.caughtStealingPercentage = 0;
-        this.doublePlays = 0;
-        this.errors = 0;
-        this.fieldingPercentage = 0;
-        this.inningsPlayed = 0;
-        this.outs = 0;
-        this.outfieldAssists = 0;
-        this.passedBalls = 0;
-        this.putouts = 0;
-        this.totalChances = 0;
-        this.triplePlays = 0;
+    public DefensivePlayer() {
+        // Empty for Hibernate
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public UUID getTeamId() {
-        return teamId;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setTeamId(UUID teamId) {
-        this.teamId = teamId;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public int getAssists() {
@@ -107,20 +132,20 @@ public class DefensivePlayer {
         this.assists = assists;
     }
 
-    public double getCaughtStealingPercentage() {
-        return caughtStealingPercentage;
+    public double getCaughtStealingPercent() {
+        return caughtStealingPercent;
     }
 
-    public void setCaughtStealingPercentage(double caughtStealingPercentage) {
-        this.caughtStealingPercentage = caughtStealingPercentage;
+    public void setCaughtStealingPercent(double caughtStealingPercent) {
+        this.caughtStealingPercent = caughtStealingPercent;
     }
 
-    public int getDoublePlays() {
-        return doublePlays;
+    public int getDoublePlay() {
+        return doublePlay;
     }
 
-    public void setDoublePlays(int doublePlays) {
-        this.doublePlays = doublePlays;
+    public void setDoublePlay(int doublePlay) {
+        this.doublePlay = doublePlay;
     }
 
     public int getErrors() {
@@ -195,36 +220,35 @@ public class DefensivePlayer {
         this.triplePlays = triplePlays;
     }
 
-    @Override
-    public String toString() {
-        return "DefensivePlayer{" +
-                "id=" + id +
-                ", teamId=" + teamId +
-                ", assists=" + assists +
-                ", caughtStealingPercentage=" + caughtStealingPercentage +
-                ", doublePlays=" + doublePlays +
-                ", errors=" + errors +
-                ", fieldingPercentage=" + fieldingPercentage +
-                ", inningsPlayed=" + inningsPlayed +
-                ", outs=" + outs +
-                ", outfieldAssists=" + outfieldAssists +
-                ", passedBalls=" + passedBalls +
-                ", putouts=" + putouts +
-                ", totalChances=" + totalChances +
-                ", triplePlays=" + triplePlays +
-                '}';
+    public String getFirstName() {
+        return firstName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DefensivePlayer that = (DefensivePlayer) o;
-        return assists == that.assists && Double.compare(that.caughtStealingPercentage, caughtStealingPercentage) == 0 && doublePlays == that.doublePlays && errors == that.errors && Double.compare(that.fieldingPercentage, fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId);
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, teamId,  assists, caughtStealingPercentage, doublePlays, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays);
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public List<String> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<String> positions) {
+        this.positions = positions;
+    }
+
+    public long getGhostedDate() {
+        return ghostedDate;
+    }
+
+    public void setGhostedDate(long ghostedDate) {
+        this.ghostedDate = ghostedDate;
     }
 }

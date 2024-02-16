@@ -1,47 +1,53 @@
 package com.dd.api.auth.models;
 
-import com.dd.api.util.ann.UtilityConstructor;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.persistence.*;
 
-import java.util.Objects;
-import java.util.UUID;
-
+@Entity
+@Table(name="dd_users", schema="sp24")
 public class User {
-    private UUID id;
-    private String username;
-    private String password;
-    private UUID accountId;
 
-    @UtilityConstructor(description = "Used for SQL queries")
-    public User(UUID id, String username, String password, UUID accountId) {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    private String email;
+
+    @Column(name="password_hash")
+    private String password;
+    private long ghostedDate;
+
+    public User(Long id, String email, String password) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.password = password;
-        this.accountId = accountId;
+        this.ghostedDate = 0;
     }
 
     @JsonCreator
-    public User(String username, String password, UUID accountId) {
-        this.username = username;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
-        this.accountId = accountId;
-        this.id = UUID.randomUUID();
+        this.ghostedDate = 0;
     }
 
-    public UUID getId() {
+    public User() {
+        // Empty for Hibernate
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -52,28 +58,11 @@ public class User {
         this.password = password;
     }
 
-    public UUID getAccountId() {
-        return accountId;
+    public long getGhostedDate() {
+        return ghostedDate;
     }
 
-    public void setAccountId(UUID accountId) {
-        this.accountId = accountId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(accountId, user.accountId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, password, accountId);
-    }
-
-    public static User EMPTY_USER() {
-        return new User(null, "", "", null);
+    public void setGhostedDate(long ghostedDate) {
+        this.ghostedDate = ghostedDate;
     }
 }

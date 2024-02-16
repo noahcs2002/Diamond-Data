@@ -1,34 +1,47 @@
 package com.dd.api.restapi.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.UUID;
 
+@Entity
+@Table(name = "dd_teams", schema = "sp24")
 public class Team {
-    private String name;
-    private UUID id;
-    private UUID accountId;
-    private Color primaryColor;
-    private Color secondaryColor;
-    private Color accentColor;
 
-    @JsonCreator
-    public Team(UUID accountId, String name, Color primaryColour, Color secondaryColour, Color accentColour) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private String name;
+    private long ghostedDate;
+
+    public Team(Long id, String name, long ghostedDate) {
+        this.id = id;
         this.name = name;
-        this.accountId = accountId;
-        this.primaryColor = primaryColour;
-        this.secondaryColor = secondaryColour;
-        this.accentColor = accentColour;
-        this.id = UUID.randomUUID();
+        this.ghostedDate = ghostedDate;
     }
 
-    public Team(UUID id, UUID accountId, String name, Color primaryColour, Color secondaryColour, Color accentColour) {
+    public Team(Long id, String name) {
         this.name = name;
-        this.accountId = accountId;
-        this.primaryColor = primaryColour;
-        this.secondaryColor = secondaryColour;
-        this.accentColor = accentColour;
+        this.id = id;
+    }
+
+    @JsonCreator
+    public Team(String name) {
+        this.name = name;
+        this.ghostedDate = 0;
+    }
+
+    public Team() {
+        // Empty for Hibernate
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,56 +53,28 @@ public class Team {
         this.name = name;
     }
 
-    public UUID getId() {
-        return id;
+    public long getGhostedDate() {
+        return ghostedDate;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(UUID accountId) {
-        this.accountId = accountId;
-    }
-
-    public Color getPrimaryColor() {
-        return primaryColor;
-    }
-
-    public void setPrimaryColor(Color primaryColor) {
-        this.primaryColor = primaryColor;
-    }
-
-    public Color getSecondaryColor() {
-        return secondaryColor;
-    }
-
-    public void setSecondaryColor(Color secondaryColor) {
-        this.secondaryColor = secondaryColor;
-    }
-
-    public Color getAccentColor() {
-        return accentColor;
-    }
-
-    public void setAccentColor(Color accentColor) {
-        this.accentColor = accentColor;
+    public void setGhostedDate(long ghostedDate) {
+        this.ghostedDate = ghostedDate;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Team team = (Team) o;
-        return Objects.equals(name, team.name) && Objects.equals(id, team.id) && Objects.equals(accountId, team.accountId) && Objects.equals(primaryColor, team.primaryColor) && Objects.equals(secondaryColor, team.secondaryColor) && Objects.equals(accentColor, team.accentColor);
+        return Objects.equals(id, team.id) && Objects.equals(name, team.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, accountId, primaryColor, secondaryColor, accentColor);
+        return Objects.hash(id, name);
     }
 }
