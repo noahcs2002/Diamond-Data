@@ -6,21 +6,21 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name="dd_pitchers", schema = "sp24")
+@Table(name = "dd_pitchers", schema = "sp24")
 public class Pitcher {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @ManyToOne
-    @JoinColumn(name="team_id", referencedColumnName="id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
-    
+
     private String firstName;
     private String lastName;
     private long ghostedDate;
-    
+
     // L, R, S
     private Character preference;
     private int appearances;
@@ -53,474 +53,474 @@ public class Pitcher {
     private int wildPitches;
     private int wins;
     private double winningPercentage;
-    
+
     @JsonCreator
     public Pitcher(String firstName,
-		   String lastName,
-		   Character preference,
-		   Team team,
-		   int appearances,
-		   int balks,
-		   int battersFaces,
-		   int blownSaves,
-		   int completeGames,
-		   int earnedRuns,
-		   double earnedRunAverage,
-		   int flyouts,
-		   int gamesFinished,
-		   int gamesStarted,
-		   int groundouts,
-		   int holds,
-		   int inheritedRunners,
-		   double inningsPitched,
-		   int losses,
-		   int numberOfPitches,
-		   int pickoffs,
-		   int qualityStarts,
-		   int reliefWins,
-		   int saves,
-		   int saveOpportunities,
-		   double savePercentage,
-		   int shutouts,
-		   int strikeouts,
-		   int unearnedRuns,
-		   int walks,
-		   double walksAndHitsPerInningPitched,
-		   int wildPitches,
-		   int wins,
-		   double winningPercentage) {
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.preference = preference;
-	this.appearances = appearances;
-	this.balks = balks;
-	this.battersFaces = battersFaces;
-	this.blownSaves = blownSaves;
-	this.completeGames = completeGames;
-	this.earnedRuns = earnedRuns;
-	this.earnedRunAverage = earnedRunAverage;
-	this.flyouts = flyouts;
-	this.gamesFinished = gamesFinished;
-	this.gamesStarted = gamesStarted;
-	this.groundouts = groundouts;
-	this.holds = holds;
-	this.inheritedRunners = inheritedRunners;
-	this.inningsPitched = inningsPitched;
-	this.losses = losses;
-	this.numberOfPitches = numberOfPitches;
-	this.pickoffs = pickoffs;
-	this.qualityStarts = qualityStarts;
-	this.reliefWins = reliefWins;
-	this.saves = saves;
-	this.saveOpportunities = saveOpportunities;
-	this.savePercentage = savePercentage;
-	this.shutouts = shutouts;
-	this.strikeouts = strikeouts;
-	this.unearnedRuns = unearnedRuns;
-	this.walksAndHitsPerInningPitched = walksAndHitsPerInningPitched;
-	this.wildPitches = wildPitches;
-	this.wins = wins;
-	this.winningPercentage = winningPercentage;
-	this.team = team;
-	this.walks = walks;
+                   String lastName,
+                   Character preference,
+                   Team team,
+                   int appearances,
+                   int balks,
+                   int battersFaces,
+                   int blownSaves,
+                   int completeGames,
+                   int earnedRuns,
+                   double earnedRunAverage,
+                   int flyouts,
+                   int gamesFinished,
+                   int gamesStarted,
+                   int groundouts,
+                   int holds,
+                   int inheritedRunners,
+                   double inningsPitched,
+                   int losses,
+                   int numberOfPitches,
+                   int pickoffs,
+                   int qualityStarts,
+                   int reliefWins,
+                   int saves,
+                   int saveOpportunities,
+                   double savePercentage,
+                   int shutouts,
+                   int strikeouts,
+                   int unearnedRuns,
+                   int walks,
+                   double walksAndHitsPerInningPitched,
+                   int wildPitches,
+                   int wins,
+                   double winningPercentage) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.preference = preference;
+        this.appearances = appearances;
+        this.balks = balks;
+        this.battersFaces = battersFaces;
+        this.blownSaves = blownSaves;
+        this.completeGames = completeGames;
+        this.earnedRuns = earnedRuns;
+        this.earnedRunAverage = earnedRunAverage;
+        this.flyouts = flyouts;
+        this.gamesFinished = gamesFinished;
+        this.gamesStarted = gamesStarted;
+        this.groundouts = groundouts;
+        this.holds = holds;
+        this.inheritedRunners = inheritedRunners;
+        this.inningsPitched = inningsPitched;
+        this.losses = losses;
+        this.numberOfPitches = numberOfPitches;
+        this.pickoffs = pickoffs;
+        this.qualityStarts = qualityStarts;
+        this.reliefWins = reliefWins;
+        this.saves = saves;
+        this.saveOpportunities = saveOpportunities;
+        this.savePercentage = savePercentage;
+        this.shutouts = shutouts;
+        this.strikeouts = strikeouts;
+        this.unearnedRuns = unearnedRuns;
+        this.walksAndHitsPerInningPitched = walksAndHitsPerInningPitched;
+        this.wildPitches = wildPitches;
+        this.wins = wins;
+        this.winningPercentage = winningPercentage;
+        this.team = team;
+        this.walks = walks;
     }
-    
+
     public Pitcher(Long id,
-		   String firstName,
-		   String lastName,
-		   long ghostedDate,
-		   Team team,
-		   Character preference,
-		   int appearances,
-		   int balks,
-		   int battersFaces,
-		   int blownSaves,
-		   int completeGames,
-		   int earnedRuns,
-		   double earnedRunAverage,
-		   int flyouts,
-		   int gamesFinished,
-		   int gamesStarted,
-		   int groundouts,
-		   int holds,
-		   int inheritedRunners,
-		   double inningsPitched,
-		   int losses,
-		   int numberOfPitches,
-		   int pickoffs,
-		   int qualityStarts,
-		   int reliefWins,
-		   int saves,
-		   int saveOpportunities,
-		   double savePercentage,
-		   int shutouts,
-		   int strikeouts,
-		   int unearnedRuns,
-		   int walks,
-		   double walksAndHitsPerInningPitched,
-		   int wildPitches,
-		   int wins,
-		   double winningPercentage) {
-	this.id = id;
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.ghostedDate = ghostedDate;
-	this.team = team;
-	this.preference = preference;
-	this.appearances = appearances;
-	this.balks = balks;
-	this.battersFaces = battersFaces;
-	this.blownSaves = blownSaves;
-	this.completeGames = completeGames;
-	this.earnedRuns = earnedRuns;
-	this.earnedRunAverage = earnedRunAverage;
-	this.flyouts = flyouts;
-	this.gamesFinished = gamesFinished;
-	this.gamesStarted = gamesStarted;
-	this.groundouts = groundouts;
-	this.holds = holds;
-	this.inheritedRunners = inheritedRunners;
-	this.inningsPitched = inningsPitched;
-	this.losses = losses;
-	this.numberOfPitches = numberOfPitches;
-	this.pickoffs = pickoffs;
-	this.qualityStarts = qualityStarts;
-	this.reliefWins = reliefWins;
-	this.saves = saves;
-	this.saveOpportunities = saveOpportunities;
-	this.savePercentage = savePercentage;
-	this.shutouts = shutouts;
-	this.strikeouts = strikeouts;
-	this.unearnedRuns = unearnedRuns;
-	this.walksAndHitsPerInningPitched = walksAndHitsPerInningPitched;
-	this.wildPitches = wildPitches;
-	this.wins = wins;
-	this.winningPercentage = winningPercentage;
-	this.walks = walks;
+                   String firstName,
+                   String lastName,
+                   long ghostedDate,
+                   Team team,
+                   Character preference,
+                   int appearances,
+                   int balks,
+                   int battersFaces,
+                   int blownSaves,
+                   int completeGames,
+                   int earnedRuns,
+                   double earnedRunAverage,
+                   int flyouts,
+                   int gamesFinished,
+                   int gamesStarted,
+                   int groundouts,
+                   int holds,
+                   int inheritedRunners,
+                   double inningsPitched,
+                   int losses,
+                   int numberOfPitches,
+                   int pickoffs,
+                   int qualityStarts,
+                   int reliefWins,
+                   int saves,
+                   int saveOpportunities,
+                   double savePercentage,
+                   int shutouts,
+                   int strikeouts,
+                   int unearnedRuns,
+                   int walks,
+                   double walksAndHitsPerInningPitched,
+                   int wildPitches,
+                   int wins,
+                   double winningPercentage) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.ghostedDate = ghostedDate;
+        this.team = team;
+        this.preference = preference;
+        this.appearances = appearances;
+        this.balks = balks;
+        this.battersFaces = battersFaces;
+        this.blownSaves = blownSaves;
+        this.completeGames = completeGames;
+        this.earnedRuns = earnedRuns;
+        this.earnedRunAverage = earnedRunAverage;
+        this.flyouts = flyouts;
+        this.gamesFinished = gamesFinished;
+        this.gamesStarted = gamesStarted;
+        this.groundouts = groundouts;
+        this.holds = holds;
+        this.inheritedRunners = inheritedRunners;
+        this.inningsPitched = inningsPitched;
+        this.losses = losses;
+        this.numberOfPitches = numberOfPitches;
+        this.pickoffs = pickoffs;
+        this.qualityStarts = qualityStarts;
+        this.reliefWins = reliefWins;
+        this.saves = saves;
+        this.saveOpportunities = saveOpportunities;
+        this.savePercentage = savePercentage;
+        this.shutouts = shutouts;
+        this.strikeouts = strikeouts;
+        this.unearnedRuns = unearnedRuns;
+        this.walksAndHitsPerInningPitched = walksAndHitsPerInningPitched;
+        this.wildPitches = wildPitches;
+        this.wins = wins;
+        this.winningPercentage = winningPercentage;
+        this.walks = walks;
     }
-    
+
     public Pitcher() {
-	// Empty for hibernate
+        // Empty for hibernate
     }
-    
+
     public Long getId() {
-	return id;
+        return id;
     }
-    
+
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
-    
+
     public String getFirstName() {
-	return firstName;
+        return firstName;
     }
-    
+
     public void setFirstName(String firstName) {
-	this.firstName = firstName;
+        this.firstName = firstName;
     }
-    
+
     public String getLastName() {
-	return lastName;
+        return lastName;
     }
-    
+
     public void setLastName(String lastName) {
-	this.lastName = lastName;
+        this.lastName = lastName;
     }
-    
+
     public Character getPreference() {
-	return preference;
+        return preference;
     }
-    
+
     public void setPreference(Character preference) {
-	this.preference = preference;
+        this.preference = preference;
     }
-    
+
     public int getAppearances() {
-	return appearances;
+        return appearances;
     }
-    
+
     public void setAppearances(int appearances) {
-	this.appearances = appearances;
+        this.appearances = appearances;
     }
-    
+
     public int getBalks() {
-	return balks;
+        return balks;
     }
-    
+
     public void setBalks(int balks) {
-	this.balks = balks;
+        this.balks = balks;
     }
-    
+
     public int getBattersFaces() {
-	return battersFaces;
+        return battersFaces;
     }
-    
+
     public void setBattersFaces(int battersFaces) {
-	this.battersFaces = battersFaces;
+        this.battersFaces = battersFaces;
     }
-    
+
     public int getBlownSaves() {
-	return blownSaves;
+        return blownSaves;
     }
-    
+
     public void setBlownSaves(int blownSaves) {
-	this.blownSaves = blownSaves;
+        this.blownSaves = blownSaves;
     }
-    
+
     public int getCompleteGames() {
-	return completeGames;
+        return completeGames;
     }
-    
+
     public void setCompleteGames(int completeGames) {
-	this.completeGames = completeGames;
+        this.completeGames = completeGames;
     }
-    
+
     public int getEarnedRuns() {
-	return earnedRuns;
+        return earnedRuns;
     }
-    
+
     public void setEarnedRuns(int earnedRuns) {
-	this.earnedRuns = earnedRuns;
+        this.earnedRuns = earnedRuns;
     }
-    
+
     public double getEarnedRunAverage() {
-	return earnedRunAverage;
+        return earnedRunAverage;
     }
-    
+
     public void setEarnedRunAverage(double earnedRunAverage) {
-	this.earnedRunAverage = earnedRunAverage;
+        this.earnedRunAverage = earnedRunAverage;
     }
-    
+
     public int getFlyout() {
-	return flyouts;
+        return flyouts;
     }
-    
+
     public void setFlyout(int flyouts) {
-	this.flyouts = flyouts;
+        this.flyouts = flyouts;
     }
-    
+
     public int getGamesFinished() {
-	return gamesFinished;
+        return gamesFinished;
     }
-    
+
     public void setGamesFinished(int gamesFinished) {
-	this.gamesFinished = gamesFinished;
+        this.gamesFinished = gamesFinished;
     }
-    
+
     public int getGamesStarted() {
-	return gamesStarted;
+        return gamesStarted;
     }
-    
+
     public void setGamesStarted(int gamesStarted) {
-	this.gamesStarted = gamesStarted;
+        this.gamesStarted = gamesStarted;
     }
-    
+
     public int getGroundouts() {
-	return groundouts;
+        return groundouts;
     }
-    
+
     public void setGroundouts(int groundouts) {
-	this.groundouts = groundouts;
+        this.groundouts = groundouts;
     }
-    
+
     public int getHolds() {
-	return holds;
+        return holds;
     }
-    
+
     public void setHolds(int holds) {
-	this.holds = holds;
+        this.holds = holds;
     }
-    
+
     public int getInheritedRunners() {
-	return inheritedRunners;
+        return inheritedRunners;
     }
-    
+
     public void setInheritedRunners(int inheritedRunners) {
-	this.inheritedRunners = inheritedRunners;
+        this.inheritedRunners = inheritedRunners;
     }
-    
+
     public double getInningsPitched() {
-	return inningsPitched;
+        return inningsPitched;
     }
-    
+
     public void setInningsPitched(double inningsPitched) {
-	this.inningsPitched = inningsPitched;
+        this.inningsPitched = inningsPitched;
     }
-    
+
     public int getLosses() {
-	return losses;
+        return losses;
     }
-    
+
     public void setLosses(int losses) {
-	this.losses = losses;
+        this.losses = losses;
     }
-    
+
     public int getNumberOfPitches() {
-	return numberOfPitches;
+        return numberOfPitches;
     }
-    
+
     public void setNumberOfPitches(int numberOfPitches) {
-	this.numberOfPitches = numberOfPitches;
+        this.numberOfPitches = numberOfPitches;
     }
-    
+
     public int getPickoffs() {
-	return pickoffs;
+        return pickoffs;
     }
-    
+
     public void setPickoffs(int pickoffs) {
-	this.pickoffs = pickoffs;
+        this.pickoffs = pickoffs;
     }
-    
+
     public int getQualityStarts() {
-	return qualityStarts;
+        return qualityStarts;
     }
-    
+
     public void setQualityStarts(int qualityStarts) {
-	this.qualityStarts = qualityStarts;
+        this.qualityStarts = qualityStarts;
     }
-    
+
     public int getReliefWins() {
-	return reliefWins;
+        return reliefWins;
     }
-    
+
     public void setReliefWins(int reliefWins) {
-	this.reliefWins = reliefWins;
+        this.reliefWins = reliefWins;
     }
-    
+
     public int getSaves() {
-	return saves;
+        return saves;
     }
-    
+
     public void setSaves(int saves) {
-	this.saves = saves;
+        this.saves = saves;
     }
-    
+
     public int getSaveOpportunities() {
-	return saveOpportunities;
+        return saveOpportunities;
     }
-    
+
     public void setSaveOpportunities(int saveOpportunities) {
-	this.saveOpportunities = saveOpportunities;
+        this.saveOpportunities = saveOpportunities;
     }
-    
+
     public double getSavePercentage() {
-	return savePercentage;
+        return savePercentage;
     }
-    
+
     public void setSavePercentage(double savePercentage) {
-	this.savePercentage = savePercentage;
+        this.savePercentage = savePercentage;
     }
-    
+
     public int getShutouts() {
-	return shutouts;
+        return shutouts;
     }
-    
+
     public void setShutouts(int shutouts) {
-	this.shutouts = shutouts;
+        this.shutouts = shutouts;
     }
-    
+
     public int getStrikeouts() {
-	return strikeouts;
+        return strikeouts;
     }
-    
+
     public void setStrikeouts(int strikeouts) {
-	this.strikeouts = strikeouts;
+        this.strikeouts = strikeouts;
     }
-    
+
     public int getUnearnedRun() {
-	return unearnedRuns;
+        return unearnedRuns;
     }
-    
+
     public void setUnearnedRun(int unearnedRuns) {
-	this.unearnedRuns = unearnedRuns;
+        this.unearnedRuns = unearnedRuns;
     }
-    
+
     public double getWalksAndHitsPerInningPitched() {
-	return walksAndHitsPerInningPitched;
+        return walksAndHitsPerInningPitched;
     }
-    
+
     public void setWalksAndHitsPerInningPitched(double walksAndHitsPerInningPitched) {
-	this.walksAndHitsPerInningPitched = walksAndHitsPerInningPitched;
+        this.walksAndHitsPerInningPitched = walksAndHitsPerInningPitched;
     }
-    
+
     public int getWildPitches() {
-	return wildPitches;
+        return wildPitches;
     }
-    
+
     public void setWildPitches(int wildPitches) {
-	this.wildPitches = wildPitches;
+        this.wildPitches = wildPitches;
     }
-    
+
     public int getWins() {
-	return wins;
+        return wins;
     }
-    
+
     public void setWins(int wins) {
-	this.wins = wins;
+        this.wins = wins;
     }
-    
+
     public double getWinningPercentage() {
-	return winningPercentage;
+        return winningPercentage;
     }
-    
+
     public void setWinningPercentage(double winningPercentage) {
-	this.winningPercentage = winningPercentage;
+        this.winningPercentage = winningPercentage;
     }
-    
+
     public long getGhostedDate() {
-	return ghostedDate;
+        return ghostedDate;
     }
-    
+
     public void setGhostedDate(long ghostedDate) {
-	this.ghostedDate = ghostedDate;
+        this.ghostedDate = ghostedDate;
     }
-    
+
     public Team getTeam() {
-	return team;
+        return team;
     }
-    
+
     public void setTeam(Team team) {
-	this.team = team;
+        this.team = team;
     }
-    
+
     public int getFlyouts() {
-	return flyouts;
+        return flyouts;
     }
-    
+
     public void setFlyouts(int flyouts) {
-	this.flyouts = flyouts;
+        this.flyouts = flyouts;
     }
-    
+
     public int getUnearnedRuns() {
-	return unearnedRuns;
+        return unearnedRuns;
     }
-    
+
     public void setUnearnedRuns(int unearnedRuns) {
-	this.unearnedRuns = unearnedRuns;
+        this.unearnedRuns = unearnedRuns;
     }
-    
+
     public double getWalks() {
-	return walks;
+        return walks;
     }
-    
+
     public void setWalks(double walks) {
-	this.walks = walks;
+        this.walks = walks;
     }
-    
+
     @Override
     public boolean equals(Object o) {
-	if (this == o) {
-	    return true;
-	}
-	if (o == null || getClass() != o.getClass()) {
-	    return false;
-	}
-	Pitcher pitcher = (Pitcher) o;
-	return appearances == pitcher.appearances && balks == pitcher.balks && battersFaces == pitcher.battersFaces && blownSaves == pitcher.blownSaves && completeGames == pitcher.completeGames && earnedRuns == pitcher.earnedRuns && Double.compare(earnedRunAverage, pitcher.earnedRunAverage) == 0 && flyouts == pitcher.flyouts && gamesFinished == pitcher.gamesFinished && gamesStarted == pitcher.gamesStarted && groundouts == pitcher.groundouts && holds == pitcher.holds && inheritedRunners == pitcher.inheritedRunners && Double.compare(inningsPitched, pitcher.inningsPitched) == 0 && losses == pitcher.losses && numberOfPitches == pitcher.numberOfPitches && pickoffs == pitcher.pickoffs && qualityStarts == pitcher.qualityStarts && reliefWins == pitcher.reliefWins && saves == pitcher.saves && saveOpportunities == pitcher.saveOpportunities && Double.compare(savePercentage, pitcher.savePercentage) == 0 && shutouts == pitcher.shutouts && strikeouts == pitcher.strikeouts && unearnedRuns == pitcher.unearnedRuns && Double.compare(walksAndHitsPerInningPitched, pitcher.walksAndHitsPerInningPitched) == 0 && wildPitches == pitcher.wildPitches && wins == pitcher.wins && Double.compare(winningPercentage, pitcher.winningPercentage) == 0 && Objects.equals(id, pitcher.id) && Objects.equals(firstName, pitcher.firstName) && Objects.equals(lastName, pitcher.lastName) && Objects.equals(preference, pitcher.preference);
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Pitcher pitcher = (Pitcher) o;
+        return appearances == pitcher.appearances && balks == pitcher.balks && battersFaces == pitcher.battersFaces && blownSaves == pitcher.blownSaves && completeGames == pitcher.completeGames && earnedRuns == pitcher.earnedRuns && Double.compare(earnedRunAverage, pitcher.earnedRunAverage) == 0 && flyouts == pitcher.flyouts && gamesFinished == pitcher.gamesFinished && gamesStarted == pitcher.gamesStarted && groundouts == pitcher.groundouts && holds == pitcher.holds && inheritedRunners == pitcher.inheritedRunners && Double.compare(inningsPitched, pitcher.inningsPitched) == 0 && losses == pitcher.losses && numberOfPitches == pitcher.numberOfPitches && pickoffs == pitcher.pickoffs && qualityStarts == pitcher.qualityStarts && reliefWins == pitcher.reliefWins && saves == pitcher.saves && saveOpportunities == pitcher.saveOpportunities && Double.compare(savePercentage, pitcher.savePercentage) == 0 && shutouts == pitcher.shutouts && strikeouts == pitcher.strikeouts && unearnedRuns == pitcher.unearnedRuns && Double.compare(walksAndHitsPerInningPitched, pitcher.walksAndHitsPerInningPitched) == 0 && wildPitches == pitcher.wildPitches && wins == pitcher.wins && Double.compare(winningPercentage, pitcher.winningPercentage) == 0 && Objects.equals(id, pitcher.id) && Objects.equals(firstName, pitcher.firstName) && Objects.equals(lastName, pitcher.lastName) && Objects.equals(preference, pitcher.preference);
     }
-    
+
     @Override
     public int hashCode() {
-	return Objects.hash(id, firstName, lastName, preference, appearances, balks, battersFaces, blownSaves, completeGames, earnedRuns, earnedRunAverage, flyouts, gamesFinished, gamesStarted, groundouts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickoffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningPitched, wildPitches, wins, winningPercentage);
+        return Objects.hash(id, firstName, lastName, preference, appearances, balks, battersFaces, blownSaves, completeGames, earnedRuns, earnedRunAverage, flyouts, gamesFinished, gamesStarted, groundouts, holds, inheritedRunners, inningsPitched, losses, numberOfPitches, pickoffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningPitched, wildPitches, wins, winningPercentage);
     }
 }

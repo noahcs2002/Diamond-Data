@@ -6,15 +6,15 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="dd_defense", schema="sp24")
+@Table(name = "dd_defense", schema = "sp24")
 public class DefensivePlayer {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @ManyToOne
-    @JoinColumn(name="team_id", referencedColumnName="id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
     private String firstName;
     private String lastName;
@@ -32,223 +32,223 @@ public class DefensivePlayer {
     private int totalChances;
     private int triplePlays;
     private long ghostedDate;
-    
+
     public DefensivePlayer(Long id,
-			   Team team,
-			   String firstName,
-			   String lastName,
-			   List<String> positions,
-			   int assists,
-			   double caughtStealingPercent,
-			   int doublePlay,
-			   int errors,
-			   double fieldingPercentage,
-			   int inningsPlayed,
-			   int outs,
-			   int outfieldAssists,
-			   int passedBalls,
-			   int putouts,
-			   int totalChances,
-			   int triplePlays) {
-	this.id = id;
-	this.team = team;
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.positions = positions;
-	this.assists = assists;
-	this.caughtStealingPercent = caughtStealingPercent;
-	this.doublePlay = doublePlay;
-	this.errors = errors;
-	this.fieldingPercentage = fieldingPercentage;
-	this.inningsPlayed = inningsPlayed;
-	this.outs = outs;
-	this.outfieldAssists = outfieldAssists;
-	this.passedBalls = passedBalls;
-	this.putouts = putouts;
-	this.totalChances = totalChances;
-	this.triplePlays = triplePlays;
+                           Team team,
+                           String firstName,
+                           String lastName,
+                           List<String> positions,
+                           int assists,
+                           double caughtStealingPercent,
+                           int doublePlay,
+                           int errors,
+                           double fieldingPercentage,
+                           int inningsPlayed,
+                           int outs,
+                           int outfieldAssists,
+                           int passedBalls,
+                           int putouts,
+                           int totalChances,
+                           int triplePlays) {
+        this.id = id;
+        this.team = team;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.positions = positions;
+        this.assists = assists;
+        this.caughtStealingPercent = caughtStealingPercent;
+        this.doublePlay = doublePlay;
+        this.errors = errors;
+        this.fieldingPercentage = fieldingPercentage;
+        this.inningsPlayed = inningsPlayed;
+        this.outs = outs;
+        this.outfieldAssists = outfieldAssists;
+        this.passedBalls = passedBalls;
+        this.putouts = putouts;
+        this.totalChances = totalChances;
+        this.triplePlays = triplePlays;
     }
-    
+
     @JsonCreator
     public DefensivePlayer(String firstName,
-			   String lastName,
-			   List<String> positions,
-			   Team team,
-			   int assists,
-			   double caughtStealingPercent,
-			   int doublePlay,
-			   int errors,
-			   double fieldingPercentage,
-			   int inningsPlayed,
-			   int outs,
-			   int outfieldAssists,
-			   int passedBalls,
-			   int putouts,
-			   int totalChances,
-			   int triplePlays) {
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.positions = positions;
-	this.team = team;
-	this.assists = assists;
-	this.caughtStealingPercent = caughtStealingPercent;
-	this.doublePlay = doublePlay;
-	this.errors = errors;
-	this.fieldingPercentage = fieldingPercentage;
-	this.inningsPlayed = inningsPlayed;
-	this.outs = outs;
-	this.outfieldAssists = outfieldAssists;
-	this.passedBalls = passedBalls;
-	this.putouts = putouts;
-	this.totalChances = totalChances;
-	this.triplePlays = triplePlays;
+                           String lastName,
+                           List<String> positions,
+                           Team team,
+                           int assists,
+                           double caughtStealingPercent,
+                           int doublePlay,
+                           int errors,
+                           double fieldingPercentage,
+                           int inningsPlayed,
+                           int outs,
+                           int outfieldAssists,
+                           int passedBalls,
+                           int putouts,
+                           int totalChances,
+                           int triplePlays) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.positions = positions;
+        this.team = team;
+        this.assists = assists;
+        this.caughtStealingPercent = caughtStealingPercent;
+        this.doublePlay = doublePlay;
+        this.errors = errors;
+        this.fieldingPercentage = fieldingPercentage;
+        this.inningsPlayed = inningsPlayed;
+        this.outs = outs;
+        this.outfieldAssists = outfieldAssists;
+        this.passedBalls = passedBalls;
+        this.putouts = putouts;
+        this.totalChances = totalChances;
+        this.triplePlays = triplePlays;
     }
-    
+
     public DefensivePlayer() {
-	// Empty for Hibernate
+        // Empty for Hibernate
     }
-    
+
     public Long getId() {
-	return id;
+        return id;
     }
-    
+
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
-    
+
     public Team getTeam() {
-	return team;
+        return team;
     }
-    
+
     public void setTeam(Team team) {
-	this.team = team;
+        this.team = team;
     }
-    
+
     public int getAssists() {
-	return assists;
+        return assists;
     }
-    
+
     public void setAssists(int assists) {
-	this.assists = assists;
+        this.assists = assists;
     }
-    
+
     public double getCaughtStealingPercent() {
-	return caughtStealingPercent;
+        return caughtStealingPercent;
     }
-    
+
     public void setCaughtStealingPercent(double caughtStealingPercent) {
-	this.caughtStealingPercent = caughtStealingPercent;
+        this.caughtStealingPercent = caughtStealingPercent;
     }
-    
+
     public int getDoublePlay() {
-	return doublePlay;
+        return doublePlay;
     }
-    
+
     public void setDoublePlay(int doublePlay) {
-	this.doublePlay = doublePlay;
+        this.doublePlay = doublePlay;
     }
-    
+
     public int getErrors() {
-	return errors;
+        return errors;
     }
-    
+
     public void setErrors(int errors) {
-	this.errors = errors;
+        this.errors = errors;
     }
-    
+
     public double getFieldingPercentage() {
-	return fieldingPercentage;
+        return fieldingPercentage;
     }
-    
+
     public void setFieldingPercentage(double fieldingPercentage) {
-	this.fieldingPercentage = fieldingPercentage;
+        this.fieldingPercentage = fieldingPercentage;
     }
-    
+
     public int getInningsPlayed() {
-	return inningsPlayed;
+        return inningsPlayed;
     }
-    
+
     public void setInningsPlayed(int inningsPlayed) {
-	this.inningsPlayed = inningsPlayed;
+        this.inningsPlayed = inningsPlayed;
     }
-    
+
     public int getOuts() {
-	return outs;
+        return outs;
     }
-    
+
     public void setOuts(int outs) {
-	this.outs = outs;
+        this.outs = outs;
     }
-    
+
     public int getOutfieldAssists() {
-	return outfieldAssists;
+        return outfieldAssists;
     }
-    
+
     public void setOutfieldAssists(int outfieldAssists) {
-	this.outfieldAssists = outfieldAssists;
+        this.outfieldAssists = outfieldAssists;
     }
-    
+
     public int getPassedBalls() {
-	return passedBalls;
+        return passedBalls;
     }
-    
+
     public void setPassedBalls(int passedBalls) {
-	this.passedBalls = passedBalls;
+        this.passedBalls = passedBalls;
     }
-    
+
     public int getPutouts() {
-	return putouts;
+        return putouts;
     }
-    
+
     public void setPutouts(int putouts) {
-	this.putouts = putouts;
+        this.putouts = putouts;
     }
-    
+
     public int getTotalChances() {
-	return totalChances;
+        return totalChances;
     }
-    
+
     public void setTotalChances(int totalChances) {
-	this.totalChances = totalChances;
+        this.totalChances = totalChances;
     }
-    
+
     public int getTriplePlays() {
-	return triplePlays;
+        return triplePlays;
     }
-    
+
     public void setTriplePlays(int triplePlays) {
-	this.triplePlays = triplePlays;
+        this.triplePlays = triplePlays;
     }
-    
+
     public String getFirstName() {
-	return firstName;
+        return firstName;
     }
-    
+
     public void setFirstName(String firstName) {
-	this.firstName = firstName;
+        this.firstName = firstName;
     }
-    
+
     public String getLastName() {
-	return lastName;
+        return lastName;
     }
-    
+
     public void setLastName(String lastName) {
-	this.lastName = lastName;
+        this.lastName = lastName;
     }
-    
+
     public List<String> getPositions() {
-	return positions;
+        return positions;
     }
-    
+
     public void setPositions(List<String> positions) {
-	this.positions = positions;
+        this.positions = positions;
     }
-    
+
     public long getGhostedDate() {
-	return ghostedDate;
+        return ghostedDate;
     }
-    
+
     public void setGhostedDate(long ghostedDate) {
-	this.ghostedDate = ghostedDate;
+        this.ghostedDate = ghostedDate;
     }
 }

@@ -12,45 +12,45 @@ import java.util.List;
 public class PitcherController {
 
     private final PitcherService service;
-    
+
     @Autowired
     public PitcherController(PitcherService service) {
-	this.service = service;
+        this.service = service;
     }
-    
+
     @RequestMapping("/get")
     @GetMapping
     public Pitcher get(@RequestParam Long id) {
-	return this.service.getPitcherById(id);
+        return this.service.getPitcherById(id);
     }
-    
+
     @RequestMapping("/get-all")
     @GetMapping
     public List<Pitcher> getAll() {
-	return this.service.getAll();
+        return this.service.getAll();
     }
-    
+
     @RequestMapping("/get-by-team")
     @GetMapping
     public List<Pitcher> getByTeam(@RequestParam Long teamId) {
-	return this.service.getPitchersByTeam(teamId);
+        return this.service.getPitchersByTeam(teamId);
     }
-    
+
     @RequestMapping("/create")
     @PostMapping
     public Pitcher create(@RequestBody Pitcher pitcher) {
-	return this.service.createPitcher(pitcher);
+        return this.service.createPitcher(pitcher);
     }
-    
+
     @RequestMapping("/update")
     @PutMapping
     public Pitcher update(@RequestParam Long id, @RequestBody Pitcher newModel) {
-	return this.service.updatePitcher(id, newModel);
+        return this.service.updatePitcher(id, newModel);
     }
-    
+
     @RequestMapping("/delete")
     @DeleteMapping
     public boolean delete(@RequestParam Long id) {
-	return this.service.deletePitcher(id);
+        return this.service.deletePitcher(id);
     }
 }

@@ -9,10 +9,9 @@ public class Color {
     public Color(String color) {
         hexCode = new char[6];
 
-        if (color.length()!=6) {
+        if (color.length() != 6) {
             throw new RuntimeException("Colour Codes must be exactly 6 characters. If you used a pound sign (#fff000) retry without the pound sign.");
-        }
-        else {
+        } else {
             for (int i = 0; i < color.length(); i += 1) {
                 hexCode[i] = color.charAt(i);
             }
@@ -26,7 +25,7 @@ public class Color {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        for(char c : hexCode) {
+        for (char c : hexCode) {
             builder.append(c);
         }
 

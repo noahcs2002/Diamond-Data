@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="dd_offense", schema="sp24")
+@Table(name = "dd_offense", schema = "sp24")
 public class OffensivePlayer {
-    
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @ManyToOne
-    @JoinColumn(name="team_id", referencedColumnName="id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
     private int atBats;
     private String firstName;
@@ -46,416 +46,416 @@ public class OffensivePlayer {
     private int walks;
     private int walkOffs;
     private long ghostedDate;
-    
+
     public OffensivePlayer(Long id,
-			   Team team,
-			   int atBats,
-			   String firstName,
-			   String lastName,
-			   double battingAverage,
-			   int caughtStealing,
-			   int doubles,
-			   int extraBaseHits,
-			   int gamesPlayed,
-			   int grandSlams,
-			   int groundIntoDoublePlay,
-			   double groundOutAirOut,
-			   int hitByPitch,
-			   int hits,
-			   int homeRuns,
-			   int intentionalWalks,
-			   int leftOnBase,
-			   double onBasePercentage,
-			   double onBasePlusSlugging,
-			   int plateAppearances,
-			   int reachedOnError,
-			   int runs,
-			   int runsBattedIn,
-			   int sacrificeBunt,
-			   int sacrificeFly,
-			   int singles,
-			   double sluggingPercentage,
-			   int stolenBases,
-			   int totalBases,
-			   int triples,
-			   int walks,
-			   int walkOffs) {
-	this.id = id;
-	this.team = team;
-	this.atBats = atBats;
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.battingAverage = battingAverage;
-	this.caughtStealing = caughtStealing;
-	this.doubles = doubles;
-	this.extraBaseHits = extraBaseHits;
-	this.gamesPlayed = gamesPlayed;
-	this.grandSlams = grandSlams;
-	this.groundIntoDoublePlay = groundIntoDoublePlay;
-	this.groundOutAirOut = groundOutAirOut;
-	this.hitByPitch = hitByPitch;
-	this.hits = hits;
-	this.homeRuns = homeRuns;
-	this.intentionalWalks = intentionalWalks;
-	this.leftOnBase = leftOnBase;
-	this.onBasePercentage = onBasePercentage;
-	this.onBasePlusSlugging = onBasePlusSlugging;
-	this.plateAppearances = plateAppearances;
-	this.reachedOnError = reachedOnError;
-	this.runs = runs;
-	this.runsBattedIn = runsBattedIn;
-	this.sacrificeBunt = sacrificeBunt;
-	this.sacrificeFly = sacrificeFly;
-	this.singles = singles;
-	this.sluggingPercentage = sluggingPercentage;
-	this.stolenBases = stolenBases;
-	this.totalBases = totalBases;
-	this.triples = triples;
-	this.walks = walks;
-	this.walkOffs = walkOffs;
-	this.ghostedDate = 0;
+                           Team team,
+                           int atBats,
+                           String firstName,
+                           String lastName,
+                           double battingAverage,
+                           int caughtStealing,
+                           int doubles,
+                           int extraBaseHits,
+                           int gamesPlayed,
+                           int grandSlams,
+                           int groundIntoDoublePlay,
+                           double groundOutAirOut,
+                           int hitByPitch,
+                           int hits,
+                           int homeRuns,
+                           int intentionalWalks,
+                           int leftOnBase,
+                           double onBasePercentage,
+                           double onBasePlusSlugging,
+                           int plateAppearances,
+                           int reachedOnError,
+                           int runs,
+                           int runsBattedIn,
+                           int sacrificeBunt,
+                           int sacrificeFly,
+                           int singles,
+                           double sluggingPercentage,
+                           int stolenBases,
+                           int totalBases,
+                           int triples,
+                           int walks,
+                           int walkOffs) {
+        this.id = id;
+        this.team = team;
+        this.atBats = atBats;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.battingAverage = battingAverage;
+        this.caughtStealing = caughtStealing;
+        this.doubles = doubles;
+        this.extraBaseHits = extraBaseHits;
+        this.gamesPlayed = gamesPlayed;
+        this.grandSlams = grandSlams;
+        this.groundIntoDoublePlay = groundIntoDoublePlay;
+        this.groundOutAirOut = groundOutAirOut;
+        this.hitByPitch = hitByPitch;
+        this.hits = hits;
+        this.homeRuns = homeRuns;
+        this.intentionalWalks = intentionalWalks;
+        this.leftOnBase = leftOnBase;
+        this.onBasePercentage = onBasePercentage;
+        this.onBasePlusSlugging = onBasePlusSlugging;
+        this.plateAppearances = plateAppearances;
+        this.reachedOnError = reachedOnError;
+        this.runs = runs;
+        this.runsBattedIn = runsBattedIn;
+        this.sacrificeBunt = sacrificeBunt;
+        this.sacrificeFly = sacrificeFly;
+        this.singles = singles;
+        this.sluggingPercentage = sluggingPercentage;
+        this.stolenBases = stolenBases;
+        this.totalBases = totalBases;
+        this.triples = triples;
+        this.walks = walks;
+        this.walkOffs = walkOffs;
+        this.ghostedDate = 0;
     }
-    
+
     @JsonCreator
     public OffensivePlayer(Team team,
-			   int atBats,
-			   String firstName,
-			   String lastName,
-			   double battingAverage,
-			   int caughtStealing,
-			   int doubles,
-			   int extraBaseHits,
-			   int gamesPlayed,
-			   int grandSlams,
-			   int groundIntoDoublePlay,
-			   double groundOutAirOut,
-			   int hitByPitch,
-			   int hits,
-			   int homeRuns,
-			   int intentionalWalks,
-			   int leftOnBase,
-			   double onBasePercentage,
-			   double onBasePlusSlugging,
-			   int plateAppearances,
-			   int reachedOnError,
-			   int runs,
-			   int runsBattedIn,
-			   int sacrificeBunt,
-			   int sacrificeFly,
-			   int singles,
-			   double sluggingPercentage,
-			   int stolenBases,
-			   int totalBases,
-			   int triples,
-			   int walks,
-			   int walkOffs) {
-	this.team = team;
-	this.atBats = atBats;
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.battingAverage = battingAverage;
-	this.caughtStealing = caughtStealing;
-	this.doubles = doubles;
-	this.extraBaseHits = extraBaseHits;
-	this.gamesPlayed = gamesPlayed;
-	this.grandSlams = grandSlams;
-	this.groundIntoDoublePlay = groundIntoDoublePlay;
-	this.groundOutAirOut = groundOutAirOut;
-	this.hitByPitch = hitByPitch;
-	this.hits = hits;
-	this.homeRuns = homeRuns;
-	this.intentionalWalks = intentionalWalks;
-	this.leftOnBase = leftOnBase;
-	this.onBasePercentage = onBasePercentage;
-	this.onBasePlusSlugging = onBasePlusSlugging;
-	this.plateAppearances = plateAppearances;
-	this.reachedOnError = reachedOnError;
-	this.runs = runs;
-	this.runsBattedIn = runsBattedIn;
-	this.sacrificeBunt = sacrificeBunt;
-	this.sacrificeFly = sacrificeFly;
-	this.singles = singles;
-	this.sluggingPercentage = sluggingPercentage;
-	this.stolenBases = stolenBases;
-	this.totalBases = totalBases;
-	this.triples = triples;
-	this.walks = walks;
-	this.walkOffs = walkOffs;
+                           int atBats,
+                           String firstName,
+                           String lastName,
+                           double battingAverage,
+                           int caughtStealing,
+                           int doubles,
+                           int extraBaseHits,
+                           int gamesPlayed,
+                           int grandSlams,
+                           int groundIntoDoublePlay,
+                           double groundOutAirOut,
+                           int hitByPitch,
+                           int hits,
+                           int homeRuns,
+                           int intentionalWalks,
+                           int leftOnBase,
+                           double onBasePercentage,
+                           double onBasePlusSlugging,
+                           int plateAppearances,
+                           int reachedOnError,
+                           int runs,
+                           int runsBattedIn,
+                           int sacrificeBunt,
+                           int sacrificeFly,
+                           int singles,
+                           double sluggingPercentage,
+                           int stolenBases,
+                           int totalBases,
+                           int triples,
+                           int walks,
+                           int walkOffs) {
+        this.team = team;
+        this.atBats = atBats;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.battingAverage = battingAverage;
+        this.caughtStealing = caughtStealing;
+        this.doubles = doubles;
+        this.extraBaseHits = extraBaseHits;
+        this.gamesPlayed = gamesPlayed;
+        this.grandSlams = grandSlams;
+        this.groundIntoDoublePlay = groundIntoDoublePlay;
+        this.groundOutAirOut = groundOutAirOut;
+        this.hitByPitch = hitByPitch;
+        this.hits = hits;
+        this.homeRuns = homeRuns;
+        this.intentionalWalks = intentionalWalks;
+        this.leftOnBase = leftOnBase;
+        this.onBasePercentage = onBasePercentage;
+        this.onBasePlusSlugging = onBasePlusSlugging;
+        this.plateAppearances = plateAppearances;
+        this.reachedOnError = reachedOnError;
+        this.runs = runs;
+        this.runsBattedIn = runsBattedIn;
+        this.sacrificeBunt = sacrificeBunt;
+        this.sacrificeFly = sacrificeFly;
+        this.singles = singles;
+        this.sluggingPercentage = sluggingPercentage;
+        this.stolenBases = stolenBases;
+        this.totalBases = totalBases;
+        this.triples = triples;
+        this.walks = walks;
+        this.walkOffs = walkOffs;
     }
-    
+
     public OffensivePlayer() {
-	// Empty for Hibernate
+        // Empty for Hibernate
     }
-    
+
     public Long getId() {
-	return id;
+        return id;
     }
-    
+
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
-    
+
     public Team getTeam() {
-	return team;
+        return team;
     }
-    
+
     public void setTeam(Team team) {
-	this.team = team;
+        this.team = team;
     }
-    
+
     public int getAtBats() {
-	return atBats;
+        return atBats;
     }
-    
+
     public void setAtBats(int atBats) {
-	this.atBats = atBats;
+        this.atBats = atBats;
     }
-    
+
     public String getFirstName() {
-	return firstName;
+        return firstName;
     }
-    
+
     public void setFirstName(String firstName) {
-	this.firstName = firstName;
+        this.firstName = firstName;
     }
-    
+
     public String getLastName() {
-	return lastName;
+        return lastName;
     }
-    
+
     public void setLastName(String lastName) {
-	this.lastName = lastName;
+        this.lastName = lastName;
     }
-    
+
     public double getBattingAverage() {
-	return battingAverage;
+        return battingAverage;
     }
-    
+
     public void setBattingAverage(double battingAverage) {
-	this.battingAverage = battingAverage;
+        this.battingAverage = battingAverage;
     }
-    
+
     public int getCaughtStealing() {
-	return caughtStealing;
+        return caughtStealing;
     }
-    
+
     public void setCaughtStealing(int caughtStealing) {
-	this.caughtStealing = caughtStealing;
+        this.caughtStealing = caughtStealing;
     }
-    
+
     public int getDoubles() {
-	return doubles;
+        return doubles;
     }
-    
+
     public void setDoubles(int doubles) {
-	this.doubles = doubles;
+        this.doubles = doubles;
     }
-    
+
     public int getExtraBaseHits() {
-	return extraBaseHits;
+        return extraBaseHits;
     }
-    
+
     public void setExtraBaseHits(int extraBaseHits) {
-	this.extraBaseHits = extraBaseHits;
+        this.extraBaseHits = extraBaseHits;
     }
-    
+
     public int getGamesPlayed() {
-	return gamesPlayed;
+        return gamesPlayed;
     }
-    
+
     public void setGamesPlayed(int gamesPlayed) {
-	this.gamesPlayed = gamesPlayed;
+        this.gamesPlayed = gamesPlayed;
     }
-    
+
     public int getGrandSlams() {
-	return grandSlams;
+        return grandSlams;
     }
-    
+
     public void setGrandSlams(int grandSlams) {
-	this.grandSlams = grandSlams;
+        this.grandSlams = grandSlams;
     }
-    
+
     public int getGroundIntoDoublePlay() {
-	return groundIntoDoublePlay;
+        return groundIntoDoublePlay;
     }
-    
+
     public void setGroundIntoDoublePlay(int groundIntoDoublePlay) {
-	this.groundIntoDoublePlay = groundIntoDoublePlay;
+        this.groundIntoDoublePlay = groundIntoDoublePlay;
     }
-    
+
     public double getGroundOutAirOut() {
-	return groundOutAirOut;
+        return groundOutAirOut;
     }
-    
+
     public void setGroundOutAirOut(double groundOutAirOut) {
-	this.groundOutAirOut = groundOutAirOut;
+        this.groundOutAirOut = groundOutAirOut;
     }
-    
+
     public int getHitByPitch() {
-	return hitByPitch;
+        return hitByPitch;
     }
-    
+
     public void setHitByPitch(int hitByPitch) {
-	this.hitByPitch = hitByPitch;
+        this.hitByPitch = hitByPitch;
     }
-    
+
     public int getHits() {
-	return hits;
+        return hits;
     }
-    
+
     public void setHits(int hits) {
-	this.hits = hits;
+        this.hits = hits;
     }
-    
+
     public int getHomeRuns() {
-	return homeRuns;
+        return homeRuns;
     }
-    
+
     public void setHomeRuns(int homeRuns) {
-	this.homeRuns = homeRuns;
+        this.homeRuns = homeRuns;
     }
-    
+
     public int getIntentionalWalks() {
-	return intentionalWalks;
+        return intentionalWalks;
     }
-    
+
     public void setIntentionalWalks(int intentionalWalks) {
-	this.intentionalWalks = intentionalWalks;
+        this.intentionalWalks = intentionalWalks;
     }
-    
+
     public int getLeftOnBase() {
-	return leftOnBase;
+        return leftOnBase;
     }
-    
+
     public void setLeftOnBase(int leftOnBase) {
-	this.leftOnBase = leftOnBase;
+        this.leftOnBase = leftOnBase;
     }
-    
+
     public double getOnBasePercentage() {
-	return onBasePercentage;
+        return onBasePercentage;
     }
-    
+
     public void setOnBasePercentage(double onBasePercentage) {
-	this.onBasePercentage = onBasePercentage;
+        this.onBasePercentage = onBasePercentage;
     }
-    
+
     public double getOnBasePlusSlugging() {
-	return onBasePlusSlugging;
+        return onBasePlusSlugging;
     }
-    
+
     public void setOnBasePlusSlugging(double onBasePlusSlugging) {
-	this.onBasePlusSlugging = onBasePlusSlugging;
+        this.onBasePlusSlugging = onBasePlusSlugging;
     }
-    
+
     public int getPlateAppearances() {
-	return plateAppearances;
+        return plateAppearances;
     }
-    
+
     public void setPlateAppearances(int plateAppearances) {
-	this.plateAppearances = plateAppearances;
+        this.plateAppearances = plateAppearances;
     }
-    
+
     public int getReachedOnError() {
-	return reachedOnError;
+        return reachedOnError;
     }
-    
+
     public void setReachedOnError(int reachedOnError) {
-	this.reachedOnError = reachedOnError;
+        this.reachedOnError = reachedOnError;
     }
-    
+
     public int getRuns() {
-	return runs;
+        return runs;
     }
-    
+
     public void setRuns(int runs) {
-	this.runs = runs;
+        this.runs = runs;
     }
-    
+
     public int getRunsBattedIn() {
-	return runsBattedIn;
+        return runsBattedIn;
     }
-    
+
     public void setRunsBattedIn(int runsBattedIn) {
-	this.runsBattedIn = runsBattedIn;
+        this.runsBattedIn = runsBattedIn;
     }
-    
+
     public int getSacrificeBunt() {
-	return sacrificeBunt;
+        return sacrificeBunt;
     }
-    
+
     public void setSacrificeBunt(int sacrificeBunt) {
-	this.sacrificeBunt = sacrificeBunt;
+        this.sacrificeBunt = sacrificeBunt;
     }
-    
+
     public int getSacrificeFly() {
-	return sacrificeFly;
+        return sacrificeFly;
     }
-    
+
     public void setSacrificeFly(int sacrificeFly) {
-	this.sacrificeFly = sacrificeFly;
+        this.sacrificeFly = sacrificeFly;
     }
-    
+
     public int getSingles() {
-	return singles;
+        return singles;
     }
-    
+
     public void setSingles(int singles) {
-	this.singles = singles;
+        this.singles = singles;
     }
-    
+
     public double getSluggingPercentage() {
-	return sluggingPercentage;
+        return sluggingPercentage;
     }
-    
+
     public void setSluggingPercentage(double sluggingPercentage) {
-	this.sluggingPercentage = sluggingPercentage;
+        this.sluggingPercentage = sluggingPercentage;
     }
-    
+
     public int getStolenBases() {
-	return stolenBases;
+        return stolenBases;
     }
-    
+
     public void setStolenBases(int stolenBases) {
-	this.stolenBases = stolenBases;
+        this.stolenBases = stolenBases;
     }
-    
+
     public int getTotalBases() {
-	return totalBases;
+        return totalBases;
     }
-    
+
     public void setTotalBases(int totalBases) {
-	this.totalBases = totalBases;
+        this.totalBases = totalBases;
     }
-    
+
     public int getTriples() {
-	return triples;
+        return triples;
     }
-    
+
     public void setTriples(int triples) {
-	this.triples = triples;
+        this.triples = triples;
     }
-    
+
     public int getWalks() {
-	return walks;
+        return walks;
     }
-    
+
     public void setWalks(int walks) {
-	this.walks = walks;
+        this.walks = walks;
     }
-    
+
     public int getWalkOffs() {
-	return walkOffs;
+        return walkOffs;
     }
-    
+
     public void setWalkOffs(int walkOffs) {
-	this.walkOffs = walkOffs;
+        this.walkOffs = walkOffs;
     }
-    
+
     public long getGhostedDate() {
-	return ghostedDate;
+        return ghostedDate;
     }
-    
+
     public void setGhostedDate(long ghostedDate) {
-	this.ghostedDate = ghostedDate;
+        this.ghostedDate = ghostedDate;
     }
 }

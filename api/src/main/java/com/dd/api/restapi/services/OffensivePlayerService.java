@@ -14,53 +14,53 @@ import java.util.stream.Collectors;
 public class OffensivePlayerService {
 
     private final OffensivePlayerRepository repository;
-    
+
     @Autowired
     public OffensivePlayerService(OffensivePlayerRepository repository) {
-	this.repository = repository;
+        this.repository = repository;
     }
-    
+
     @Transactional
     public OffensivePlayer createPlayer(OffensivePlayer player) {
-	return this.repository.save(player);
+        return this.repository.save(player);
     }
-    
+
     @Transactional
     public OffensivePlayer getOffensivePlayer(Long id) {
-	return this.repository.findById(id)
-	    .filter(_p -> _p.getGhostedDate() == 0)
-	    .orElse(null);
+        return this.repository.findById(id)
+                .filter(_p -> _p.getGhostedDate() == 0)
+                .orElse(null);
     }
-    
+
     @Transactional
     public List<OffensivePlayer> getAll() {
-	return this.repository.findAll()
-	    .stream()
-	    .filter(_p -> _p.getGhostedDate() == 0)
-	    .toList();
+        return this.repository.findAll()
+                .stream()
+                .filter(_p -> _p.getGhostedDate() == 0)
+                .toList();
     }
-    
+
     @Transactional
     public List<OffensivePlayer> getByTeam(Long teamId) {
-	return this.repository.findAll()
-	    .stream()
-	    .filter(_p -> _p.getGhostedDate() == 0)
-	    .filter(_p -> _p.getTeam().getId().equals(teamId))
-	    .collect(Collectors.toList());
+        return this.repository.findAll()
+                .stream()
+                .filter(_p -> _p.getGhostedDate() == 0)
+                .filter(_p -> _p.getTeam().getId().equals(teamId))
+                .collect(Collectors.toList());
     }
-    
+
     @Transactional
     public OffensivePlayer update(Long id, OffensivePlayer newPlayer) {
-	newPlayer.setId(id);
-	return this.repository.save(newPlayer);
+        newPlayer.setId(id);
+        return this.repository.save(newPlayer);
     }
-    
+
     @Transactional
     public boolean delete(Long id) {
-	this.repository.findById(id).ifPresent(_p -> {
-	    _p.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
-	    this.repository.save(_p);
-	});
-	return true;
+        this.repository.findById(id).ifPresent(_p -> {
+            _p.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
+            this.repository.save(_p);
+        });
+        return true;
     }
 }
