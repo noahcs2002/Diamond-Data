@@ -17,7 +17,7 @@ function Login() {
 
         // Construct the URL with query parameters
         const url = new URL(endpointUrl);
-        url.searchParams.append('username', email);
+        url.searchParams.append('email', email);
         url.searchParams.append('password', password);
 
         // Make the HTTP GET request
