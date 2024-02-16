@@ -6,7 +6,10 @@ import PlayerManagement from "./pages/PlayerManagement";
 import {BrowserRouter as Router, Route, Routes, Redirect} from 'react-router-dom';
 import './App.scss';
 import TeamStats from "./pages/TeamStats";
-import UserManagement from "./pages/UserManagement";
+import PlayerStats from "./pages/PlayerStats";
+import Roster from "./pages/Roster";
+import Insights from "./pages/Insights";
+import BulkEntry from "./pages/BulkEntry";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
@@ -23,11 +26,14 @@ function App() {
           <Router>
             {/* <Navbar /> */}
               <Routes>
-                <Route  path="/" exact element={<Login/>} />
-                <Route  path="/home" exact element={<Home/>} />
+                {/* <Route  path="/" exact element={<Login/>} /> */}
+                <Route  path="/" exact element={<Home/>} />
                 <Route  path="/playerManagement" exact element={<PlayerManagement />} />
                 <Route  path="/teamStats" exact element={<TeamStats />} />
-                <Route  path="/userManagement" exact element={<UserManagement />} />
+                <Route  path="/playerStats" exact element={<PlayerStats />} />
+                <Route  path="/roster" exact element={<Roster />} />
+                <Route  path="/insights" exact element={<Insights />} />
+                <Route  path="/bulkEntry" exact element={<BulkEntry />} />
                 <Route  path="/Settings" exact element={<Settings />} />
               </Routes>
             <Footer />
