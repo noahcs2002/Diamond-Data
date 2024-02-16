@@ -47,7 +47,7 @@ public class DefensivePlayerController {
     }
 
     @RequestMapping("/delete")
-    public boolean delete(@RequestParam long id) {
+    public boolean delete(@RequestParam Long id) {
         return this.service.deletePlayer(id);
     }
 }
