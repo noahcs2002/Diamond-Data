@@ -26,8 +26,8 @@ function App() {
           <Router>
             {/* <Navbar /> */}
               <Routes>
-                {/* <Route  path="/" exact element={<Login/>} /> */}
-                <Route  path="/" exact element={<Home/>} />
+                <Route  path="/" exact element={<Login/>} />
+                <Route  path="/home" exact element={<Home/>} />
                 <Route  path="/playerManagement" exact element={<PlayerManagement />} />
                 <Route  path="/teamStats" exact element={<TeamStats />} />
                 <Route  path="/playerStats" exact element={<PlayerStats />} />
