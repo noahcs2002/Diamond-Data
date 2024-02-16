@@ -1,116 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/TeamStats.scss';
-import Navbar from '../components/Navbar';
-import { useTable } from 'react-table';
+import React from 'react'
+import '../styles/TeamStats.scss'
+import Navbar from '../components/Navbar'
+import { useState } from 'react';
 
 function TeamStats() {
+  const [teams, setTeams] = useState([
+    { id: 1, name: 'Team 1', players: 20, record: '10-5' },
+    { id: 2, name: 'Team 2', players: 18, record: '8-7' },
+    { id: 3, name: 'Team 3', players: 22, record: '12-3' },
+    { id: 4, name: 'Team 4', players: 15, record: '5-10' },
+    { id: 5, name: 'Team 5', players: 19, record: '9-6' },
+  ]);
 
-  const [offensiveData, setOffensiveData] = useState({});
-  const [defensiveData, setDefensiveData] = useState({});
-  const [pitcherData, setPitcherData] = useState({});
+  const [teamStats, setTeamStats] = useState({
+    1: { battingAverage: 0.300, homeRuns: 20, stolenBases: 10, runs: 100 },
+    2: { battingAverage: 0.280, homeRuns: 15, stolenBases: 8, runs: 90 },
+    3: { battingAverage: 0.320, homeRuns: 25, stolenBases: 12, runs: 110 },
+    4: { battingAverage: 0.260, homeRuns: 10, stolenBases: 5, runs: 80 },
+    5: { battingAverage: 0.310, homeRuns: 18, stolenBases: 9, runs: 95 },
+  });
 
-  useEffect(() => {
-    getOffensiveData()
-    getDefensiveData()
-    getPitcherData()
-  }, [])
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [isStatsView, setIsStatsView] = useState(false);
 
-  const getOffensiveData = async () => {
-    const id = 'E9123497-4899-49EB-A26B-1D09B81B0693';
-    const endpointUrl = 'http://localhost:8080/diamond-data/api/offensive-players/get-by-team';
-    
-    const url = new URL(endpointUrl);
-    url.searchParams.append('teamId', id);
+  const openModal = (team) => {
+    setSelectedTeam(team);
+  };
 
-    await fetch(url,{
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(res => {
-      if(!res.ok) {
-        console.log('error');
-      }
-      return res.json();
-    })
-    .then(data => {
-      if(data) {
-        setOffensiveData(data);
-        console.log(data);
-      }
-    })
-  }
+  const closeModal = () => {
+    setSelectedTeam(null);
+    setIsStatsView(false);
+  };
 
-  const getDefensiveData = async () => {
-    const id = 'E9123497-4899-49EB-A26B-1D09B81B0693';
-    const endpointUrl = 'http://localhost:8080/diamond-data/api/defensive-players/by-team';
-    
-    const url = new URL(endpointUrl);
-    url.searchParams.append('teamId', id);
-
-    await fetch(url,{
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(res => {
-      if(!res.ok) {
-        console.log('error');
-      }
-      return res.json();
-    })
-    .then(data => {
-      if(data) {
-        setDefensiveData(data);
-        console.log(data);
-      }
-    })
-  }
-
-  const getPitcherData = async () => {
-    const id = 'E9123497-4899-49EB-A26B-1D09B81B0693';
-    const endpointUrl = 'http://localhost:8080/diamond-data/api/pitchers/by-team';
-    
-    const url = new URL(endpointUrl);
-    url.searchParams.append('teamId', id);
-
-    await fetch(url,{
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(res => {
-      if(!res.ok) {
-        console.log('error');
-      }
-      return res.json();
-    })
-    .then(data => {
-      if(data) {
-        setPitcherData(data);
-        console.log(data);
-      }
-    })
-  }
-
-  // console.log(offensiveData)
-  // const data = React
+  const toggleView = () => {
+    setIsStatsView(!isStatsView);
+  };
 
   return (
-    <div>
+    <div className="teamStats">
       <Navbar/>
-      <div className="teamStats">
-        <h1> Team Stats</h1>
-        <button onClick={getOffensiveData}>Offensive</button>
-        <button onClick={getDefensiveData}>Defensive</button>
-        <button onClick={getPitcherData}>Pitchers</button>
-        
-      </div>  
-    </div> 
-  )
+      <h1>Team Stats</h1>
+      <div className="teamList">
+        {teams.map((team) => (
+          <div key={team.id} className="teamItem">
+            <div className="teamInfo" onClick={() => openModal(team)}>
+              <div className="teamLabel">{team.name}</div>
+              <div className="teamRecord">{team.record}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {selectedTeam && (
+        <div className="modal">
+          <div className="modalContent">
+            <div className="toggleSwitchContainer" onClick={toggleView}>
+              <div className={`toggleSwitch ${isStatsView ? 'stats' : 'info'}`}>
+                {isStatsView ? 'Team Stats' : 'Team Info'}
+              </div>
+            </div>
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h2>{selectedTeam.name}</h2>
+            {isStatsView ? (
+              <>
+                <p>Batting Average: {teamStats[selectedTeam.id].battingAverage.toFixed(3)}</p>
+                <p>Home Runs: {teamStats[selectedTeam.id].homeRuns}</p>
+                <p>Stolen Bases: {teamStats[selectedTeam.id].stolenBases}</p>
+                <p>Runs: {teamStats[selectedTeam.id].runs}</p>
+              </>
+            ) : (
+              <>
+                <p>Number of Players: {selectedTeam.players}</p>
+                <p>Record: {selectedTeam.record}</p>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default TeamStats
+export default TeamStats;
