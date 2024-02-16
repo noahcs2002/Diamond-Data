@@ -1,0 +1,29 @@
+/* Styling for Insights.js */
+@import './Global.scss';
+
+// INSIGHTS
+
+.insights {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .title {
+        font-size: 4rem; 
+        font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        margin-bottom: 10px; 
+        color: var(--text3-color); 
+      }
+
+    // HEADER 
+    .rightSide h1 {
+      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+      font-weight: 10;
+      font-size: 50px;
+      margin-left: 30px;
+    }
+  } 

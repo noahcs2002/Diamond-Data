@@ -20,7 +20,10 @@ function Navbar() {
                     <Link to="/Home"> Home </Link>
                     <Link to="/PlayerManagement"> PlayerManagement </Link>
                     <Link to="/TeamStats"> TeamStats </Link>
-                    <Link to="/UserManagement"> UserManagement </Link>
+                    <Link to="/PlayerStats"> PlayerStats </Link>
+                    <Link to="/Roster"> Roster </Link>
+                    <Link to="/Insights"> Insights </Link>
+                    <Link to="/BulkEntry"> BulkEntry </Link>
                     <Link to="/Settings">
                         <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                     </Link>
@@ -30,7 +33,10 @@ function Navbar() {
                 <Link to="/Home"> Home </Link>
                 <Link to="/PlayerManagement"> PlayerManagement </Link>
                 <Link to="/TeamStats"> TeamStats </Link>
-                <Link to="/UserManagement"> UserManagement </Link>
+                <Link to="/PlayerStats"> PlayerStats </Link>
+                <Link to="/Roster"> Roster </Link>
+                <Link to="/Insights"> Insights </Link>
+                <Link to="/BulkEntry"> BulkEntry </Link>
                 <Link to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                 </Link>
