@@ -2,10 +2,8 @@ package com.dd.api.auth.controllers;
 
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.providers.AuthorizationService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -16,15 +14,14 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
-import javax.print.attribute.standard.Media;
 import javax.sql.DataSource;
 
 import static com.dd.api.testhelper.Helpers.asJsonString;
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -51,25 +48,25 @@ public class AuthControllerTests {
     @Autowired
     private DataSource dataSource;
 
-    @Before
-    public void setUp() {
-//        MockitoAnnotations.initMocks(this);
-    }
-
     @Test
-    public void loginEndpointExists() throws Exception {
+    public void simpleLoginTest() throws Exception {
         String email = "mockEmail@provider.com";
         String password = "password1234";
 
-        mockMvc.perform(get("/diamond-data/api/auth/login")
+        MvcResult result = mockMvc.perform(get("/diamond-data/api/auth/login")
                         .param("email", email)
-                        .param("password", password)
-                        )
-                        .andExpect(status().isOk());
+                        .param("password", password))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+        int status = result.getResponse().getStatus();
+
+        assertEquals(200, status, 0);
+        verify(service, times(1)).login(any(String.class), any(String.class));
     }
 
     @Test
-    public void signUpEndpointExists() throws Exception {
+    public void simpleSignUpTest() throws Exception {
 
         String email = "mock";
         String password = "password";
@@ -79,14 +76,31 @@ public class AuthControllerTests {
 
         when(service.createUser(user)).thenReturn(user);
 
-        mockMvc.perform(post("/diamond-data/api/auth/sign-up")
+        MvcResult result = mockMvc.perform(post("/diamond-data/api/auth/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(user)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+
+        int status = result.getResponse().getStatus();
+        assertEquals(200, status, 0);
+
+        verify(service, times(1)).createUser(any(User.class));
     }
 
+    @Test
+    public void simpleDeleteAccountTest() throws Exception {
+        Long id = 1L;
+        when(service.deleteUser(id)).thenReturn(true);
 
+        MvcResult result = mockMvc.perform(delete("/diamond-data/api/auth/delete-account")
+                .param("id", asJsonString(id)))
+                .andExpect(status().isOk())
+                .andReturn();
 
+        int status = result.getResponse().getStatus();
+        assertEquals(200, status, 0);
 
-
+        verify(service, times(1)).deleteUser(id);
+    }
 }
