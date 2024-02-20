@@ -36,12 +36,11 @@ public class AuthControllerTests {
 
     @TestConfiguration
     static class TestDatabaseConfiguration {
-
         @Bean
         public DataSource dataSource() {
             return new EmbeddedDatabaseBuilder()
-                    .setType(EmbeddedDatabaseType.H2)
-                    .build();
+                .setType(EmbeddedDatabaseType.H2)
+                .build();
         }
     }
 
@@ -54,10 +53,10 @@ public class AuthControllerTests {
         String password = "password1234";
 
         MvcResult result = mockMvc.perform(get("/diamond-data/api/auth/login")
-                        .param("email", email)
-                        .param("password", password))
-                        .andExpect(status().isOk())
-                        .andReturn();
+            .param("email", email)
+            .param("password", password))
+            .andExpect(status().isOk())
+            .andReturn();
 
         int status = result.getResponse().getStatus();
 

@@ -18,8 +18,8 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 public class AuthenticationServiceTests {
 
-    private String email = "control@email.com";
-    private String password = "password";
+    private final String email = "control@email.com";
+    private final String password = "password";
 
     @Mock
     private AuthorizationRepository authorizationRepository;
@@ -33,7 +33,7 @@ public class AuthenticationServiceTests {
     }
 
     @Test
-    public void simpleLoginTest() {
+    public void idealLoginTest() {
         String email = "email@proivder.com";
         String password = "password";
         String encryptedPassword = Base64.encodeBase64String(Salt.applyDoubleEndedSalt(password).getBytes());
@@ -81,6 +81,7 @@ public class AuthenticationServiceTests {
         user.setEmail("sample@provider.com");
 
         List<User> users = new ArrayList<>();
+        users.add(user);
         when(this.authorizationRepository.findAll()).thenReturn(users);
 
         User loggedInUser = this.service.login(email, password);
@@ -90,7 +91,6 @@ public class AuthenticationServiceTests {
 
     @Test
     public void idealCreateUserTest() {
-
         User user = new User();
         String prot = Base64.encodeBase64String(Salt.applyDoubleEndedSalt(password).getBytes());
         user.setEmail(email);
@@ -126,5 +126,20 @@ public class AuthenticationServiceTests {
         boolean success = this.service.deleteUser(1L);
         assertTrue(success);
         verify(authorizationRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    public void loginTestDoesNotCaptureDeletedUsersTest() {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(Base64.encodeBase64String(Salt.applyDoubleEndedSalt(password).getBytes()));
+        user.setGhostedDate(1L);
+
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        when(authorizationRepository.findAll()).thenReturn(users);
+
+        User verdict = this.service.login(email, password);
+        assertNull(verdict);
     }
 }

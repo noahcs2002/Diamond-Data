@@ -22,11 +22,12 @@ public class AuthorizationService {
 
     @Transactional
     public User login(String email, String password) {
-        String prot = Salt.applyDoubleEndedSalt(password);
+        String protectedPassword = Salt.applyDoubleEndedSalt(password);
         return this.repository.findAll()
             .stream()
             .filter(p -> p.getEmail().equals(email))
-            .filter(p -> p.getPassword().equals(Base64.encodeBase64String(prot.getBytes())))
+            .filter(p -> p.getPassword().equals(Base64.encodeBase64String(protectedPassword.getBytes())))
+            .filter(p -> p.getGhostedDate() == 0)
             .findFirst()
             .orElse(null);
     }
@@ -39,12 +40,13 @@ public class AuthorizationService {
                 .filter(p -> p.getEmail().equals(user.getEmail()))
                 .toList();
 
+        // If account exists, return null
         if (!control.isEmpty()) {
             return null;
         }
 
-        String prot = Salt.applyDoubleEndedSalt(user.getPassword());
-        user.setPassword(Base64.encodeBase64String(prot.getBytes()));
+        String protectedPassword = Salt.applyDoubleEndedSalt(user.getPassword());
+        user.setPassword(Base64.encodeBase64String(protectedPassword.getBytes()));
         this.repository.save(user);
         return user;
     }
