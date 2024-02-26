@@ -1,5 +1,6 @@
 package com.dd.api.restapi.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -13,11 +14,11 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name="offensive_player_id", referencedColumnName = "id")
     private OffensivePlayer offensivePlayer;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name="defensive_player_id", referencedColumnName = "id")
     private DefensivePlayer defensivePlayer;
 
@@ -31,6 +32,13 @@ public class Player {
         this.offensivePlayer = offensivePlayer;
         this.defensivePlayer = defensivePlayer;
         this.ghostedDate = ghostedDate;
+    }
+
+    @JsonCreator
+    public Player(OffensivePlayer offensivePlayer, DefensivePlayer defensivePlayer) {
+        this.offensivePlayer = offensivePlayer;
+        this.defensivePlayer = defensivePlayer;
+        this.ghostedDate = 0;
     }
 
     /**
