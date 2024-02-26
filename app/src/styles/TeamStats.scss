@@ -5,7 +5,7 @@
 
 .teamStats {
   width: 100%;
-  height: auto;
+  padding: 20px 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,46 +13,61 @@
 }
 
 h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #263238;
+  font-size: 2.5rem; 
+  margin-bottom: 1rem; 
+  color: #263238; 
+}
+
+.teamManagement, .teamEdit {
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 15px; 
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 250px; 
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  opacity: 0.8; 
 }
 
 .teamList {
   width: 80%;
-  margin: 0 auto;
+  max-width: 800px; 
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 .teamItem {
-  width: 100%;
-  background-color: #f5f5f5;
+  background-color: #f5f5f5; 
   border-radius: 10px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: 0.3s ease-in;
+  padding: 15px; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+  transition: transform 0.2s ease-in-out;
 }
 
 .teamItem:hover {
-  background-color: #e0e0e0;
+  transform: translateY(-3px);
 }
 
 .teamInfo {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px;
-}
-
-.teamLabel {
-  flex: 1;
-  padding-left: 10px;
-}
-
-.teamRecord {
-  padding-right: 10px;
+  align-items: center;
+  padding: 10px; 
 }
 
 .modal {
@@ -71,8 +86,8 @@ h1 {
   padding: 20px;
   border: 1px solid #888;
   width: 60%;
-  border-radius: 10px; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .close {
@@ -95,7 +110,7 @@ h1 {
 .toggleSwitch {
   display: inline-block;
   padding: 10px;
-  background-color: #1C3738;
+  background-color: #1C3738; 
   color: #F4FFF8;
   border: none;
   border-radius: 5px;
@@ -104,23 +119,21 @@ h1 {
 }
 
 .toggleSwitch:hover {
-  background-color: #163033;
+  background-color: #163033; 
 }
 
-.teamStats {
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+@media (max-width: 768px) {
+  .teamManagement, .teamEdit {
     flex-direction: column;
+    align-items: center;
   }
 
-  // HEADING
-  
-  .teamStats h1 {
-    font-size: 4rem; 
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    margin-bottom: 10px; 
-    color: var(--text3-color); 
+  input[type="text"], button {
+    width: 100%; 
+    margin-bottom: 10px;
   }
+
+  .teamList {
+    width: 90%; 
+  }
+}
