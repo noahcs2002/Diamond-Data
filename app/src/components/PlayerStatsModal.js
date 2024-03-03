@@ -1,5 +1,5 @@
 import React from "react";
-import '/home/jayleebaker/school/sp2024/csc530/CSC530_Final_Project/CSC530-Final-Project/app/src/styles/PlayerStatsModal.scss';
+import '../styles/PlayerStatsModal.scss';
 
 function PlayerStatsModal({ player, show, onClose}) {
 
