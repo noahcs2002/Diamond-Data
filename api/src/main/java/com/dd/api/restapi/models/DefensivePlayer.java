@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "dd_defense", schema = "sp24")
@@ -250,5 +251,42 @@ public class DefensivePlayer {
 
     public void setGhostedDate(long ghostedDate) {
         this.ghostedDate = ghostedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "DefensivePlayer{" +
+                "id=" + id +
+                ", team=" + team +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", positions=" + positions +
+                ", assists=" + assists +
+                ", caughtStealingPercent=" + caughtStealingPercent +
+                ", doublePlay=" + doublePlay +
+                ", errors=" + errors +
+                ", fieldingPercentage=" + fieldingPercentage +
+                ", inningsPlayed=" + inningsPlayed +
+                ", outs=" + outs +
+                ", outfieldAssists=" + outfieldAssists +
+                ", passedBalls=" + passedBalls +
+                ", putouts=" + putouts +
+                ", totalChances=" + totalChances +
+                ", triplePlays=" + triplePlays +
+                ", ghostedDate=" + ghostedDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DefensivePlayer that = (DefensivePlayer) o;
+        return assists == that.assists && Double.compare(caughtStealingPercent, that.caughtStealingPercent) == 0 && doublePlay == that.doublePlay && errors == that.errors && Double.compare(fieldingPercentage, that.fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && ghostedDate == that.ghostedDate && Objects.equals(id, that.id) && Objects.equals(team, that.team) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(positions, that.positions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, team, firstName, lastName, positions, assists, caughtStealingPercent, doublePlay, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays, ghostedDate);
     }
 }
