@@ -39,16 +39,16 @@ public class TeamService {
 
     @Transactional
     public Team updateTeam(Long id, Team newTeam) {
-        this.getTeamById(id);
         newTeam.setId(id);
         return this.repository.save(newTeam);
     }
 
     @Transactional
     public boolean delete(Long id) {
-        Team team = this.repository.getReferenceById(id);
-        team.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
-        this.repository.save(team);
+        this.repository.findById(id).ifPresent(p -> {
+            p.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
+            this.repository.save(p);
+        });
         return true;
     }
 }
