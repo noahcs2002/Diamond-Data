@@ -7,7 +7,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name="dd_players", schema="sp24")
+@Table(name = "dd_players", schema = "sp24")
 public class Player {
 
     @Id
@@ -15,11 +15,11 @@ public class Player {
     private Long id;
 
     @ManyToOne()
-    @JoinColumn(name="offensive_player_id", referencedColumnName = "id")
+    @JoinColumn(name = "offensive_player_id", referencedColumnName = "id")
     private OffensivePlayer offensivePlayer;
 
     @ManyToOne()
-    @JoinColumn(name="defensive_player_id", referencedColumnName = "id")
+    @JoinColumn(name = "defensive_player_id", referencedColumnName = "id")
     private DefensivePlayer defensivePlayer;
 
     private long ghostedDate;

@@ -70,10 +70,10 @@ public class OffensivePlayerControllerTests {
 
         when(service.getOffensivePlayer(id)).thenReturn(player);
 
-        MvcResult result = mockMvc.perform(get(base+"/get")
-                                    .param("id", asJsonString(id)))
-                                    .andExpect(status().isOk())
-                                    .andReturn();
+        MvcResult result = mockMvc.perform(get(base + "/get")
+                        .param("id", asJsonString(id)))
+                .andExpect(status().isOk())
+                .andReturn();
 
         int status = result.getResponse().getStatus();
         String body = result.getResponse().getContentAsString();
@@ -102,13 +102,14 @@ public class OffensivePlayerControllerTests {
 
         when(service.getAll()).thenReturn(players);
 
-        MvcResult result = mockMvc.perform(get(base+"/get-all"))
+        MvcResult result = mockMvc.perform(get(base + "/get-all"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         int status = result.getResponse().getStatus();
         String data = result.getResponse().getContentAsString();
-        List<OffensivePlayer> results = objectMapper.readValue(data, new TypeReference<List<OffensivePlayer>>(){});
+        List<OffensivePlayer> results = objectMapper.readValue(data, new TypeReference<List<OffensivePlayer>>() {
+        });
 
         assertEquals(200, status, 0);
         assertEquals(players, results);
@@ -124,7 +125,7 @@ public class OffensivePlayerControllerTests {
 
         when(service.getByTeam(teamId)).thenReturn(players);
 
-        MvcResult result = mockMvc.perform(get(base+"/get-by-team")
+        MvcResult result = mockMvc.perform(get(base + "/get-by-team")
                         .param("teamId", asJsonString(teamId)))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -133,7 +134,8 @@ public class OffensivePlayerControllerTests {
 
         String data = result.getResponse().getContentAsString();
 
-        List<OffensivePlayer> returnedPlayers = objectMapper.readValue(data, new TypeReference<List<OffensivePlayer>>() {});
+        List<OffensivePlayer> returnedPlayers = objectMapper.readValue(data, new TypeReference<List<OffensivePlayer>>() {
+        });
 
         assertEquals(200, status, 0);
         assertEquals(players, returnedPlayers);
@@ -146,7 +148,7 @@ public class OffensivePlayerControllerTests {
 
         when(this.service.createPlayer(defensivePlayer)).thenReturn(defensivePlayer);
 
-        MvcResult mvcResult = mockMvc.perform(post(base+"/create")
+        MvcResult mvcResult = mockMvc.perform(post(base + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(defensivePlayer)))
                 .andExpect(status().isOk())
@@ -166,8 +168,8 @@ public class OffensivePlayerControllerTests {
         Long id = 1L;
         when(this.service.delete(id)).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(delete(base+"/delete")
-                        .param("id", ""+id))
+        MvcResult result = mockMvc.perform(delete(base + "/delete")
+                        .param("id", "" + id))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -187,7 +189,7 @@ public class OffensivePlayerControllerTests {
         Long id = 1L;
         when(this.service.getOffensivePlayer(id)).thenThrow(new Exception());
 
-        MvcResult result = mockMvc.perform(get(base+"/get")
+        MvcResult result = mockMvc.perform(get(base + "/get")
                         .param("id", id.toString()))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
@@ -202,7 +204,7 @@ public class OffensivePlayerControllerTests {
         when(service.getAll()).thenThrow(new Exception());
         String message = "testing exception message";
 
-        MvcResult result = mockMvc.perform(get(base+"/get-all"))
+        MvcResult result = mockMvc.perform(get(base + "/get-all"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -216,7 +218,7 @@ public class OffensivePlayerControllerTests {
         String message = "testing exception message";
         when(service.getByTeam(teamId)).thenThrow(new Exception());
 
-        MvcResult result = mockMvc.perform(get(base+"get-by-team")
+        MvcResult result = mockMvc.perform(get(base + "get-by-team")
                         .param("teamId", teamId.toString()))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
@@ -226,11 +228,11 @@ public class OffensivePlayerControllerTests {
     }
 
     @Test(expected = Exception.class)
-    public void createReturns500_whenError() throws Exception{
+    public void createReturns500_whenError() throws Exception {
         String message = "testing exception message";
         when(service.createPlayer(any(OffensivePlayer.class))).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(post(base+"/create"))
+        MvcResult result = mockMvc.perform(post(base + "/create"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -257,7 +259,7 @@ public class OffensivePlayerControllerTests {
         String message = "testing exception message";
         when(service.delete(anyLong())).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(delete(base+"/delete"))
+        MvcResult result = mockMvc.perform(delete(base + "/delete"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 

@@ -4,9 +4,9 @@ import com.dd.api.auth.models.User;
 import com.dd.api.auth.security.Salt;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.commons.codec.binary.Base64;
 
 import java.util.List;
 
@@ -24,12 +24,12 @@ public class AuthorizationService {
     public User login(String email, String password) {
         String protectedPassword = Salt.applyDoubleEndedSalt(password);
         return this.repository.findAll()
-            .stream()
-            .filter(p -> p.getEmail().equals(email))
-            .filter(p -> p.getPassword().equals(Base64.encodeBase64String(protectedPassword.getBytes())))
-            .filter(p -> p.getGhostedDate() == 0)
-            .findFirst()
-            .orElse(null);
+                .stream()
+                .filter(p -> p.getEmail().equals(email))
+                .filter(p -> p.getPassword().equals(Base64.encodeBase64String(protectedPassword.getBytes())))
+                .filter(p -> p.getGhostedDate() == 0)
+                .findFirst()
+                .orElse(null);
     }
 
     @Transactional

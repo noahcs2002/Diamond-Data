@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity()
-@Table(name="dd_games", schema="sp24")
+@Table(name = "dd_games", schema = "sp24")
 public class Game {
 
     @Id
@@ -15,7 +15,7 @@ public class Game {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="team_id", referencedColumnName="id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
 
     private Date gameDate;
@@ -53,7 +53,7 @@ public class Game {
         return this.gameDate;
     }
 
-    public void setGameDate( SqlDateWrapper gameSqlDateWrapper) {
+    public void setGameDate(SqlDateWrapper gameSqlDateWrapper) {
         this.gameDate = gameSqlDateWrapper.getSqlDate();
     }
 
@@ -102,7 +102,7 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return teamScore == game.teamScore && opponentScore == game.opponentScore && verdict == game.verdict && Objects.equals(id, game.id) && Objects.equals(team, game.team)  && Objects.equals(gameDate, game.gameDate);
+        return teamScore == game.teamScore && opponentScore == game.opponentScore && verdict == game.verdict && Objects.equals(id, game.id) && Objects.equals(team, game.team) && Objects.equals(gameDate, game.gameDate);
     }
 
     @Override
