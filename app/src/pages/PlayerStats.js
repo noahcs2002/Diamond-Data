@@ -2,16 +2,24 @@ import React, { useEffect, useState } from 'react';
 import '../styles/PlayerStats.scss';
 import Navbar from '../components/Navbar';
 import { useTable } from 'react-table';
+import PlayerStatsModal from '../components/PlayerStatsModal';
 
 function PlayerStats() {
 
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
+
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log("showModal state:", showModal);
+  }, [showModal]);
 
   const fetchData = async () => {
     const id = '202';
@@ -42,6 +50,12 @@ function PlayerStats() {
   } catch (error) {
     console.error('Error fetching data:', error);
   }
+}
+
+const handlePlayerClick = (player) => {
+  console.log('Player clicked:', player);
+  setSelectedPlayer(player);
+  setShowModal(true);
 }
 
   const pitcherColumns = React.useMemo(() => [
@@ -405,8 +419,14 @@ function PlayerStats() {
                   return (
                     <tr {...row.getRowProps()}>
                       {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}>
-                          {cell.render("Cell")}
+                        <td key={cell.column.id} {...cell.getCellProps()}>
+                          {cell.column.id === 'firstName' || cell.column.id === 'lastName' ? (
+                            <span onClick={() => handlePlayerClick(row.original)}>
+                              {cell.render("Cell")}
+                            </span>
+                          ) : (
+                            cell.render("Cell")
+                          )}
                         </td>
                       ))}
                     </tr>
@@ -438,8 +458,14 @@ function PlayerStats() {
                   return (
                     <tr {...row.getRowProps()}>
                       {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}>
-                          {cell.render("Cell")}
+                        <td key={cell.column.id} {...cell.getCellProps()}>
+                          {cell.column.id === 'firstName' || cell.column.id === 'lastName' ? (
+                            <span onClick={() => handlePlayerClick(row.original)}>
+                              {cell.render("Cell")}
+                            </span>
+                          ) : (
+                            cell.render("Cell")
+                          )}
                         </td>
                       ))}
                     </tr>
@@ -470,8 +496,14 @@ function PlayerStats() {
                   return (
                     <tr {...row.getRowProps()}>
                       {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}>
-                          {cell.render("Cell")}
+                        <td key={cell.column.id} {...cell.getCellProps()}>
+                          {cell.column.id === 'firstName' || cell.column.id === 'lastName' ? (
+                            <span onClick={() => handlePlayerClick(row.original)}>
+                              {cell.render("Cell")}
+                            </span>
+                          ) : (
+                            cell.render("Cell")
+                          )}
                         </td>
                       ))}
                     </tr>
@@ -481,7 +513,10 @@ function PlayerStats() {
             </table>
           </div>
         </div>
-      </div>  
+      </div>
+      {showModal && 
+        <PlayerStatsModal player={selectedPlayer} show={showModal} onClose={() => setShowModal(false)} />
+      }  
     </div> 
   )
 }
