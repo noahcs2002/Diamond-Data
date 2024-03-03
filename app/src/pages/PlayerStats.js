@@ -515,7 +515,7 @@ const handlePlayerClick = (player) => {
         </div>
       </div>
       {showModal && 
-        <PlayerStatsModal player={selectedPlayer} onClose={() => setShowModal(false)} />
+        <PlayerStatsModal player={selectedPlayer} show={showModal} onClose={() => setShowModal(false)} />
       }  
     </div> 
   )
