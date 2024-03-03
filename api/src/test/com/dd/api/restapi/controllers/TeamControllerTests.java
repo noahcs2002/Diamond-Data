@@ -71,8 +71,8 @@ public class TeamControllerTests {
 
         when(service.getTeamById(anyLong())).thenReturn(team);
 
-        MvcResult result = mockMvc.perform(get(base+"/get")
-                .param("id", asJsonString(id)))
+        MvcResult result = mockMvc.perform(get(base + "/get")
+                        .param("id", asJsonString(id)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -94,13 +94,14 @@ public class TeamControllerTests {
 
         when(service.getAllTeams()).thenReturn(teams);
 
-        MvcResult result = mockMvc.perform(get(base+"/get-all"))
+        MvcResult result = mockMvc.perform(get(base + "/get-all"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         int status = result.getResponse().getStatus();
         String body = result.getResponse().getContentAsString();
-        List<Team> res = objectMapper.readValue(body, new TypeReference<List<Team>>() {});
+        List<Team> res = objectMapper.readValue(body, new TypeReference<List<Team>>() {
+        });
 
         assertEquals(200, status, 0);
         assertEquals(teams, res);
@@ -114,9 +115,9 @@ public class TeamControllerTests {
 
         when(service.createTeam(any(Team.class))).thenReturn(team);
 
-        MvcResult result = mockMvc.perform(post(base+"/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(team)))
+        MvcResult result = mockMvc.perform(post(base + "/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(team)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -135,8 +136,8 @@ public class TeamControllerTests {
         Long id = 1L;
         when(this.service.delete(anyLong())).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(delete(base+"/delete")
-                .param("id", asJsonString(id)))
+        MvcResult result = mockMvc.perform(delete(base + "/delete")
+                        .param("id", asJsonString(id)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -155,7 +156,7 @@ public class TeamControllerTests {
         Long id = 1L;
         when(this.service.getTeamById(id)).thenThrow(new Exception());
 
-        MvcResult result = mockMvc.perform(get(base+"/get")
+        MvcResult result = mockMvc.perform(get(base + "/get")
                         .param("id", id.toString()))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
@@ -171,7 +172,7 @@ public class TeamControllerTests {
         when(service.getAllTeams()).thenThrow(new Exception());
         String message = "testing exception message";
 
-        MvcResult result = mockMvc.perform(get(base+"/get-all"))
+        MvcResult result = mockMvc.perform(get(base + "/get-all"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -185,7 +186,7 @@ public class TeamControllerTests {
         String message = "testing exception message";
         when(service.getTeamById(teamId)).thenThrow(new Exception());
 
-        MvcResult result = mockMvc.perform(get(base+"get-by-team")
+        MvcResult result = mockMvc.perform(get(base + "get-by-team")
                         .param("teamId", teamId.toString()))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
@@ -195,11 +196,11 @@ public class TeamControllerTests {
     }
 
     @Test(expected = Exception.class)
-    public void createReturns500_whenError() throws Exception{
+    public void createReturns500_whenError() throws Exception {
         String message = "testing exception message";
         when(service.createTeam(any(Team.class))).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(post(base+"/create"))
+        MvcResult result = mockMvc.perform(post(base + "/create"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -226,7 +227,7 @@ public class TeamControllerTests {
         String message = "testing exception message";
         when(service.delete(anyLong())).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(delete(base+"/delete"))
+        MvcResult result = mockMvc.perform(delete(base + "/delete"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 

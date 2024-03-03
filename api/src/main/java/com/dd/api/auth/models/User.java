@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="dd_users", schema="sp24")
+@Table(name = "dd_users", schema = "sp24")
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String email;
 
-    @Column(name="password_hash")
+    @Column(name = "password_hash")
     private String password;
     private long ghostedDate;
 

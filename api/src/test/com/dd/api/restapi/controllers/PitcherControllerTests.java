@@ -70,7 +70,7 @@ public class PitcherControllerTests {
 
         when(service.getPitcherById(id)).thenReturn(player);
 
-        MvcResult result = mockMvc.perform(get(base+"/get")
+        MvcResult result = mockMvc.perform(get(base + "/get")
                         .param("id", asJsonString(id)))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -104,13 +104,14 @@ public class PitcherControllerTests {
 
         when(service.getAll()).thenReturn(players);
 
-        MvcResult result = mockMvc.perform(get(base+"/get-all"))
+        MvcResult result = mockMvc.perform(get(base + "/get-all"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         int status = result.getResponse().getStatus();
         String data = result.getResponse().getContentAsString();
-        List<Pitcher> results = objectMapper.readValue(data, new TypeReference<List<Pitcher>>(){});
+        List<Pitcher> results = objectMapper.readValue(data, new TypeReference<List<Pitcher>>() {
+        });
 
         assertEquals(200, status, 0);
         assertEquals(players, results);
@@ -126,7 +127,7 @@ public class PitcherControllerTests {
 
         when(service.getPitchersByTeam(teamId)).thenReturn(players);
 
-        MvcResult result = mockMvc.perform(get(base+"/get-by-team")
+        MvcResult result = mockMvc.perform(get(base + "/get-by-team")
                         .param("teamId", asJsonString(teamId)))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -135,7 +136,8 @@ public class PitcherControllerTests {
 
         String data = result.getResponse().getContentAsString();
 
-        List<Pitcher> returnedPlayers = objectMapper.readValue(data, new TypeReference<List<Pitcher>>() {});
+        List<Pitcher> returnedPlayers = objectMapper.readValue(data, new TypeReference<List<Pitcher>>() {
+        });
 
         assertEquals(200, status, 0);
         assertEquals(players, returnedPlayers);
@@ -148,7 +150,7 @@ public class PitcherControllerTests {
 
         when(this.service.createPitcher(any())).thenReturn(pitcher);
 
-        MvcResult mvcResult = mockMvc.perform(post(base+"/create")
+        MvcResult mvcResult = mockMvc.perform(post(base + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(pitcher)))
                 .andExpect(status().isOk())
@@ -168,8 +170,8 @@ public class PitcherControllerTests {
         Long id = 1L;
         when(this.service.deletePitcher(id)).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(delete(base+"/delete")
-                        .param("id", ""+id))
+        MvcResult result = mockMvc.perform(delete(base + "/delete")
+                        .param("id", "" + id))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -189,7 +191,7 @@ public class PitcherControllerTests {
         Long id = 1L;
         when(this.service.getPitcherById(id)).thenThrow(new Exception());
 
-        MvcResult result = mockMvc.perform(get(base+"/get")
+        MvcResult result = mockMvc.perform(get(base + "/get")
                         .param("id", id.toString()))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
@@ -204,7 +206,7 @@ public class PitcherControllerTests {
         when(service.getAll()).thenThrow(new Exception());
         String message = "testing exception message";
 
-        MvcResult result = mockMvc.perform(get(base+"/get-all"))
+        MvcResult result = mockMvc.perform(get(base + "/get-all"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -218,7 +220,7 @@ public class PitcherControllerTests {
         String message = "testing exception message";
         when(service.getPitchersByTeam(teamId)).thenThrow(new Exception());
 
-        MvcResult result = mockMvc.perform(get(base+"get-by-team")
+        MvcResult result = mockMvc.perform(get(base + "get-by-team")
                         .param("teamId", teamId.toString()))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
@@ -228,11 +230,11 @@ public class PitcherControllerTests {
     }
 
     @Test(expected = Exception.class)
-    public void createReturns500_whenError() throws Exception{
+    public void createReturns500_whenError() throws Exception {
         String message = "testing exception message";
         when(service.createPitcher(any(Pitcher.class))).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(post(base+"/create"))
+        MvcResult result = mockMvc.perform(post(base + "/create"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -259,7 +261,7 @@ public class PitcherControllerTests {
         String message = "testing exception message";
         when(service.deletePitcher(anyLong())).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(delete(base+"/delete"))
+        MvcResult result = mockMvc.perform(delete(base + "/delete"))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 

@@ -39,8 +39,8 @@ public class AuthControllerTests {
         @Bean
         public DataSource dataSource() {
             return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .build();
+                    .setType(EmbeddedDatabaseType.H2)
+                    .build();
         }
     }
 
@@ -53,10 +53,10 @@ public class AuthControllerTests {
         String password = "password1234";
 
         MvcResult result = mockMvc.perform(get("/diamond-data/api/auth/login")
-            .param("email", email)
-            .param("password", password))
-            .andExpect(status().isOk())
-            .andReturn();
+                        .param("email", email)
+                        .param("password", password))
+                .andExpect(status().isOk())
+                .andReturn();
 
         int status = result.getResponse().getStatus();
 
@@ -76,8 +76,8 @@ public class AuthControllerTests {
         when(service.createUser(user)).thenReturn(user);
 
         MvcResult result = mockMvc.perform(post("/diamond-data/api/auth/sign-up")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(user)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(user)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -93,7 +93,7 @@ public class AuthControllerTests {
         when(service.deleteUser(id)).thenReturn(true);
 
         MvcResult result = mockMvc.perform(delete("/diamond-data/api/auth/delete-account")
-                .param("id", asJsonString(id)))
+                        .param("id", asJsonString(id)))
                 .andExpect(status().isOk())
                 .andReturn();
 
