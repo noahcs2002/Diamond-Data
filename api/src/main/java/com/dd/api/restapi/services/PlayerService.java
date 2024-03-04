@@ -4,6 +4,7 @@ import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.repositories.PlayerRepository;
+import com.dd.api.restapi.requestmodels.PlayerManipulationRequestModel;
 import com.dd.api.restapi.requestmodels.PlayerUpdateRequestModel;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,7 +83,15 @@ public class PlayerService {
     }
 
     @Transactional
-    public Player createPlayer(Player player) {
+    public Player createPlayer(PlayerManipulationRequestModel model) {
+        Player player = new Player();
+        player.setOffensivePlayer(model.offensivePlayer());
+        player.setDefensivePlayer(model.defensivePlayer());
+        player.setFirstName(model.firstName());
+        player.setLastName(model.lastName());
+
+        this.offensivePlayerService.createPlayer(model.offensivePlayer());
+        this.defensivePlayerService.createDefensivePlayer(model.defensivePlayer());
         return this.repository.save(player);
     }
 
@@ -124,5 +134,39 @@ public class PlayerService {
         this.defensivePlayerService.updateDefensivePlayer(model.offensiveId(), defensivePlayer);
         this.offensivePlayerService.update(model.offensiveId(), offensivePlayer);
         return this.repository.save(player);
+    }
+
+    @Transactional
+    public Player changeFirstName(Long id, String newFirstName) {
+       Player player = this.repository.findAll()
+                .stream()
+                .filter(p -> Objects.equals(p.getId(), id))
+                .toList()
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+       if (player != null) {
+           player.setFirstName(newFirstName);
+       }
+
+       return player;
+    }
+
+    @Transactional
+    public Player changeLastName(Long id, String newLastName) {
+        Player player = this.repository.findAll()
+                .stream()
+                .filter(p -> Objects.equals(p.getId(), id))
+                .toList()
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+        if (player != null) {
+            player.setLastName(newLastName);
+        }
+
+        return player;
     }
 }
