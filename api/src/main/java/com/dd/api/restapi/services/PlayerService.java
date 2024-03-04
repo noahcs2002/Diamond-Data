@@ -118,6 +118,7 @@ public class PlayerService {
         return true;
     }
 
+    @Transactional
     public Player update(Long id, PlayerUpdateRequestModel model) {
         OffensivePlayer offensivePlayer = model.manipulationRequestModel().offensivePlayer();
         DefensivePlayer defensivePlayer = model.manipulationRequestModel().defensivePlayer();
