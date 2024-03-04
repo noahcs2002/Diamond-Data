@@ -18,12 +18,12 @@ function Navbar() {
                 <img src={Diamond_Data_Logo_White} />
                 <div className="hiddenLinks">
                     <Link to="/Home"> Home </Link>
-                    <Link to="/PlayerManagement"> PlayerManagement </Link>
-                    <Link to="/TeamStats"> TeamStats </Link>
-                    <Link to="/PlayerStats"> PlayerStats </Link>
+                    <Link to="/PlayerManagement"> Player Management </Link>
+                    <Link to="/TeamStats"> Team Stats </Link>
+                    <Link to="/PlayerStats"> Player Stats </Link>
                     <Link to="/Roster"> Roster </Link>
                     <Link to="/Insights"> Insights </Link>
-                    <Link to="/BulkEntry"> BulkEntry </Link>
+                    <Link to="/BulkEntry"> Bulk Entry </Link>
                     <Link to="/Settings">
                         <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                     </Link>
@@ -31,12 +31,12 @@ function Navbar() {
             </div>
             <div className="rightSide">
                 <Link to="/Home"> Home </Link>
-                <Link to="/PlayerManagement"> PlayerManagement </Link>
-                <Link to="/TeamStats"> TeamStats </Link>
-                <Link to="/PlayerStats"> PlayerStats </Link>
+                <Link to="/PlayerManagement"> Player Management </Link>
+                <Link to="/TeamStats"> Team Stats </Link>
+                <Link to="/PlayerStats"> Player Stats </Link>
                 <Link to="/Roster"> Roster </Link>
                 <Link to="/Insights"> Insights </Link>
-                <Link to="/BulkEntry"> BulkEntry </Link>
+                <Link to="/BulkEntry"> Bulk Entry </Link>
                 <Link to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                 </Link>

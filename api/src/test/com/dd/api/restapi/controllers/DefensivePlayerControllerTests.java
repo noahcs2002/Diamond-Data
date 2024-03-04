@@ -88,13 +88,9 @@ public class DefensivePlayerControllerTests {
     public void idealGetAllTest() throws Exception {
 
         DefensivePlayer playerOne = new DefensivePlayer();
-        playerOne.setFirstName("Foo 1");
-        playerOne.setLastName("Bar 1");
         playerOne.setId(1L);
 
         DefensivePlayer playerTwo = new DefensivePlayer();
-        playerTwo.setFirstName("Foo 2");
-        playerTwo.setLastName("Bar 2");
         playerTwo.setId(2L);
 
         List<DefensivePlayer> players = new ArrayList<>();

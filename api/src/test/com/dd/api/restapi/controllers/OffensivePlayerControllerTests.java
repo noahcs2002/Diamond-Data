@@ -87,13 +87,9 @@ public class OffensivePlayerControllerTests {
     public void idealGetAllTest() throws Exception {
 
         OffensivePlayer playerOne = new OffensivePlayer();
-        playerOne.setFirstName("Foo 1");
-        playerOne.setLastName("Bar 1");
         playerOne.setId(1L);
 
         OffensivePlayer playerTwo = new OffensivePlayer();
-        playerTwo.setFirstName("Foo 2");
-        playerTwo.setLastName("Bar 2");
         playerTwo.setId(2L);
 
         List<OffensivePlayer> players = new ArrayList<>();
