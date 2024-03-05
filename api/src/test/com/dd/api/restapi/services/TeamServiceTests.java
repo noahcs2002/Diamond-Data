@@ -1,5 +1,6 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.auth.providers.AuthorizationService;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.TeamRepository;
 import org.junit.Before;
@@ -19,6 +20,8 @@ public class TeamServiceTests {
 
     @Mock
     private TeamRepository repository;
+    @Mock
+    private AuthorizationService authorizationService;
 
     @InjectMocks
     private TeamService service;
