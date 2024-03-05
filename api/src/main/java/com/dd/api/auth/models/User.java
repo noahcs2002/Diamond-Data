@@ -3,6 +3,8 @@ package com.dd.api.auth.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "dd_users", schema = "sp24")
 public class User {
@@ -64,5 +66,24 @@ public class User {
 
     public void setGhostedDate(long ghostedDate) {
         this.ghostedDate = ghostedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return ghostedDate == user.ghostedDate && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+    }
+
+    public boolean transientEqualityCheck(User user) {
+        if (this == user) return true;
+        if (user == null || getClass() != user.getClass()) return false;
+        return (ghostedDate == user.ghostedDate) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, ghostedDate);
     }
 }

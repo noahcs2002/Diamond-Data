@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorizationService {
@@ -59,5 +60,18 @@ public class AuthorizationService {
         });
 
         return true;
+    }
+
+    @Transactional
+    public User getNonTransientUser(User user) {
+        String protectedPassword = Salt.applyDoubleEndedSalt(user.getPassword());
+        user.setPassword(Base64.encodeBase64String(protectedPassword.getBytes()));
+
+        return this.repository.findAll()
+                .stream()
+                .filter(p -> p.transientEqualityCheck(user))
+                .toList()
+                .stream().findFirst()
+                .orElse(null);
     }
 }
