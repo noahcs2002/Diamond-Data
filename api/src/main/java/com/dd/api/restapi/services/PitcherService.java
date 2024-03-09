@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class PitcherService {
@@ -25,19 +24,23 @@ public class PitcherService {
 
     @Transactional
     public Pitcher createPitcher(Pitcher pitcher) {
-        return this.pitcherRepository.saveAndFlush(pitcher);
+        return this.pitcherRepository.save(pitcher);
     }
 
     @Transactional
     public Pitcher getPitcherById(Long id) {
-        Optional<Pitcher> pitcher = this.pitcherRepository.findById(id);
-        return pitcher.orElse(null);
+        return this.pitcherRepository.findById(id)
+                .filter(p -> p.getGhostedDate() == 0)
+                .orElse(null);
     }
 
     @Transactional
     public List<Pitcher> getAll() {
-        List<Pitcher> pitchers = this.pitcherRepository.findAll();
-        return pitchers.stream().filter(p -> p.getGhostedDate() == 0).toList();
+        return this.pitcherRepository.findAll()
+                .stream()
+                .filter(p -> p.getGhostedDate() == 0)
+                .toList();
+
     }
 
     @Transactional
@@ -51,9 +54,11 @@ public class PitcherService {
 
     @Transactional
     public boolean deletePitcher(Long id) {
-        Pitcher pitcher = this.pitcherRepository.getReferenceById(id);
-        pitcher.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
-        this.pitcherRepository.save(pitcher);
+        this.pitcherRepository.findById(id)
+                .ifPresent(p -> {
+                    p.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
+                    pitcherRepository.save(p);
+                });
         return true;
     }
 

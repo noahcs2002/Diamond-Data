@@ -4,11 +4,12 @@ import com.dd.api.auth.models.User;
 import com.dd.api.auth.security.Salt;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.commons.codec.binary.Base64;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorizationService {
@@ -22,13 +23,14 @@ public class AuthorizationService {
 
     @Transactional
     public User login(String email, String password) {
-        String prot = Salt.applyDoubleEndedSalt(password);
+        String protectedPassword = Salt.applyDoubleEndedSalt(password);
         return this.repository.findAll()
-            .stream()
-            .filter(p -> p.getEmail().equals(email))
-            .filter(p -> p.getPassword().equals(Base64.encodeBase64String(prot.getBytes())))
-            .findFirst()
-            .orElse(null);
+                .stream()
+                .filter(p -> p.getEmail().equals(email))
+                .filter(p -> p.getPassword().equals(Base64.encodeBase64String(protectedPassword.getBytes())))
+                .filter(p -> p.getGhostedDate() == 0)
+                .findFirst()
+                .orElse(null);
     }
 
     @Transactional
@@ -39,12 +41,13 @@ public class AuthorizationService {
                 .filter(p -> p.getEmail().equals(user.getEmail()))
                 .toList();
 
+        // If account exists, return null
         if (!control.isEmpty()) {
             return null;
         }
 
-        String prot = Salt.applyDoubleEndedSalt(user.getPassword());
-        user.setPassword(Base64.encodeBase64String(prot.getBytes()));
+        String protectedPassword = Salt.applyDoubleEndedSalt(user.getPassword());
+        user.setPassword(Base64.encodeBase64String(protectedPassword.getBytes()));
         this.repository.save(user);
         return user;
     }
@@ -57,5 +60,18 @@ public class AuthorizationService {
         });
 
         return true;
+    }
+
+    @Transactional
+    public User getNonTransientUser(User user) {
+        String protectedPassword = Salt.applyDoubleEndedSalt(user.getPassword());
+        user.setPassword(Base64.encodeBase64String(protectedPassword.getBytes()));
+
+        return this.repository.findAll()
+                .stream()
+                .filter(p -> p.transientEqualityCheck(user))
+                .toList()
+                .stream().findFirst()
+                .orElse(null);
     }
 }

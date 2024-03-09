@@ -1,5 +1,6 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.auth.providers.AuthorizationService;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.TeamRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
@@ -13,14 +14,17 @@ import java.util.List;
 public class TeamService {
 
     private final TeamRepository repository;
+    private final AuthorizationService authorizationService;
 
     @Autowired
-    public TeamService(TeamRepository repository) {
+    public TeamService(TeamRepository repository, AuthorizationService service) {
         this.repository = repository;
+        this.authorizationService = service;
     }
 
     @Transactional
     public Team createTeam(Team team) {
+        team.setUser(authorizationService.getNonTransientUser(team.getUser()));
         return this.repository.save(team);
     }
 
@@ -39,16 +43,16 @@ public class TeamService {
 
     @Transactional
     public Team updateTeam(Long id, Team newTeam) {
-        this.getTeamById(id);
         newTeam.setId(id);
         return this.repository.save(newTeam);
     }
 
     @Transactional
     public boolean delete(Long id) {
-        Team team = this.repository.getReferenceById(id);
-        team.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
-        this.repository.save(team);
+        this.repository.findById(id).ifPresent(p -> {
+            p.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
+            this.repository.save(p);
+        });
         return true;
     }
 }

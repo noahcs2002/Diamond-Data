@@ -51,7 +51,7 @@ public class PlayerController {
     @RequestMapping("/create")
     @PostMapping
     public Player create(@RequestBody PlayerManipulationRequestModel requestModel) {
-        return this.playerService.createPlayer(requestModel.offensivePlayer(), requestModel.defensivePlayer());
+        return this.playerService.createPlayer(requestModel);
     }
 
     @RequestMapping("/delete")
@@ -64,5 +64,17 @@ public class PlayerController {
     @PostMapping
     public Player updatePlayer(@RequestParam Long id, @RequestBody PlayerUpdateRequestModel model) {
         return this.playerService.update(id, model);
+    }
+
+    @RequestMapping("/change-first-name")
+    @PutMapping
+    public Player changeFirstName(@RequestParam Long id, @RequestParam String newFirstName) {
+        return this.playerService.changeFirstName(id, newFirstName);
+    }
+
+    @RequestMapping("/change-last-name")
+    @PutMapping
+    public Player changeLastName(@RequestParam Long id, @RequestParam String newLastName) {
+        return this.playerService.changeLastName(id, newLastName);
     }
 }

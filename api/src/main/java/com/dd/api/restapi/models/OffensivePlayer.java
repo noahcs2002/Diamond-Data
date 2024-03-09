@@ -3,6 +3,8 @@ package com.dd.api.restapi.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "dd_offense", schema = "sp24")
 public class OffensivePlayer {
@@ -15,8 +17,6 @@ public class OffensivePlayer {
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
     private int atBats;
-    private String firstName;
-    private String lastName;
     private double battingAverage;
     private int caughtStealing;
     private int doubles;
@@ -50,8 +50,6 @@ public class OffensivePlayer {
     public OffensivePlayer(Long id,
                            Team team,
                            int atBats,
-                           String firstName,
-                           String lastName,
                            double battingAverage,
                            int caughtStealing,
                            int doubles,
@@ -83,8 +81,6 @@ public class OffensivePlayer {
         this.id = id;
         this.team = team;
         this.atBats = atBats;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.battingAverage = battingAverage;
         this.caughtStealing = caughtStealing;
         this.doubles = doubles;
@@ -151,8 +147,6 @@ public class OffensivePlayer {
                            int walkOffs) {
         this.team = team;
         this.atBats = atBats;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.battingAverage = battingAverage;
         this.caughtStealing = caughtStealing;
         this.doubles = doubles;
@@ -209,22 +203,6 @@ public class OffensivePlayer {
 
     public void setAtBats(int atBats) {
         this.atBats = atBats;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public double getBattingAverage() {
@@ -457,5 +435,18 @@ public class OffensivePlayer {
 
     public void setGhostedDate(long ghostedDate) {
         this.ghostedDate = ghostedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OffensivePlayer that = (OffensivePlayer) o;
+        return atBats == that.atBats && Double.compare(battingAverage, that.battingAverage) == 0 && caughtStealing == that.caughtStealing && doubles == that.doubles && extraBaseHits == that.extraBaseHits && gamesPlayed == that.gamesPlayed && grandSlams == that.grandSlams && groundIntoDoublePlay == that.groundIntoDoublePlay && Double.compare(groundOutAirOut, that.groundOutAirOut) == 0 && hitByPitch == that.hitByPitch && hits == that.hits && homeRuns == that.homeRuns && intentionalWalks == that.intentionalWalks && leftOnBase == that.leftOnBase && Double.compare(onBasePercentage, that.onBasePercentage) == 0 && Double.compare(onBasePlusSlugging, that.onBasePlusSlugging) == 0 && plateAppearances == that.plateAppearances && reachedOnError == that.reachedOnError && runs == that.runs && runsBattedIn == that.runsBattedIn && sacrificeBunt == that.sacrificeBunt && sacrificeFly == that.sacrificeFly && singles == that.singles && Double.compare(sluggingPercentage, that.sluggingPercentage) == 0 && stolenBases == that.stolenBases && totalBases == that.totalBases && triples == that.triples && walks == that.walks && walkOffs == that.walkOffs && ghostedDate == that.ghostedDate && Objects.equals(id, that.id) && Objects.equals(team, that.team);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, team, atBats, battingAverage, caughtStealing, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, groundOutAirOut, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunt, sacrificeFly, singles, sluggingPercentage, stolenBases, totalBases, triples, walks, walkOffs, ghostedDate);
     }
 }

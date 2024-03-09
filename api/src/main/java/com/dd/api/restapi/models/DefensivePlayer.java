@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "dd_defense", schema = "sp24")
@@ -16,8 +17,6 @@ public class DefensivePlayer {
     @ManyToOne
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
-    private String firstName;
-    private String lastName;
     private List<String> positions;
     private int assists;
     private double caughtStealingPercent;
@@ -35,8 +34,6 @@ public class DefensivePlayer {
 
     public DefensivePlayer(Long id,
                            Team team,
-                           String firstName,
-                           String lastName,
                            List<String> positions,
                            int assists,
                            double caughtStealingPercent,
@@ -52,8 +49,6 @@ public class DefensivePlayer {
                            int triplePlays) {
         this.id = id;
         this.team = team;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.positions = positions;
         this.assists = assists;
         this.caughtStealingPercent = caughtStealingPercent;
@@ -86,8 +81,6 @@ public class DefensivePlayer {
                            int putouts,
                            int totalChances,
                            int triplePlays) {
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.positions = positions;
         this.team = team;
         this.assists = assists;
@@ -220,22 +213,6 @@ public class DefensivePlayer {
         this.triplePlays = triplePlays;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public List<String> getPositions() {
         return positions;
     }
@@ -250,5 +227,40 @@ public class DefensivePlayer {
 
     public void setGhostedDate(long ghostedDate) {
         this.ghostedDate = ghostedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "DefensivePlayer{" +
+                "id=" + id +
+                ", team=" + team +
+                ", positions=" + positions +
+                ", assists=" + assists +
+                ", caughtStealingPercent=" + caughtStealingPercent +
+                ", doublePlay=" + doublePlay +
+                ", errors=" + errors +
+                ", fieldingPercentage=" + fieldingPercentage +
+                ", inningsPlayed=" + inningsPlayed +
+                ", outs=" + outs +
+                ", outfieldAssists=" + outfieldAssists +
+                ", passedBalls=" + passedBalls +
+                ", putouts=" + putouts +
+                ", totalChances=" + totalChances +
+                ", triplePlays=" + triplePlays +
+                ", ghostedDate=" + ghostedDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DefensivePlayer that = (DefensivePlayer) o;
+        return assists == that.assists && Double.compare(caughtStealingPercent, that.caughtStealingPercent) == 0 && doublePlay == that.doublePlay && errors == that.errors && Double.compare(fieldingPercentage, that.fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && ghostedDate == that.ghostedDate && Objects.equals(id, that.id) && Objects.equals(team, that.team)&& Objects.equals(positions, that.positions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, team, positions, assists, caughtStealingPercent, doublePlay, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays, ghostedDate);
     }
 }

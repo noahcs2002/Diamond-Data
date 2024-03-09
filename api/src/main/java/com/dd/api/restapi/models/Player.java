@@ -7,7 +7,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name="dd_players", schema="sp24")
+@Table(name = "dd_players", schema = "sp24")
 public class Player {
 
     @Id
@@ -15,12 +15,15 @@ public class Player {
     private Long id;
 
     @ManyToOne()
-    @JoinColumn(name="offensive_player_id", referencedColumnName = "id")
+    @JoinColumn(name = "offensive_player_id", referencedColumnName = "id")
     private OffensivePlayer offensivePlayer;
 
     @ManyToOne()
-    @JoinColumn(name="defensive_player_id", referencedColumnName = "id")
+    @JoinColumn(name = "defensive_player_id", referencedColumnName = "id")
     private DefensivePlayer defensivePlayer;
+
+    private String firstName;
+    private String lastName;
 
     private long ghostedDate;
 
@@ -35,9 +38,11 @@ public class Player {
     }
 
     @JsonCreator
-    public Player(OffensivePlayer offensivePlayer, DefensivePlayer defensivePlayer) {
+    public Player(OffensivePlayer offensivePlayer, DefensivePlayer defensivePlayer, String firstName, String lastName) {
         this.offensivePlayer = offensivePlayer;
         this.defensivePlayer = defensivePlayer;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.ghostedDate = 0;
     }
 
@@ -81,26 +86,32 @@ public class Player {
         this.ghostedDate = ghostedDate;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return ghostedDate == player.ghostedDate && Objects.equals(id, player.id) && Objects.equals(offensivePlayer, player.offensivePlayer) && Objects.equals(defensivePlayer, player.defensivePlayer);
+        return ghostedDate == player.ghostedDate && Objects.equals(id, player.id) && Objects.equals(offensivePlayer, player.offensivePlayer) && Objects.equals(defensivePlayer, player.defensivePlayer) && Objects.equals(firstName, player.firstName) && Objects.equals(lastName, player.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, offensivePlayer, defensivePlayer, ghostedDate);
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", offensivePlayer=" + offensivePlayer +
-                ", defensivePlayer=" + defensivePlayer +
-                ", ghostedDate=" + ghostedDate +
-                '}';
+        return Objects.hash(id, offensivePlayer, defensivePlayer, firstName, lastName, ghostedDate);
     }
 }
