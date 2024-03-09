@@ -1,71 +1,105 @@
-/* Styling for Settings.js */
 @import './Global.scss';
 
-// SETTINGS
-
 .Settings {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  padding-top: 20px;
+
+  .tab {
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: center;
+    width: 80%;
+    max-width: 600px;
+    background-color: #ddd;
+    border-radius: 20px;
+    margin: 0 auto 40px;
+
+    button {
+      position: relative;
+      flex: 1;
+      padding: 20px 0;
+      font-size: 20px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      z-index: 2;
+
+      &:hover {
+        color: #555;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .active {
+      color: #fff;
+      background-color: transparent;
+    }
+
+    .slider {
+      position: absolute;
+      bottom: 0;
+      height: 100%;
+      width: 50%;
+      background-color: #1C3738;
+      border-radius: 20px;
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .slider.left {
+      transform: translateX(-50%);
+    }
+
+    .slider.right {
+      transform: translateX(50%);
+    }
+  }
+
+  .settings-form, .teamList {
+    width: 60vw; /* Adjusted for consistency */
+    max-width: 800px; /* Consistent with the user settings form */
+    margin: 0 auto;
+    display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif;
-    
-// SETTINGS FORM
-
-    .settings-form {
-      width: 50vw;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      // background-color: var(--background-color);
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px var(--box-shadow-color);
-      margin-bottom: 100px;
-    }
-    
-    .settings-form label {
-      font-size: 16px;
-      color: var(--text2-color);
-    }
-    
-    .settings-form input,
-    select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 5px;
-    }
-    
-    // button {
-    //   width: 100%;
-    //   padding: 15px;
-    //   background-color: #1C3738;
-    //   color: #F4FFF8;
-    //   border: none;
-    //   border-radius: 5px;
-    //   cursor: pointer;
-    //   margin-top: 20px;
-    //   font-size: 16px;
-    // }
-    // 
-    // button:hover {
-    //   background-color: #0E2A2B;
-    //   transition: 0.3s ease-in;
-    // }
+    gap: 20px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--box-shadow-color);
+    margin-bottom: 100px;
+    background-color: #f0f0f0; /* Optional: background color for contrast */
   }
 
-  // HEADING
-  
-  .Settings h1 {
+  .settings-form label, .teamItem {
+    font-size: 20px; /* Consistent font size */
+    color: var(--text2-color);
+    display: block;
+    padding: 12px; /* Consistent padding */
+    margin: 10px 0; /* Consistent margin */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Adjusted shadow for depth */
+    border-radius: 5px; /* Consistent border-radius */
+  }
+
+  .settings-form input,
+  .settings-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+  }
+
+  h1, h2 {
     color: var(--text3-color);
-    font-size: 4rem; 
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    margin-bottom: 40px; 
+    font-size: 4rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-bottom: 40px;
   }
-  
 
   .modal {
     position: fixed;
@@ -77,12 +111,13 @@
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
   }
-  
+
   .modalContent {
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 30%;
+    width: 50%; /* Adjusted for consistency */
     border-radius: 5px;
   }
+}

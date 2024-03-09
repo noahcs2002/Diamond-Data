@@ -1,73 +1,75 @@
 /* Styling for TeamStats.js */
 @import './Global.scss';
 
-// TEAM STATS
-
 .teamStats {
+  background: -webkit-linear-gradient(45deg, var(--background-color), var(--background2-color));
+  background: linear-gradient(45deg, var(--background-color), var(--background2-color));
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: 100;
   width: 100%;
-  padding: 20px 0; 
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  font-family: Arial, sans-serif;
+  flex-direction: column;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 20px 0;
 }
 
 h1 {
-  font-size: 2.5rem; 
-  margin-bottom: 1rem; 
-  color: #263238; 
-}
-
-.teamManagement, .teamEdit {
-  margin-bottom: 2rem;
-  display: flex;
-  gap: 15px; 
-}
-
-input[type="text"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 250px; 
-}
-
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-button:hover {
-  opacity: 0.8; 
+  font-size: 4rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  margin-bottom: 10px;
+  color: var(--text3-color);
 }
 
 .teamList {
-  width: 80%;
-  max-width: 800px; 
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  width: 85%;
+  margin: 20px auto;
+  overflow-x: auto;
+  max-height: 1500px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px;
+  
+  .teamItem {
+    background-color: #f5f5f5; 
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px; /* Increased spacing between team items */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    transition: transform 0.2s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-3px);
+    }
 
-.teamItem {
-  background-color: #f5f5f5; 
-  border-radius: 10px;
-  padding: 15px; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-  transition: transform 0.2s ease-in-out;
-}
+    &:last-child {
+      margin-bottom: 0; /* Remove margin from the last item to avoid extra space at the bottom */
+    }
+  }
 
-.teamItem:hover {
-  transform: translateY(-3px);
-}
+  table {
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px var(--box-shadow-color);
+  }
 
-.teamInfo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px; 
+  th, td {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    background-color: var(--background-color);
+    font-weight: bold;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: var(--background3-color);
+  }
 }
 
 .modal {
@@ -78,62 +80,29 @@ button:hover {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modalContent {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 60%;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover {
-  color: black;
-}
-
-.toggleSwitchContainer {
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.toggleSwitch {
-  display: inline-block;
-  padding: 10px;
-  background-color: #1C3738; 
-  color: #F4FFF8;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in;
-}
-
-.toggleSwitch:hover {
-  background-color: #163033; 
+  .modalContent {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover {
+      color: black;
+    }
+  }
 }
 
 @media (max-width: 768px) {
-  .teamManagement, .teamEdit {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  input[type="text"], button {
-    width: 100%; 
-    margin-bottom: 10px;
-  }
-
   .teamList {
-    width: 90%; 
+    width: 90%;
   }
 }
