@@ -62,11 +62,22 @@ public class PitcherService {
         return true;
     }
 
+    @Transactional
     public List<Pitcher> getPitchersByTeam(Long teamId) {
         List<Pitcher> pitchers = this.pitcherRepository.findAll();
         return pitchers.stream()
                 .filter(p -> p.getGhostedDate() == 0)
                 .filter(p -> Objects.equals(p.getTeam().getId(), teamId))
                 .toList();
+    }
+
+    @Transactional
+    public Pitcher getNonTransientInstance(Pitcher transientInstance) {
+        return this.pitcherRepository.findAll()
+                .stream()
+                .filter(p -> p.equals(transientInstance))
+                .filter(p -> p.getGhostedDate() == 0)
+                .findFirst()
+                .orElse(null);
     }
 }
