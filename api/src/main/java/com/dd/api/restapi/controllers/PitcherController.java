@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/diamond-data/api/pitchers")
@@ -21,6 +22,7 @@ public class PitcherController {
     @RequestMapping("/get")
     @GetMapping
     public Pitcher get(@RequestParam Long id) {
+        Objects.requireNonNull(id);
         return this.service.getPitcherById(id);
     }
 
@@ -33,24 +35,29 @@ public class PitcherController {
     @RequestMapping("/get-by-team")
     @GetMapping
     public List<Pitcher> getByTeam(@RequestParam Long teamId) {
+        Objects.requireNonNull(teamId);
         return this.service.getPitchersByTeam(teamId);
     }
 
     @RequestMapping("/create")
     @PostMapping
     public Pitcher create(@RequestBody Pitcher pitcher) {
+        Objects.requireNonNull(pitcher);
         return this.service.createPitcher(pitcher);
     }
 
     @RequestMapping("/update")
     @PutMapping
     public Pitcher update(@RequestParam Long id, @RequestBody Pitcher newModel) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(newModel);
         return this.service.updatePitcher(id, newModel);
     }
 
     @RequestMapping("/delete")
     @DeleteMapping
     public boolean delete(@RequestParam Long id) {
+        Objects.requireNonNull(id);
         return this.service.deletePitcher(id);
     }
 }
