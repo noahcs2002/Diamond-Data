@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/diamond-data/api/defensive-players")
@@ -21,6 +22,7 @@ public class DefensivePlayerController {
     @RequestMapping("/get")
     @GetMapping
     public DefensivePlayer get(@RequestParam Long id) {
+        Objects.requireNonNull(id);
         return this.service.getDefensivePlayer(id);
     }
 
@@ -33,21 +35,26 @@ public class DefensivePlayerController {
     @RequestMapping("/get-by-team")
     @GetMapping
     public List<DefensivePlayer> getByTeam(@RequestParam Long teamId) {
+        Objects.requireNonNull(teamId);
         return this.service.getAllPlayersByTeam(teamId);
     }
 
     @RequestMapping("/create")
     public DefensivePlayer create(@RequestBody DefensivePlayer player) {
+        Objects.requireNonNull(player);
         return this.service.createDefensivePlayer(player);
     }
 
     @RequestMapping("/update")
     public DefensivePlayer update(@RequestParam Long id, @RequestBody DefensivePlayer player) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(player);
         return this.service.updateDefensivePlayer(id, player);
     }
 
     @RequestMapping("/delete")
     public boolean delete(@RequestParam Long id) {
+        Objects.requireNonNull(id);
         return this.service.deletePlayer(id);
     }
 }
