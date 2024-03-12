@@ -64,4 +64,14 @@ public class DefensivePlayerService {
 
         return true;
     }
+
+    @Transactional
+    public DefensivePlayer getNonTransientInstance(DefensivePlayer transientInstance) {
+        return this.repository.findAll()
+                .stream()
+                .filter(p -> p.equals(transientInstance))
+                .filter(p -> p.getGhostedDate() == 0)
+                .findFirst()
+                .orElse(null);
+    }
 }
