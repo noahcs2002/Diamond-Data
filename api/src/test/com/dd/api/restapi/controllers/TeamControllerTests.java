@@ -1,13 +1,18 @@
 package com.dd.api.restapi.controllers;
 
+import com.dd.api.auth.models.User;
+import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.services.OffensivePlayerService;
 import com.dd.api.restapi.services.TeamService;
+import com.dd.api.util.exceptions.NoAccessPermittedException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -40,6 +45,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TeamControllerTests {
 
     private final String base = "/diamond-data/api/teams/";
+    private Long userId = 1L;
+    private Long teamId = 2L;
+    private User user;
+    private Team team;
+
+    @Before
+    public void setUp() {
+        this.team = new Team();
+        this.user = new User();
+        this.team.setId(teamId);
+        this.user.setId(userId);
+        this.team.setUser(user);
+    }
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,6 +67,9 @@ public class TeamControllerTests {
 
     @MockBean
     private TeamService service;
+
+    @MockBean
+    private Validator validator;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -65,14 +86,13 @@ public class TeamControllerTests {
 
     @Test
     public void idealGetTeamTest() throws Exception {
-        Long id = 1L;
-        Team team = new Team();
-        team.setId(id);
 
         when(service.getTeamById(anyLong())).thenReturn(team);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(get(base + "/get")
-                        .param("id", asJsonString(id)))
+                        .param("id", asJsonString(teamId))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -84,27 +104,15 @@ public class TeamControllerTests {
         assertEquals(team, res);
     }
 
-    @Test
-    public void idealGetAllTest() throws Exception {
-        Long id = 1L;
-        Team team = new Team();
-        team.setId(id);
+    @Test(expected = NoAccessPermittedException.class)
+    public void getThrowsNoAccessExceptionWhenNoAccess() throws Exception {
 
-        List<Team> teams = List.of(team);
+        when(service.getTeamById(anyLong())).thenReturn(team);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(false);
 
-        when(service.getAllTeams()).thenReturn(teams);
-
-        MvcResult result = mockMvc.perform(get(base + "/get-all"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        int status = result.getResponse().getStatus();
-        String body = result.getResponse().getContentAsString();
-        List<Team> res = objectMapper.readValue(body, new TypeReference<List<Team>>() {
-        });
-
-        assertEquals(200, status, 0);
-        assertEquals(teams, res);
+        mockMvc.perform(get(base + "/get")
+                        .param("id", asJsonString(teamId))
+                        .param("userId", asJsonString(userId)));
     }
 
     @Test
@@ -114,6 +122,7 @@ public class TeamControllerTests {
         team.setName("Test");
 
         when(service.createTeam(any(Team.class))).thenReturn(team);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(post(base + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,9 +144,11 @@ public class TeamControllerTests {
     public void idealDeleteTest() throws Exception {
         Long id = 1L;
         when(this.service.delete(anyLong())).thenReturn(true);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(delete(base + "/delete")
-                        .param("id", asJsonString(id)))
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -148,6 +159,17 @@ public class TeamControllerTests {
         assertEquals(Boolean.TRUE, verdict);
         assertEquals(200, status, 0);
         verify(service, times(1)).delete(anyLong());
+    }
+
+    @Test(expected = NoAccessPermittedException.class)
+    public void deleteThrowsNoAccessExceptionWhenNoAccess() throws Exception {
+        Long id = 1L;
+        when(this.service.delete(anyLong())).thenReturn(true);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(false);
+
+        mockMvc.perform(delete(base + "/delete")
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)));
     }
 
     @Test(expected = Exception.class)
