@@ -65,9 +65,7 @@ public class DefensivePlayer {
     }
 
     @JsonCreator
-    public DefensivePlayer(String firstName,
-                           String lastName,
-                           List<String> positions,
+    public DefensivePlayer(List<String> positions,
                            Team team,
                            int assists,
                            double caughtStealingPercent,
@@ -256,7 +254,7 @@ public class DefensivePlayer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DefensivePlayer that = (DefensivePlayer) o;
-        return assists == that.assists && Double.compare(caughtStealingPercent, that.caughtStealingPercent) == 0 && doublePlay == that.doublePlay && errors == that.errors && Double.compare(fieldingPercentage, that.fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && ghostedDate == that.ghostedDate && Objects.equals(id, that.id) && Objects.equals(team, that.team)&& Objects.equals(positions, that.positions);
+        return assists == that.assists && Double.compare(caughtStealingPercent, that.caughtStealingPercent) == 0 && doublePlay == that.doublePlay && errors == that.errors && Double.compare(fieldingPercentage, that.fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && ghostedDate == that.ghostedDate && Objects.equals(team, that.team);
     }
 
     @Override

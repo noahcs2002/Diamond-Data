@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/diamond-data/api/players")
@@ -33,6 +34,7 @@ public class PlayerController {
     @RequestMapping("/get")
     @GetMapping
     public Player get(@RequestParam Long id) {
+        Objects.requireNonNull(id);
         return this.playerService.getPlayerById(id);
     }
 
@@ -45,36 +47,45 @@ public class PlayerController {
     @RequestMapping
     @GetMapping("/get-by-team")
     public List<Player> getByTeam(@RequestParam Long teamId) {
+        Objects.requireNonNull(teamId);
         return this.playerService.getByTeamId(teamId);
     }
 
     @RequestMapping("/create")
     @PostMapping
     public Player create(@RequestBody PlayerManipulationRequestModel requestModel) {
+        Objects.requireNonNull(requestModel);
         return this.playerService.createPlayer(requestModel);
     }
 
     @RequestMapping("/delete")
     @DeleteMapping
     public boolean deletePlayer(@RequestParam Long id) {
+        Objects.requireNonNull(id);
         return this.playerService.deletePlayer(id);
     }
 
     @RequestMapping("/update")
     @PostMapping
     public Player updatePlayer(@RequestParam Long id, @RequestBody PlayerUpdateRequestModel model) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(model);
         return this.playerService.update(id, model);
     }
 
     @RequestMapping("/change-first-name")
     @PutMapping
     public Player changeFirstName(@RequestParam Long id, @RequestParam String newFirstName) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(newFirstName);
         return this.playerService.changeFirstName(id, newFirstName);
     }
 
     @RequestMapping("/change-last-name")
     @PutMapping
     public Player changeLastName(@RequestParam Long id, @RequestParam String newLastName) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(newLastName);
         return this.playerService.changeLastName(id, newLastName);
     }
 }
