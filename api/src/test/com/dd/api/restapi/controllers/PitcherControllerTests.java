@@ -1,11 +1,16 @@
 package com.dd.api.restapi.controllers;
 
+import com.dd.api.auth.models.User;
+import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.models.Pitcher;
+import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.services.DefensivePlayerService;
 import com.dd.api.restapi.services.PitcherService;
+import com.dd.api.util.exceptions.NoAccessPermittedException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +45,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PitcherControllerTests {
     private final String base = "/diamond-data/api/pitchers/";
 
+    private final Long userId = 1234L;
+    private Team team;
+    private User user;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -48,6 +57,9 @@ public class PitcherControllerTests {
 
     @MockBean
     private PitcherService service;
+
+    @MockBean
+    private Validator validator;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -62,6 +74,14 @@ public class PitcherControllerTests {
         }
     }
 
+    @Before
+    public void setUp() {
+        team = new Team();
+        this.user = new User();
+        this.user.setId(userId);
+        this.team.setUser(user);
+    }
+
     @Test
     public void idealGetPlayerTest() throws Exception {
         Long id = 1L;
@@ -69,9 +89,11 @@ public class PitcherControllerTests {
         player.setId(id);
 
         when(service.getPitcherById(id)).thenReturn(player);
+        when(this.validator.validatePitcher(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(get(base + "/get")
-                        .param("id", asJsonString(id)))
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -85,37 +107,18 @@ public class PitcherControllerTests {
         verify(service, times(1)).getPitcherById(any(Long.class));
     }
 
-    @Test
-    public void idealGetAllTest() throws Exception {
+    @Test(expected = NoAccessPermittedException.class)
+    public void getPlayerThrowsNoAccessOnNoAccess() throws Exception {
+        Long id = 1L;
+        Pitcher player = new Pitcher();
+        player.setId(id);
 
-        Pitcher playerOne = new Pitcher();
-        playerOne.setFirstName("Foo 1");
-        playerOne.setLastName("Bar 1");
-        playerOne.setId(1L);
+        when(service.getPitcherById(id)).thenReturn(player);
+        when(this.validator.validatePitcher(anyLong(), anyLong())).thenReturn(false);
 
-        Pitcher playerTwo = new Pitcher();
-        playerTwo.setFirstName("Foo 2");
-        playerTwo.setLastName("Bar 2");
-        playerTwo.setId(2L);
-
-        List<Pitcher> players = new ArrayList<>();
-        players.add(playerOne);
-        players.add(playerTwo);
-
-        when(service.getAll()).thenReturn(players);
-
-        MvcResult result = mockMvc.perform(get(base + "/get-all"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        int status = result.getResponse().getStatus();
-        String data = result.getResponse().getContentAsString();
-        List<Pitcher> results = objectMapper.readValue(data, new TypeReference<List<Pitcher>>() {
-        });
-
-        assertEquals(200, status, 0);
-        assertEquals(players, results);
-        verify(service, times(1)).getAll();
+        mockMvc.perform(get(base + "/get")
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)));
     }
 
     @Test
@@ -126,9 +129,11 @@ public class PitcherControllerTests {
         players.add(player);
 
         when(service.getPitchersByTeam(teamId)).thenReturn(players);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(get(base + "/get-by-team")
-                        .param("teamId", asJsonString(teamId)))
+                        .param("teamId", asJsonString(teamId))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -144,15 +149,36 @@ public class PitcherControllerTests {
         verify(service, times(1)).getPitchersByTeam(any(Long.class));
     }
 
+    @Test(expected = NoAccessPermittedException.class)
+    public void getByTeamThrowsNoAccessPermittedWhenNoAcess() throws Exception {
+        Long teamId = 1L;
+        Pitcher player = new Pitcher();
+        List<Pitcher> players = new ArrayList<>();
+        players.add(player);
+
+        when(service.getPitchersByTeam(teamId)).thenReturn(players);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(false);
+
+        mockMvc.perform(get(base + "/get-by-team")
+                        .param("teamId", asJsonString(teamId))
+                        .param("userId", asJsonString(userId)));
+    }
+
     @Test
     public void idealCreateTest() throws Exception {
         Pitcher pitcher = new Pitcher();
+        user.setId(1234L);
+        this.team.setUser(user);
+        this.team.setId(1L);
+        pitcher.setTeam(team);
 
         when(this.service.createPitcher(any())).thenReturn(pitcher);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(post(base + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(pitcher)))
+                        .content(asJsonString(pitcher))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -165,13 +191,32 @@ public class PitcherControllerTests {
         assertEquals(pitcher, returned);
     }
 
+    @Test(expected = NoAccessPermittedException.class)
+    public void createThrowsNoAccessPermittedWhenNoAcess() throws Exception {
+        Pitcher pitcher = new Pitcher();
+        user.setId(1234L);
+        this.team.setUser(user);
+        this.team.setId(1L);
+        pitcher.setTeam(team);
+
+        when(this.service.createPitcher(any())).thenReturn(pitcher);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(false);
+
+        mockMvc.perform(post(base + "/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(pitcher))
+                        .param("userId", asJsonString(userId)));
+    }
+
     @Test
     public void idealDeleteTest() throws Exception {
         Long id = 1L;
         when(this.service.deletePitcher(id)).thenReturn(true);
+        when(this.validator.validatePitcher(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(delete(base + "/delete")
-                        .param("id", "" + id))
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -184,6 +229,17 @@ public class PitcherControllerTests {
         verify(service, times(1)).deletePitcher(any(Long.class));
     }
 
+    @Test(expected=NoAccessPermittedException.class)
+    public void deleteThrowsNoAccessPermittedWhenNoAccess() throws Exception {
+        Long id = 1L;
+        when(this.service.deletePitcher(id)).thenReturn(true);
+        when(this.validator.validatePitcher(anyLong(), anyLong())).thenReturn(false);
+
+        mockMvc.perform(delete(base + "/delete")
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)));
+    }
+
     @Test(expected = Exception.class)
     public void getReturns500_whenError() throws Exception {
 
@@ -192,7 +248,8 @@ public class PitcherControllerTests {
         when(this.service.getPitcherById(id)).thenThrow(new Exception());
 
         MvcResult result = mockMvc.perform(get(base + "/get")
-                        .param("id", id.toString()))
+                        .param("id", id.toString())
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 

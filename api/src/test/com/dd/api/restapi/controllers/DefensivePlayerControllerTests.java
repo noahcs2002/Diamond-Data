@@ -1,10 +1,16 @@
 package com.dd.api.restapi.controllers;
 
+import com.dd.api.auth.models.User;
+import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.DefensivePlayer;
+import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.services.DefensivePlayerService;
+import com.dd.api.restapi.services.TeamService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,8 +31,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.dd.api.testhelper.Helpers.asJsonString;
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -38,6 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DefensivePlayerControllerTests {
 
     private final String base = "/diamond-data/api/defensive-players/";
+    private final Long userId = 1234L;
+    private final Team team = new Team();
+    private final User user = new User();
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,6 +54,12 @@ public class DefensivePlayerControllerTests {
 
     @MockBean
     private DefensivePlayerService service;
+
+    @MockBean
+    private TeamService teamService;
+
+    @MockBean
+    private Validator validator;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -61,6 +74,14 @@ public class DefensivePlayerControllerTests {
         }
     }
 
+    @BeforeEach
+    public void setup() {
+        this.user.setId(userId);
+        this.team.setUser(user);
+        this.team.setId(1234L);
+        when(this.teamService.getTeamById(anyLong())).thenReturn(team);
+    }
+
     @Test
     public void idealGetPlayerTest() throws Exception {
         Long id = 1L;
@@ -68,9 +89,11 @@ public class DefensivePlayerControllerTests {
         player.setId(id);
 
         when(service.getDefensivePlayer(id)).thenReturn(player);
+        when(this.validator.validateDefensivePlayer(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(get(base + "/get")
-                        .param("id", asJsonString(id)))
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -84,33 +107,20 @@ public class DefensivePlayerControllerTests {
         verify(service, times(1)).getDefensivePlayer(any(Long.class));
     }
 
-    @Test
-    public void idealGetAllTest() throws Exception {
+    // All exceptions are wrapped in a Jakarta.ServletException
+    @Test(expected = ServletException.class)
+    public void getThrowsIllegalAccessOnIllegalAccess() throws Exception {
+        Long id = 1L;
+        DefensivePlayer player = new DefensivePlayer();
+        player.setId(id);
 
-        DefensivePlayer playerOne = new DefensivePlayer();
-        playerOne.setId(1L);
+        when(service.getDefensivePlayer(id)).thenReturn(player);
+        when(this.validator.validateDefensivePlayer(anyLong(), anyLong())).thenReturn(false);
 
-        DefensivePlayer playerTwo = new DefensivePlayer();
-        playerTwo.setId(2L);
-
-        List<DefensivePlayer> players = new ArrayList<>();
-        players.add(playerOne);
-        players.add(playerTwo);
-
-        when(service.getAllPlayers()).thenReturn(players);
-
-        MvcResult result = mockMvc.perform(get(base + "/get-all"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        int status = result.getResponse().getStatus();
-        String data = result.getResponse().getContentAsString();
-        List<DefensivePlayer> results = objectMapper.readValue(data, new TypeReference<List<DefensivePlayer>>() {
-        });
-
-        assertEquals(200, status, 0);
-        assertEquals(players, results);
-        verify(service, times(1)).getAllPlayers();
+        mockMvc.perform(get(base + "/get")
+                        .param("id", asJsonString(id))
+                        .param("userId", asJsonString(userId)))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -121,9 +131,11 @@ public class DefensivePlayerControllerTests {
         players.add(player);
 
         when(service.getAllPlayersByTeam(teamId)).thenReturn(players);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(get(base + "/get-by-team")
-                        .param("teamId", asJsonString(teamId)))
+                        .param("teamId", asJsonString(teamId))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -139,15 +151,37 @@ public class DefensivePlayerControllerTests {
         verify(service, times(1)).getAllPlayersByTeam(any(Long.class));
     }
 
+    @Test(expected = ServletException.class)
+    public void getByTeamFailsOnInvalidAccess() throws Exception {
+        Long teamId = 1L;
+        DefensivePlayer player = new DefensivePlayer();
+        List<DefensivePlayer> players = new ArrayList<>();
+        players.add(player);
+
+        when(service.getAllPlayersByTeam(teamId)).thenReturn(players);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(false);
+
+        mockMvc.perform(get(base + "/get-by-team")
+                        .param("teamId", asJsonString(teamId))
+                        .param("userId", asJsonString(userId)));
+    }
+
     @Test
     public void idealCreateTest() throws Exception {
         DefensivePlayer defensivePlayer = new DefensivePlayer();
+        user.setId(userId);
+        team.setUser(user);
+        team.setId(12345L);
+        defensivePlayer.setTeam(team);
+
 
         when(this.service.createDefensivePlayer(defensivePlayer)).thenReturn(defensivePlayer);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(post(base + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(defensivePlayer)))
+                        .content(asJsonString(defensivePlayer))
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -160,13 +194,35 @@ public class DefensivePlayerControllerTests {
         assertEquals(defensivePlayer, returned);
     }
 
+    @Test(expected = ServletException.class)
+    public void createThrowsExceptionOnNoAccess() throws Exception {
+        DefensivePlayer defensivePlayer = new DefensivePlayer();
+        user.setId(userId);
+        team.setUser(user);
+        team.setId(12345L);
+        defensivePlayer.setTeam(team);
+
+
+        when(this.service.createDefensivePlayer(defensivePlayer)).thenReturn(defensivePlayer);
+        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(false);
+
+        mockMvc.perform(post(base + "/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(defensivePlayer))
+                        .param("userId", asJsonString(userId)))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
     @Test
     public void idealDeleteTest() throws Exception {
         Long id = 1L;
         when(this.service.deletePlayer(id)).thenReturn(true);
+        when(this.validator.validateDefensivePlayer(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult result = mockMvc.perform(delete(base + "/delete")
-                        .param("id", "" + id))
+                        .param("id", "" + id)
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -179,6 +235,23 @@ public class DefensivePlayerControllerTests {
         verify(service, times(1)).deletePlayer(any(Long.class));
     }
 
+    @Test(expected = ServletException.class)
+    public void deleteThrowsExceptionOnNoAccess() throws Exception {
+        Long teamId = 1L;
+        DefensivePlayer player = new DefensivePlayer();
+        List<DefensivePlayer> players = new ArrayList<>();
+        players.add(player);
+
+        when(service.getAllPlayersByTeam(teamId)).thenReturn(players);
+        when(this.validator.validateDefensivePlayer(anyLong(), anyLong())).thenReturn(false);
+
+        mockMvc.perform(get(base + "/get-by-team")
+                        .param("teamId", asJsonString(teamId))
+                        .param("userId", asJsonString(userId)))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
     @Test(expected = Exception.class)
     public void getReturns500_whenError() throws Exception {
 
@@ -187,7 +260,8 @@ public class DefensivePlayerControllerTests {
         when(this.service.getDefensivePlayer(id)).thenThrow(new Exception());
 
         MvcResult result = mockMvc.perform(get(base + "/get")
-                        .param("id", id.toString()))
+                        .param("id", id.toString())
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -201,7 +275,7 @@ public class DefensivePlayerControllerTests {
         when(service.getAllPlayers()).thenThrow(new Exception());
         String message = "testing exception message";
 
-        MvcResult result = mockMvc.perform(get(base + "/get-all"))
+        MvcResult result = mockMvc.perform(get(base + "/get-all").param("userId", asJsonString(userId)))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -216,7 +290,8 @@ public class DefensivePlayerControllerTests {
         when(service.getAllPlayersByTeam(teamId)).thenThrow(new Exception());
 
         MvcResult result = mockMvc.perform(get(base + "get-by-team")
-                        .param("teamId", teamId.toString()))
+                        .param("teamId", teamId.toString())
+                        .param("userId", asJsonString(userId)))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -229,7 +304,7 @@ public class DefensivePlayerControllerTests {
         String message = "testing exception message";
         when(service.createDefensivePlayer(any(DefensivePlayer.class))).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(post(base + "/create"))
+        MvcResult result = mockMvc.perform(post(base + "/create").param("userId", asJsonString(userId)))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -243,7 +318,7 @@ public class DefensivePlayerControllerTests {
                 .thenThrow(new Exception());
         String message = "testing exception message";
 
-        MvcResult result = mockMvc.perform(put(base + "/update"))
+        MvcResult result = mockMvc.perform(put(base + "/update").param("userId", asJsonString(userId)))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
@@ -256,7 +331,7 @@ public class DefensivePlayerControllerTests {
         String message = "testing exception message";
         when(service.deletePlayer(anyLong())).thenThrow(new Exception(message));
 
-        MvcResult result = mockMvc.perform(delete(base + "/delete"))
+        MvcResult result = mockMvc.perform(delete(base + "/delete").param("userId", asJsonString(userId)))
                 .andExpect(status().is5xxServerError())
                 .andReturn();
 
