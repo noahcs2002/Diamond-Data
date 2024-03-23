@@ -1,5 +1,6 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.ai.OffensivePlayerAgent;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.repositories.OffensivePlayerRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
@@ -62,5 +63,16 @@ public class OffensivePlayerService {
             this.repository.save(_p);
         });
         return true;
+    }
+
+    @Transactional
+    public List<OffensivePlayer> getAiOffensivePlayers(Long teamId) {
+        List<OffensivePlayer> offensivePlayers = this.repository.findAll()
+                .stream()
+                .filter(p -> p.getTeam().getId().equals(teamId))
+                .filter(p -> p.getGhostedDate() == 0)
+                .toList();
+
+        return new OffensivePlayerAgent(offensivePlayers).getSortedAndWeightedOffensivePlayers();
     }
 }

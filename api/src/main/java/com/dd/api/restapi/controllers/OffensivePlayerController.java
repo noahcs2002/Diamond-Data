@@ -81,4 +81,17 @@ public class OffensivePlayerController {
         }
         return this.service.createPlayer(player);
     }
+
+    @RequestMapping("/ai")
+    @GetMapping
+    public List<OffensivePlayer> getAiOffensivePlayers(@RequestParam Long userId, @RequestParam Long teamId) throws NoAccessPermittedException {
+        Objects.requireNonNull(userId);
+        Objects.requireNonNull(teamId);
+
+        if (!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.service.getAiOffensivePlayers(teamId);
+    }
 }
