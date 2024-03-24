@@ -1,5 +1,6 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.ai.PitcherAgent;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
@@ -79,5 +80,18 @@ public class PitcherService {
                 .filter(p -> p.getGhostedDate() == 0)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transactional
+    public List<Pitcher> getAiPitchers(Long teamId) {
+        List<Pitcher> pitchers = this.pitcherRepository.findAll()
+                .stream()
+                .filter(p -> p.getTeam().getId().equals(teamId))
+                .filter(p -> p.getGhostedDate() == 0)
+                .toList();
+
+        PitcherAgent agent = new PitcherAgent(pitchers);
+
+        return agent.getSortedAndWeightedPitchers();
     }
 }

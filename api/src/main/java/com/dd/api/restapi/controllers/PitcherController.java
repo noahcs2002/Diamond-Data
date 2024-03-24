@@ -86,4 +86,17 @@ public class PitcherController {
         }
         return this.service.deletePitcher(id);
     }
+
+    @RequestMapping("/ai")
+    @GetMapping
+    public List<Pitcher> getAiPitchers(@RequestParam Long userId, @RequestParam Long teamId) throws NoAccessPermittedException {
+        Objects.requireNonNull(userId);
+        Objects.requireNonNull(teamId);
+
+        if (!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.service.getAiPitchers(teamId);
+    }
 }
