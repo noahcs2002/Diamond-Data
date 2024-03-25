@@ -4,6 +4,9 @@ A project by Jaylee Baker, Noah Sternberg, and Max Thompson
 ## Installation and Use
 As of right now, this application only functions from a "dev" environment. So, you have to clone this repo and then go through the setup process for the application. However, we have included a series of scripts you can use to make the setup process as simple as running one command.
 
+### Individual Scripts:
+You can use individual scripts to run just portions of the app. For example, you can run just the App by following the same procedure in all of the following installation steps, but instead of `DiamondData.sh` or `DiamondData.ps1` you would run `app.sh` or `app.ps1`
+
 ### MacOS and Linux (*nix) Setup
 1. Clone this repository
 1. Change to the repository directory `cd <where_you_cloned_the_repo>`
