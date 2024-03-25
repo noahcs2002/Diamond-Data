@@ -1,4 +1,4 @@
-Set-Location "../../app"
+Set-Location "../../api"
 
 mvn clean install;
 
