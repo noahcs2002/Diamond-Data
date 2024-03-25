@@ -41,7 +41,7 @@ function Login() {
             if (data) {
                 nav('/home', {
                     state: {
-                        data: data
+                        userSessionId: data
                     }
                 })
             }

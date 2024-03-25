@@ -73,13 +73,13 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return ghostedDate == user.ghostedDate && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(email, user.email);
     }
 
     public boolean transientEqualityCheck(User user) {
         if (this == user) return true;
         if (user == null || getClass() != user.getClass()) return false;
-        return (ghostedDate == user.ghostedDate) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(email, user.email);
     }
 
     @Override

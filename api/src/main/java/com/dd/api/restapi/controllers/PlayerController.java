@@ -44,8 +44,8 @@ public class PlayerController {
         return this.playerService.getAll();
     }
 
-    @RequestMapping
-    @GetMapping("/get-by-team")
+    @RequestMapping("/get-by-team")
+    @GetMapping
     public List<Player> getByTeam(@RequestParam Long teamId) {
         Objects.requireNonNull(teamId);
         return this.playerService.getByTeamId(teamId);
@@ -66,7 +66,7 @@ public class PlayerController {
     }
 
     @RequestMapping("/update")
-    @PostMapping
+    @PutMapping
     public Player updatePlayer(@RequestParam Long id, @RequestBody PlayerUpdateRequestModel model) {
         Objects.requireNonNull(id);
         Objects.requireNonNull(model);

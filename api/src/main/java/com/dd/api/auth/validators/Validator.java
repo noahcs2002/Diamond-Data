@@ -13,12 +13,14 @@ import com.dd.api.restapi.services.PitcherService;
 import com.dd.api.restapi.services.PlayerService;
 import com.dd.api.restapi.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 /**
  * Used to verify that a user has permissions to be accessing a resource they are requesting.
  */
+@Service
 public class Validator {
 
     @Autowired
