@@ -1,6 +1,24 @@
 # Diamond Data
 A project by Jaylee Baker, Noah Sternberg, and Max Thompson
 
+## Installation and Use
+As of right now, this application only functions from a "dev" environment. So, you have to clone this repo and then go through the setup process for the application. However, we have included a series of scripts you can use to make the setup process as simple as running one command.
+
+### MacOS and Linux (*nix) Setup
+1. Clone this repository
+1. Change to the repository directory `cd <where_you_cloned_the_repo>`
+1. Change to the `scripts/unix` directory: `cd scripts/unix`
+1. Execute the `DiamondData.sh` script: `./DiamondData.sh`
+1. When you are finished with the application, enter `ctrl+c` to terminate the api and app.
+
+### Windows
+1. Clone this repository
+1. Change to repository directory `cd <where_you_cloned_the_repo>`
+1. Change to the `scripts/windows` directory: `cd scripts/windows`
+1. If you aren't already, open a Powershell instance (run `powershell` from a cmd terminal, or search for Powershell in the Windows Context Menu)
+1. Execute the `DiamondData.ps1` script: `powershell -ExecutionPolicy bypass -File DiamondData.ps1` (note: you must bypass the execution policy setup by default on Windows machines, hence the `-ExecutionPolicy bypass`) portion.
+1. When you are finished, enter `ctrl+c` to end the program.
+
 ## Project Overview
 The team intends to construct a full-stack statistics web-app designed to make managing a high school team/college team’s
 baseball or softball day-to-day operations easier. A full list of planned features is attached to the end of this document, but
