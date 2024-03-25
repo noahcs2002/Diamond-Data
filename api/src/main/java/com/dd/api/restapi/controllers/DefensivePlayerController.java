@@ -17,13 +17,13 @@ import java.util.Objects;
 public class DefensivePlayerController {
 
     @Autowired
-    private final DefensivePlayerService service;
+    private DefensivePlayerService service;
 
     @Autowired
-    private final Validator validator;
+    private Validator validator;
 
     @Autowired
-    private final TeamService teamService;
+    private TeamService teamService;
 
     private final String exceptionMessage = "Cannot access the specified resource with the specified user id: ";
 
