@@ -1,13 +1,11 @@
-import React from 'react'
-import '../styles/Insights.scss'
-import Navbar from '../components/Navbar'
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import Navbar from '../components/Navbar';
+import { Radar } from 'react-chartjs-2';
+import '../styles/Insights.scss'; // Import the Insights styling
 
 function Insights() {
-  return (
-
-
-
-  
+  return (  
     <div>
       <Navbar />
       <div className="insights">

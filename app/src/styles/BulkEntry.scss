@@ -11,19 +11,63 @@
     align-items: center;
     flex-direction: column;
 
-    .title {
-        font-size: 4rem; 
-        font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        margin-bottom: 10px; 
-        color: var(--text3-color); 
-      }
+   
+  .title {
+    font-size: 4rem; 
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-bottom: 10px; 
+    color: var(--text3-color); 
+  }
 
-    // HEADER 
-    .rightSide h1 {
-      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-        "Lucida Sans", Arial, sans-serif;
-      font-weight: 10;
-      font-size: 50px;
-      margin-left: 30px;
+  .tableWrapper {
+    width: 85%;
+    margin: 20px auto;
+    overflow-x: auto;
+    max-height: 1500px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+
+    table {
+      // width: 100px;
+      border-collapse: collapse;
+      overflow: hidden;
+      box-shadow: 0 0 20px var(--box-shadow-color);
     }
+  
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      text-align: center;
+    }
+  
+    th {
+      background-color: var(--background-color); 
+      font-weight: bold; 
+    }
+  
+    tbody tr:nth-child(even) {
+      background-color: var(--background3-color); 
+    }
+  }
+
+  h2 {
+    color: var(--text4-color);
+    font-size:  2.5rem;
+  }
+
+  
+.teamSelector {
+  margin-top: 8px;
+  margin-bottom: 2px;
+  
+}
+
+.teamSelector select {
+  padding: 15px;
+  font-size: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
   } 

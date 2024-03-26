@@ -12,6 +12,8 @@ function PlayerStats() {
 
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [comparePlayer, setComparePlayer] = useState(null);
+
   
   useEffect(() => {
     fetchData();
@@ -56,6 +58,36 @@ const handlePlayerClick = (player) => {
   console.log('Player clicked:', player);
   setSelectedPlayer(player);
   setShowModal(true);
+}
+
+const handleCompareClick = () => {
+  if (selectedPlayer) {
+    setComparePlayer(selectedPlayer);
+    setShowModal(true);
+  } else {
+    console.error('No player selected for comparison');
+  }
+}
+
+const handleSearch = (playerName) => {
+  let foundPlayer = null;
+  // Search for the player by name
+  offensiveData.concat(defensiveData, pitcherData).some(player => {
+    if (
+      player.firstName.toLowerCase().includes(playerName.toLowerCase()) ||
+      player.lastName.toLowerCase().includes(playerName.toLowerCase())
+    ) {
+      foundPlayer = player;
+      return true; // Stop searching after finding the first match
+    }
+    return false;
+  });
+
+  if (foundPlayer) {
+    setSelectedPlayer(foundPlayer);
+  } else {
+    console.error('Player not found');
+  }
 }
 
   const pitcherColumns = React.useMemo(() => [
@@ -513,9 +545,11 @@ const handlePlayerClick = (player) => {
             </table>
           </div>
         </div>
+        <button onClick={handleCompareClick}>Compare</button>
+        <input type="text" placeholder="Search player..." onChange={(e) => handleSearch(e.target.value)} />
       </div>
       {showModal && 
-        <PlayerStatsModal player={selectedPlayer} show={showModal} onClose={() => setShowModal(false)} />
+        <PlayerStatsModal player={comparePlayer} show={showModal} onClose={() => setShowModal(false)} />
       }  
     </div> 
   )
