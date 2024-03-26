@@ -8,6 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "dd_offense", schema = "sp24")
 public class OffensivePlayer {
+    // stat count: 29
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

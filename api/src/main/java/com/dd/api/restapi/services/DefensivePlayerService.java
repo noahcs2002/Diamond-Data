@@ -1,5 +1,6 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.ai.DefensivePlayerAgent;
 import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.repositories.DefensivePlayerRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
@@ -73,5 +74,17 @@ public class DefensivePlayerService {
                 .filter(p -> p.getGhostedDate() == 0)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transactional
+    public List<DefensivePlayer> getAiDefensivePlayers(Long teamId) {
+
+        List<DefensivePlayer> players = this.repository.findAll()
+                .stream()
+                .filter(p -> p.getGhostedDate() == 0)
+                .filter(p -> p.getTeam().getId().equals(teamId))
+                .toList();
+
+        return new DefensivePlayerAgent(players).getSortedAndWeightedDefensivePlayers();
     }
 }

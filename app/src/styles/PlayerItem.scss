@@ -39,6 +39,19 @@
         z-index: 1; 
     }
 
+    .editDialog {
+        position: absolute;
+        width: 200px;
+        height: 150px;
+        // left: 10%; 
+        // transform: translateX(-50%); 
+        background-color: var(--background3-color);
+        // text-align: center;
+        // z-index: 1; 
+        padding-top: 50px;
+        padding-left: 25px;
+    }
+
     .yesButton, .noButton {
         margin-bottom: 10px;
         margin-right: 10px;;

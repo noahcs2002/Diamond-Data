@@ -10,6 +10,7 @@ function PlayerManagement({onEdit}) {
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
+  const [rawPlayerData, setRawPlayerData] = useState([]);
 
   const handleDelete = (fullName) => {
     // Logic to delete player
@@ -48,43 +49,132 @@ function PlayerManagement({onEdit}) {
         return player;
       });
     });
-  };
-  
-  
+  };  
 
   useEffect(() => {
-    fetchData();
+    fetchPlayers();
+    fetchPitchers();
   }, []);
 
-  const fetchData = async () => {
-    const id = '202';
-    const endpoints = [
-      'http://localhost:8080/diamond-data/api/offensive-players/get-by-team',
-      'http://localhost:8080/diamond-data/api/defensive-players/get-by-team',
-      'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
-    ];
+  const fetchPlayers = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
+    const url = new URL(endpoint);
 
-    const requests = endpoints.map(endpoint => {
-      const url = new URL(endpoint);
-      url.searchParams.append('teamId', id);
-      return fetch(url)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return res.json();
-        });
-    });
-  
-    try {
-      const [offensive, defensive, pitchers] = await Promise.all(requests);
-      setOffensiveData(offensive);
-      setDefensiveData(defensive);
-      setPitcherData(pitchers);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+    // url.searchParams.append("userId", 252);
+    url.searchParams.append('teamId', 852);
+
+    const data = await fetch(url)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("network error")
+        }
+        return res.json();
+      })
+      
+      let offensiveData = [];
+      let defensiveData = [];
+      data.map(r => {
+        r.offensivePlayer.firstName = r.firstName;
+        r.offensivePlayer.lastName = r.lastName;
+
+        r.defensivePlayer.lastName = r.lastName;
+        r.defensivePlayer.firstName = r.firstName;
+
+        console.log('Player id: ', r.id);
+
+        offensiveData.push(r.offensivePlayer);
+        defensiveData.push(r.defensivePlayer);
+      })
+
+      setDefensiveData(defensiveData);
+      setOffensiveData(offensiveData);
+      setRawPlayerData(data);
+  }
+
+  const fetchPitchers = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team';
+    const url = new URL(endpoint);
+    url.searchParams.append('teamId', 852);
+    url.searchParams.append("userId", 252);
+    const data = await fetch(url)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("network error")
+        }
+        return res.json();
+      })
+      setPitcherData(data);
+  }
+
+  const handlePlayerDelete = async (id) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/players/delete';
+    const url = new URL(endpoint);
+
+    url.searchParams.append('id', id);
+
+    await fetch(url)
+      .then(res => {
+        if(!res.ok) {
+          throw new Error("Bad network");
+        }
+        return res.json();
+      })
+  }
+
+  const handlePitcherDelete = async (id) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitcher/delete';
+    const url = new URL(endpoint);
+
+    url.searchParams.append('id', id);
+
+    await fetch(url)
+      .then(res => {
+        if(!res.ok) {
+          throw new Error("Bad network");
+        }
+        return res.json();
+      })
+  } 
+
+  const handlePlayerCreate = async (playerCreationRequestModel) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/players/create';
+    const url = new URL(endpoint);
+
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify(playerCreationRequestModel)
+    })
+      .then(res => {
+        if(!res.ok) {
+          throw new Error("Bad network");
+        }
+        return res.json();
+      })
+  }
+
+  const handlePitcherCreate = async (pitcher, userId) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitcher/delete';
+    const url = new URL(endpoint);
+
+    url.searchParams.append('userId', userId);
+
+    await fetch(url, {
+      method : 'POST',
+      headers: {  
+        'Content-Type': 'application/json'
+      },
+      body:  JSON.stringify(pitcher)
+    })
+      .then(res => {
+        if(!res.ok) {
+          throw new Error("Bad network");
+        }
+        return res.json();
+      })
+  } 
 
   const columns = React.useMemo(() => [
     {
