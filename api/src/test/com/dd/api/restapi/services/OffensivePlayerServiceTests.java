@@ -1,10 +1,8 @@
 package com.dd.api.restapi.services;
 
-import com.dd.api.restapi.controllers.OffensivePlayerController;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.OffensivePlayerRepository;
-import jakarta.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

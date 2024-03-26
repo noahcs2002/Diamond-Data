@@ -1,8 +1,6 @@
 package com.dd.api.restapi.controllers;
 
-import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.models.Lineup;
-import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.requestmodels.CreateLineupRequestModel;
 import com.dd.api.restapi.services.LineupService;
 import org.springframework.beans.factory.annotation.Autowired;
