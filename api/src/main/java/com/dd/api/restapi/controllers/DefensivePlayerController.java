@@ -3,7 +3,6 @@ package com.dd.api.restapi.controllers;
 import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.services.DefensivePlayerService;
-import com.dd.api.restapi.services.OffensivePlayerService;
 import com.dd.api.restapi.services.TeamService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;

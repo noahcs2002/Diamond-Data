@@ -2,10 +2,8 @@ package com.dd.api.restapi.controllers;
 
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.validators.Validator;
-import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Team;
-import com.dd.api.restapi.services.DefensivePlayerService;
 import com.dd.api.restapi.services.PitcherService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

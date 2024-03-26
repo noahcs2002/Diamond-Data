@@ -2,17 +2,13 @@ package com.dd.api.restapi.controllers;
 
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.validators.Validator;
-import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Team;
-import com.dd.api.restapi.services.OffensivePlayerService;
 import com.dd.api.restapi.services.TeamService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -26,8 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static com.dd.api.testhelper.Helpers.asJsonString;
@@ -36,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

@@ -1,17 +1,7 @@
 package com.dd.api.auth.validators;
 
-import com.dd.api.restapi.models.DefensivePlayer;
-import com.dd.api.restapi.models.Game;
-import com.dd.api.restapi.models.OffensivePlayer;
-import com.dd.api.restapi.models.Pitcher;
-import com.dd.api.restapi.models.Player;
-import com.dd.api.restapi.models.Team;
-import com.dd.api.restapi.services.DefensivePlayerService;
-import com.dd.api.restapi.services.GameService;
-import com.dd.api.restapi.services.OffensivePlayerService;
-import com.dd.api.restapi.services.PitcherService;
-import com.dd.api.restapi.services.PlayerService;
-import com.dd.api.restapi.services.TeamService;
+import com.dd.api.restapi.models.*;
+import com.dd.api.restapi.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
