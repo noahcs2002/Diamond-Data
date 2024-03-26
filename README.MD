@@ -4,6 +4,11 @@ A project by Jaylee Baker, Noah Sternberg, and Max Thompson
 ## Installation and Use
 As of right now, this application only functions from a "dev" environment. So, you have to clone this repo and then go through the setup process for the application. However, we have included a series of scripts you can use to make the setup process as simple as running one command.
 
+### Required Systems and Dependencies
+You will need the following:
+- For the backend: [Maven](https://maven.apache.org/download.cgi) and an [JDK](https://www.oracle.com/java/technologies/downloads/). You might be able to just use a [JRE](https://www.java.com/en/download/manual.jsp) for just running it, but you will need a [JDK](https://www.oracle.com/java/technologies/downloads/) for development.
+- For the front end: You will need [Node.JS and NPM](https://nodejs.org/en/download) and that is it.
+
 ### Individual Scripts:
 You can use individual scripts to run just portions of the app. For example, you can run just the App by following the same procedure in all of the following installation steps, but instead of `DiamondData.sh` or `DiamondData.ps1` you would run `app.sh` or `app.ps1`
 
