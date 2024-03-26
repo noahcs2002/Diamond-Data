@@ -22,7 +22,7 @@ jobs:
         node-version: 14
 
     - name: Install Chart Dependency
-      run: cd app && npm install react-chartjs-2 --save
+      run: cd app && npm install react-chartjs-2 --save && npm install chart.js --save
 
     - name: Install dependencies
       run: cd app && npm install
