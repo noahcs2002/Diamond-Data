@@ -1,6 +1,7 @@
 package com.dd.api.restapi.services;
 
-import com.dd.api.ai.OffensivePlayerAgent;
+import com.dd.api.ai.agents.OffensivePlayerAgent;
+import com.dd.api.ai.scoring.OffensivePlayerScoringStrategy;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.repositories.OffensivePlayerRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
@@ -73,6 +74,6 @@ public class OffensivePlayerService {
                 .filter(p -> p.getGhostedDate() == 0)
                 .toList();
 
-        return new OffensivePlayerAgent(offensivePlayers).getSortedAndWeightedOffensivePlayers();
+        return new OffensivePlayerAgent(offensivePlayers, new OffensivePlayerScoringStrategy()).getSortedAndWeightedOffensivePlayers();
     }
 }

@@ -1,11 +1,13 @@
 package com.dd.api.restapi.services;
 
-import com.dd.api.ai.PitcherAgent;
+import com.dd.api.ai.agents.PitcherAgent;
+import com.dd.api.ai.scoring.PitcherScoringStrategy;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -90,8 +92,6 @@ public class PitcherService {
                 .filter(p -> p.getGhostedDate() == 0)
                 .toList();
 
-        PitcherAgent agent = new PitcherAgent(pitchers);
-
-        return agent.getSortedAndWeightedPitchers();
+        return new PitcherAgent(pitchers, new PitcherScoringStrategy()).getSortedAndWeightedPitchers();
     }
 }

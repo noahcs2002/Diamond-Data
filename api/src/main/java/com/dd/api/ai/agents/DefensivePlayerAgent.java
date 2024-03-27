@@ -1,6 +1,7 @@
-package com.dd.api.ai;
+package com.dd.api.ai.agents;
 
 
+import com.dd.api.ai.scoring.ScoringStrategy;
 import com.dd.api.restapi.models.DefensivePlayer;
 import org.hibernate.collection.spi.PersistentBag;
 
@@ -9,9 +10,11 @@ import java.util.List;
 public class DefensivePlayerAgent {
 
     private final List<DefensivePlayer> defensivePlayers;
+    private final ScoringStrategy<DefensivePlayer> defensivePlayerScoringStrategy;
 
-    public DefensivePlayerAgent(List<DefensivePlayer> defensivePlayers) {
+    public DefensivePlayerAgent(List<DefensivePlayer> defensivePlayers, ScoringStrategy<DefensivePlayer> scoringStrategy) {
         this.defensivePlayers = defensivePlayers;
+        this.defensivePlayerScoringStrategy = scoringStrategy;
     }
 
     public List<DefensivePlayer> getSortedAndWeightedDefensivePlayers() {
@@ -34,18 +37,6 @@ public class DefensivePlayerAgent {
     }
 
     private double computeWeightedScore(DefensivePlayer defensivePlayer) {
-        return
-                (double) defensivePlayer.getAssists() * ((double) 1 /12)+
-                        defensivePlayer.getCaughtStealingPercent() * ((double) 1 /12)+
-                        (double) defensivePlayer.getDoublePlay() * ((double) 1 /12)+
-                        (double) defensivePlayer.getErrors() * ((double) 1 /12) +
-                        defensivePlayer.getFieldingPercentage() * ((double) 1 /12) +
-                        (double) defensivePlayer.getInningsPlayed() * ((double) 1 /12) +
-                        (double) defensivePlayer.getOuts() * ((double) 1 /12) +
-                        (double) defensivePlayer.getOutfieldAssists() * ((double) 1 /12) +
-                        (double) defensivePlayer.getPassedBalls() * ((double) 1 /12) +
-                        (double) defensivePlayer.getPutouts() * ((double) 1 /12) +
-                        (double) defensivePlayer.getTotalChances() * ((double) 1 /12) +
-                        (double) defensivePlayer.getTriplePlays() * ((double) 1 /12);
+        return this.defensivePlayerScoringStrategy.score(defensivePlayer);
     }
 }
