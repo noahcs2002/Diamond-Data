@@ -1,5 +1,6 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.auth.models.User;
 import com.dd.api.auth.providers.AuthorizationService;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.TeamRepository;
@@ -69,13 +70,17 @@ public class TeamServiceTests {
 
     @Test
     public void idealGetAllTeamsTest() {
+        User user = new User();
+        user.setId(1L);
         Team teamOne = new Team();
         Team teamTwo = new Team();
+        teamOne.setUser(user);
+        teamTwo.setUser(user);
         List<Team> teams = List.of(teamOne, teamTwo);
 
         when(this.repository.findAll()).thenReturn(teams);
 
-        List<Team> res = this.service.getAllTeams();
+        List<Team> res = this.service.getAllTeams(1L);
 
         assertEquals(teams, res);
         verify(repository, times(1)).findAll();
@@ -85,15 +90,44 @@ public class TeamServiceTests {
     public void getAllTeamsReturnsOnlyNonDeletedTeams() {
         Team teamOne = new Team();
         Team teamTwo = new Team();
+        User user = new User();
+        user.setId(1L);
         teamTwo.setGhostedDate(1234L);
+        teamOne.setUser(user);
+        teamTwo.setUser(user);
 
         List<Team> teams = List.of(teamOne, teamTwo);
         when(this.repository.findAll()).thenReturn(teams);
 
-        List<Team> res = this.service.getAllTeams();
+        List<Team> res = this.service.getAllTeams(1L);
 
         assertEquals(List.of(teamOne), res);
         verify(this.repository, times(1)).findAll();
+    }
+
+    @Test
+    public void getAllTeamsReturnsTeamsWithCorrectUser() {
+        User user = new User();
+        user.setId(1L);
+        User user2 = new User();
+        user2.setId(2L);
+
+        Team teamOne = new Team();
+        Team teamTwo = new Team();
+
+        teamOne.setUser(user);
+        teamTwo.setUser(user2);
+
+        List<Team> teams = List.of(teamOne, teamTwo);
+
+        when(this.repository.findAll()).thenReturn(teams);
+
+        List<Team> exp = List.of(teamOne);
+
+        List<Team> res = this.service.getAllTeams(1L);
+
+        assertEquals(1, res.size());
+        assertEquals(exp, res);
     }
 
     @Test
