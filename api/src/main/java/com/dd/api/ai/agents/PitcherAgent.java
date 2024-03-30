@@ -4,6 +4,7 @@ import com.dd.api.ai.scoring.ScoringStrategy;
 import com.dd.api.restapi.models.Pitcher;
 import org.hibernate.collection.spi.PersistentBag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PitcherAgent {
@@ -17,8 +18,7 @@ public class PitcherAgent {
     }
 
     public List<Pitcher> getSortedAndWeightedPitchers() {
-        List<Pitcher> pitchers = new PersistentBag<>();
-        pitchers.sort((o1, o2) -> Double.compare(computeWeightedScore(o1), computeWeightedScore(o2)));
+        List<Pitcher> pitchers = new ArrayList<>();
 
         for (Pitcher player : this.pitchers) {
             if(pitchers.size() <= 9) {

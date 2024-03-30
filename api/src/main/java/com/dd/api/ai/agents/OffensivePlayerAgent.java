@@ -4,6 +4,7 @@ import com.dd.api.ai.scoring.ScoringStrategy;
 import com.dd.api.restapi.models.OffensivePlayer;
 import org.hibernate.collection.spi.PersistentBag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OffensivePlayerAgent {
@@ -18,8 +19,7 @@ public class OffensivePlayerAgent {
 
     public List<OffensivePlayer> getSortedAndWeightedOffensivePlayers(){
 
-        List<OffensivePlayer> players = new PersistentBag<>();
-        players.sort((o1, o2) -> Double.compare(computeWeightedScore(o1), computeWeightedScore(o2)));
+        List<OffensivePlayer> players = new ArrayList<>();
 
         for (OffensivePlayer player : this.offensivePlayers) {
             if(players.size() <= 9) {
