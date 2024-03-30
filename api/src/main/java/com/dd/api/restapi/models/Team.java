@@ -76,4 +76,15 @@ public class Team {
     public int hashCode() {
         return Objects.hash(id, user, name, ghostedDate);
     }
+
+    @Override
+    public String
+    toString() {
+        return "Team{" +
+                "id=" + id +
+                ", user=" + user +
+                ", name='" + name + '\'' +
+                ", ghostedDate=" + ghostedDate +
+                '}';
+    }
 }

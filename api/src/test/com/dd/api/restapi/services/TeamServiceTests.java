@@ -9,8 +9,11 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import javax.management.ObjectName;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -132,18 +135,28 @@ public class TeamServiceTests {
 
     @Test
     public void updateTeamTest() {
-        Long id = 1L;
-        Team team = new Team();
-        team.setId(id);
+        Team base = new Team();
+        User user = new User();
+
+        base.setId(1L);
+        base.setUser(user);
+        user.setId(2L);
+
+        when(this.repository.findById(anyLong())).thenReturn(Optional.of(base));
 
         Team newModel = new Team();
+        newModel.setName("New Team");
+        newModel.setUser(user);
+        newModel.setId(1L);
+        newModel.setGhostedDate(0);
+        when(this.authorizationService.getNonTransientUser(any(User.class))).thenReturn(user);
 
+        Team res = this.service.updateTeam(1L, newModel);
+        System.out.println(res);
+        System.out.println(newModel);
 
-        when(repository.save(newModel)).thenReturn(team);
-
-        Team res = this.service.updateTeam(id, newModel);
-        assertEquals(res, team);
-        verify(repository, times(1)).save(newModel);
+        assertEquals(res, newModel);
+        verify(this.repository, times(1)).findById(anyLong());
     }
 
     @Test
