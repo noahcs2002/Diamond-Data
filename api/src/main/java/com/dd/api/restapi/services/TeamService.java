@@ -34,10 +34,11 @@ public class TeamService {
     }
 
     @Transactional
-    public List<Team> getAllTeams() {
+    public List<Team> getAllTeams(Long userId) {
         return this.repository.findAll()
                 .stream()
                 .filter(e -> e.getGhostedDate() == 0)
+                .filter(e -> e.getUser().getId().equals(userId))
                 .toList();
     }
 

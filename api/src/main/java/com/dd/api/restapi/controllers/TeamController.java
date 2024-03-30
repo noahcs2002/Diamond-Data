@@ -7,6 +7,7 @@ import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -66,5 +67,14 @@ public class TeamController {
         }
 
         return this.service.delete(id);
+    }
+
+    // No validation here, validating at a lower level
+    @RequestMapping("/get-all")
+    @GetMapping
+    public List<Team> getAll(@RequestParam Long userId) {
+        Objects.requireNonNull(userId);
+
+        return this.service.getAllTeams(userId);
     }
 }

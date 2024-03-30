@@ -184,7 +184,7 @@ public class TeamControllerTests {
 
     @Test(expected = Exception.class)
     public void getAllReturns500_whenError() throws Exception {
-        when(service.getAllTeams()).thenThrow(new Exception());
+        when(service.getAllTeams(anyLong())).thenThrow(new Exception());
         String message = "testing exception message";
 
         MvcResult result = mockMvc.perform(get(base + "/get-all"))
