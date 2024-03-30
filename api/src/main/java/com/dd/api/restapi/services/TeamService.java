@@ -44,8 +44,16 @@ public class TeamService {
 
     @Transactional
     public Team updateTeam(Long id, Team newTeam) {
-        newTeam.setId(id);
-        return this.repository.save(newTeam);
+        Team team = this.repository.findById(id).orElse(null);
+
+        if(team != null) {
+            team.setId(id);
+            team.setUser(this.authorizationService.getNonTransientUser(newTeam.getUser()));
+            team.setName(newTeam.getName());
+            team.setGhostedDate(0);
+        }
+
+        return team;
     }
 
     @Transactional
