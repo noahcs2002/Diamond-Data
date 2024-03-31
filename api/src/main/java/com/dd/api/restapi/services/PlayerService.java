@@ -3,6 +3,7 @@ package com.dd.api.restapi.services;
 import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Player;
+import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PlayerRepository;
 import com.dd.api.restapi.requestmodels.PlayerManipulationRequestModel;
 import com.dd.api.restapi.requestmodels.PlayerUpdateRequestModel;
@@ -27,12 +28,17 @@ public class PlayerService {
     @Autowired
     private final DefensivePlayerService defensivePlayerService;
 
+    @Autowired
+    private final TeamService teamService;
 
-    public PlayerService(PlayerRepository repository, OffensivePlayerService offensivePlayerService, DefensivePlayerService defensivePlayerService) {
+
+    public PlayerService(PlayerRepository repository, OffensivePlayerService offensivePlayerService, DefensivePlayerService defensivePlayerService, TeamService teamService) {
         this.repository = repository;
         this.offensivePlayerService = offensivePlayerService;
         this.defensivePlayerService = defensivePlayerService;
+        this.teamService = teamService;
     }
+
 
     @Transactional
     public Player getPlayerById(Long id) {
@@ -83,27 +89,11 @@ public class PlayerService {
     }
 
     @Transactional
-    public Player createPlayer(PlayerManipulationRequestModel model) {
-        Player player = new Player();
-        player.setOffensivePlayer(model.offensivePlayer());
-        player.setDefensivePlayer(model.defensivePlayer());
-        player.setFirstName(model.firstName());
-        player.setLastName(model.lastName());
-
-        this.offensivePlayerService.createPlayer(model.offensivePlayer());
-        this.defensivePlayerService.createDefensivePlayer(model.defensivePlayer());
-        return this.repository.save(player);
-    }
-
-    @Transactional
-    public Player createPlayer(OffensivePlayer offensivePlayer, DefensivePlayer defensivePlayer) {
-        Player player = new Player();
-        player.setOffensivePlayer(offensivePlayer);
-        player.setDefensivePlayer(defensivePlayer);
-
-        this.defensivePlayerService.createDefensivePlayer(defensivePlayer);
-        this.offensivePlayerService.createPlayer(offensivePlayer);
-
+    public Player createPlayer(Player player, Team team) {
+        player.getOffensivePlayer().setTeam(team);
+        player.getDefensivePlayer().setTeam(team);
+        this.defensivePlayerService.createDefensivePlayer(player.getDefensivePlayer());
+        this.offensivePlayerService.createPlayer(player.getOffensivePlayer());
         return this.repository.save(player);
     }
 
@@ -119,9 +109,14 @@ public class PlayerService {
     }
 
     @Transactional
-    public Player update(Long id, PlayerUpdateRequestModel model) {
+    public Player update(Long id, PlayerUpdateRequestModel model, Long teamId) {
         OffensivePlayer offensivePlayer = model.manipulationRequestModel().offensivePlayer();
         DefensivePlayer defensivePlayer = model.manipulationRequestModel().defensivePlayer();
+
+        Team team = this.teamService.getTeamById(teamId);
+
+        offensivePlayer.setTeam(team);
+        defensivePlayer.setTeam(team);
 
         offensivePlayer.setId(model.offensiveId());
         defensivePlayer.setId(model.defensiveId());

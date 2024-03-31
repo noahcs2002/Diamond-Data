@@ -1,11 +1,12 @@
 package com.dd.api.restapi.controllers;
 
 import com.dd.api.restapi.models.Player;
-import com.dd.api.restapi.requestmodels.PlayerManipulationRequestModel;
+import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.requestmodels.PlayerUpdateRequestModel;
 import com.dd.api.restapi.services.DefensivePlayerService;
 import com.dd.api.restapi.services.OffensivePlayerService;
 import com.dd.api.restapi.services.PlayerService;
+import com.dd.api.restapi.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +26,14 @@ public class PlayerController {
     @Autowired
     private final DefensivePlayerService defensivePlayerService;
 
-    public PlayerController(PlayerService playerService, OffensivePlayerService offensivePlayerService, DefensivePlayerService defensivePlayerService) {
+    @Autowired
+    private final TeamService teamService;
+
+    public PlayerController(PlayerService playerService, OffensivePlayerService offensivePlayerService, DefensivePlayerService defensivePlayerService, TeamService teamService) {
         this.playerService = playerService;
         this.offensivePlayerService = offensivePlayerService;
         this.defensivePlayerService = defensivePlayerService;
+        this.teamService = teamService;
     }
 
     @RequestMapping("/get")
@@ -53,9 +58,11 @@ public class PlayerController {
 
     @RequestMapping("/create")
     @PostMapping
-    public Player create(@RequestBody PlayerManipulationRequestModel requestModel) {
-        Objects.requireNonNull(requestModel);
-        return this.playerService.createPlayer(requestModel);
+    public Player create(@RequestBody Player player, @RequestParam Long teamId) {
+        Objects.requireNonNull(player);
+        Objects.requireNonNull(teamId);
+        Team team = this.teamService.getTeamById(teamId);
+        return this.playerService.createPlayer(player, team);
     }
 
     @RequestMapping("/delete")
@@ -67,10 +74,11 @@ public class PlayerController {
 
     @RequestMapping("/update")
     @PutMapping
-    public Player updatePlayer(@RequestParam Long id, @RequestBody PlayerUpdateRequestModel model) {
+    public Player updatePlayer(@RequestParam Long id, @RequestParam Long teamId, @RequestBody PlayerUpdateRequestModel model) {
         Objects.requireNonNull(id);
         Objects.requireNonNull(model);
-        return this.playerService.update(id, model);
+        Objects.requireNonNull(teamId);
+        return this.playerService.update(id, model, teamId);
     }
 
     @RequestMapping("/change-first-name")
