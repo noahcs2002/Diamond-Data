@@ -5,6 +5,7 @@ import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.services.PitcherService;
+import com.dd.api.restapi.services.StatisticsService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,6 +59,9 @@ public class PitcherControllerTests {
     @MockBean
     private Validator validator;
 
+    @MockBean
+    private StatisticsService statisticsService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -85,6 +89,8 @@ public class PitcherControllerTests {
         Pitcher player = new Pitcher();
         player.setId(id);
 
+        when(this.statisticsService.updatePitcherStatistics(any(Pitcher.class))).thenReturn(player);
+
         when(service.getPitcherById(id)).thenReturn(player);
         when(this.validator.validatePitcher(anyLong(), anyLong())).thenReturn(true);
 
@@ -101,6 +107,7 @@ public class PitcherControllerTests {
         assertEquals(200, status, 0);
         assertEquals(player, foundPlayer);
 
+        verify(statisticsService, times(1)).updatePitcherStatistics(any(Pitcher.class));
         verify(service, times(1)).getPitcherById(any(Long.class));
     }
 
@@ -124,6 +131,7 @@ public class PitcherControllerTests {
         Pitcher player = new Pitcher();
         List<Pitcher> players = new ArrayList<>();
         players.add(player);
+        when(this.statisticsService.updatePitcherStatistics(any(Pitcher.class))).thenReturn(player);
 
         when(service.getPitchersByTeam(teamId)).thenReturn(players);
         when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
@@ -143,6 +151,7 @@ public class PitcherControllerTests {
 
         assertEquals(200, status, 0);
         assertEquals(players, returnedPlayers);
+        verify(statisticsService, atLeast(1)).updatePitcherStatistics(any(Pitcher.class));
         verify(service, times(1)).getPitchersByTeam(any(Long.class));
     }
 

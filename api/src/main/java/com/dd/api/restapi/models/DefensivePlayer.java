@@ -20,7 +20,11 @@ public class DefensivePlayer {
     private Team team;
     private List<String> positions;
     private int assists;
+
+    // catchers only
     private double caughtStealingPercent;
+    private double stolenBasesAllowed;
+    private double stolenBaseAttempts;
     private int doublePlay;
     private int errors;
     private double fieldingPercentage;
@@ -32,38 +36,6 @@ public class DefensivePlayer {
     private int totalChances;
     private int triplePlays;
     private long ghostedDate;
-
-    public DefensivePlayer(Long id,
-                           Team team,
-                           List<String> positions,
-                           int assists,
-                           double caughtStealingPercent,
-                           int doublePlay,
-                           int errors,
-                           double fieldingPercentage,
-                           int inningsPlayed,
-                           int outs,
-                           int outfieldAssists,
-                           int passedBalls,
-                           int putouts,
-                           int totalChances,
-                           int triplePlays) {
-        this.id = id;
-        this.team = team;
-        this.positions = positions;
-        this.assists = assists;
-        this.caughtStealingPercent = caughtStealingPercent;
-        this.doublePlay = doublePlay;
-        this.errors = errors;
-        this.fieldingPercentage = fieldingPercentage;
-        this.inningsPlayed = inningsPlayed;
-        this.outs = outs;
-        this.outfieldAssists = outfieldAssists;
-        this.passedBalls = passedBalls;
-        this.putouts = putouts;
-        this.totalChances = totalChances;
-        this.triplePlays = triplePlays;
-    }
 
     @JsonCreator
     public DefensivePlayer(List<String> positions,
@@ -78,6 +50,8 @@ public class DefensivePlayer {
                            int outfieldAssists,
                            int passedBalls,
                            int putouts,
+                           int stolenBasesAllowed,
+                           int stolenBaseAttempts,
                            int totalChances,
                            int triplePlays) {
         this.positions = positions;
@@ -92,6 +66,8 @@ public class DefensivePlayer {
         this.outfieldAssists = outfieldAssists;
         this.passedBalls = passedBalls;
         this.putouts = putouts;
+        this.stolenBaseAttempts = stolenBaseAttempts;
+        this.stolenBasesAllowed = stolenBasesAllowed;
         this.totalChances = totalChances;
         this.triplePlays = triplePlays;
     }
@@ -228,6 +204,22 @@ public class DefensivePlayer {
         this.ghostedDate = ghostedDate;
     }
 
+    public double getStolenBasesAllowed() {
+        return stolenBasesAllowed;
+    }
+
+    public void setStolenBasesAllowed(double stolenBasesAllowed) {
+        this.stolenBasesAllowed = stolenBasesAllowed;
+    }
+
+    public double getStolenBaseAttempts() {
+        return stolenBaseAttempts;
+    }
+
+    public void setStolenBaseAttempts(double stolenBaseAttempts) {
+        this.stolenBaseAttempts = stolenBaseAttempts;
+    }
+
     @Override
     public String toString() {
         return "DefensivePlayer{" +
@@ -254,12 +246,12 @@ public class DefensivePlayer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DefensivePlayer that = (DefensivePlayer) o;
-        return assists == that.assists && Double.compare(caughtStealingPercent, that.caughtStealingPercent) == 0 && doublePlay == that.doublePlay && errors == that.errors && Double.compare(fieldingPercentage, that.fieldingPercentage) == 0 && inningsPlayed == that.inningsPlayed && outs == that.outs && outfieldAssists == that.outfieldAssists && passedBalls == that.passedBalls && putouts == that.putouts && totalChances == that.totalChances && triplePlays == that.triplePlays && ghostedDate == that.ghostedDate && Objects.equals(team, that.team);
+        DefensivePlayer player = (DefensivePlayer) o;
+        return assists == player.assists && Double.compare(caughtStealingPercent, player.caughtStealingPercent) == 0 && Double.compare(stolenBasesAllowed, player.stolenBasesAllowed) == 0 && Double.compare(stolenBaseAttempts, player.stolenBaseAttempts) == 0 && doublePlay == player.doublePlay && errors == player.errors && Double.compare(fieldingPercentage, player.fieldingPercentage) == 0 && inningsPlayed == player.inningsPlayed && outs == player.outs && outfieldAssists == player.outfieldAssists && passedBalls == player.passedBalls && putouts == player.putouts && totalChances == player.totalChances && triplePlays == player.triplePlays && ghostedDate == player.ghostedDate && Objects.equals(id, player.id) && Objects.equals(team, player.team) && Objects.equals(positions, player.positions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, team, positions, assists, caughtStealingPercent, doublePlay, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays, ghostedDate);
+        return Objects.hash(id, team, positions, assists, caughtStealingPercent, stolenBasesAllowed, stolenBaseAttempts, doublePlay, errors, fieldingPercentage, inningsPlayed, outs, outfieldAssists, passedBalls, putouts, totalChances, triplePlays, ghostedDate);
     }
 }
