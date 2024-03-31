@@ -116,8 +116,6 @@ public class OffensivePlayer {
     @JsonCreator
     public OffensivePlayer(Team team,
                            int atBats,
-                           String firstName,
-                           String lastName,
                            double battingAverage,
                            int caughtStealing,
                            int doubles,
