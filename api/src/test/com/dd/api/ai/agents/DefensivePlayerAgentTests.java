@@ -26,7 +26,7 @@ public class DefensivePlayerAgentTests {
                 new DefensivePlayer()
         );
 
-        DefensivePlayerAgent sut = new DefensivePlayerAgent(players, strategy);
+        DefensivePlayerAgent sut = new DefensivePlayerAgent(new ArrayList<>(players), strategy);
 
         List<DefensivePlayer> res = sut.getSortedAndWeightedDefensivePlayers();
         assertEquals(4, res.size(), 0);
@@ -49,7 +49,7 @@ public class DefensivePlayerAgentTests {
 
         List<DefensivePlayer> expected = List.of(one, two, three, four);
 
-        DefensivePlayerAgent sut = new DefensivePlayerAgent(players, strategy);
+        DefensivePlayerAgent sut = new DefensivePlayerAgent(new ArrayList<>(players), strategy);
         List<DefensivePlayer> res = sut.getSortedAndWeightedDefensivePlayers();
 
         for(int i = 0; i < res.size(); i +=1) {
@@ -115,7 +115,7 @@ public class DefensivePlayerAgentTests {
         players.add(defensivePlayer11);
         players.add(defensivePlayer12);
 
-        DefensivePlayerAgent sut = new DefensivePlayerAgent(players, strategy);
+        DefensivePlayerAgent sut = new DefensivePlayerAgent(new ArrayList<>(players), strategy);
 
         List<DefensivePlayer> res = sut.getSortedAndWeightedDefensivePlayers();
 
@@ -187,7 +187,7 @@ public class DefensivePlayerAgentTests {
         players.add(defensivePlayer12);
         players.add(defensivePlayer9);
 
-        DefensivePlayerAgent sut = new DefensivePlayerAgent(players, strategy);
+        DefensivePlayerAgent sut = new DefensivePlayerAgent(new ArrayList<>(players), strategy);
 
         List<DefensivePlayer> res = sut.getSortedAndWeightedDefensivePlayers();
 
@@ -235,7 +235,7 @@ public class DefensivePlayerAgentTests {
             (4 * (1d/12d))
         );
 
-        DefensivePlayerAgent sut = new DefensivePlayerAgent(List.of(player));
+        DefensivePlayerAgent sut = new DefensivePlayerAgent(new ArrayList<>(List.of(player)));
         double score = sut.computeWeightedScore(player);
 
         assertEquals(expectedScore, score, 0.1);
@@ -248,7 +248,7 @@ public class DefensivePlayerAgentTests {
 
     @Test(expected = NullPointerException.class)
     public void agentFailsOnNullStrategy() {
-        new DefensivePlayerAgent(List.of(), null);
+        new DefensivePlayerAgent(new ArrayList<>(List.of()), null);
     }
 
     @Test(expected = NullPointerException.class)

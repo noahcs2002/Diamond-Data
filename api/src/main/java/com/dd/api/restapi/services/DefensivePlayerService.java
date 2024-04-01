@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,6 +87,6 @@ public class DefensivePlayerService {
                 .filter(p -> p.getTeam().getId().equals(teamId))
                 .toList();
 
-        return new DefensivePlayerAgent(players, new DefensivePlayerScoringStrategy()).getSortedAndWeightedDefensivePlayers();
+        return new DefensivePlayerAgent(new ArrayList<>(players), new DefensivePlayerScoringStrategy()).getSortedAndWeightedDefensivePlayers();
     }
 }
