@@ -1,43 +1,43 @@
 package com.dd.api.ai.agents;
 
+import com.dd.api.ai.scoring.OffensivePlayerScoringStrategy;
 import com.dd.api.ai.scoring.ScoringStrategy;
 import com.dd.api.restapi.models.OffensivePlayer;
-import org.hibernate.collection.spi.PersistentBag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OffensivePlayerAgent {
 
     private final List<OffensivePlayer> offensivePlayers;
     private final ScoringStrategy<OffensivePlayer> scoringStrategy;
 
-    public OffensivePlayerAgent(List<OffensivePlayer> offensivePlayers, ScoringStrategy<?> scoringStrategy) {
+    public OffensivePlayerAgent(List<OffensivePlayer> offensivePlayers, ScoringStrategy<OffensivePlayer> scoringStrategy) {
+        Objects.requireNonNull(offensivePlayers);
+        Objects.requireNonNull(scoringStrategy);
         this.offensivePlayers = offensivePlayers;
-        this.scoringStrategy = (ScoringStrategy<OffensivePlayer>) scoringStrategy;
+        this.scoringStrategy = scoringStrategy;
+    }
+
+    public OffensivePlayerAgent(List<OffensivePlayer> offensivePlayers) {
+        Objects.requireNonNull(offensivePlayers);
+        this.offensivePlayers = offensivePlayers;
+        this.scoringStrategy = new OffensivePlayerScoringStrategy();
     }
 
     public List<OffensivePlayer> getSortedAndWeightedOffensivePlayers(){
 
-        List<OffensivePlayer> players = new ArrayList<>();
+        offensivePlayers.sort((p1, p2) -> {
+           double score1 = computeWeightedScore(p1);
+           double score2 = computeWeightedScore(p2);
+           return Double.compare(score1, score2);
+       });
 
-        for (OffensivePlayer player : this.offensivePlayers) {
-            if(players.size() <= 9) {
-                players.add(player);
-            }
-            else {
-                if (Double.compare(computeWeightedScore(player), computeWeightedScore(players.get(players.size() - 1))) > 0){
-                    players.remove(players.get(players.size() - 1));
-                    players.add(player);
-                    players.sort((o1, o2) -> Double.compare(computeWeightedScore(o1), computeWeightedScore(o2)));
-                }
-            }
-        }
-        return players;
+       return new ArrayList<>(offensivePlayers.subList(0, Math.min(9, offensivePlayers.size())));
     }
 
-    private double computeWeightedScore(OffensivePlayer offensivePlayer) {
+     double computeWeightedScore(OffensivePlayer offensivePlayer) {
         return this.scoringStrategy.score(offensivePlayer);
     }
-
 }
