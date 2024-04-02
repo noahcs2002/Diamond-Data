@@ -3,6 +3,7 @@ package com.dd.api.restapi.controllers;
 import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.services.PitcherService;
+import com.dd.api.restapi.services.StatisticsService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,18 @@ import java.util.Objects;
 @RequestMapping("/diamond-data/api/pitchers")
 public class PitcherController {
 
+    @Autowired
     private final PitcherService service;
+
+    @Autowired
+    private final StatisticsService statisticsService;
     private final Validator validator;
 
     @Autowired
-    public PitcherController(PitcherService service, Validator validator) {
+    public PitcherController(PitcherService service, Validator validator, StatisticsService statisticsService) {
         this.service = service;
         this.validator = validator;
+        this.statisticsService = statisticsService;
     }
 
     @RequestMapping("/get")
@@ -32,7 +38,7 @@ public class PitcherController {
         if (!this.validator.validatePitcher(userId, id)) {
             throw new NoAccessPermittedException(userId);
         }
-        return this.service.getPitcherById(id);
+        return this.statisticsService.updatePitcherStatistics(this.service.getPitcherById(id));
     }
 
     @RequestMapping("/get-by-team")
@@ -45,7 +51,10 @@ public class PitcherController {
             throw new NoAccessPermittedException(userId);
         }
 
-        return this.service.getPitchersByTeam(teamId);
+        return this.service.getPitchersByTeam(teamId)
+                .stream()
+                .map(this.statisticsService::updatePitcherStatistics)
+                .toList();
     }
 
     @RequestMapping("/create")
@@ -58,7 +67,7 @@ public class PitcherController {
             throw new NoAccessPermittedException(userId);
         }
 
-        return this.service.createPitcher(pitcher);
+        return this.service.createPitcher(pitcher).applyStatisticsUpdate(statisticsService);
     }
 
     @RequestMapping("/update")
@@ -71,7 +80,7 @@ public class PitcherController {
         if(!this.validator.validatePitcher(userId, id)) {
             throw new NoAccessPermittedException(userId);
         }
-        return this.service.updatePitcher(id, newModel);
+        return this.service.updatePitcher(id, newModel).applyStatisticsUpdate(statisticsService);
     }
 
     @RequestMapping("/delete")
@@ -96,6 +105,9 @@ public class PitcherController {
             throw new NoAccessPermittedException(userId);
         }
 
-        return this.service.getAiPitchers(teamId);
+        return this.service.getAiPitchers(teamId)
+                .stream()
+                .map(this.statisticsService::updatePitcherStatistics)
+                .toList();
     }
 }
