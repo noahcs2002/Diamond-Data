@@ -5,11 +5,12 @@ import com.dd.api.restapi.models.OffensivePlayer;
 public class OffensivePlayerScoringStrategy implements ScoringStrategy<OffensivePlayer> {
     @Override
     public double score(OffensivePlayer offensivePlayer) {
-        double factor = 1/28.0;
+        double factor = 1/29.0;
         return
             (double) offensivePlayer.getAtBats() * ((double) factor)+
             offensivePlayer.getBattingAverage() * ((double) factor)+
             (double) offensivePlayer.getCaughtStealing() * ((double) factor)+
+            offensivePlayer.getCaughtStealingPercentage() * factor +
             (double) offensivePlayer.getDoubles() * ((double) factor)+
             (double) offensivePlayer.getExtraBaseHits() * ((double) factor)+
             (double) offensivePlayer.getGamesPlayed() * ((double) factor)+
