@@ -14,8 +14,10 @@ useEffect(() => {
   // if location has a state, we have come here from login screen
   // store the session information in the cache (localStorage)
   if (location.state) {
+    console.log(location.state);
     data = location.state.data;
-    localStorage.setItem('data', JSON.stringify(location.state.data));
+    localStorage.setItem('data', JSON.stringify(location.state));
+    console.log(JSON.parse(localStorage.getItem('data')));
   }
   // If we don't have a state, we are here from a different screen, load it from the cache
   else {
@@ -24,7 +26,6 @@ useEffect(() => {
 
   // Do whatever with it
   console.log(data);
-
 }, [])
 
   const [selectedTeam, setSelectedTeam] = useState('Saint Louis Cardinals');
