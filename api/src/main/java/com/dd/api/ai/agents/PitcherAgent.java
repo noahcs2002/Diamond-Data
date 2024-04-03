@@ -1,41 +1,43 @@
 package com.dd.api.ai.agents;
 
+import com.dd.api.ai.scoring.PitcherScoringStrategy;
 import com.dd.api.ai.scoring.ScoringStrategy;
 import com.dd.api.restapi.models.Pitcher;
 import org.hibernate.collection.spi.PersistentBag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PitcherAgent {
 
     private final List<Pitcher> pitchers;
     private final ScoringStrategy<Pitcher> scoringStrategy;
 
-    public PitcherAgent(List<Pitcher> pitchers, ScoringStrategy<?> scoringStrategy) {
+    public PitcherAgent(List<Pitcher> pitchers, ScoringStrategy<Pitcher> scoringStrategy) {
+        Objects.requireNonNull(pitchers);
+        Objects.requireNonNull(scoringStrategy);
         this.pitchers = pitchers;
-        this.scoringStrategy = (ScoringStrategy<Pitcher>) scoringStrategy;
+        this.scoringStrategy = scoringStrategy;
+    }
+
+    public PitcherAgent(List<Pitcher> pitchers) {
+        Objects.requireNonNull(pitchers);
+        this.pitchers = pitchers;
+        this.scoringStrategy = new PitcherScoringStrategy();
     }
 
     public List<Pitcher> getSortedAndWeightedPitchers() {
-        List<Pitcher> pitchers = new ArrayList<>();
+        pitchers.sort((p1, p2) -> {
+            double score1 = computeWeightedScore(p1);
+            double score2 = computeWeightedScore(p2);
+            return Double.compare(score1, score2);
+        });
 
-        for (Pitcher player : this.pitchers) {
-            if(pitchers.size() <= 9) {
-                pitchers.add(player);
-            }
-            else {
-                if (Double.compare(computeWeightedScore(player), computeWeightedScore(pitchers.get(pitchers.size() - 1))) > 0){
-                    pitchers.remove(pitchers.get(pitchers.size() - 1));
-                    pitchers.add(player);
-                    pitchers.sort((o1, o2) -> Double.compare(computeWeightedScore(o1), computeWeightedScore(o2)));
-                }
-            }
-        }
-        return pitchers;
+        return new ArrayList<>(pitchers.subList(0, Math.min(9, pitchers.size())));
     }
 
-    private double computeWeightedScore(Pitcher pitcher) {
+    double computeWeightedScore(Pitcher pitcher) {
         return this.scoringStrategy.score(pitcher);
     }
 }
