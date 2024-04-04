@@ -41,8 +41,6 @@ softball. Each team they make can be customised with team colours, a name, etc. 
 change the site’s colour scheme to match the team colours.
 - Managers will be able to generate ”Powered Rosters” that use a robust algorithm to generate a roster full of the best
 possible players by the stats that exist on that player.
-- Stats will be tracked by players in accordance to the LH/RH split. That is BA, OPS, etc will be tracked for a
-player against **Left Handed Pitchers** and **Right Handed Pitchers**.
 - Pitchers will be given a bit of special attention, as they are the defensive position with the most unique stats. All
 pitchers will have their pitch-kit documented, and customisable. Additionally, a graphic showing a pitchers pitch tends
 to move, its rough RPMs, and velocity range.
