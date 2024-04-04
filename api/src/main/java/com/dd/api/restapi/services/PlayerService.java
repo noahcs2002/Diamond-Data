@@ -5,7 +5,6 @@ import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PlayerRepository;
-import com.dd.api.restapi.requestmodels.PlayerManipulationRequestModel;
 import com.dd.api.restapi.requestmodels.PlayerUpdateRequestModel;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
