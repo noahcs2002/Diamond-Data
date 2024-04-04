@@ -1,4 +1,7 @@
+/* Styling for Settings.js */
 @import './Global.scss';
+
+// SETTINGS
 
 .Settings {
   width: 100%;
@@ -7,8 +10,10 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family: Arial, sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   padding-top: 20px;
+  font-weight: 100;
+  background: linear-gradient(180deg, var(--background-color), var(--background3-color));
 
   .tab {
     position: relative;
@@ -16,7 +21,7 @@
     justify-content: center;
     width: 80%;
     max-width: 600px;
-    background-color: #ddd;
+    background-color: var(--background3-color);
     border-radius: 20px;
     margin: 0 auto 40px;
 
@@ -32,13 +37,13 @@
       z-index: 2;
 
       &:hover {
-        color: #555;
-        background-color: rgba(255, 255, 255, 0.5);
+        color: var(--hover2-color);
+        // background-color: var(--background-color);
       }
     }
 
     .active {
-      color: #fff;
+      color: var(--text-color);
       background-color: transparent;
     }
 
@@ -47,7 +52,7 @@
       bottom: 0;
       height: 100%;
       width: 50%;
-      background-color: #1C3738;
+      background-color: var(--background2-color);
       border-radius: 20px;
       transition: transform 0.3s ease;
       z-index: 1;
@@ -62,8 +67,18 @@
     }
   }
 
-  .settings-form, .teamList {
-    width: 60vw; /* Adjusted for consistency */
+  .user-settings-tab {
+
+    h1 {
+      color: var(--text3-color);
+      font-size: 4rem;
+      font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .settings-form {
+      width: 60vw; /* Adjusted for consistency */
     max-width: 800px; /* Consistent with the user settings form */
     margin: 0 auto;
     display: flex;
@@ -74,50 +89,117 @@
     box-shadow: 0 0 10px var(--box-shadow-color);
     margin-bottom: 100px;
     background-color: #f0f0f0; /* Optional: background color for contrast */
+    
+      input, select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+
+        label {
+          font-size: 20px; /* Consistent font size */
+          color: var(--text2-color);
+          display: block;
+          padding: 12px; /* Consistent padding */
+          margin: 10px 0; /* Consistent margin */
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Adjusted shadow for depth */
+          border-radius: 5px; /* Consistent border-radius */
+        }
+      }
+  }
   }
 
-  .settings-form label, .teamItem {
-    font-size: 20px; /* Consistent font size */
-    color: var(--text2-color);
-    display: block;
-    padding: 12px; /* Consistent padding */
-    margin: 10px 0; /* Consistent margin */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Adjusted shadow for depth */
-    border-radius: 5px; /* Consistent border-radius */
+  .team-management-tab {
+
+    h1 {
+      color: var(--text3-color);
+      font-size: 4rem;
+      font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .teamList {
+      width: 60vw; /* Adjusted for consistency */
+      max-width: 800px; /* Consistent with the user settings form */
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--box-shadow-color);
+      margin-bottom: 100px;
+      background-color: #f0f0f0; /* Optional: background color for contrast */
+    
+      .teamItem {
+        font-size: 20px; /* Consistent font size */
+        color: var(--text2-color);
+        display: block;
+        padding: 12px; /* Consistent padding */
+        margin: 10px 0; /* Consistent margin */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Adjusted shadow for depth */
+        border-radius: 5px; /* Consistent border-radius */
+      }
   }
 
-  .settings-form input,
-  .settings-form select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
+    .modal {
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+
+      .modalContent {
+        background-color: var(--background-color);
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid var(--border-color);
+        width: 50%; /* Adjusted for consistency */
+        border-radius: 5px;
+      }
+    }
+
+    .team-form {
+      width: 60vw; /* Adjusted for consistency */
+      max-width: 800px; /* Consistent with the user settings form */
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--box-shadow-color);
+      margin-bottom: 40px;
+      background-color: var(--background-color); /* Optional: background color for contrast */
+    
+      .add-team-button {
+        padding: 10px 15px; // Adjust padding to make it smaller
+        font-size: 1rem; // Adjust font size to make it smaller
+        border-radius: 5px;
+        background-color: var(--button2-color); 
+        color: var(--text-color);
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+        width: auto;
+    
+        &:hover {
+          background-color: var(--box-shadow-color);
+        }
+      }
+    }
   }
 
-  h1, h2 {
+  h2 {
+    margin-top: 0px;
     color: var(--text3-color);
-    font-size: 4rem;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    margin-bottom: 40px;
-  }
-
-  .modal {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-
-  .modalContent {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%; /* Adjusted for consistency */
-    border-radius: 5px;
+    font-size: 2rem;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 20px;
   }
 }
