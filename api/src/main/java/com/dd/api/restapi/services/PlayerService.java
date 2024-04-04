@@ -9,6 +9,7 @@ import com.dd.api.restapi.requestmodels.PlayerUpdateRequestModel;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -98,13 +99,30 @@ public class PlayerService {
 
     @Transactional
     public boolean deletePlayer(Long id) {
-        this.repository.findAll()
+        List<Player> players = this.repository.findAll()
                 .stream()
-                .filter(p -> p.getGhostedDate() == 0)
                 .filter(p -> p.getId().equals(id))
-                .peek(p -> p.setGhostedDate(new TruncatedSystemTimeProvider().provideTime()));
+                .toList();
 
-        return true;
+        players.forEach(p -> {
+            this.defensivePlayerService.deletePlayer(p.getDefensivePlayer().getId());
+            this.offensivePlayerService.delete(p.getOffensivePlayer().getId());
+            p.setGhostedDate(new TruncatedSystemTimeProvider().provideTime());
+            this.repository.save(p);
+        });
+
+        List<Player> res = this.repository.findAll()
+                .stream()
+                .filter(p -> p.getGhostedDate()!=0)
+                .toList();
+
+        for(Player player : res) {
+            if(player.getId().equals(id)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Transactional
