@@ -6,6 +6,7 @@ import '../styles/BulkEntry.scss';
 
 function BulkEntry() {
   const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState('');
   const [currentTeamId, setCurrentTeamId] = useState('');
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
@@ -30,6 +31,11 @@ function BulkEntry() {
     };
     fetchTeams();
   }, []);
+
+  const teamOptions = teams.map(team => (
+    <option key={team.id} value={team.id}>{team.name}</option>
+  ));
+
 
   useEffect(() => {
     const fetchData = async (teamId) => {
@@ -86,6 +92,23 @@ function BulkEntry() {
       ) : value;
     }
   }));
+
+  const fetchTeams = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+    const url = new URL(endpoint);
+    url.searchParams.append("userId", 302);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
+      const data = await response.json();
+      setTeams(data);
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+    }
+  };
+fetchTeams();
 
   const offensiveColumns = React.useMemo(() => makeColumnsEditable([
     { Header: "FIRST NAME", accessor: "firstName" },
@@ -169,11 +192,13 @@ function BulkEntry() {
       <Navbar />
       <div className="bulkEntry">
         <h1 className="title">Bulk Entry</h1>
-        <div className="teamSelector">
-          <select id="teamSelect" onChange={(e) => setCurrentTeamId(e.target.value)} value={currentTeamId}>
-            {teams.map(team => (
-              <option key={team.id} value={team.id}>{team.name}</option>
-            ))}
+        <div className="teamSelection">
+          <select
+            id="teamSelect"
+            value={selectedTeam}
+            onChange={e => setSelectedTeam(e.target.value)}
+          >
+            {teamOptions}
           </select>
         </div>
         <button onClick={() => setIsEnteringNewGame(true)}>New Game</button>

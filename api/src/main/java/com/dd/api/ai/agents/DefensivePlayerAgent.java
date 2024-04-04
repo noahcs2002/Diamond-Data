@@ -4,10 +4,7 @@ package com.dd.api.ai.agents;
 import com.dd.api.ai.scoring.DefensivePlayerScoringStrategy;
 import com.dd.api.ai.scoring.ScoringStrategy;
 import com.dd.api.restapi.models.DefensivePlayer;
-import io.micrometer.observation.annotation.Observed;
-import org.hibernate.collection.spi.PersistentBag;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

@@ -20,15 +20,24 @@ function Settings() {
     fetchTeams();
   }, []);
 
-  const fetchTeams = async () => {
-    const response = await fetch('http://localhost:8080/diamond-data/api/teams/get-all');
-    if (!response.ok) {
-      console.error('Failed to fetch teams');
-      return;
+ 
+   const fetchTeams = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+    const url = new URL(endpoint);
+    url.searchParams.append("userId", 302); 
+  
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
+      const data = await response.json();
+      setTeams(data); 
+    } catch (error) {
+      console.error('Error fetching teams:', error);
     }
-    const data = await response.json();
-    setTeams(data);
   };
+
 
   const handleCreateTeam = async () => {
     const response = await fetch('http://localhost:8080/diamond-data/api/teams/create', {
@@ -36,43 +45,73 @@ function Settings() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: newTeamName }),
+      body: JSON.stringify({
+        name: newTeamName,
+        user: {
+          email: "max@dd-devs",
+          password: "password"
+        }
+      }),
     });
+  
     if (!response.ok) {
       console.error('Error creating team');
       return;
     }
-    fetchTeams();
-    setNewTeamName('');
-    setIsModalOpen(false); // Close modal after adding
+    fetchTeams(); 
+    setNewTeamName(''); 
+    setIsModalOpen(false); 
   };
 
   const handleUpdateTeam = async () => {
-    const response = await fetch(`http://localhost:8080/diamond-data/api/teams/update?id=${currentTeam.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: currentTeam.id, name: currentTeam.name }),
-    });
-    if (!response.ok) {
-      console.error('Error updating team');
-      return;
+    const url = new URL(`http://localhost:8080/diamond-data/api/teams/update`);
+    url.searchParams.append('id', currentTeam.id);
+    url.searchParams.append('userId', '302'); 
+  
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: currentTeam.name,
+          user: {
+            email: "max@dd-devs",
+            password: "password"
+          }
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error updating team');
+      }
+  
+      fetchTeams();
+      closeModal();
+    } catch (error) {
+      console.error('Error updating team:', error);
     }
-    fetchTeams();
-    closeModal();
   };
 
+
   const handleDeleteTeam = async (id) => {
-    const response = await fetch(`http://localhost:8080/diamond-data/api/teams/delete?id=${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      console.error('Error deleting team');
-      return;
+    const url = new URL(`http://localhost:8080/diamond-data/api/teams/delete`);
+    url.searchParams.append('id', id);
+    url.searchParams.append('userId', '302'); 
+  
+    try {
+      const response = await fetch(url, { method: 'DELETE' });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to delete team with id: ${id}`);
+      }
+
+      await fetchTeams(); 
+      closeModal(); 
+    } catch (error) {
+      console.error('Error deleting team:', error);
     }
-    fetchTeams();
-    closeModal();
   };
 
   const handleChange = (e) => {
@@ -103,7 +142,7 @@ function Settings() {
           <button onClick={() => setActiveTab('teamManagement')} className={activeTab === 'teamManagement' ? 'active' : ''}>Team Management</button>
         </div>
         {activeTab === 'userSettings' && (
-          <div>
+          <div className='user-settings-tab'>
             <h1>User Settings</h1>
             <form className="settings-form">
               <label>
@@ -118,24 +157,22 @@ function Settings() {
                 Phone Number:
                 <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
               </label>
-              <label>
-                Choose Sport:
-                <select name="sport" value={formData.sport} onChange={handleChange}>
-                  <option value="baseball">Baseball</option>
-                  <option value="softball">Softball</option>
-                </select>
-              </label>
             </form>
           </div>
         )}
         {activeTab === 'teamManagement' && (
-          <div>
-            <h2>Team Management</h2>
-            <button onClick={() => setIsModalOpen(true)} style={{ padding: '10px 20px', borderRadius: '20px', fontSize: '1.2rem' }}>Add Team</button>
+          <div className='team-management-tab'>
+            <h1>Team Management</h1>
+            <div className="team-form">
+              <h2>Add New Team</h2>
+              <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="New Team Name" />
+              <button onClick={handleCreateTeam} className='add-team-button'>Add Team</button>
+            </div>
             <div className="teamList">
+              <h2>Current Teams</h2>
               {teams.map((team) => (
-                <div key={team.id} className="teamItem" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0', padding: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                  <div className="teamName" style={{ fontWeight: 'bold' }}>{team.name}</div>
+                <div key={team.id} className="teamItem">
+                  <div className="teamName">{team.name}</div>
                   <div>
                     <button onClick={() => selectTeam(team)}>Edit</button>
                     <button onClick={() => handleDeleteTeam(team.id)}>Delete</button>

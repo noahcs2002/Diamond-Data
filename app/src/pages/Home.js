@@ -5,10 +5,32 @@ import Navbar from '../components/Navbar';
 import { useState } from 'react';
 
 function Home() {
+  const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState('');
+  const location = useLocation();
+  let data = {};
 
 // Use location to get where we are
-const location = useLocation();
-let data = {};
+
+const fetchTeams = async () => {
+  const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+  const url = new URL(endpoint);
+  url.searchParams.append("userId", 302); 
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network error');
+    }
+    const data = await response.json();
+    setTeams(data);
+    if (data.length > 0) {
+      setSelectedTeam(data[0].name); 
+    }
+  } catch (error) {
+    console.error('Error fetching teams:', error);
+  }
+};
+
 
 useEffect(() => {
   // if location has a state, we have come here from login screen
@@ -26,15 +48,14 @@ useEffect(() => {
 
   // Do whatever with it
   console.log(data);
+  fetchTeams();
 }, [])
 
-  const [selectedTeam, setSelectedTeam] = useState('Saint Louis Cardinals');
+ 
+const handleTeamChange = (teamId) => {
+  setSelectedTeam(teamId);
+};
 
-  const teams = ['Saint Louis Cardinals', 'Dodgers Stink', 'Dodgers Overrated', 'Dodgers Suck'];
-
-  const handleTeamChange = (team) => {
-    setSelectedTeam(team);
-  };
 
   const getUpcomingDays = () => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

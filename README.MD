@@ -37,8 +37,7 @@ AI to visualising data, this will make the lives of team managers easier.
 - Managers can enter a few basic stats, such as hits, walks, outs, swings and misses etc, and the app will compute a wide
 range of statistics. The team has this full list in a working document, and it is available upon request.
 - The manager can customise their account, and manage up to 5 teams, and these teams can be either baseball or
-softball. Each team they make can be customised with team colours, a name, etc. Changing the team colours can
-change the site’s colour scheme to match the team colours.
+softball. 
 - Managers will be able to generate ”Powered Rosters” that use a robust algorithm to generate a roster full of the best
 possible players by the stats that exist on that player.
 - Pitchers will be given a bit of special attention, as they are the defensive position with the most unique stats. All
