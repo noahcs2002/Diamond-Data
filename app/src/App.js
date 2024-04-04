@@ -12,6 +12,7 @@ import Insights from "./pages/Insights";
 import BulkEntry from "./pages/BulkEntry";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import CreateAccount from "./pages/CreateAccount";
 import { Switch } from "@mui/material";
 
@@ -35,6 +36,8 @@ function App() {
                 <Route  path="/insights" exact element={<Insights />} />
                 <Route  path="/bulkEntry" exact element={<BulkEntry />} />
                 <Route  path="/Settings" exact element={<Settings />} />
+                <Route path="/sign-up" exact element={<Signup/>} />
+                <Route path="/login" exact element={<Login/>} />
               </Routes>
             <Footer />
           </Router>

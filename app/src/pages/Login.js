@@ -9,34 +9,24 @@ function Login() {
 
     const handleLogin = async () => {
 
-        // nav("/home");
-        // console.log('hit')
         const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/login';
-        // let username = "root@dd-devs";
-        // let password = "rootPassword1234$$";
 
-        // Construct the URL with query parameters
         const url = new URL(endpointUrl);
         url.searchParams.append('email', email);
         url.searchParams.append('password', password);
 
-        // Make the HTTP GET request
         await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // Add any additional headers if needed
             },
         })
-        // Start chaining responses
-        // We take a response and move forward with it
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
         })
-        // IF we have data, go to the home screen and transport that data with it
         .then(data => {
             if (data) {
                 nav('/home', {
@@ -56,7 +46,7 @@ function Login() {
     }
 
     const handleSignUp = () => {
-        console.log('clicked');
+        nav('/sign-up');
     };
 
     return (
