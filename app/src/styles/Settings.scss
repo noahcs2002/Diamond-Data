@@ -130,16 +130,39 @@
       border-radius: 10px;
       box-shadow: 0 0 10px var(--box-shadow-color);
       margin-bottom: 100px;
-      background-color: #f0f0f0; /* Optional: background color for contrast */
+      background-color: var(--background-color); /* Optional: background color for contrast */
     
       .teamItem {
-        font-size: 20px; /* Consistent font size */
+        font-size: 25px; /* Consistent font size */
         color: var(--text2-color);
         display: block;
         padding: 12px; /* Consistent padding */
         margin: 10px 0; /* Consistent margin */
         box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Adjusted shadow for depth */
         border-radius: 5px; /* Consistent border-radius */
+      
+        .current-team-buttons {
+          display: flex;
+          gap: 10px;
+
+          button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            background-color: var(--button2-color);
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            width: auto;
+        
+            &:hover {
+              background-color: var(--box-shadow-color);
+            }
+          }
+        }
       }
   }
 
