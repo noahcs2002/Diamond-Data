@@ -41,15 +41,15 @@
       display: inline-block;
       margin: 0 10px;
       padding: 10px 20px;
-      background-color: #000F08;
-      color: white;
+      background-color: var(--button2-color);
+      color: var(--text-color);
       text-decoration: none;
       border-radius: 5px;
       font-size: 16px;
     }
 
     .button:hover {
-      background-color: #8BAAAD;
+      background-color: var(--hover-color);
     }
   }
   
@@ -62,7 +62,7 @@
       .player {
         flex: 1;
         text-align: center;
-        border: 1px solid #000F08;
+        border: 1px solid var(--border-color);
         padding: 10px;
         margin: 0px;
         height: 60px;
@@ -71,7 +71,6 @@
 
     .calendar {
       margin-top: 60px;
-      text-align: center;
 
       h2 {
         color: var(--text3-color);
@@ -84,7 +83,7 @@
           flex: 1;
           text-align: center;
           padding: 5px;
-          border: 1px solid var(--border2-color);
+          border: 1px solid var(--border3-color);
           height: 130px;
         }
       }
