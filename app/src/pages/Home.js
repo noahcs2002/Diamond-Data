@@ -120,7 +120,6 @@ const handleTeamChange = (teamId) => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
