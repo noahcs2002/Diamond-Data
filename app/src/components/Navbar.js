@@ -25,6 +25,7 @@ function Navbar() {
                     <Link to="/Roster"> Roster </Link>
                     <Link to="/Insights"> Insights </Link>
                     <Link to="/BulkEntry"> Bulk Entry </Link>
+                    <Link to="/"> Logout </Link>
                     <Link to="/Settings">
                         <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                     </Link>
@@ -38,6 +39,7 @@ function Navbar() {
                 <Link to="/Roster"> Roster </Link>
                 <Link to="/Insights"> Insights </Link>
                 <Link to="/BulkEntry"> Bulk Entry </Link>
+                <Link to="/"> Logout </Link>
                 <Link to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                 </Link>
