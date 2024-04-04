@@ -60,7 +60,9 @@ function Signup() {
     return (
         <div className="signup-page">
             <div className="title-container">
+                {/*<img src = {Logo} alt = "Logo" className = "center" />*/}
                 <h1 className="title">
+                    {/* <img src = {Logo} alt = "Logo" className = "center" /> */}
                     Diamond Data
                 </h1>
             </div>
