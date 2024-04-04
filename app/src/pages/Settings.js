@@ -173,7 +173,7 @@ function Settings() {
               {teams.map((team) => (
                 <div key={team.id} className="teamItem">
                   <div className="teamName">{team.name}</div>
-                  <div>
+                  <div className='current-team-buttons'>
                     <button onClick={() => selectTeam(team)}>Edit</button>
                     <button onClick={() => handleDeleteTeam(team.id)}>Delete</button>
                   </div>
