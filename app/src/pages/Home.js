@@ -74,10 +74,9 @@ const handleTeamChange = (teamId) => {
   const upcomingDays = getUpcomingDays();
 
   return (
-    <div className="home" style={{ backgroundImage: 'url(${})'}}>
+    <div className="home">
         <Navbar/>
-      <div className="headerContainer">
-        <h1>Welcome {selectedTeam}</h1>
+        <h1 className='title'>Welcome {selectedTeam}</h1>
         <div className="teamDropdown">
           <select value={selectedTeam} onChange={(e) => handleTeamChange(e.target.value)}>
             {teams.map(team => (
@@ -115,7 +114,6 @@ const handleTeamChange = (teamId) => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
