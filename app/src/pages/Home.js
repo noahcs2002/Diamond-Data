@@ -8,7 +8,8 @@ function Home() {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState('');
   const location = useLocation();
-  let data = {};
+  const [sessionData, setSessionData] = useState([]);
+  const nav = useNavigate();
 
 // Use location to get where we are
 
@@ -33,22 +34,7 @@ const fetchTeams = async () => {
 
 
 useEffect(() => {
-  // if location has a state, we have come here from login screen
-  // store the session information in the cache (localStorage)
-  if (location.state) {
-    console.log(location.state);
-    data = location.state.data;
-    localStorage.setItem('data', JSON.stringify(location.state));
-    console.log(JSON.parse(localStorage.getItem('data')));
-  }
-  // If we don't have a state, we are here from a different screen, load it from the cache
-  else {
-    data = JSON.parse(localStorage.getItem('data'));
-  }
-
-  // Do whatever with it
-  console.log(data);
-  fetchTeams();
+  
 }, [])
 
  

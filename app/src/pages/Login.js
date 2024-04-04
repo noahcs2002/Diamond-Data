@@ -33,9 +33,10 @@ function Login() {
         })
         .then(data => {
             if (data) {
+                localStorage.setItem('sessionData', JSON.stringify(data))
                 nav('/home', {
                     state: {
-                        userSessionId: data
+                        userSessionData: data
                     }
                 })
             }

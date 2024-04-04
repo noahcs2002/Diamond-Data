@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Diamond_Data_Logo_White from "../assets/Diamond_Data_Logo_White.PNG";
 import Diamond_Data_Transparent from "../assets/Diamond_Data_Transparent.png"
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ import '../styles/Navbar.scss';
 
 function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);
+    let user = {};
 
     const toggleNavbar = () => {
         setOpenLinks(!openLinks);
@@ -17,6 +18,7 @@ function Navbar() {
         <div className="navbar">
             <div className="leftSide" id={openLinks ? "open" : "close"}>
                 <img src={Diamond_Data_Transparent} />
+                <h4 style={{color:'white'}}> {JSON.parse(localStorage.getItem('sessionData')).email} </h4>
                 <div className="hiddenLinks">
                     <Link to="/Home"> Home </Link>
                     <Link to="/PlayerManagement"> Player Management </Link>
