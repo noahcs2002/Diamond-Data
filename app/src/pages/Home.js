@@ -10,6 +10,11 @@ function Home() {
   const location = useLocation();
   let data = {};
 
+  useEffect(() => {
+    data = location.state.userSessionData
+    console.log(data);
+  })
+
 // Use location to get where we are
 
 const fetchTeams = async () => {
@@ -75,7 +80,7 @@ const handleTeamChange = (teamId) => {
 
   return (
     <div className="home" style={{ backgroundImage: 'url(${})'}}>
-        <Navbar/>
+        <Navbar user={}/>
       <div className="headerContainer">
         <h1>Welcome {selectedTeam}</h1>
         <div className="teamDropdown">

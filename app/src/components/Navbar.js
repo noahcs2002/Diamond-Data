@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Diamond_Data_Logo_White from "../assets/Diamond_Data_Logo_White.PNG";
 import Diamond_Data_Transparent from "../assets/Diamond_Data_Transparent.png"
 import { Link } from 'react-router-dom';
@@ -6,12 +6,16 @@ import ReorderIcon from '@mui/icons-material/Reorder';
 import SettingsIcon from '@mui/icons-material/Settings'; // Import the Settings icon
 import '../styles/Navbar.scss';
 
-function Navbar() {
+function Navbar(user) {
     const [openLinks, setOpenLinks] = useState(false);
 
     const toggleNavbar = () => {
         setOpenLinks(!openLinks);
     }
+
+    useEffect(() => {
+        console.log('User: ', user)
+    }, [])
 
     return (
         <div className="navbar">
