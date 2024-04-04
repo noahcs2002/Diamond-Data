@@ -33,6 +33,7 @@ function Login() {
         })
         .then(data => {
             if (data) {
+                localStorage.setItem('sessionData', JSON.stringify(data))
                 nav('/home', {
                     state: {
                         userSessionData: data

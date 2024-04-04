@@ -6,21 +6,19 @@ import ReorderIcon from '@mui/icons-material/Reorder';
 import SettingsIcon from '@mui/icons-material/Settings'; // Import the Settings icon
 import '../styles/Navbar.scss';
 
-function Navbar(user) {
+function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);
+    let user = {};
 
     const toggleNavbar = () => {
         setOpenLinks(!openLinks);
     }
 
-    useEffect(() => {
-        console.log('User: ', user)
-    }, [])
-
     return (
         <div className="navbar">
             <div className="leftSide" id={openLinks ? "open" : "close"}>
                 <img src={Diamond_Data_Transparent} />
+                <h4 style={{color:'white'}}> {JSON.parse(localStorage.getItem('sessionData')).email} </h4>
                 <div className="hiddenLinks">
                     <Link to="/Home"> Home </Link>
                     <Link to="/PlayerManagement"> Player Management </Link>
