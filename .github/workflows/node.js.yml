@@ -28,7 +28,7 @@ jobs:
       run: cd app && npm install
 
     - name: Install testing library
-      run: cd app npm && install --save-dev @testing-library/dom
+      run: cd app && npm install --save-dev @testing-library/dom
 
     # - name: Install Plotly
     #   run : cd app && npm i plotly.js
