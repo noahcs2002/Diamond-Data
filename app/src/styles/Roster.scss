@@ -9,6 +9,8 @@ body {
   min-height: 100vh;
 }
 
+
+
 .roster {
   background: linear-gradient(45deg, var(--background-color), var(--background2-color));
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
@@ -21,6 +23,19 @@ body {
   padding: 0 20px;
   padding-top: 30px;
   min-height: 100vh;
+
+  .teamSelection select {
+    padding: 2px;
+    font-size: 25px;
+    border-radius: 5px;
+    width: auto;
+    margin: 20px 0; 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+    background-color: #FFF; 
+    border: 1px solid #ccc; 
+  }
 
   .title {
     font-size: 4rem;

@@ -14,13 +14,17 @@ function TeamStats() {
   }, []);
 
   const fetchTeams = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+    const url = new URL(endpoint);
+    url.searchParams.append("userId", 302); 
+  
     try {
-      const response = await fetch('http://localhost:8080/diamond-data/api/teams/get-all');
+      const response = await fetch(url);
       if (!response.ok) {
-        throw new Error('Failed to fetch teams');
+        throw new Error('Network error');
       }
       const data = await response.json();
-      setTeams(data);
+      setTeams(data); 
     } catch (error) {
       console.error('Error fetching teams:', error);
     }
@@ -38,6 +42,7 @@ function TeamStats() {
       console.error('Error fetching players:', error);
     }
   };
+
 
   const aggregateTeamStats = (teamId) => {
     const teamPlayers = players.filter(player => player.offensivePlayer.team.id === teamId);

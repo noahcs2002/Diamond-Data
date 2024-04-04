@@ -6,6 +6,8 @@ function Roster() {
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState('');
 
   useEffect(() => {
     // dummy data
@@ -28,7 +30,24 @@ function Roster() {
     setOffensiveData(mockRoster.slice(0, 15)); 
     setDefensiveData(mockRoster.slice(10, 20));
     setPitcherData(mockRoster.slice(10)); 
+    fetchTeams();
   }, []);
+
+  const fetchTeams = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+    const url = new URL(endpoint);
+    url.searchParams.append("userId", 302);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
+      const data = await response.json();
+      setTeams(data);
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+    }
+  };
 
   const fetchData = async () => {
     const id = '202';
@@ -39,6 +58,9 @@ function Roster() {
     ];
   }
     
+  const teamOptions = teams.map(team => (
+    <option key={team.id} value={team.id}>{team.name}</option>
+  ));
 
 
   return (
@@ -46,6 +68,15 @@ function Roster() {
     <Navbar />
     <div className="roster">
       <h1 className="title">Roster</h1>
+      <div className="teamSelection">
+          <select
+            id="teamSelect"
+            value={selectedTeam}
+            onChange={e => setSelectedTeam(e.target.value)}
+          >
+            {teamOptions}
+          </select>
+        </div>
       {/* Headers for the columns */}
       <div className="columnHeaders">
         <h2>40 Man Roster</h2>

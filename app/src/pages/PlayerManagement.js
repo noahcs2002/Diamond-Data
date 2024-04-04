@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import PlayerItem from '../components/PlayerItem';
 import '../styles/PlayerManagement.scss';
 import '../styles/PlayerItem.scss';
@@ -6,258 +6,164 @@ import Navbar from '../components/Navbar';
 import { useTable } from 'react-table';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-function PlayerManagement({onEdit}) {
+function PlayerManagement({ onEdit }) {
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
   const [rawPlayerData, setRawPlayerData] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState('');
+  const [isAddingPlayer, setIsAddingPlayer] = useState(false);
+  const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
+  const [newPlayerLastName, setNewPlayerLastName] = useState('');
+
+  useEffect(() => {
+    fetchPlayers();
+    fetchTeams();
+  }, [selectedTeam]);
+
+  const fetchTeams = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+    const url = new URL(endpoint);
+    url.searchParams.append("userId", 302);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
+      const data = await response.json();
+      setTeams(data);
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+    }
+  };
+
+  const fetchPlayers = async () => {
+    if (!selectedTeam) return;
+    const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
+    const url = new URL(endpoint);
+    url.searchParams.append("userId", 302);
+    url.searchParams.append('teamId', selectedTeam);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network error");
+      }
+      const data = await response.json();
+      // You need to decide how you want to use this data to update your state
+      // For example, if the API returns offensive and defensive data separately,
+      // you might need to update setOffensiveData and setDefensiveData here
+    } catch (error) {
+      console.error('Error fetching players:', error);
+    }
+  };
+
+  const handlePlayerCreate = async () => {
+    const playerCreationRequestModel = {
+      firstName: newPlayerFirstName,
+      lastName: newPlayerLastName,
+      teamId: selectedTeam,
+    };
+    const endpoint = 'http://localhost:8080/diamond-data/api/players/create';
+    const url = new URL(endpoint);
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(playerCreationRequestModel)
+      });
+      if (!response.ok) {
+        throw new Error("Failed to create player");
+      }
+      const newPlayer = await response.json();
+      // Assuming you want to add the new player to offensiveData for display
+      // You might need to adjust based on your actual data structure and requirements
+      setOffensiveData(prev => [...prev, newPlayer]);
+    } catch (error) {
+      console.error("Error creating player:", error);
+    }
+    // Reset the form and close the modal
+    setIsAddingPlayer(false);
+    setNewPlayerFirstName('');
+    setNewPlayerLastName('');
+  };
 
   const handleDelete = (fullName) => {
-    // Logic to delete player
     console.log('Player deleted', fullName);
-    setOffensiveData(offensiveData.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
-    setDefensiveData(defensiveData.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
-    setPitcherData(pitcherData.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
+    // Filter out the player from offensiveData, defensiveData, and pitcherData
+    // Adjust these as necessary based on how you're structuring your data
+    setOffensiveData(data => data.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
+    setDefensiveData(data => data.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
+    setPitcherData(data => data.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
   };
 
   const handleEdit = (oldFullName, newFullName) => {
     console.log('Player edited', oldFullName, 'to', newFullName);
-  
-    setOffensiveData(prevData => {
-      return prevData.map(player => {
-        if (`${player.firstName} ${player.lastName}` === oldFullName) {
-          return { ...player, firstName: newFullName.split(' ')[0], lastName: newFullName.split(' ')[1] };
-        }
-        return player;
-      });
-    });
-  
-    setDefensiveData(prevData => {
-      return prevData.map(player => {
-        if (`${player.firstName} ${player.lastName}` === oldFullName) {
-          return { ...player, firstName: newFullName.split(' ')[0], lastName: newFullName.split(' ')[1] };
-        }
-        return player;
-      });
-    });
-  
-    setPitcherData(prevData => {
-      return prevData.map(player => {
-        if (`${player.firstName} ${player.lastName}` === oldFullName) {
-          return { ...player, firstName: newFullName.split(' ')[0], lastName: newFullName.split(' ')[1] };
-        }
-        return player;
-      });
-    });
-  };  
+    // Implement the logic to find the player by oldFullName and update their name to newFullName
+    // This logic would be similar to handleDelete, but instead of filtering out, you'd update the name
+  };
 
-  useEffect(() => {
-    fetchPlayers();
-    fetchPitchers();
-  }, []);
-
-  const fetchPlayers = async () => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
-    const url = new URL(endpoint);
-
-    // url.searchParams.append("userId", 252);
-    url.searchParams.append('teamId', 852);
-
-    const data = await fetch(url)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("network error")
-        }
-        return res.json();
-      })
-      
-      let offensiveData = [];
-      let defensiveData = [];
-      data.map(r => {
-        r.offensivePlayer.firstName = r.firstName;
-        r.offensivePlayer.lastName = r.lastName;
-
-        r.defensivePlayer.lastName = r.lastName;
-        r.defensivePlayer.firstName = r.firstName;
-
-        console.log('Player id: ', r.id);
-
-        offensiveData.push(r.offensivePlayer);
-        defensiveData.push(r.defensivePlayer);
-      })
-
-      setDefensiveData(defensiveData);
-      setOffensiveData(offensiveData);
-      setRawPlayerData(data);
-  }
-
-  const fetchPitchers = async () => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team';
-    const url = new URL(endpoint);
-    url.searchParams.append('teamId', 852);
-    url.searchParams.append("userId", 252);
-    const data = await fetch(url)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("network error")
-        }
-        return res.json();
-      })
-      setPitcherData(data);
-  }
-
-  const handlePlayerDelete = async (id) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/players/delete';
-    const url = new URL(endpoint);
-
-    url.searchParams.append('id', id);
-
-    await fetch(url)
-      .then(res => {
-        if(!res.ok) {
-          throw new Error("Bad network");
-        }
-        return res.json();
-      })
-  }
-
-  const handlePitcherDelete = async (id) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/pitcher/delete';
-    const url = new URL(endpoint);
-
-    url.searchParams.append('id', id);
-
-    await fetch(url)
-      .then(res => {
-        if(!res.ok) {
-          throw new Error("Bad network");
-        }
-        return res.json();
-      })
-  } 
-
-  const handlePlayerCreate = async (playerCreationRequestModel) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/players/create';
-    const url = new URL(endpoint);
-
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type' : 'application/json'
-      },
-      body: JSON.stringify(playerCreationRequestModel)
-    })
-      .then(res => {
-        if(!res.ok) {
-          throw new Error("Bad network");
-        }
-        return res.json();
-      })
-  }
-
-  const handlePitcherCreate = async (pitcher, userId) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/pitcher/delete';
-    const url = new URL(endpoint);
-
-    url.searchParams.append('userId', userId);
-
-    await fetch(url, {
-      method : 'POST',
-      headers: {  
-        'Content-Type': 'application/json'
-      },
-      body:  JSON.stringify(pitcher)
-    })
-      .then(res => {
-        if(!res.ok) {
-          throw new Error("Bad network");
-        }
-        return res.json();
-      })
-  } 
-
-  const columns = React.useMemo(() => [
-    {
-      Header: "FIRST NAME",
-      accessor: "firstName",
-    },
-    {
-      Header: "LAST NAME",
-      accessor: "lastName",
-    },
-    // Add other columns as needed
-  ], []);
-
-  const offensiveTable = useTable({ columns, data: offensiveData });
-  const defensiveTable = useTable({ columns, data: defensiveData });
-  const pitcherTable = useTable({ columns, data: pitcherData });
+  const teamOptions = teams.map(team => (
+    <option key={team.id} value={team.id}>{team.name}</option>
+  ));
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="playerManagement">
-        <h1 className='title'> Player Management</h1>
+        <div className="teamSelection">
+          <select
+            id="teamSelect"
+            value={selectedTeam}
+            onChange={e => setSelectedTeam(e.target.value)}
+          >
+            {teamOptions}
+          </select>
+        </div>
+        <h1 className='title'>Player Management</h1>
         <div className="positionList">
           <div className='positionContainer'>
-            <h2>Offensive Players</h2>
+            <h2>Position Players</h2>
             <div className='icons'>
-              <AddCircleIcon onClick={onEdit} className='addCircleIcon' />
+              <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
             </div>
             <div className='playerGrid'>
               {offensiveData.map(player => (
                 <div className='playerItem' key={player.id}>
                   <PlayerItem
-                    key={player.id} 
+                    key={player.id}
                     fullName={`${player.firstName} ${player.lastName}`}
                     onDelete={() => handleDelete(`${player.firstName} ${player.lastName}`)}
-                    onEdit={(newFullName, editedName) => handleEdit(`${player.firstName} ${player.lastName}`, editedName)}
+                    onEdit={(newFullName) => handleEdit(`${player.firstName} ${player.lastName}`, newFullName)}
                   />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className='positionContainer'>
-            <h2>Defensive Players</h2>
-            <div className='icons'>
-              <AddCircleIcon onClick={onEdit} className='addCircleIcon' />
-            </div>
-            <div className='playerGrid'>
-              {defensiveData.map(player => (
-                <div className='playerItem' key={player.id}>
-                  <PlayerItem
-                    key={player.id} 
-                    fullName={`${player.firstName} ${player.lastName}`}
-                    onDelete={() => handleDelete(`${player.firstName} ${player.lastName}`)}
-                    onEdit={(newFullName, editedName) => handleEdit(`${player.firstName} ${player.lastName}`, editedName)}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className='positionContainer'>
-            <h2>Pitchers</h2>
-            <div className='icons'>
-              <AddCircleIcon onClick={onEdit} className='addCircleIcon' />
-            </div>
-            <div className='playerGrid'>
-              {pitcherData.map(player => (
-                <div className='playerItem' key={player.id}>
-                  <PlayerItem
-                    key={player.id} 
-                    fullName={`${player.firstName} ${player.lastName}`}
-                    onDelete={() => handleDelete(`${player.firstName} ${player.lastName}`)}
-                    onEdit={(newFullName, editedName) => handleEdit(`${player.firstName} ${player.lastName}`, editedName)}
-                  />
-
                 </div>
               ))}
             </div>
           </div>
         </div>
-
+        {isAddingPlayer && (
+          <div className="addPlayerModal">
+            <input
+              type="text"
+              placeholder="First Name"
+              value={newPlayerFirstName}
+              onChange={e => setNewPlayerFirstName(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={newPlayerLastName}
+              onChange={e => setNewPlayerLastName(e.target.value)}
+            />
+            <button onClick={handlePlayerCreate}>Save</button>
+            <button onClick={() => setIsAddingPlayer(false)}>Cancel</button>
+          </div>
+        )}
       </div>
-    </div> 
-  )
+    </div>
+  );
 }
 
 export default PlayerManagement;

@@ -20,15 +20,24 @@ function Settings() {
     fetchTeams();
   }, []);
 
-  const fetchTeams = async () => {
-    const response = await fetch('http://localhost:8080/diamond-data/api/teams/get-all');
-    if (!response.ok) {
-      console.error('Failed to fetch teams');
-      return;
+ 
+   const fetchTeams = async () => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+    const url = new URL(endpoint);
+    url.searchParams.append("userId", 302); 
+  
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network error');
+      }
+      const data = await response.json();
+      setTeams(data); 
+    } catch (error) {
+      console.error('Error fetching teams:', error);
     }
-    const data = await response.json();
-    setTeams(data);
   };
+
 
   const handleCreateTeam = async () => {
     const response = await fetch('http://localhost:8080/diamond-data/api/teams/create', {
@@ -36,43 +45,73 @@ function Settings() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: newTeamName }),
+      body: JSON.stringify({
+        name: newTeamName,
+        user: {
+          email: "max@dd-devs",
+          password: "password"
+        }
+      }),
     });
+  
     if (!response.ok) {
       console.error('Error creating team');
       return;
     }
-    fetchTeams();
-    setNewTeamName('');
-    setIsModalOpen(false); // Close modal after adding
+    fetchTeams(); 
+    setNewTeamName(''); 
+    setIsModalOpen(false); 
   };
 
   const handleUpdateTeam = async () => {
-    const response = await fetch(`http://localhost:8080/diamond-data/api/teams/update?id=${currentTeam.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: currentTeam.id, name: currentTeam.name }),
-    });
-    if (!response.ok) {
-      console.error('Error updating team');
-      return;
+    const url = new URL(`http://localhost:8080/diamond-data/api/teams/update`);
+    url.searchParams.append('id', currentTeam.id);
+    url.searchParams.append('userId', '302'); 
+  
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: currentTeam.name,
+          user: {
+            email: "max@dd-devs",
+            password: "password"
+          }
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error updating team');
+      }
+  
+      fetchTeams();
+      closeModal();
+    } catch (error) {
+      console.error('Error updating team:', error);
     }
-    fetchTeams();
-    closeModal();
   };
 
+
   const handleDeleteTeam = async (id) => {
-    const response = await fetch(`http://localhost:8080/diamond-data/api/teams/delete?id=${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      console.error('Error deleting team');
-      return;
+    const url = new URL(`http://localhost:8080/diamond-data/api/teams/delete`);
+    url.searchParams.append('id', id);
+    url.searchParams.append('userId', '302'); 
+  
+    try {
+      const response = await fetch(url, { method: 'DELETE' });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to delete team with id: ${id}`);
+      }
+
+      await fetchTeams(); 
+      closeModal(); 
+    } catch (error) {
+      console.error('Error deleting team:', error);
     }
-    fetchTeams();
-    closeModal();
   };
 
   const handleChange = (e) => {

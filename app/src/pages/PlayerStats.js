@@ -9,10 +9,11 @@ function PlayerStats() {
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
-
+  const [teams, setTeams] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState('');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [comparePlayer, setComparePlayer] = useState(null);
+ 
 
   
   useEffect(() => {
@@ -31,6 +32,23 @@ function PlayerStats() {
       'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
     ];
 
+    const fetchTeams = async () => {
+      const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+      const url = new URL(endpoint);
+      url.searchParams.append("userId", 302);
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Network error');
+        }
+        const data = await response.json();
+        setTeams(data);
+      } catch (error) {
+        console.error('Error fetching teams:', error);
+      }
+    };
+    fetchTeams();
+  
 
   const requests = endpoints.map(endpoint => {
     const url = new URL(endpoint);
@@ -60,14 +78,6 @@ const handlePlayerClick = (player) => {
   setShowModal(true);
 }
 
-const handleCompareClick = () => {
-  if (selectedPlayer) {
-    setComparePlayer(selectedPlayer);
-    setShowModal(true);
-  } else {
-    console.error('No player selected for comparison');
-  }
-}
 
 const handleSearch = (playerName) => {
   let foundPlayer = null;
@@ -425,11 +435,25 @@ const handleSearch = (playerName) => {
   const defensiveTable = useTable({ columns: defensiveColumns, data: defensiveData });
   const pitcherTable = useTable({ columns: pitcherColumns, data: pitcherData });
 
+  const teamOptions = teams.map(team => (
+    <option key={team.id} value={team.id}>{team.name}</option>
+  ));
+
+
   return (
     <div>
       <Navbar/>
       <div className="playerStats">
         <h1 className='title'> Player Stats</h1>
+        <div className="teamSelection">
+          <select
+            id="teamSelect"
+            value={selectedTeam}
+            onChange={e => setSelectedTeam(e.target.value)}
+          >
+            {teamOptions}
+          </select>
+        </div>
         <h2>Offensive Data</h2>
         <div className='tableWrapper'>
           <div className='offensiveTable'>
@@ -545,11 +569,9 @@ const handleSearch = (playerName) => {
             </table>
           </div>
         </div>
-        <button onClick={handleCompareClick}>Compare</button>
-        <input type="text" placeholder="Search player..." onChange={(e) => handleSearch(e.target.value)} />
       </div>
       {showModal && 
-        <PlayerStatsModal player={comparePlayer} show={showModal} onClose={() => setShowModal(false)} />
+        <PlayerStatsModal show={showModal} onClose={() => setShowModal(false)} />
       }  
     </div> 
   )
