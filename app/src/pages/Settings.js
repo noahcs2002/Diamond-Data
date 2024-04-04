@@ -142,7 +142,7 @@ function Settings() {
           <button onClick={() => setActiveTab('teamManagement')} className={activeTab === 'teamManagement' ? 'active' : ''}>Team Management</button>
         </div>
         {activeTab === 'userSettings' && (
-          <div>
+          <div className='user-settings-tab'>
             <h1>User Settings</h1>
             <form className="settings-form">
               <label>
@@ -157,24 +157,22 @@ function Settings() {
                 Phone Number:
                 <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
               </label>
-              <label>
-                Choose Sport:
-                <select name="sport" value={formData.sport} onChange={handleChange}>
-                  <option value="baseball">Baseball</option>
-                  <option value="softball">Softball</option>
-                </select>
-              </label>
             </form>
           </div>
         )}
         {activeTab === 'teamManagement' && (
-          <div>
-            <h2>Team Management</h2>
-            <button onClick={() => setIsModalOpen(true)} style={{ padding: '10px 20px', borderRadius: '20px', fontSize: '1.2rem' }}>Add Team</button>
+          <div className='team-management-tab'>
+            <h1>Team Management</h1>
+            <div className="team-form">
+              <h2>Add New Team</h2>
+              <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="New Team Name" />
+              <button onClick={handleCreateTeam} className='add-team-button'>Add Team</button>
+            </div>
             <div className="teamList">
+              <h2>Current Teams</h2>
               {teams.map((team) => (
-                <div key={team.id} className="teamItem" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '10px 0', padding: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                  <div className="teamName" style={{ fontWeight: 'bold' }}>{team.name}</div>
+                <div key={team.id} className="teamItem">
+                  <div className="teamName">{team.name}</div>
                   <div>
                     <button onClick={() => selectTeam(team)}>Edit</button>
                     <button onClick={() => handleDeleteTeam(team.id)}>Delete</button>
