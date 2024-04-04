@@ -454,7 +454,7 @@ const handleSearch = (playerName) => {
             {teamOptions}
           </select>
         </div>
-        <h2>Offensive Data</h2>
+        <h2 className='headers'>Offensive Data</h2>
         <div className='tableWrapper'>
           <div className='offensiveTable'>
             <table {...offensiveTable.getTableProps()}>
@@ -492,7 +492,7 @@ const handleSearch = (playerName) => {
             </table>
           </div>
         </div>
-        <h2>Defensive Data</h2>
+        <h2 className='headers'>Defensive Data</h2>
         <div className='tableWrapper'>
           <div className='defensiveTable'>
 
@@ -531,7 +531,7 @@ const handleSearch = (playerName) => {
             </table>
           </div>
         </div>
-        <h2>Pitcher Data</h2>
+        <h2 className='headers'>Pitcher Data</h2>
         <div className='tableWrapper'>
           <div className='pitcherTable'>
             <table {...pitcherTable.getTableProps()}>

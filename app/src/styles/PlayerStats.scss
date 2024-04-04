@@ -6,14 +6,16 @@
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: 100;
   width: 100%;
-  // height: 100vh;
+  height: auto;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  display: flex;
+
+  .headers {
+    align-self: left;
+  }
 
   .teamSelection select {
     padding: 2px;
@@ -24,8 +26,8 @@
     display: block; 
     margin-left: auto; 
     margin-right: auto; 
-    background-color: #FFF; 
-    border: 1px solid #ccc; 
+    background-color: var(--button-color); 
+    border: 1px solid var(--border3-color); 
   }
 
   .title {
@@ -43,6 +45,20 @@
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 10px;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-color);
+      border-radius: 8px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background-color: var(--scrollbar2-color);
+      border-radius: 8px;
+    }
 
     table {
       // width: 100px;
