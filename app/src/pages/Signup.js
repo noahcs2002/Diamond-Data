@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Signup.scss';
 import { useNavigate } from 'react-router-dom';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -22,24 +23,31 @@ function Signup() {
         e.preventDefault();
 
         console.log('Form submitted:', formData);
+        let body = {};
+        body.email = formData.email;
+        body.password = formData.password;
 
-        const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/signup';
+        const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/sign-up';
         const url = new URL(endpointUrl);
         await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(body),
         })
         .then(response => response.json())
         .then(data => {
             if (data) {
-                nav('/home');
+                nav('/home', {
+                    state: {
+                        userSessionId: data
+                    }
+                })
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            alert('Account already exists, or passwords do not match');
         });
     };
 
@@ -60,15 +68,6 @@ function Signup() {
             <div className="signup-container">
                 <h2>Sign Up</h2>
                 <form className="signupForm" onSubmit={handleSubmit}>
-                    <label>Username:
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
                     <label>Email:
                         <input
                             type="email"

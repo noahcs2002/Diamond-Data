@@ -46,7 +46,7 @@ function Login() {
     }
 
     const handleSignUp = () => {
-        console.log('clicked');
+        nav('/sign-up');
     };
 
     return (
