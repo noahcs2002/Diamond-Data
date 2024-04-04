@@ -3,7 +3,6 @@ package com.dd.api.ai.agents;
 import com.dd.api.ai.scoring.PitcherScoringStrategy;
 import com.dd.api.ai.scoring.ScoringStrategy;
 import com.dd.api.restapi.models.Pitcher;
-import org.hibernate.collection.spi.PersistentBag;
 
 import java.util.ArrayList;
 import java.util.List;
