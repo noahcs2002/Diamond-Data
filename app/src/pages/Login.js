@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../styles/Login.scss';
 import { useNavigate } from "react-router-dom";
 
@@ -6,6 +6,10 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const nav = useNavigate();
+
+    useEffect(() => {
+        localStorage.clear();
+    }, [])
 
     const handleLogin = async () => {
 
@@ -29,9 +33,10 @@ function Login() {
         })
         .then(data => {
             if (data) {
+                localStorage.setItem('sessionData', JSON.stringify(data))
                 nav('/home', {
                     state: {
-                        userSessionId: data
+                        userSessionData: data
                     }
                 })
             }

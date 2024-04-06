@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import PlayerManagement from "./pages/PlayerManagement";
@@ -13,8 +12,6 @@ import BulkEntry from "./pages/BulkEntry";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import CreateAccount from "./pages/CreateAccount";
-import { Switch } from "@mui/material";
 
 function App() {
 
