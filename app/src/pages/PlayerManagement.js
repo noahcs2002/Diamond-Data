@@ -3,7 +3,6 @@ import PlayerItem from '../components/PlayerItem';
 import '../styles/PlayerManagement.scss';
 import '../styles/PlayerItem.scss';
 import Navbar from '../components/Navbar';
-import { useTable } from 'react-table';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 function PlayerManagement({ onEdit }) {
@@ -12,14 +11,14 @@ function PlayerManagement({ onEdit }) {
   const [pitcherData, setPitcherData] = useState([]);
   const [rawPlayerData, setRawPlayerData] = useState([]);
   const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState('');
+  const [selectedTeam, setSelectedTeam] = useState(() => localStorage.getItem('selectedTeam') || ''); // Initialize from localStorage
   const [isAddingPlayer, setIsAddingPlayer] = useState(false);
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
 
   useEffect(() => {
-    fetchPlayers();
     fetchTeams();
+    fetchPlayers();
   }, [selectedTeam]);
 
   const fetchTeams = async () => {
@@ -39,20 +38,19 @@ function PlayerManagement({ onEdit }) {
   };
 
   const fetchPlayers = async () => {
-    if (!selectedTeam) return;
+   // if (!selectedTeam) return;
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
     url.searchParams.append("userId", 302);
-    url.searchParams.append('teamId', selectedTeam);
+    url.searchParams.append('teamId', 1152);
     try {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Network error");
       }
       const data = await response.json();
-      // You need to decide how you want to use this data to update your state
-      // For example, if the API returns offensive and defensive data separately,
-      // you might need to update setOffensiveData and setDefensiveData here
+      console.log(data);
+      setRawPlayerData(data);
     } catch (error) {
       console.error('Error fetching players:', error);
     }
@@ -60,54 +58,160 @@ function PlayerManagement({ onEdit }) {
 
   const handlePlayerCreate = async () => {
     const playerCreationRequestModel = {
-      firstName: newPlayerFirstName,
-      lastName: newPlayerLastName,
-      teamId: selectedTeam,
+        firstName: newPlayerFirstName,
+        lastName: newPlayerLastName,
+        offensivePlayer: {
+            team: {
+                id: 1152,
+                name: ''
+            },
+            atBats: 0,
+            battingAverage: 0,
+            caughtStealing: 0,
+            doubles: 0,
+            extraBaseHits: 0,
+            gamesPlayed: 0,
+            grandSlams: 0,
+            groundIntoDoublePlay: 0,
+            groundOutAirOut: 0,
+            hitByPitch: 0,
+            hits: 0,
+            homeRuns: 0,
+            intentionalWalks: 0,
+            leftOnBase: 0,
+            onBasePercentage: 0,
+            onBasePlusSlugging: 0,
+            plateAppearances: 0,
+            reachedOnError: 0,
+            runs: 0,
+            runsBattedIn: 0,
+            sacrificeBunt: 0,
+            sacrificeFly: 0,
+            singles: 0,
+            sluggingPercentage: 0,
+            stolenBases: 0,
+            totalBases: 0,
+            triples: 0,
+            walks: 0,
+            walkOffs: 0
+        },
+        defensivePlayer: {
+            positions: [],
+            team: {
+                id: 1152,
+                name: ''
+            },
+            assists: 0,
+            caughtStealingPercent: 0,
+            doublePlay: 0,
+            errors: 0,
+            fieldingPercentage: 0,
+            inningsPlayed: 0,
+            outs: 0,
+            outfieldAssists: 0,
+            passedBalls: 0,
+            putouts: 0,
+            totalChances: 0,
+            triplePlays: 0
+        }
     };
-    const endpoint = 'http://localhost:8080/diamond-data/api/players/create';
+
+    const endpoint = `http://localhost:8080/diamond-data/api/players/create`;
     const url = new URL(endpoint);
+    url.searchParams.append('teamId', 1152);
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(playerCreationRequestModel)
+        body: JSON.stringify(playerCreationRequestModel),
       });
+      console.log(response);
       if (!response.ok) {
         throw new Error("Failed to create player");
       }
       const newPlayer = await response.json();
-      // Assuming you want to add the new player to offensiveData for display
-      // You might need to adjust based on your actual data structure and requirements
-      setOffensiveData(prev => [...prev, newPlayer]);
+      console.log(newPlayer);
+
+      setOffensiveData((prev) => [...prev, newPlayer]);
     } catch (error) {
       console.error("Error creating player:", error);
     }
-    // Reset the form and close the modal
     setIsAddingPlayer(false);
     setNewPlayerFirstName('');
     setNewPlayerLastName('');
-  };
+};
 
-  const handleDelete = (fullName) => {
-    console.log('Player deleted', fullName);
-    // Filter out the player from offensiveData, defensiveData, and pitcherData
-    // Adjust these as necessary based on how you're structuring your data
-    setOffensiveData(data => data.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
-    setDefensiveData(data => data.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
-    setPitcherData(data => data.filter(player => `${player.firstName} ${player.lastName}` !== fullName));
-  };
+const handleDeletePlayer = async (id) => {
+  const url = new URL(`http://localhost:8080/diamond-data/api/players/delete`);
+  url.searchParams.append('id', id);
 
-  const handleEdit = (oldFullName, newFullName) => {
-    console.log('Player edited', oldFullName, 'to', newFullName);
-    // Implement the logic to find the player by oldFullName and update their name to newFullName
-    // This logic would be similar to handleDelete, but instead of filtering out, you'd update the name
-  };
+  try {
+    const response = fetch(url, { method: 'DELETE' });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete player with id: ${id}`);
+    }
+
+    await fetchPlayers(); 
+  } catch (error) {
+    console.error('Error deleting player:', error);
+  }
+};
+
+const handleDelete = async (id) => {
+  try {
+    await handleDeletePlayer(id);
+    console.log('Player deleted successfully');
+  } catch (error) {
+    console.error('Error deleting player:', error);
+  }
+};
+
+
+const handleEdit = async (playerId, updatedFullName) => {
+  try {
+    const endpoint = `http://localhost:8080/diamond-data/api/players/update`;
+    const url = new URL(endpoint);
+    url.searchParams.append('id', playerId);
+    console.log(updatedFullName);
+    const playerUpdateRequestModel = {
+      firstName: updatedFullName.split(' ')[0],
+      lastName: updatedFullName.split(' ')[1],
+    };
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(playerUpdateRequestModel),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update player with id: ${playerId}`);
+    }
+
+    console.log('Player updated successfully');
+    await fetchPlayers();
+  } catch (error) {
+    console.error('Error updating player:', error);
+  }
+};
+
+
+
 
   const teamOptions = teams.map(team => (
     <option key={team.id} value={team.id}>{team.name}</option>
   ));
+
+  const handleTeamSelect = (e) => {
+    const teamId = e.target.value;
+    setSelectedTeam(teamId);
+    localStorage.setItem('selectedTeam', teamId);
+  };
 
   return (
     <div>
@@ -117,7 +221,7 @@ function PlayerManagement({ onEdit }) {
           <select
             id="teamSelect"
             value={selectedTeam}
-            onChange={e => setSelectedTeam(e.target.value)}
+            onChange={handleTeamSelect} 
           >
             {teamOptions}
           </select>
@@ -130,12 +234,12 @@ function PlayerManagement({ onEdit }) {
               <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
             </div>
             <div className='playerGrid'>
-              {offensiveData.map(player => (
+              {rawPlayerData.map(player => (
                 <div className='playerItem' key={player.id}>
                   <PlayerItem
                     key={player.id}
                     fullName={`${player.firstName} ${player.lastName}`}
-                    onDelete={() => handleDelete(`${player.firstName} ${player.lastName}`)}
+                    onDelete={() => handleDelete(player.id)} 
                     onEdit={(newFullName) => handleEdit(`${player.firstName} ${player.lastName}`, newFullName)}
                   />
                 </div>
