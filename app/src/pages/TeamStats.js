@@ -132,30 +132,30 @@ function TeamStats() {
           <div className="modalContent">
             <span className="close" onClick={() => setShowModal(false)}>&times;</span>
             <h2>{selectedTeamStats.name} Stats</h2>
-      <div>At Bats: {selectedTeamStats.atBats}</div>
-      <div>Batting Average: {selectedTeamStats.battingAverage.toFixed(3)}</div>
-      <div>Caught Stealing: {selectedTeamStats.caughtStealing}</div>
-      <div>Doubles: {selectedTeamStats.doubles}</div>
-      <div>Extra Base Hits: {selectedTeamStats.extraBaseHits}</div>
-      <div>Games Played: {selectedTeamStats.gamesPlayed}</div>
-      <div>Grand Slams: {selectedTeamStats.grandSlams}</div>
-      <div>Ground Into Double Play: {selectedTeamStats.groundIntoDoublePlay}</div>
-      <div>Ground Out Air Out Ratio: {selectedTeamStats.groundOutAirOut.toFixed(2)}</div> {/* Placeholder */}
-      <div>Hit By Pitch: {selectedTeamStats.hitByPitch}</div>
-      <div>Hits: {selectedTeamStats.hits}</div>
-      <div>Home Runs: {selectedTeamStats.homeRuns}</div>
-      <div>Intentional Walks: {selectedTeamStats.intentionalWalks}</div>
-      <div>Left On Base: {selectedTeamStats.leftOnBase}</div>
-      <div>On Base Percentage: {selectedTeamStats.onBasePercentage.toFixed(3)}</div>
-      <div>On Base Plus Slugging: {selectedTeamStats.onBasePlusSlugging.toFixed(3)}</div>
-      <div>Plate Appearances: {selectedTeamStats.plateAppearances}</div>
-      <div>Reached On Error: {selectedTeamStats.reachedOnError}</div>
-      <div>Runs: {selectedTeamStats.runs}</div>
-      <div>Runs Batted In: {selectedTeamStats.runsBattedIn}</div>
-      <div>Sacrifice Bunt: {selectedTeamStats.sacrificeBunt}</div>
-      <div>Sacrifice Fly: {selectedTeamStats.sacrificeFly}</div>
-      <div>Singles: {selectedTeamStats.singles}</div>
-    </div>
+            <div className='stats'><strong>At Bats:</strong> {selectedTeamStats.atBats}</div>
+            <div className='stats'><strong>Batting Average:</strong> {selectedTeamStats.battingAverage.toFixed(3)}</div>
+            <div className='stats'><strong>Caught Stealing:</strong> {selectedTeamStats.caughtStealing}</div>
+            <div className='stats'><strong>Doubles:</strong> {selectedTeamStats.doubles}</div>
+            <div className='stats'><strong>Extra Base Hits:</strong> {selectedTeamStats.extraBaseHits}</div>
+            <div className='stats'><strong>Games Played:</strong> {selectedTeamStats.gamesPlayed}</div>
+            <div className='stats'><strong>Grand Slams:</strong> {selectedTeamStats.grandSlams}</div>
+            <div className='stats'><strong>Ground Into Double Play:</strong> {selectedTeamStats.groundIntoDoublePlay}</div>
+            <div className='stats'><strong>Ground Out Air Out Ratio:</strong> {selectedTeamStats.groundOutAirOut.toFixed(2)}</div> {/* Placeholder */}
+            <div className='stats'><strong>Hit By Pitch:</strong> {selectedTeamStats.hitByPitch}</div>
+            <div className='stats'><strong>Hits:</strong> {selectedTeamStats.hits}</div>
+            <div className='stats'><strong>Home Runs:</strong> {selectedTeamStats.homeRuns}</div>
+            <div className='stats'><strong>Intentional Walks:</strong> {selectedTeamStats.intentionalWalks}</div>
+            <div className='stats'><strong>Left On Base:</strong> {selectedTeamStats.leftOnBase}</div>
+            <div className='stats'><strong>On Base Percentage:</strong> {selectedTeamStats.onBasePercentage.toFixed(3)}</div>
+            <div className='stats'><strong>On Base Plus Slugging:</strong> {selectedTeamStats.onBasePlusSlugging.toFixed(3)}</div>
+            <div className='stats'><strong>Plate Appearances:</strong> {selectedTeamStats.plateAppearances}</div>
+            <div className='stats'><strong>Reached On Error:</strong> {selectedTeamStats.reachedOnError}</div>
+            <div className='stats'><strong>Runs:</strong> {selectedTeamStats.runs}</div>
+            <div className='stats'><strong>Runs Batted In:</strong> {selectedTeamStats.runsBattedIn}</div>
+            <div className='stats'><strong>Sacrifice Bunt:</strong> {selectedTeamStats.sacrificeBunt}</div>
+            <div className='stats'><strong>Sacrifice Fly:</strong> {selectedTeamStats.sacrificeFly}</div>
+            <div className='stats'><strong>Singles:</strong> {selectedTeamStats.singles}</div>
+          </div>
         </div>
       )}
     </div>
