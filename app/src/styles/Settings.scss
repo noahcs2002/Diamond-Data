@@ -167,8 +167,9 @@
   }
 
     .modal {
+      display: block;
       position: fixed;
-      z-index: 1;
+      // z-index: 1;
       left: 0;
       top: 0;
       width: 100%;
@@ -177,12 +178,47 @@
       background-color: rgba(0, 0, 0, 0.4);
 
       .modalContent {
-        background-color: var(--background-color);
+        background-color: var(--background3-color);
         margin: 15% auto;
         padding: 20px;
         border: 1px solid var(--border-color);
         width: 50%; /* Adjusted for consistency */
         border-radius: 5px;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+        &::-webkit-scrollbar {
+          width: 8px; 
+        }
+      
+        &::-webkit-scrollbar-thumb {
+          background-color: var(--scrollbar-color); 
+          border-radius: 10px; 
+        }
+      
+        &::-webkit-scrollbar-track {
+          background-color: var(--scrollbar2-color); 
+          border-radius: 10px; 
+        }
+
+        h2 {
+          color: var(--text4-color);
+          font-size:  2.5rem;
+        }
+
+        input {
+          margin: 10px;
+          background-color: var(--background-color);
+        }
+
+        button {
+          margin: 5px;
+          background-color: var(--button-color);
+        }
       }
     }
 

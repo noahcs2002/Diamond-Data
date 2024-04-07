@@ -186,6 +186,7 @@ function Settings() {
                   <span className="close" onClick={closeModal}>&times;</span>
                   {currentTeam ? (
                     <>
+                    <h2>Update and Delete Team</h2>
                       <input type="text" value={currentTeam.name} onChange={(e) => setCurrentTeam({ ...currentTeam, name: e.target.value })} placeholder="Edit Team Name" />
                       <button onClick={handleUpdateTeam}>Update Team</button>
                       <button onClick={() => handleDeleteTeam(currentTeam.id)}>Delete Team</button>
