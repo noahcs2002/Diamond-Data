@@ -15,11 +15,14 @@ function PlayerManagement({ onEdit }) {
   const [isAddingPlayer, setIsAddingPlayer] = useState(false);
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
+  const [selectedPositions, setSelectedPositions] = useState([]);
 
   useEffect(() => {
     fetchTeams();
     fetchPlayers();
   }, [selectedTeam]);
+
+  const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"];
 
   const fetchTeams = async () => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
@@ -42,7 +45,7 @@ function PlayerManagement({ onEdit }) {
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
     url.searchParams.append("userId", 302);
-    url.searchParams.append('teamId', 1152);
+    url.searchParams.append('teamId', 1203);
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -62,7 +65,7 @@ function PlayerManagement({ onEdit }) {
         lastName: newPlayerLastName,
         offensivePlayer: {
             team: {
-                id: 1152,
+                id: 1203,
                 name: ''
             },
             atBats: 0,
@@ -96,9 +99,9 @@ function PlayerManagement({ onEdit }) {
             walkOffs: 0
         },
         defensivePlayer: {
-            positions: [],
+            positions: selectedPositions,
             team: {
-                id: 1152,
+                id: 1203,
                 name: ''
             },
             assists: 0,
@@ -118,7 +121,7 @@ function PlayerManagement({ onEdit }) {
 
     const endpoint = `http://localhost:8080/diamond-data/api/players/create`;
     const url = new URL(endpoint);
-    url.searchParams.append('teamId', 1152);
+    url.searchParams.append('teamId', 1203);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -141,6 +144,7 @@ function PlayerManagement({ onEdit }) {
     setIsAddingPlayer(false);
     setNewPlayerFirstName('');
     setNewPlayerLastName('');
+    setSelectedPositions([]);
 };
 
 const handleDeletePlayer = async (id) => {
@@ -172,14 +176,18 @@ const handleDelete = async (id) => {
 
 const handleEdit = async (playerId, updatedFullName) => {
   try {
+    // Extract first name and last name from updated full name
+    const updatedFirstName = updatedFullName.split(' ')[0];
+    const updatedLastName = updatedFullName.split(' ')[1];
+
+    const playerUpdateRequestModel = {
+      firstName: updatedFirstName,
+      lastName: updatedLastName,
+    };
+
     const endpoint = `http://localhost:8080/diamond-data/api/players/update`;
     const url = new URL(endpoint);
     url.searchParams.append('id', playerId);
-    console.log(updatedFullName);
-    const playerUpdateRequestModel = {
-      firstName: updatedFullName.split(' ')[0],
-      lastName: updatedFullName.split(' ')[1],
-    };
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -194,13 +202,21 @@ const handleEdit = async (playerId, updatedFullName) => {
     }
 
     console.log('Player updated successfully');
-    await fetchPlayers();
+    await fetchPlayers(); // Optionally update local state after successful update
   } catch (error) {
     console.error('Error updating player:', error);
   }
 };
 
-
+const handlePositionChange = (position) => {
+  setSelectedPositions(prev => {
+    if (prev.includes(position)) {
+      return prev.filter(p => p !== position);
+    } else {
+      return [...prev, position];
+    }
+  });
+};
 
 
   const teamOptions = teams.map(team => (
@@ -261,6 +277,15 @@ const handleEdit = async (playerId, updatedFullName) => {
               value={newPlayerLastName}
               onChange={e => setNewPlayerLastName(e.target.value)}
             />
+             <div className="positionsSelection">
+              <label>Positions:</label>
+              {allPositions.map((position) => (
+                <div key={position}>
+                  <input type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
+                  <label htmlFor={position}>{position}</label>
+                </div>
+              ))}
+            </div>
             <button onClick={handlePlayerCreate}>Save</button>
             <button onClick={() => setIsAddingPlayer(false)}>Cancel</button>
           </div>
