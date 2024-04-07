@@ -12,23 +12,23 @@ function Roster() {
  
 
   useEffect(() => {
-    const savedPlayers = localStorage.getItem('players');
-    if (savedPlayers) {
-      setPlayers(JSON.parse(savedPlayers));
-    } else {
-      const mockRoster = [
-        { id: 'player-1', name: 'Player 1', position: 'Catcher', assignment: '40 Man Roster' },
-        { id: 'player-2', name: 'Player 2', position: 'First Baseman', assignment: 'Line-Up' },
-      ];
-      setPlayers(mockRoster);
-    }
-    fetchTeams();
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    console.log('Gathered user: ', user);
+    prop(user)
   }, []);
 
-  const fetchTeams = async () => {
+  const prop = async (user) => {
+    const teams = await fetchTeams(user.id);
+    console.log('Fetched teams: ', teams);
+    const data = await handleRosterLoad();
+  }
+
+  const fetchTeams = async (userId) => {
+    console.log('UserId: ', userId);
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
     const url = new URL(endpoint);
-    url.searchParams.append("userId", 302);
+    url.searchParams.append("userId", userId);
+    console.log('Team fetch URL: ', url);
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -36,12 +36,43 @@ function Roster() {
       }
       const data = await response.json();
       setTeams(data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error fetching teams:', error);
     }
   };
 
-  
+  const handleRosterLoad = async () => {
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+
+    const endpoint = 'http://localhost:8080/diamond-data/api/rosters/get';
+    const url = new URL(endpoint);
+    
+    if (teams.length === 1) {
+      url.searchParams.append('teamId', teams[0].id);
+    }
+    else {
+      url.searchParams.append('teamId', selectedTeam.id);
+    }
+
+    url.searchParams.append('userId', user.id);
+
+    try {
+      const response = await fetch(url);
+      if(!response.ok) {
+        alert('Invalid request');
+      }
+      else {
+        const data = await response.json();
+        localStorage.setItem('players', JSON.stringify(data));
+        return data;
+      }
+    }
+    catch(err) {
+      console.error('Error fetching teams: ', err)
+    }
+  };
+
   const handleTeamSelect = (e) => {
     const teamId = e.target.value;
     setSelectedTeam(teamId);

@@ -1,10 +1,41 @@
 package com.dd.api.restapi.controllers;
 
+import com.dd.api.auth.validators.Validator;
+import com.dd.api.restapi.models.Player;
+import com.dd.api.restapi.services.RosterService;
+import com.dd.api.util.exceptions.NoAccessPermittedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/diamond-data/api/rosters")
 public class RosterController {
 
+    @Autowired
+    private final RosterService rosterService;
+
+    @Autowired
+    private final Validator validator;
+
+    @Autowired
+    public RosterController(RosterService rosterService, Validator validator){
+        this.rosterService = rosterService;
+        this.validator = validator;
+    }
+
+    @GetMapping
+    @RequestMapping("/get")
+    public List<Player> getAllPlayersForRoster(@RequestParam Long userId, @RequestParam Long teamId) throws NoAccessPermittedException {
+
+        if (!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.getAllPlayers(teamId);
+    }
 }
