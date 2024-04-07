@@ -162,6 +162,10 @@ const handleSearch = (playerName) => {
       accessor: "holds",
     },
     {
+      Header: "HITS",
+      accessor: "hits",
+    },
+    {
       Header: "INHERITED RUNNERS",
       accessor: "inheritedRunners",
     },
@@ -218,6 +222,10 @@ const handleSearch = (playerName) => {
       accessor: "walksAndHitsPerInningPitched",
     },
     {
+      Header: "WALKS",
+      accessor: "walks",
+    },
+    {
       Header: "WILD PITCHES",
       accessor: "wildPitches",
     },
@@ -225,14 +233,6 @@ const handleSearch = (playerName) => {
       Header: "WINS",
       accessor: "wins",
     },
-    {
-      Header: "WINNING PERCENTAGE",
-      accessor: "winningPercentage",
-    },
-    {
-      Header: "WALKS",
-      accessor: "walks",
-    }
   ],
   []);
 
@@ -286,6 +286,14 @@ const handleSearch = (playerName) => {
       accessor: "putouts",
     },
     {
+      Header: "STOLEN BASES ALLOWED",
+      accessor: "stolenBasesAllowed",
+    },
+    {
+      Header: "STOLEN BASE ATTEMPTS",
+      accessor: "atolenBaseAttempts",
+    },
+    {
       Header: "TOTAL CHANCES",
       accessor: "totalChances",
     },
@@ -313,16 +321,16 @@ const handleSearch = (playerName) => {
       accessor: "atBats",
     },
     {
-      Header: "BATTING AVERAGE",
-      accessor: "battingAverage",
-    },
-    {
       Header: "CAUGHT STEALING",
       accessor: "caughtStealing",
     },
     {
+      Header: "CAUGHT STEALIN PERCENTAGE",
+      accessor: "caughtStealingPercentage",
+    },
+    {
       Header: "DOUBLES",
-      accessor: "doubles",
+      accessor: "battersFaces",
     },
     {
       Header: "EXTRA BASE HITS",
@@ -339,10 +347,6 @@ const handleSearch = (playerName) => {
     {
       Header: "GROUND INTO DOUBLE PLAY",
       accessor: "groundIntoDoublePlay",
-    },
-    {
-      Header: "GROUND OUT AIR OUT",
-      accessor: "groundOutAirOut",
     },
     {
       Header: "HIT BY PITCH",
@@ -373,7 +377,7 @@ const handleSearch = (playerName) => {
       accessor: "onBasePlusSlugging",
     },
     {
-      Header: "PLATE APPEARANCES",
+      Header: "PLATE APPEARANCE",
       accessor: "plateAppearances",
     },
     {
@@ -424,11 +428,6 @@ const handleSearch = (playerName) => {
       Header: "WALK OFFS",
       accessor: "walkOffs",
     },
-    // {
-    //   Header: "GHOSTED DATE",
-    //   accessor: "ghostedDate",
-    // },
-
   ], []);
 
   const offensiveTable = useTable({ columns: offensiveColumns, data: offensiveData });
