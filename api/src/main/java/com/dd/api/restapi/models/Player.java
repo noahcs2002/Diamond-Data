@@ -26,6 +26,7 @@ public class Player {
     private String lastName;
 
     private long ghostedDate;
+    private String assignment;
 
     public Player(Long id,
                   OffensivePlayer offensivePlayer,
@@ -38,11 +39,12 @@ public class Player {
     }
 
     @JsonCreator
-    public Player(OffensivePlayer offensivePlayer, DefensivePlayer defensivePlayer, String firstName, String lastName) {
+    public Player(OffensivePlayer offensivePlayer, DefensivePlayer defensivePlayer, String firstName, String lastName, String assignment) {
         this.offensivePlayer = offensivePlayer;
         this.defensivePlayer = defensivePlayer;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.assignment = assignment;
         this.ghostedDate = 0;
     }
 
@@ -100,6 +102,14 @@ public class Player {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAssignment() {
+        return assignment;
+    }
+
+    public void setAssignment(String assignment) {
+        this.assignment = assignment;
     }
 
     @Override

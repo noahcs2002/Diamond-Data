@@ -27,7 +27,7 @@ function Login() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                alert('Error signing in: credentials invalid');
             }
             return response.json();
         })
