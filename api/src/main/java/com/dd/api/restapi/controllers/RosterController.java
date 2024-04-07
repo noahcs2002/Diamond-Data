@@ -5,10 +5,7 @@ import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.services.RosterService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,5 +34,16 @@ public class RosterController {
         }
 
         return this.rosterService.getAllPlayers(teamId);
+    }
+
+    @PutMapping
+    @RequestMapping("/update-assignment")
+    public Player updatePlayerAssignment(@RequestParam Long playerId, @RequestParam Long userId, @RequestParam String newAssignment) throws NoAccessPermittedException {
+
+        if(!this.validator.validatePlayer(userId, playerId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.updateAssignment(playerId, newAssignment);
     }
 }

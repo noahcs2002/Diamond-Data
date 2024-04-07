@@ -13,41 +13,41 @@ function Roster() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
-    console.log('Gathered user: ', user);
     prop(user)
   }, []);
 
   const prop = async (user) => {
     const teams = await fetchTeams(user.id);
-    console.log('Fetched teams: ', teams);
-    const data = await handleRosterLoad();
+    const players = await fetchPlayers(teams, user);
+    const finalised = await assignPlayers(players);
+    setPlayers(finalised);
   }
 
-  const fetchTeams = async (userId) => {
-    console.log('UserId: ', userId);
-    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
-    const url = new URL(endpoint);
-    url.searchParams.append("userId", userId);
-    console.log('Team fetch URL: ', url);
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Network error');
-      }
-      const data = await response.json();
-      setTeams(data);
-    } 
-    catch (error) {
-      console.error('Error fetching teams:', error);
-    }
-  };
+  const assignPlayers = async (players) => {
+        let roster = [];
 
-  const handleRosterLoad = async () => {
-    const user = JSON.parse(localStorage.getItem('sessionData'));
+        players.map((player, i) => {
+          if (player.assignment === 'na') {
+            player.assignment = '40 Man Roster';
+          }
+          const p = {
+            // id: player.id, 
+            id: player.id,
+            apiId: player.id,
+            name: player.firstName +' '+player.lastName, 
+            position: player.defensivePlayer.positions.join(', '),
+            assignment: player.assignment
+          };
+          roster.push(p);
+        });
+        return roster;
+  } 
 
+  const fetchPlayers = async (teams, user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/rosters/get';
+
     const url = new URL(endpoint);
-    
+
     if (teams.length === 1) {
       url.searchParams.append('teamId', teams[0].id);
     }
@@ -57,19 +57,35 @@ function Roster() {
 
     url.searchParams.append('userId', user.id);
 
-    try {
-      const response = await fetch(url);
-      if(!response.ok) {
-        alert('Invalid request');
+    try{
+      const res = await fetch(url);
+      if (!res.ok) {
+        alert('Res not ok');
       }
-      else {
-        const data = await response.json();
-        localStorage.setItem('players', JSON.stringify(data));
-        return data;
-      }
+      const players = await res.json();
+      return players;
     }
-    catch(err) {
-      console.error('Error fetching teams: ', err)
+    catch(_e) {
+      console.error(_e);
+    }
+  }
+
+  const fetchTeams = async (userId) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', userId);
+
+    try {
+      const res = await fetch(url);
+      if(!res.ok) {
+        alert('Response not ok');
+      }
+      const loadedTeams = await res.json();
+      setTeams(loadedTeams);
+      return loadedTeams;
+    }
+    catch(_e) {
+      console.error(_e);
     }
   };
 
@@ -83,19 +99,38 @@ function Roster() {
     <option key={team.id} value={team.id}>{team.name}</option>
   ));
 
-
   const handleDragStart = (e, playerId) => {
     e.dataTransfer.setData("playerId", playerId);
   };
 
-  const handleDrop = (e, newAssignment) => {
+  const handleDrop = async (e, newAssignment) => {
     e.preventDefault();
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+
     const playerId = e.dataTransfer.getData("playerId");
+
+    const endpoint = 'http://localhost:8080/diamond-data/api/rosters/update-assignment';
+    const url = new URL(endpoint);
+    url.searchParams.append('playerId', playerId)
+    url.searchParams.append('userId', user.id)
+    url.searchParams.append('newAssignment', newAssignment);
+
+    try{
+      const res = await fetch(url);
+      if (!res.ok) {
+        alert('Res not ok');
+      }
+      const data = await res.json();
+      console.log(data);
+    }
+    catch(_e) {
+      console.error(_e);
+    }
+
     setPlayers(prevPlayers => {
       const updatedPlayers = prevPlayers.map(player => 
         player.id === playerId ? { ...player, assignment: newAssignment } : player
       );
-  
      
       localStorage.setItem('players', JSON.stringify(updatedPlayers));
       return updatedPlayers;

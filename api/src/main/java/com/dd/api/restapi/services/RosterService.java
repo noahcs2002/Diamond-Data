@@ -26,4 +26,16 @@ public class RosterService {
                 .filter(p -> p.getGhostedDate() == 0)
                 .toList();
     }
+
+    public Player updateAssignment(Long playerId, String newAssignment) {
+        return this.repository.findAll()
+                .stream()
+                .filter(p -> p.getId().equals(playerId))
+                .peek(p -> {
+                    p.setAssignment(newAssignment);
+                    this.repository.save(p);
+                })
+                .toList()
+                .get(0);
+    }
 }

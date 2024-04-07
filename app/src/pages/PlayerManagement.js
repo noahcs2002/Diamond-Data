@@ -116,7 +116,8 @@ function PlayerManagement({ onEdit }) {
             putouts: 0,
             totalChances: 0,
             triplePlays: 0
-        }
+        },
+        assignment: 'n/a'
     };
 
     const endpoint = `http://localhost:8080/diamond-data/api/players/create`;
