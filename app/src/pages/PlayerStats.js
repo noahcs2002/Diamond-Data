@@ -11,26 +11,40 @@ function PlayerStats() {
   const [pitcherData, setPitcherData] = useState([]);
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState('');
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [showModal, setShowModal] = useState(false);
- 
 
-  
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   useEffect(() => {
     console.log("showModal state:", showModal);
+    fetchData();
   }, [showModal]);
 
   const fetchData = async () => {
-    const id = '202';
+    const id = '302';
     const endpoints = [
-      'http://localhost:8080/diamond-data/api/offensive-players/get-by-team',
-      'http://localhost:8080/diamond-data/api/defensive-players/get-by-team',
+      'http://localhost:8080/diamond-data/api/players/get-by-team',
       'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
     ];
+
+    const fetchPlayers = async () => {
+      // if (!selectedTeam) return;
+       const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
+       const url = new URL(endpoint);
+       url.searchParams.append("userId", 302);
+       url.searchParams.append('teamId', 1203);
+       try {
+         const response = await fetch(url);
+         if (!response.ok) {
+           throw new Error("Network error");
+         }
+         const data = await response.json();
+         console.log(data);
+       } catch (error) {
+         console.error('Error fetching players:', error);
+       }
+     };
+     fetchPlayers();
+   
 
     const fetchTeams = async () => {
       const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
@@ -52,7 +66,7 @@ function PlayerStats() {
 
   const requests = endpoints.map(endpoint => {
     const url = new URL(endpoint);
-    url.searchParams.append('teamId', id);
+    url.searchParams.append('teamId', 1203);
     return fetch(url)
       .then(res => {
         if (!res.ok) {
@@ -72,33 +86,6 @@ function PlayerStats() {
   }
 }
 
-const handlePlayerClick = (player) => {
-  console.log('Player clicked:', player);
-  setSelectedPlayer(player);
-  setShowModal(true);
-}
-
-
-const handleSearch = (playerName) => {
-  let foundPlayer = null;
-  // Search for the player by name
-  offensiveData.concat(defensiveData, pitcherData).some(player => {
-    if (
-      player.firstName.toLowerCase().includes(playerName.toLowerCase()) ||
-      player.lastName.toLowerCase().includes(playerName.toLowerCase())
-    ) {
-      foundPlayer = player;
-      return true; // Stop searching after finding the first match
-    }
-    return false;
-  });
-
-  if (foundPlayer) {
-    setSelectedPlayer(foundPlayer);
-  } else {
-    console.error('Player not found');
-  }
-}
 
   const pitcherColumns = React.useMemo(() => [
     {
@@ -301,10 +288,6 @@ const handleSearch = (playerName) => {
       Header: "TRIPLE PLAYS",
       accessor: "triplePlays",
     },
-    // {
-    //   Header: "GHOSTED DATE",
-    //   accessor: "ghostedDate",
-    // },
   ], []);
 
   const offensiveColumns = React.useMemo(() => [
@@ -441,139 +424,120 @@ const handleSearch = (playerName) => {
 
   return (
     <div>
-      <Navbar/>
-      <div className="playerStats">
-        <h1 className='title'> Player Stats</h1>
-        <div className="teamSelection">
-          <select
-            id="teamSelect"
-            value={selectedTeam}
-            onChange={e => setSelectedTeam(e.target.value)}
-          >
-            {teamOptions}
-          </select>
-        </div>
-        <h2 className='headers'>Offensive Data</h2>
-        <div className='tableWrapper'>
-          <div className='offensiveTable'>
-            <table {...offensiveTable.getTableProps()}>
-              <thead>
-                {offensiveTable.headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => (
-                      <th {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                      </th>
+    <Navbar/>
+    <div className="playerStats">
+      <h1 className='title'> Player Stats</h1>
+      <div className="teamSelection">
+        <select
+          id="teamSelect"
+          value={selectedTeam}
+          onChange={e => setSelectedTeam(e.target.value)}
+        >
+          {teamOptions}
+        </select>
+      </div>
+      <h2 className='headers'>Offensive Data</h2>
+      <div className='tableWrapper'>
+        <div className='offensiveTable'>
+          <table {...offensiveTable.getTableProps()}>
+            <thead>
+              {offensiveTable.headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...offensiveTable.getTableBodyProps()}>
+              {offensiveTable.rows.map((row) => {
+                offensiveTable.prepareRow(row)
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td key={cell.column.id} {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </td>
                     ))}
                   </tr>
-                ))}
-              </thead>
-              <tbody {...offensiveTable.getTableBodyProps()}>
-                {offensiveTable.rows.map((row) => {
-                  offensiveTable.prepareRow(row)
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => (
-                        <td key={cell.column.id} {...cell.getCellProps()}>
-                          {cell.column.id === 'firstName' || cell.column.id === 'lastName' ? (
-                            <span onClick={() => handlePlayerClick(row.original)}>
-                              {cell.render("Cell")}
-                            </span>
-                          ) : (
-                            cell.render("Cell")
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <h2 className='headers'>Defensive Data</h2>
-        <div className='tableWrapper'>
-          <div className='defensiveTable'>
-
-            <table {...defensiveTable.getTableProps()}>
-              <thead>
-                {defensiveTable.headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => (
-                      <th {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...defensiveTable.getTableBodyProps()}>
-                {defensiveTable.rows.map((row) => {
-                  defensiveTable.prepareRow(row)
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => (
-                        <td key={cell.column.id} {...cell.getCellProps()}>
-                          {cell.column.id === 'firstName' || cell.column.id === 'lastName' ? (
-                            <span onClick={() => handlePlayerClick(row.original)}>
-                              {cell.render("Cell")}
-                            </span>
-                          ) : (
-                            cell.render("Cell")
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <h2 className='headers'>Pitcher Data</h2>
-        <div className='tableWrapper'>
-          <div className='pitcherTable'>
-            <table {...pitcherTable.getTableProps()}>
-              <thead>
-                {pitcherTable.headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => (
-                      <th {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...pitcherTable.getTableBodyProps()}>
-                {pitcherTable.rows.map((row) => {
-                  pitcherTable.prepareRow(row)
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => (
-                        <td key={cell.column.id} {...cell.getCellProps()}>
-                          {cell.column.id === 'firstName' || cell.column.id === 'lastName' ? (
-                            <span onClick={() => handlePlayerClick(row.original)}>
-                              {cell.render("Cell")}
-                            </span>
-                          ) : (
-                            cell.render("Cell")
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
-      {showModal && 
-        <PlayerStatsModal show={showModal} onClose={() => setShowModal(false)} />
-      }  
-    </div> 
-  )
+      <h2 className='headers'>Defensive Data</h2>
+      <div className='tableWrapper'>
+        <div className='defensiveTable'>
+          <table {...defensiveTable.getTableProps()}>
+            <thead>
+              {defensiveTable.headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...defensiveTable.getTableBodyProps()}>
+              {defensiveTable.rows.map((row) => {
+                defensiveTable.prepareRow(row)
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td key={cell.column.id} {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <h2 className='headers'>Pitcher Data</h2>
+      <div className='tableWrapper'>
+        <div className='pitcherTable'>
+          <table {...pitcherTable.getTableProps()}>
+            <thead>
+              {pitcherTable.headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...pitcherTable.getTableBodyProps()}>
+              {pitcherTable.rows.map((row) => {
+                pitcherTable.prepareRow(row)
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td key={cell.column.id} {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {showModal && 
+      <PlayerStatsModal show={showModal} onClose={() => setShowModal(false)} />
+    }  
+  </div> 
+)
 }
 
 export default PlayerStats;

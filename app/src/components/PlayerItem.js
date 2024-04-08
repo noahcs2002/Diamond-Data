@@ -10,14 +10,14 @@ function PlayerItem({ id, fullName, onDelete, onEdit }) {
 
   useEffect(() => {
     console.log("PlayerItem rendered with fullName:", fullName);
-  }, [fullName]); // Log when fullName prop changes
+  }, [fullName]); 
 
   const handleDeleteClick = () => {
     setShowConfirmation(true);
   };
 
   const handleConfirmDelete = () => {
-    onDelete(fullName);
+    onDelete(id);
     setShowConfirmation(false);
   };
 
@@ -27,12 +27,12 @@ function PlayerItem({ id, fullName, onDelete, onEdit }) {
 
   const handleEditClick = () => {
     setShowEditDialog(true);
-    setEditedName(''); 
+    setEditedName(fullName);
   };
 
   const handleEditConfirm = () => {
     console.log("Edited Name:", editedName);
-    onEdit(fullName, editedName); 
+    onEdit(id, editedName); 
     setShowEditDialog(false);
   };
 
