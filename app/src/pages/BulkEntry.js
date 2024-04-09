@@ -43,6 +43,7 @@ function BulkEntry() {
       const data = await res.json();
       console.log(data);
       setSelectedTeam(data[0])
+      setTeams(data);
       localStorage.setItem('selectedTeam', teams[0]);
     }
     catch(_e) {

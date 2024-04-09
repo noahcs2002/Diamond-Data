@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 
 function Roster() {
   const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState(() => localStorage.getItem('selectedTeam') || '');
+  const [selectedTeam, setSelectedTeam] = useState();
   const [players, setPlayers] = useState([]);
  
 
@@ -15,7 +15,7 @@ function Roster() {
 
   const prop = async (user) => {
     const teams = await fetchTeams(user.id);
-    const players = await fetchPlayers(teams, user);
+    const players = await fetchPlayers(selectedTeam || teams[0], user);
     const finalised = await assignPlayers(players);
     setPlayers(finalised);
   }
@@ -40,18 +40,11 @@ function Roster() {
         return roster;
   } 
 
-  const fetchPlayers = async (teams, user) => {
+  const fetchPlayers = async (team, user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/rosters/get';
 
     const url = new URL(endpoint);
-
-    if (teams.length === 1) {
-      url.searchParams.append('teamId', teams[0].id);
-    }
-    else {
-      url.searchParams.append('teamId', selectedTeam.id);
-    }
-
+    url.searchParams.append('teamId', team.id);
     url.searchParams.append('userId', user.id);
 
     try{
@@ -79,6 +72,7 @@ function Roster() {
       }
       const loadedTeams = await res.json();
       setTeams(loadedTeams);
+      setSelectedTeam(loadedTeams[0]);
       return loadedTeams;
     }
     catch(_e) {
@@ -88,8 +82,13 @@ function Roster() {
 
   const handleTeamSelect = (e) => {
     const teamId = e.target.value;
-    setSelectedTeam(teamId);
-    localStorage.setItem('selectedTeam', teamId);
+    console.log(teams);
+    teams.map((t) => {
+      if (t.id == teamId) {
+        setSelectedTeam(t);
+      }
+    localStorage.setItem('selectedTeam', t);
+    })
   };
     
   const teamOptions = teams.map(team => (
