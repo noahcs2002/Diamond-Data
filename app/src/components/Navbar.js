@@ -25,7 +25,7 @@ function Navbar() {
                     <Link to="/TeamStats"> Team Stats </Link>
                     <Link to="/PlayerStats"> Player Stats </Link>
                     <Link to="/Roster"> Roster </Link>
-                    <Link to="/Insights"> Insights </Link>
+                    {/* <Link to="/Insights"> Insights </Link> */}
                     <Link to="/BulkEntry"> Bulk Entry </Link>
                     <Link to="/"> Logout </Link>
                     <Link to="/Settings">
@@ -39,7 +39,7 @@ function Navbar() {
                 <Link to="/TeamStats"> Team Stats </Link>
                 <Link to="/PlayerStats"> Player Stats </Link>
                 <Link to="/Roster"> Roster </Link>
-                <Link to="/Insights"> Insights </Link>
+                {/* <Link to="/Insights"> Insights </Link> */}
                 <Link to="/BulkEntry"> Bulk Entry </Link>
                 <Link to="/"> Logout </Link>
                 <Link to="/Settings">
