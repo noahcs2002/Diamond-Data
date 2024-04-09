@@ -18,10 +18,15 @@ function PlayerManagement({ onEdit }) {
   const [selectedPositions, setSelectedPositions] = useState([]);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('sessionData'));
-    fetchTeams(user);
-    fetchPlayers(user);
+    proc()
   }, []);
+
+  const proc = async () => {
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const teams = await fetchTeams(user);
+    await fetchPlayers(user, selectedTeam || teams[0]);
+  }
+
 
   const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"];
 
@@ -50,7 +55,7 @@ function PlayerManagement({ onEdit }) {
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
     url.searchParams.append("userId", user.id);
-    url.searchParams.append('teamId', selectedTeam.id);
+    url.searchParams.append('teamId', team.id);
     try {
       const response = await fetch(url);
       if (!response.ok) {

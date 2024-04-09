@@ -7,7 +7,6 @@ function Settings() {
     email: '',
     phoneNumber: '',
     name: '',
-    sport: 'baseball',
   });
 
   const [teams, setTeams] = useState([]);
@@ -17,14 +16,19 @@ function Settings() {
   const [activeTab, setActiveTab] = useState('userSettings');
 
   useEffect(() => {
-    fetchTeams();
+    prop();
   }, []);
 
+  const prop = async () => {
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const teams = await fetchTeams(user);
+    setTeams(teams);
+  }
  
-   const fetchTeams = async () => {
+   const fetchTeams = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
     const url = new URL(endpoint);
-    url.searchParams.append("userId", 302); 
+    url.searchParams.append("userId", user.id); 
   
     try {
       const response = await fetch(url);
@@ -33,13 +37,17 @@ function Settings() {
       }
       const data = await response.json();
       setTeams(data); 
-    } catch (error) {
+      return data;
+    } 
+    catch (error) {
       console.error('Error fetching teams:', error);
     }
   };
 
 
   const handleCreateTeam = async () => {
+    const sessionInfo = JSON.parse(localStorage.getItem('sessionData'));
+    delete sessionInfo.ghostedDate;
     const response = await fetch('http://localhost:8080/diamond-data/api/teams/create', {
       method: 'POST',
       headers: {
@@ -47,26 +55,24 @@ function Settings() {
       },
       body: JSON.stringify({
         name: newTeamName,
-        user: {
-          email: "max@dd-devs",
-          password: "password"
-        }
+        user: sessionInfo
       }),
     });
-  
+
     if (!response.ok) {
       console.error('Error creating team');
       return;
     }
-    fetchTeams(); 
+    fetchTeams(JSON.parse(localStorage.getItem('sessionData'))); 
     setNewTeamName(''); 
     setIsModalOpen(false); 
   };
 
   const handleUpdateTeam = async () => {
+    const user = JSON.parse(localStorage.getItem('sessionData'));
     const url = new URL(`http://localhost:8080/diamond-data/api/teams/update`);
     url.searchParams.append('id', currentTeam.id);
-    url.searchParams.append('userId', '302'); 
+    url.searchParams.append('userId', user.id); 
   
     try {
       const response = await fetch(url, {
@@ -76,10 +82,7 @@ function Settings() {
         },
         body: JSON.stringify({
           name: currentTeam.name,
-          user: {
-            email: "max@dd-devs",
-            password: "password"
-          }
+          user: JSON.parse(localStorage.getItem('sessionData'))
         }),
       });
   
@@ -87,18 +90,19 @@ function Settings() {
         throw new Error('Error updating team');
       }
   
-      fetchTeams();
+      fetchTeams(user);
       closeModal();
     } catch (error) {
       console.error('Error updating team:', error);
     }
   };
 
-
   const handleDeleteTeam = async (id) => {
-    const url = new URL(`http://localhost:8080/diamond-data/api/teams/delete`);
+    const url = new URL(`http://localhost:8080/diamond-data/api/teams/delete`)    
+    const user = JSON.parse(localStorage.getItem('sessionData'));
     url.searchParams.append('id', id);
-    url.searchParams.append('userId', '302'); 
+    url.searchParams.append('userId', user.id); 
+    console.log(url);
   
     try {
       const response = await fetch(url, { method: 'DELETE' });
@@ -107,9 +111,10 @@ function Settings() {
         throw new Error(`Failed to delete team with id: ${id}`);
       }
 
-      await fetchTeams(); 
+      await fetchTeams(user); 
       closeModal(); 
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error deleting team:', error);
     }
   };

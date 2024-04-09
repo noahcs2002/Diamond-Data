@@ -15,76 +15,99 @@ function PlayerStats() {
 
 
   useEffect(() => {
-    console.log("showModal state:", showModal);
-    fetchData();
+    fetchAll();
   }, [showModal]);
 
-  const fetchData = async () => {
-    const id = '302';
-    const endpoints = [
-      'http://localhost:8080/diamond-data/api/players/get-by-team',
-      'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
-    ];
-
-    const fetchPlayers = async () => {
-      // if (!selectedTeam) return;
-       const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
-       const url = new URL(endpoint);
-       url.searchParams.append("userId", 302);
-       url.searchParams.append('teamId', 1203);
-       try {
-         const response = await fetch(url);
-         if (!response.ok) {
-           throw new Error("Network error");
-         }
-         const data = await response.json();
-         console.log(data);
-       } catch (error) {
-         console.error('Error fetching players:', error);
-       }
-     };
-     fetchPlayers();
-   
-
-    const fetchTeams = async () => {
-      const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
-      const url = new URL(endpoint);
-      url.searchParams.append("userId", 302);
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Network error');
-        }
-        const data = await response.json();
-        setTeams(data);
-      } catch (error) {
-        console.error('Error fetching teams:', error);
-      }
-    };
-    fetchTeams();
-  
-
-  const requests = endpoints.map(endpoint => {
-    const url = new URL(endpoint);
-    url.searchParams.append('teamId', 1203);
-    return fetch(url)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      });
-  });
-
-  try {
-    const [offensive, defensive, pitchers] = await Promise.all(requests);
-    setOffensiveData(offensive);
-    setDefensiveData(defensive);
-    setPitcherData(pitchers);
-  } catch (error) {
-    console.error('Error fetching data:', error);
+  const fetchAll = async () => {
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const teams = await fetchTeams(user);
+    await fetchOffensive(selectedTeam || teams[0], user);
+    await fetchDefensive(selectedTeam || teams[0], user);
+    await fetchPitcher(selectedTeam || teams[0], user);
   }
-}
+
+  const fetchTeams = async (user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all'
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+
+    try {
+      const res = await fetch(url);
+
+      if(!res.ok) {
+        alert('Unable to fetch teams')
+      }
+      const teams = await res.json();
+      setTeams(teams);
+      localStorage.setItem('teams', teams);
+      localStorage.setItem('selectedTeam', teams[0])
+      setSelectedTeam(teams[0]);
+      return teams;
+    }
+    catch(_e) {
+      alert("Failure getting teams: ", _e);
+    }
+  };
+
+  const fetchOffensive = async (team, user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/offensive-players/get-by-team'
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        alert('Error getting offensive player data, status was not OK')
+      }
+      const data = await res.json();
+      setOffensiveData(data);
+    }
+    catch(_e) {
+      alert('Error getting offensive player data: ', _e);
+    }
+  }
+
+  const fetchDefensive = async (team, user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/defensive-players/get-by-team'
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        alert('Error getting defensive player data, status was not OK')
+      }
+      const data = await res.json();
+      setDefensiveData(data);
+    }
+    catch(_e) {
+      alert('Error getting defensive player data: ', _e);
+    }
+
+  }
+
+  const fetchPitcher = async (team, user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        alert('Error getting pitcher player data, status was not OK')
+      }
+      const data = await res.json();
+      setPitcherData(data);
+    }
+    catch(_e) {
+      alert('Error getting pitcher player data: ', _e);
+    }
+
+  }
+
 
 
   const pitcherColumns = React.useMemo(() => [
