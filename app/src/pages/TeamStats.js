@@ -9,14 +9,16 @@ function TeamStats() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetchTeams();
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    console.log(user);
+    fetchTeams(user);
     fetchPlayers();
   }, []);
 
-  const fetchTeams = async () => {
+  const fetchTeams = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
     const url = new URL(endpoint);
-    url.searchParams.append("userId", 302); 
+    url.searchParams.append("userId", user.id); 
   
     try {
       const response = await fetch(url);
