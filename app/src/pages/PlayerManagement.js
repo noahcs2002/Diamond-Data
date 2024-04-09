@@ -11,48 +11,52 @@ function PlayerManagement({ onEdit }) {
   const [pitcherData, setPitcherData] = useState([]);
   const [rawPlayerData, setRawPlayerData] = useState([]);
   const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState(() => localStorage.getItem('selectedTeam') || ''); // Initialize from localStorage
+  const [selectedTeam, setSelectedTeam] = useState(() => JSON.parse(localStorage.getItem('selectedTeam')) || ''); // Initialize from localStorage
   const [isAddingPlayer, setIsAddingPlayer] = useState(false);
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
   const [selectedPositions, setSelectedPositions] = useState([]);
 
   useEffect(() => {
-    fetchTeams();
-    fetchPlayers();
-  }, [selectedTeam]);
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    fetchTeams(user);
+    fetchPlayers(user);
+  }, []);
 
   const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"];
 
-  const fetchTeams = async () => {
+  const fetchTeams = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
     const url = new URL(endpoint);
-    url.searchParams.append("userId", 302);
+    url.searchParams.append("userId", user.id);
     try {
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error('Network error');
+        throw new Error('Network error: ');
       }
       const data = await response.json();
       setTeams(data);
-    } catch (error) {
+      setSelectedTeam(data[0]);
+      localStorage.setItem('selectedTeam', JSON.stringify(data[0])); 
+      return data
+    } 
+    catch (error) {
       console.error('Error fetching teams:', error);
     }
   };
 
-  const fetchPlayers = async () => {
+  const fetchPlayers = async (user, team) => {
    // if (!selectedTeam) return;
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
-    url.searchParams.append("userId", 302);
-    url.searchParams.append('teamId', 1203);
+    url.searchParams.append("userId", user.id);
+    url.searchParams.append('teamId', selectedTeam.id);
     try {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Network error");
       }
       const data = await response.json();
-      console.log(data);
       setRawPlayerData(data);
     } catch (error) {
       console.error('Error fetching players:', error);
@@ -131,12 +135,10 @@ function PlayerManagement({ onEdit }) {
         },
         body: JSON.stringify(playerCreationRequestModel),
       });
-      console.log(response);
       if (!response.ok) {
         throw new Error("Failed to create player");
       }
       const newPlayer = await response.json();
-      console.log(newPlayer);
 
       setOffensiveData((prev) => [...prev, newPlayer]);
     } catch (error) {

@@ -58,7 +58,7 @@ function Insights() {
     <div>
       <Navbar />
       <div className="insights">
-        <h1 className="title">Insights</h1>
+        <h1 className="title">Team Insights</h1>
         <div className="teamSelection">
           <select
             id="teamSelect"

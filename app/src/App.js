@@ -25,12 +25,12 @@ function App() {
             {/* <Navbar /> */}
               <Routes>
                 <Route  path="/" exact element={<Login/>} />
-                <Route  path="/home" exact element={<Home/>} />
+                <Route  path="/home" exact element={<Insights/>} />
                 <Route  path="/playerManagement" exact element={<PlayerManagement />} />
                 <Route  path="/teamStats" exact element={<TeamStats />} />
                 <Route  path="/playerStats" exact element={<PlayerStats />} />
                 <Route  path="/roster" exact element={<Roster />} />
-                <Route  path="/insights" exact element={<Insights />} />
+                {/* <Route  path="/insights" exact element={<Insights />} /> */}
                 <Route  path="/bulkEntry" exact element={<BulkEntry />} />
                 <Route  path="/Settings" exact element={<Settings />} />
                 <Route path="/sign-up" exact element={<Signup/>} />

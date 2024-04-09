@@ -140,7 +140,6 @@ function TeamStats() {
             <div className='stats'><strong>Games Played:</strong> {selectedTeamStats.gamesPlayed}</div>
             <div className='stats'><strong>Grand Slams:</strong> {selectedTeamStats.grandSlams}</div>
             <div className='stats'><strong>Ground Into Double Play:</strong> {selectedTeamStats.groundIntoDoublePlay}</div>
-            <div className='stats'><strong>Ground Out Air Out Ratio:</strong> {selectedTeamStats.groundOutAirOut.toFixed(2)}</div> {/* Placeholder */}
             <div className='stats'><strong>Hit By Pitch:</strong> {selectedTeamStats.hitByPitch}</div>
             <div className='stats'><strong>Hits:</strong> {selectedTeamStats.hits}</div>
             <div className='stats'><strong>Home Runs:</strong> {selectedTeamStats.homeRuns}</div>

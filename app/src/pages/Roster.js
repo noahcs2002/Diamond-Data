@@ -3,9 +3,6 @@ import '../styles/Roster.scss'
 import Navbar from '../components/Navbar'
 
 function Roster() {
-  const [offensiveData, setOffensiveData] = useState([]);
-  const [defensiveData, setDefensiveData] = useState([]);
-  const [pitcherData, setPitcherData] = useState([]);
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(() => localStorage.getItem('selectedTeam') || '');
   const [players, setPlayers] = useState([]);
