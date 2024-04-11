@@ -112,12 +112,14 @@ function Roster() {
     url.searchParams.append('newAssignment', newAssignment);
 
     try{
+      // alert('Updating Rosters...');
       const res = await fetch(url);
       if (!res.ok) {
         alert('Res not ok');
       }
       const data = await res.json();
       console.log(data);
+      window.location.reload();
     }
     catch(_e) {
       console.error(_e);
