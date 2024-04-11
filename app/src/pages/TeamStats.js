@@ -65,7 +65,6 @@ function TeamStats() {
         acc.intentionalWalks += player.offensivePlayer.intentionalWalks;
         acc.leftOnBase += player.offensivePlayer.leftOnBase;
         acc.onBasePercentage += player.offensivePlayer.onBasePercentage; 
-        acc.onBasePlusSlugging += player.offensivePlayer.onBasePlusSlugging;
         acc.plateAppearances += player.offensivePlayer.plateAppearances;
         acc.reachedOnError += player.offensivePlayer.reachedOnError;
         acc.runs += player.offensivePlayer.runs;
@@ -78,7 +77,7 @@ function TeamStats() {
     }, {
       atBats: 0, battingAverage: 0, caughtStealing: 0, doubles: 0, extraBaseHits: 0, gamesPlayed: 0,
       grandSlams: 0, groundIntoDoublePlay: 0, groundOutAirOut: 0, hitByPitch: 0, hits: 0,
-      homeRuns: 0, intentionalWalks: 0, leftOnBase: 0, onBasePercentage: 0, onBasePlusSlugging: 0,
+      homeRuns: 0, intentionalWalks: 0, leftOnBase: 0, onBasePercentage: 0,
       plateAppearances: 0, reachedOnError: 0, runs: 0, runsBattedIn: 0, sacrificeBunt: 0,
       sacrificeFly: 0, singles: 0
     });
@@ -101,8 +100,6 @@ function TeamStats() {
     } else {
       aggregatedStats.sluggingPercentage = 0;
     }
-  
-    aggregatedStats.onBasePlusSlugging = aggregatedStats.onBasePercentage + aggregatedStats.sluggingPercentage;
   
     return aggregatedStats;
   };
@@ -148,7 +145,6 @@ function TeamStats() {
             <div className='stats'><strong>Intentional Walks:</strong> {selectedTeamStats.intentionalWalks}</div>
             <div className='stats'><strong>Left On Base:</strong> {selectedTeamStats.leftOnBase}</div>
             <div className='stats'><strong>On Base Percentage:</strong> {selectedTeamStats.onBasePercentage.toFixed(3)}</div>
-            <div className='stats'><strong>On Base Plus Slugging:</strong> {selectedTeamStats.onBasePlusSlugging.toFixed(3)}</div>
             <div className='stats'><strong>Plate Appearances:</strong> {selectedTeamStats.plateAppearances}</div>
             <div className='stats'><strong>Reached On Error:</strong> {selectedTeamStats.reachedOnError}</div>
             <div className='stats'><strong>Runs:</strong> {selectedTeamStats.runs}</div>

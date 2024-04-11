@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
-import '../styles/Insights.scss'; // Import the Insights styling
+import '../styles/Insights.scss';
 
 function Insights() {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState('');
   const [players, setPlayers] = useState([]);
-  const [selectedPlayers, setSelectedPlayers] = useState([null, null]); // Assuming two players for comparison
+  const [selectedPlayers, setSelectedPlayers] = useState([null, null]); 
+  const [reportNotes, setReportNotes] = useState([]); 
+  const [newReportNote, setNewReportNote] = useState(''); 
+  const [editedNoteIndex, setEditedNoteIndex] = useState(null); 
 
   const teamOptions = teams.map(team => (
     <option key={team.id} value={team.id}>{team.name}</option>
@@ -46,12 +49,35 @@ function Insights() {
     
     fetchPlayers();
   }, [selectedTeam]);
-  
 
   const handlePlayerSelectionChange = (index, playerId) => {
     const updatedSelection = [...selectedPlayers];
     updatedSelection[index] = playerId;
     setSelectedPlayers(updatedSelection);
+  };
+
+  const handleSaveReportNote = () => {
+    if (editedNoteIndex !== null) {
+      const updatedNotes = [...reportNotes];
+      updatedNotes[editedNoteIndex] = newReportNote;
+      setReportNotes(updatedNotes);
+      setEditedNoteIndex(null); 
+    } else {
+      
+      setReportNotes([...reportNotes, newReportNote]);
+    }
+    setNewReportNote(''); 
+  };
+
+  const handleEditNote = (index) => {
+    setNewReportNote(reportNotes[index]); 
+    setEditedNoteIndex(index); 
+  };
+
+  const handleDeleteNote = (index) => {
+    const updatedNotes = [...reportNotes];
+    updatedNotes.splice(index, 1); 
+    setReportNotes(updatedNotes);
   };
 
   return (  
@@ -92,9 +118,24 @@ function Insights() {
               <p>Team records data goes here...</p>
             </div>
             <div className="column">
-              <h2>Reports</h2>
-              {/* Dummy reports data */}
-              <p>Reports data goes here...</p>
+              <h2>Coach's Notes</h2>
+              <div className="report-notes">
+                {reportNotes.map((note, index) => (
+                  <div key={index} className="report-note">
+                    <p>{note}</p>
+                    <div className="note-actions">
+                      <button onClick={() => handleEditNote(index)}>Edit</button>
+                      <button onClick={() => handleDeleteNote(index)}>Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <textarea
+                value={newReportNote}
+                onChange={(e) => setNewReportNote(e.target.value)}
+                placeholder="Write your report note here..."
+              ></textarea>
+              <button onClick={handleSaveReportNote}>Save</button>
             </div>
           </div>
           <div className="right-column">
@@ -113,30 +154,7 @@ function Insights() {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="stats-graph">
-              <h2>Stats Graph</h2>
-              {/* Fake graph */}
-              <div className="fake-baseball-graph">
-                <div className="graph-title">Baseball Stats</div>
-                <div className="graph">
-                  <div className="bar" style={{ height: '70%' }}></div>
-                  <div className="bar" style={{ height: '20%' }}></div>
-                  <div className="bar" style={{ height: '95%' }}></div>
-                  <div className="bar" style={{ height: '55%' }}></div>
-                  <div className="bar" style={{ height: '35%' }}></div>
-
-                  {/* Add more bars as needed */}
-                </div>
-                <div className="graph-labels">
-                  <span>Player 1</span>
-                  <span>Player 2</span>
-                  <span>Player 3</span>
-                  <span>Player 4</span>
-                  <span>Player 5</span>
-                  {/* Add more labels as needed */}
-                </div>
-              </div>
+            
             </div>
           </div>
         </div>
