@@ -8,7 +8,6 @@ import '../styles/Navbar.scss';
 
 function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);
-    let user = {};
 
     const toggleNavbar = () => {
         setOpenLinks(!openLinks);
@@ -18,7 +17,7 @@ function Navbar() {
         <div className="navbar">
             <div className="leftSide" id={openLinks ? "open" : "close"}>
                 <img src={Diamond_Data_Transparent} />
-                <h4 style={{color:'white'}}> {JSON.parse(localStorage.getItem('sessionData')).email} </h4>
+                <h4 style={{color:'white'}}> {JSON.parse(localStorage.getItem('sessionData')).name} ({JSON.parse(localStorage.getItem('sessionData')).email}) </h4>
                 <div className="hiddenLinks">
                     <Link to="/Home"> Home </Link>
                     <Link to="/PlayerManagement"> Player Management </Link>

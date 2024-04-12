@@ -33,4 +33,18 @@ public class AuthController {
     public boolean deleteUser(@RequestParam Long id) {
         return this.service.deleteUser(id);
     }
+
+    @RequestMapping("/change-name")
+    @PutMapping
+    public User changeName(@RequestParam Long userId, @RequestParam String newName) {
+        return this.service.changeName(userId, newName);
+    }
+
+    @RequestMapping("/change-phone-number")
+    @PutMapping
+    public User changePhoneNumber(@RequestParam Long userId, @RequestParam String phoneNumber) {
+        return this.service.changePhoneNumber(userId, phoneNumber);
+    }
+
+
 }
