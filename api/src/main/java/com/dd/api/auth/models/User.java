@@ -18,18 +18,16 @@ public class User {
     private String password;
     private long ghostedDate;
 
-    public User(Long id, String email, String password) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.ghostedDate = 0;
-    }
+    private String name;
+    private String phoneNumber;
 
     @JsonCreator
-    public User(String email, String password) {
+    public User(String email, String password, String name, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.ghostedDate = 0;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
     }
 
     public User() {
@@ -68,12 +66,28 @@ public class User {
         this.ghostedDate = ghostedDate;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(email, user.email);
+        return ghostedDate == user.ghostedDate && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(phoneNumber, user.phoneNumber);
     }
 
     public boolean transientEqualityCheck(User user) {
@@ -84,6 +98,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, ghostedDate);
+        return Objects.hash(id, email, password, ghostedDate, name, phoneNumber);
     }
 }

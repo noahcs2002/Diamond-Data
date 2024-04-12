@@ -3,12 +3,15 @@ package com.dd.api.auth.providers;
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.security.Salt;
 import com.dd.api.util.TruncatedSystemTimeProvider;
+import io.micrometer.observation.Observation;
 import jakarta.transaction.Transactional;
 import org.apache.commons.codec.binary.Base64;
+import org.aspectj.lang.annotation.After;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AuthorizationService {
@@ -72,5 +75,44 @@ public class AuthorizationService {
                 .toList()
                 .stream().findFirst()
                 .orElse(null);
+    }
+
+    @Transactional
+    public User changeName(Long userId, String name) {
+        Objects.requireNonNull(userId);
+        Objects.requireNonNull(name);
+
+        User user = this.repository.findAll()
+                .stream()
+                .filter(p -> p.getId().equals(userId))
+                .filter(p -> p.getGhostedDate() == 0)
+                .findFirst()
+                .orElse(null);
+
+        if(user != null) {
+            user.setName(name);
+            return this.repository.save(user);
+        }
+
+        return null;
+    }
+
+    public User changePhoneNumber(Long userId, String phoneNumber) {
+        Objects.requireNonNull(phoneNumber);
+        Objects.requireNonNull(userId);
+
+        User user = this.repository.findAll()
+                .stream()
+                .filter(p -> p.getId().equals(userId))
+                .filter(p -> p.getGhostedDate() == 0)
+                .findFirst()
+                .orElse(null);
+
+        if (user != null) {
+            user.setPhoneNumber(phoneNumber);
+            return this.repository.save(user);
+        }
+
+        return null;
     }
 }

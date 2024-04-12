@@ -21,6 +21,11 @@ function Settings() {
 
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
+    setFormData({
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      name: user.name
+    });
     const teams = await fetchTeams(user);
     setTeams(teams);
   }

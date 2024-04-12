@@ -109,7 +109,7 @@ public class AuthenticationServiceTests {
 
     @Test
     public void createUserReturnsNullIfUserAlreadyExists() {
-        User user = new User(email, password);
+        User user = new User(email, password, "", "");
         List<User> users = new ArrayList<>();
         users.add(user);
 
@@ -120,7 +120,7 @@ public class AuthenticationServiceTests {
 
     @Test
     public void idealDeleteUserTest() {
-        User user = new User(email, password);
+        User user = new User(email, password, "", "");
         when(authorizationRepository.findById(1L)).thenReturn(Optional.of(user));
 
         boolean success = this.service.deleteUser(1L);
