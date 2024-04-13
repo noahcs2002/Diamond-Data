@@ -37,6 +37,45 @@
     justify-content: space-between;
     width: 90%;
     margin: 20px 0;
+
+    .note-container {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    .note-text {
+      margin-bottom: 10px;
+    }
+    
+    .note-actions {
+      display: flex;
+      align-items: center;
+    }
+    
+    .edit-note,
+    .delete-note {
+      margin-right: 10px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+    }
+    
+    .edit-note:hover,
+    .delete-note:hover {
+      background-color: #0056b3;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 100px;
+      resize: none;
+      margin-bottom: 10px;
+    }
     
     .left-column {
       display: flex;
