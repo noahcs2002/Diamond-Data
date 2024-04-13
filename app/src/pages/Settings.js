@@ -10,7 +10,7 @@ function Settings() {
     name: '',
   });
 
-  const [teams, setTeams] = useState([]);
+  const [team, setTeam] = useState([]);
   const [newTeamName, setNewTeamName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTeam, setCurrentTeam] = useState(null);
@@ -27,12 +27,11 @@ function Settings() {
       phoneNumber: user.phoneNumber,
       name: user.name
     });
-    const teams = await fetchTeams(user);
-    setTeams(teams);
+    const team = await fetchTeam(user);
   }
  
-   const fetchTeams = async (user) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+   const fetchTeam = async (user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
     const url = new URL(endpoint);
     url.searchParams.append("userId", user.id); 
   
@@ -42,7 +41,7 @@ function Settings() {
         throw new Error('Network error');
       }
       const data = await response.json();
-      setTeams(data); 
+      setTeam(data); 
       return data;
     } 
     catch (error) {
@@ -69,7 +68,7 @@ function Settings() {
       console.error('Error creating team');
       return;
     }
-    fetchTeams(JSON.parse(localStorage.getItem('sessionData'))); 
+    fetchTeam(JSON.parse(localStorage.getItem('sessionData'))); 
     setNewTeamName(''); 
     setIsModalOpen(false); 
   };
@@ -96,7 +95,7 @@ function Settings() {
         throw new Error('Error updating team');
       }
   
-      fetchTeams(user);
+      fetchTeam(user);
       closeModal();
     } catch (error) {
       console.error('Error updating team:', error);
@@ -117,7 +116,7 @@ function Settings() {
         throw new Error(`Failed to delete team with id: ${id}`);
       }
 
-      await fetchTeams(user); 
+      await fetchTeam(user); 
       closeModal(); 
     } 
     catch (error) {
@@ -174,22 +173,15 @@ function Settings() {
         {activeTab === 'teamManagement' && (
           <div className='team-management-tab'>
             <h1>Team Management</h1>
-            <div className="team-form">
-              <h2>Add New Team</h2>
-              <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="New Team Name" />
-              <button onClick={handleCreateTeam} className='add-team-button'>Add Team</button>
-            </div>
             <div className="teamList">
-              <h2>Current Teams</h2>
-              {teams.map((team) => (
-                <div key={team.id} className="teamItem">
+              <h2>Edit your Team</h2>
+              <div className="teamItem">
                   <div className="teamName">{team.name}</div>
                   <div className='current-team-buttons'>
                     <button onClick={() => selectTeam(team)}>Edit</button>
                     <button onClick={() => handleDeleteTeam(team.id)}>Delete</button>
                   </div>
                 </div>
-              ))}
             </div>
             {isModalOpen && (
               <div className="modal">
