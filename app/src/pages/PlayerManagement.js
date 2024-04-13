@@ -226,7 +226,7 @@ function PlayerManagement() {
       "wildPitches": 0,
       "wins": 0,
       "winningPercentage": 0.0,
-      "position": "n/a"
+      "assignment": "n/a"
     }
     console.log(pitcher);
 
@@ -292,65 +292,65 @@ function PlayerManagement() {
     window.location.reload();
   }
 
-const handleEditPlayer = async (playerId, updatedFullName) => {
-  setLoading(true)
-  try {
-    console.log('Updated full name: ', updatedFullName);
-
-    const [first, last] = updatedFullName.split(' ');
-    first.trim();
-    last.trim();
-
-    const firstNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-first-name`;
-    const lastNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-last-name`;
-
-    const firstNameURL = new URL(firstNameEndpoint);
-    const lastNameURL = new URL(lastNameEndpoint);
-
-    firstNameURL.searchParams.append('id', playerId);
-    lastNameURL.searchParams.append('id', playerId);
-
-    firstNameURL.searchParams.append('newFirstName', first)
-    lastNameURL.searchParams.append('newLastName', last)
-
+  const handleEditPlayer = async (playerId, updatedFullName) => {
+    setLoading(true)
     try {
-      const firstNameRes = await fetch(firstNameURL, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      console.log('Updated full name: ', updatedFullName);
 
-      if (!firstNameRes.ok) {
-        console.log('error');
+      const [first, last] = updatedFullName.split(' ');
+      first.trim();
+      last.trim();
+
+      const firstNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-first-name`;
+      const lastNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-last-name`;
+
+      const firstNameURL = new URL(firstNameEndpoint);
+      const lastNameURL = new URL(lastNameEndpoint);
+
+      firstNameURL.searchParams.append('id', playerId);
+      lastNameURL.searchParams.append('id', playerId);
+
+      firstNameURL.searchParams.append('newFirstName', first)
+      lastNameURL.searchParams.append('newLastName', last)
+
+      try {
+        const firstNameRes = await fetch(firstNameURL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!firstNameRes.ok) {
+          console.log('error');
+        }
+
+        const lastNameRes = await fetch(lastNameURL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!firstNameRes.ok) {
+          console.log('error');
+        }
+      }
+      catch(_e) {
+        console.log(_e);
       }
 
-      const lastNameRes = await fetch(lastNameURL, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!firstNameRes.ok) {
-        console.log('error');
-      }
+    } 
+    catch (error) {
+      console.log('Error updating player:', error);
+    }
+    try {
+      window.location.reload();
     }
     catch(_e) {
-      console.log(_e);
+
     }
-
-  } 
-  catch (error) {
-    console.log('Error updating player:', error);
-  }
-  try {
-    window.location.reload();
-  }
-  catch(_e) {
-
-  }
-};
+  };
 
 const handleEditPitcher = async (playerId, updatedFullName) => {
   setLoading(true);
