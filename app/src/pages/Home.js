@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Link, useLocation, useHistory, useNavigate } from "react-router-dom";
 import '../styles/Home.scss';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { useState } from 'react';
 
 function Home() {
@@ -100,6 +101,7 @@ const handleTeamChange = (teamId) => {
             </div>
           </div>
         </div>
+        <Footer />
     </div>
   );
 }

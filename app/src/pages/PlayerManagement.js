@@ -3,6 +3,7 @@ import PlayerItem from '../components/PlayerItem';
 import '../styles/PlayerManagement.scss';
 import '../styles/PlayerItem.scss';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
 
@@ -301,6 +302,7 @@ const handlePositionChange = (position) => {
             </div>
           )}
         </div> </>}
+        <Footer />
       </div>
   );
 }

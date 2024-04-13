@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/PlayerStats.scss';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { useTable } from 'react-table';
 import PlayerStatsModal from '../components/PlayerStatsModal';
 import LoadingScreen from '../components/LoadingScreen';
@@ -563,6 +564,7 @@ function PlayerStats() {
     {showModal && 
       <PlayerStatsModal show={showModal} onClose={() => setShowModal(false)} />
     }  </>}
+    <Footer />
   </div> 
 )
 }
