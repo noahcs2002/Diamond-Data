@@ -1,7 +1,10 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
+import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.restapi.repositories.PlayerRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +17,15 @@ public class RosterService {
     private final PlayerRepository repository;
 
     @Autowired
-    public RosterService(PlayerRepository repository) {
+    private final PitcherRepository pitcherRepository;
+
+    @Autowired
+    public RosterService(PlayerRepository repository, PitcherRepository pitcherRepository) {
         this.repository = repository;
+        this.pitcherRepository = pitcherRepository;
     }
 
+    @Transactional
     public List<Player> getAllPlayers(Long teamId) {
         return this.repository.findAll()
                 .stream()
@@ -27,6 +35,7 @@ public class RosterService {
                 .toList();
     }
 
+    @Transactional
     public Player updateAssignment(Long playerId, String newAssignment) {
         return this.repository.findAll()
                 .stream()
@@ -34,6 +43,18 @@ public class RosterService {
                 .peek(p -> {
                     p.setAssignment(newAssignment);
                     this.repository.save(p);
+                })
+                .toList()
+                .get(0);
+    }
+
+    public Pitcher updatePitcherAssignment(Long pitcherId, String newAssignment) {
+        return this.pitcherRepository.findAll()
+                .stream()
+                .filter(p -> p.getId().equals(pitcherId))
+                .peek(p -> {
+                    p.setAssignment(newAssignment);
+                    this.pitcherRepository.save(p);
                 })
                 .toList()
                 .get(0);

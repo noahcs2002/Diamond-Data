@@ -56,6 +56,7 @@ public class Pitcher {
     private int wildPitches;
     private int wins;
     private double winningPercentage;
+    private String assignment;
 
     @JsonCreator
     public Pitcher(String firstName,
@@ -92,7 +93,8 @@ public class Pitcher {
                    double walksAndHitsPerInningPitched,
                    int wildPitches,
                    int wins,
-                   double winningPercentage) {
+                   double winningPercentage,
+                   String assignment) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.preference = preference;
@@ -128,10 +130,19 @@ public class Pitcher {
         this.team = team;
         this.walks = walks;
         this.hits = hits;
+        this.assignment = assignment;
     }
 
     public Pitcher() {
         // Empty for hibernate
+    }
+
+    public String getAssignment() {
+        return assignment;
+    }
+
+    public void setAssignment(String assignment) {
+        this.assignment = assignment;
     }
 
     public Long getId() {

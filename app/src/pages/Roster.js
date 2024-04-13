@@ -19,22 +19,76 @@ function Roster() {
   const prop = async (user) => {
     const team = await fetchTeam(user.id);
     const players = await fetchPlayers(team, user);
+    const pitchers = await fetchPitchers(team, user);
     const finalised = await assignPlayers(players);
-    setPlayers(finalised);
+    const assignedPitchers = await assignPitchers(pitchers);
+    const combined = await combine(finalised, assignedPitchers)
+    setPlayers(combined);
     setLoading(false);
+  }
+
+  const combine = async (players, pitchers) => {
+    let roster = [];
+
+    players.map((p) => {
+      roster.push(p)
+    })
+
+    pitchers.map((p) => {
+      roster.push(p)
+    })
+
+    return roster;
+  } 
+
+  const fetchPitchers = async (team, user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team';
+    const url = new URL(endpoint);
+    url.searchParams.append('teamId', team.id);
+    url.searchParams.append('userId', user.id);
+
+    try {
+      const res = await fetch(url);
+
+      if(!res.ok) {
+        console.error('Bad request');
+      }
+
+      const data = await res.json();
+      return data;
+    }
+    catch(_e) {
+      console.error(_e);
+    }
+  }
+
+  const assignPitchers = async (pitchers) => {
+    let res = []
+    pitchers.map((pitcher, i) => {
+      if (pitcher.assignment === 'n/a') {
+        pitcher.assignment = '40 Man Roster';
+      }
+
+      const p = {
+        id: pitcher.id,
+        name: pitcher.firstName + ' ' + pitcher.lastName,
+        position: 'Pitcher',
+        assignment: pitcher.assignment
+      }
+      res.push(p);
+    })
+    return res;
   }
 
   const assignPlayers = async (players) => {
         let roster = [];
 
         players.map((player, i) => {
-          if (player.assignment === 'na') {
+          if (player.assignment === 'n/a') {
             player.assignment = '40 Man Roster';
           }
           const p = {
-            // id: player.id, 
             id: player.id,
-            apiId: player.id,
             name: player.firstName +' '+player.lastName, 
             position: player.defensivePlayer.positions.join(', '),
             assignment: player.assignment
@@ -83,56 +137,68 @@ function Roster() {
     }
   };
 
-  const handleTeamSelect = (e) => {
-    const teamId = e.target.value;
-    console.log(teams);
-    teams.map((t) => {
-      if (t.id == teamId) {
-        setSelectedTeam(t);
-      }
-    localStorage.setItem('selectedTeam', t);
-    })
-  };
     
   const teamOptions = teams.map(team => (
     <option key={team.id} value={team.id}>{team.name}</option>
   ));
 
-  const handleDragStart = (e, playerId) => {
+  const handleDragStart = (e, playerId, playerPosition) => {
     e.dataTransfer.setData("playerId", playerId);
+    e.dataTransfer.setData('playerPosition', playerPosition)
   };
 
   const handleDrop = async (e, newAssignment) => {
+    setLoading(true);
     e.preventDefault();
     const user = JSON.parse(localStorage.getItem('sessionData'));
 
     const playerId = e.dataTransfer.getData("playerId");
+    const playerPosition = e.dataTransfer.getData('playerPosition');
+    console.log(playerPosition);
 
-    const endpoint = 'http://localhost:8080/diamond-data/api/rosters/update-assignment';
-    const url = new URL(endpoint);
-    url.searchParams.append('playerId', playerId)
-    url.searchParams.append('userId', user.id)
-    url.searchParams.append('newAssignment', newAssignment);
+    if(playerPosition.trim() === 'Pitcher') {
+      const endpoint = 'http://localhost:8080/diamond-data/api/rosters/update-pitcher-assignment';
+      const url = new URL(endpoint);
+      url.searchParams.append('pitcherId', playerId)
+      url.searchParams.append('userId', user.id)
+      url.searchParams.append('newAssignment', newAssignment);
 
-    try{
-      // alert('Updating Rosters...');
-      const res = await fetch(url);
-      if (!res.ok) {
-        alert('Res not ok');
+      try {
+        const res = await fetch(url, {method: 'PUT'})
+        if (!res.ok) {
+          console.log('Res not okay: ', res);
+        }
+        window.location.reload();
       }
-      const data = await res.json();
-      console.log(data);
-      window.location.reload();
+      catch(_e) {
+        console.error(_e);
+      }
     }
-    catch(_e) {
-      console.error(_e);
+    else {
+
+      const endpoint = 'http://localhost:8080/diamond-data/api/rosters/update-assignment';
+      const url = new URL(endpoint);
+      url.searchParams.append('playerId', playerId)
+      url.searchParams.append('userId', user.id)
+      url.searchParams.append('newAssignment', newAssignment);
+
+      try{
+        const res = await fetch(url);
+        if (!res.ok) {
+          alert('Res not ok');
+        }
+        window.location.reload();
+      }
+      catch(_e) {
+        console.error(_e);
+      }
     }
 
     setPlayers(prevPlayers => {
       const updatedPlayers = prevPlayers.map(player => 
         player.id === playerId ? { ...player, assignment: newAssignment } : player
       );
-     
+    
       localStorage.setItem('players', JSON.stringify(updatedPlayers));
       return updatedPlayers;
     });
@@ -147,7 +213,7 @@ function Roster() {
       <div key={player.id}
            className="playerCard"
            draggable
-           onDragStart={(e) => handleDragStart(e, player.id)}>
+           onDragStart={(e) => handleDragStart(e, player.id, player.position)}>
         {player.name} - {player.position}
       </div>
     ));
