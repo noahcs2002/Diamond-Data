@@ -262,15 +262,29 @@ const handleEditPlayer = async (playerId, updatedFullName) => {
 };
 
 const handleEditPitcher = async (playerId, updatedFullName) => {
+  setLoading(true);
   try {
     console.log('New name: ', updatedFullName)
     console.log('Player id: ', playerId);
     // Extract first name and last name from updated full name
-    const updatedFirstName = updatedFullName.split(' ')[0];
-    const updatedLastName = updatedFullName.split(' ')[1];
+    const [first, last] = updatedFullName.split(' ');
 
-    const endpoint = `http://localhost:8080/diamond-data/api/players/update`;
+    const endpoint = `http://localhost:8080/diamond-data/api/pitchers/change-name`;
+    const url = new URL(endpoint);
+    url.searchParams.append('id', playerId);
+    url.searchParams.append('firstName', first)
+    url.searchParams.append('lastName', last)
+    url.searchParams.append('userId', JSON.parse(localStorage.getItem('sessionData')).id)
 
+    const res = await fetch(url);
+    
+    if (!res.ok) {
+      console.log('Res not ok: ', res)
+    }
+
+    const data = await res.json();
+    setLoading(false);
+    window.location.reload();
   } 
   catch (error) {
     console.error('Error updating player:', error);
@@ -306,7 +320,7 @@ const handlePositionChange = (position) => {
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
                       onDelete={() => handleDelete(player.id)} 
-                      onEdit={(newFullName) => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
+                      onEdit={() => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
                     />
                   </div>
                 ))}
@@ -324,7 +338,7 @@ const handlePositionChange = (position) => {
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
                       onDelete={() => handleDelete(player.id)} 
-                      onEdit={(newFullName) => handleEditPitcher(player.id, newFullName)}
+                      onEdit={() => handleEditPitcher(player.id, localStorage.getItem('updatedName'))}
                     />
                   </div>
                 ))}

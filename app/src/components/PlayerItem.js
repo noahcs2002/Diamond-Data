@@ -9,7 +9,6 @@ function PlayerItem({ id, fullName, onDelete, onEdit }) {
   const [editedName, setEditedName] = useState(fullName);
 
   useEffect(() => {
-    console.log("PlayerItem rendered with fullName:", fullName);
   }, [fullName]); 
 
   const handleDeleteClick = () => {
@@ -31,7 +30,6 @@ function PlayerItem({ id, fullName, onDelete, onEdit }) {
   };
 
   const handleEditConfirm = () => {
-    console.log("Edited Name:", editedName);
     localStorage.setItem('updatedName', editedName);
     onEdit(id, editedName); 
     setShowEditDialog(false);
