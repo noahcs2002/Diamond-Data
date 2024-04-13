@@ -39,6 +39,18 @@ public class TeamController {
         return this.service.getTeamById(id);
     }
 
+    @RequestMapping("/get-by-user")
+    @GetMapping
+    public Team getByUser(@RequestParam Long userId) throws NoAccessPermittedException {
+        Team team = this.service.getTeamByUser(userId);
+
+        if(!this.validator.validateTeam(userId, team.getId())) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return team;
+    }
+
     @RequestMapping("/create")
     @PostMapping
     public Team create(@RequestBody Team team) {

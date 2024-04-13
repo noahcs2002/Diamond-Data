@@ -29,6 +29,16 @@ public class TeamService {
     }
 
     @Transactional
+    public Team getTeamByUser(Long userId) {
+        return this.repository.findAll()
+                .stream()
+                .filter(t -> t.getUser().getId().equals(userId))
+                .filter(t -> t.getGhostedDate() == 0)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Transactional
     public Team getTeamById(Long id) {
         return this.repository.findById(id).orElse(null);
     }
