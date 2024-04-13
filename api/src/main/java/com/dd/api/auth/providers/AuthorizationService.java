@@ -78,6 +78,11 @@ public class AuthorizationService {
     }
 
     @Transactional
+    public User getUser(Long id) {
+        return this.repository.findById(id).filter(u -> u.getGhostedDate()==0).orElse(null);
+    }
+
+    @Transactional
     public User changeName(Long userId, String name) {
         Objects.requireNonNull(userId);
         Objects.requireNonNull(name);

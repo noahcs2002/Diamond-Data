@@ -31,18 +31,23 @@ public class Validator {
     @Autowired
     private final PlayerService playerService;
 
+    @Autowired
+    private final NoteService noteService;
+
     public Validator(TeamService teamService,
                      OffensivePlayerService offensivePlayerService,
                      DefensivePlayerService defensivePlayerService,
                      GameService gameService,
                      PitcherService pitcherService,
-                     PlayerService playerService) {
+                     PlayerService playerService,
+                     NoteService noteService) {
         this.teamService = teamService;
         this.offensivePlayerService = offensivePlayerService;
         this.defensivePlayerService = defensivePlayerService;
         this.gameService = gameService;
         this.pitcherService = pitcherService;
         this.playerService = playerService;
+        this.noteService = noteService;
     }
 
     /**
@@ -142,5 +147,14 @@ public class Validator {
         return res != null
                 && validateTeam(userId, res.getOffensivePlayer().getTeam().getId())
                 && validateTeam(userId, res.getDefensivePlayer().getTeam().getId());
+    }
+
+    public boolean validateNote(Long userId, Long noteId) {
+        Objects.requireNonNull(userId);
+        Objects.requireNonNull(noteId);
+
+        Note note = this.noteService.getNote(noteId);
+
+        return note != null && validateTeam(userId, note.getTeam().getId());
     }
 }

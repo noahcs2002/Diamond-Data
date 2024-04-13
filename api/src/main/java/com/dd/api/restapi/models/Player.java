@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
-
 @Entity
 @Table(name = "dd_players", schema = "sp24")
 public class Player {
