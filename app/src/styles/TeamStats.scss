@@ -13,64 +13,63 @@
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
-  display: flex;
-}
 
-h1 {
-  font-size: 4rem;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  margin-bottom: 10px;
-  margin-top: 20px;
-  color: var(--text3-color);
-}
+  .title  {
+    font-size: 4rem;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    color: var(--text3-color);
+  }
 
-.teamList {
-  width: 85%;
-  margin: 20px auto;
-  overflow-x: auto;
-  max-height: 1500px;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 500px;
-  
-  .teamItem {
-    background-color: var(--background-color); 
+  .teamList {
+    width: 85%;
+    margin: 20px auto;
+    overflow-x: auto;
+    max-height: 1500px;
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 20px;
-    margin-bottom: 20px; /* Increased spacing between team items */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-    transition: transform 0.2s ease-in-out;
-    font-size: 2rem;
+    margin-bottom: 500px;
     
-    &:hover {
-      transform: translateY(-3px);
+    .teamItem {
+      background-color: var(--background-color); 
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px; /* Increased spacing between team items */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+      transition: transform 0.2s ease-in-out;
+      font-size: 2rem;
+      
+      &:hover {
+        transform: translateY(-3px);
+      }
+  
+      &:last-child {
+        margin-bottom: 0; /* Remove margin from the last item to avoid extra space at the bottom */
+      }
     }
-
-    &:last-child {
-      margin-bottom: 0; /* Remove margin from the last item to avoid extra space at the bottom */
+  
+    table {
+      border-collapse: collapse;
+      overflow: hidden;
+      box-shadow: 0 0 20px var(--box-shadow-color);
     }
-  }
-
-  table {
-    border-collapse: collapse;
-    overflow: hidden;
-    box-shadow: 0 0 20px var(--box-shadow-color);
-  }
-
-  th, td {
-    border: 1px solid var(--border-color);
-    padding: 8px;
-    text-align: center;
-  }
-
-  th {
-    background-color: var(--background-color);
-    font-weight: bold;
-  }
-
-  tbody tr:nth-child(even) {
-    background-color: var(--background3-color);
+  
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      text-align: center;
+    }
+  
+    th {
+      background-color: var(--background-color);
+      font-weight: bold;
+    }
+  
+    tbody tr:nth-child(even) {
+      background-color: var(--background3-color);
+    }
   }
 }
 
@@ -132,8 +131,8 @@ h1 {
   }
 }
 
-@media (max-width: 768px) {
-  .teamList {
-    width: 90%;
-  }
-}
+// @media (max-width: 768px) {
+//   .teamList {
+//     width: 90%;
+//   }
+// }
