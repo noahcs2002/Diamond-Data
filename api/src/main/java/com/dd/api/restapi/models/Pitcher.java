@@ -24,7 +24,7 @@ public class Pitcher {
     private long ghostedDate;
 
     // L, R, S
-    private Character preference;
+    private String preference;
     private int appearances;
     private int balks;
     private int battersFaced;
@@ -52,7 +52,7 @@ public class Pitcher {
     private int strikeouts;
     private int unearnedRuns;
     private double walksAndHitsPerInningPitched;
-    private double walks;
+    private int walks;
     private int wildPitches;
     private int wins;
     private double winningPercentage;
@@ -60,7 +60,7 @@ public class Pitcher {
     @JsonCreator
     public Pitcher(String firstName,
                    String lastName,
-                   Character preference,
+                   String preference,
                    Team team,
                    int appearances,
                    int balks,
@@ -158,11 +158,11 @@ public class Pitcher {
         this.lastName = lastName;
     }
 
-    public Character getPreference() {
+    public String getPreference() {
         return preference;
     }
 
-    public void setPreference(Character preference) {
+    public void setPreference(String preference) {
         this.preference = preference;
     }
 
@@ -434,7 +434,7 @@ public class Pitcher {
         return walks;
     }
 
-    public void setWalks(double walks) {
+    public void setWalks(int walks) {
         this.walks = walks;
     }
 
@@ -462,5 +462,48 @@ public class Pitcher {
     public Pitcher applyStatisticsUpdate(StatisticsService statisticsService) {
         statisticsService.updatePitcherStatistics(this);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Pitcher{" +
+                "id=" + id +
+                ", team=" + team +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", ghostedDate=" + ghostedDate +
+                ", preference=" + preference +
+                ", appearances=" + appearances +
+                ", balks=" + balks +
+                ", battersFaced=" + battersFaced +
+                ", blownSaves=" + blownSaves +
+                ", completeGames=" + completeGames +
+                ", earnedRuns=" + earnedRuns +
+                ", earnedRunAverage=" + earnedRunAverage +
+                ", flyouts=" + flyouts +
+                ", gamesFinished=" + gamesFinished +
+                ", gamesStarted=" + gamesStarted +
+                ", groundouts=" + groundouts +
+                ", holds=" + holds +
+                ", hits=" + hits +
+                ", inheritedRunners=" + inheritedRunners +
+                ", inningsPitched=" + inningsPitched +
+                ", losses=" + losses +
+                ", numberOfPitches=" + numberOfPitches +
+                ", pickoffs=" + pickoffs +
+                ", qualityStarts=" + qualityStarts +
+                ", reliefWins=" + reliefWins +
+                ", saves=" + saves +
+                ", saveOpportunities=" + saveOpportunities +
+                ", savePercentage=" + savePercentage +
+                ", shutouts=" + shutouts +
+                ", strikeouts=" + strikeouts +
+                ", unearnedRuns=" + unearnedRuns +
+                ", walksAndHitsPerInningPitched=" + walksAndHitsPerInningPitched +
+                ", walks=" + walks +
+                ", wildPitches=" + wildPitches +
+                ", wins=" + wins +
+                ", winningPercentage=" + winningPercentage +
+                '}';
     }
 }

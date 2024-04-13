@@ -14,7 +14,9 @@ function PlayerManagement() {
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
   const [selectedPositions, setSelectedPositions] = useState([]);
+  const [isAddingPitcher, setIsAddingPitcher] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [pitcherPref, setPitcherPref] = useState('');
 
   useEffect(() => {
     prop()
@@ -99,7 +101,7 @@ function PlayerManagement() {
         lastName: newPlayerLastName,
         offensivePlayer: {
             team: {
-                id: 1203,
+                id: 0,
                 name: ''
             },
             atBats: 0,
@@ -135,7 +137,7 @@ function PlayerManagement() {
         defensivePlayer: {
             positions: selectedPositions,
             team: {
-                id: 1203,
+                id: 0,
                 name: ''
             },
             assists: 0,
@@ -184,6 +186,78 @@ function PlayerManagement() {
     window.location.reload();
   };
 
+  const handlePitcherCreate = async () => {
+    setLoading(true);
+    const pitcher = {
+      "firstName": newPlayerFirstName,
+      "lastName": newPlayerLastName,
+      "preference": pitcherPref,
+      "team" : {
+        "name": '',
+        "id": 0
+      },
+      "appearances": 0,
+      "balks": 0,
+      "battersFaced": 0,
+      "blownSaves": 0,
+      "completeGames": 0,
+      "earnedRuns": 0,
+      "earnedRunAverage": 0.0,
+      "flyouts": 0,
+      "gamesFinished": 0,
+      "gamesStarted": 0,
+      "groundouts": 0,
+      "holds": 0,
+      "hits": 0,
+      "inheritedRunners": 0,
+      "inningsPitched": 0.0,
+      "losses": 0,
+      "numberOfPitches": 0,
+      "pickoffs": 0,
+      "qualityStarts": 0,
+      "reliefWins": 0,
+      "saves": 0,
+      "saveOpportunities": 0,
+      "savePercentage": 0.0,
+      "shutouts": 0,
+      "strikeouts": 0,
+      "unearnedRuns": 0,
+      "walksAndHitsPerInningPitched": 0.0,
+      "wildPitches": 0,
+      "wins": 0,
+      "winningPercentage": 0.0
+    }
+    console.log(pitcher);
+
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const team = await fetchTeam(user) 
+
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/create';
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+    
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(pitcher),
+      })
+
+      if(!res.ok) {
+        console.log("res not okay: ", res);
+      }
+      window.location.reload();
+    }
+    catch(_e) {
+      console.error(_e);
+    }
+
+    // window.location.reload();
+  }
+
   const handleDeletePlayer = async (id) => {
     setLoading(true);
     const url = new URL(`http://localhost:8080/diamond-data/api/players/delete`);
@@ -199,6 +273,23 @@ function PlayerManagement() {
     window.location.reload()
   };
 
+  const handleDeletePitcher = async (id) => {
+    setLoading(true);
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/delete'
+    const url = new URL(endpoint);
+    url.searchParams.append('id', id);
+    url.searchParams.append('userId', user.id);
+
+    try {
+      const res = await fetch(url, {method:'DELETE'});
+      console.log(res);
+    }
+    catch(_e) {
+      console.error(_e);
+    }
+    window.location.reload();
+  }
 
 const handleEditPlayer = async (playerId, updatedFullName) => {
   setLoading(true)
@@ -327,7 +418,7 @@ const handlePositionChange = (position) => {
             <div className='positionContainer'>
               <h2>Pitchers</h2>
               <div className='icons'>
-                <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
+                <AddCircleIcon onClick={() => setIsAddingPitcher(true)} className='addCircleIcon' />
               </div>
               <div className='playerGrid'>
                 {pitcherData.map(player => (
@@ -336,7 +427,7 @@ const handlePositionChange = (position) => {
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
                       // Make deletePitcher eventually
-                      onDelete={() => handleDeletePlayer(player.id)} 
+                      onDelete={() => handleDeletePitcher(player.id)} 
                       onEdit={() => handleEditPitcher(player.id, localStorage.getItem('updatedName'))}
                     />
                   </div>
@@ -371,6 +462,29 @@ const handlePositionChange = (position) => {
               <button onClick={() => setIsAddingPlayer(false)}>Cancel</button>
             </div>
           )}
+          {isAddingPitcher && 
+          <div>
+            <input
+                type="text"
+                placeholder="First Name"
+                value={newPlayerFirstName}
+                onChange={e => setNewPlayerFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={newPlayerLastName}
+                onChange={e => setNewPlayerLastName(e.target.value)}
+              />
+              <input type='radio' id='right-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('R')}}/>
+              <label> Right Handed </label>
+
+              <input type='radio' id='left-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('L')}}/>
+              <label> Left Handed </label>
+
+              <button onClick={handlePitcherCreate}>Submit</button>
+          </div>
+          }
         </div> </>}
         <Footer />
       </div>
