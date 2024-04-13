@@ -6,8 +6,10 @@ import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
+import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -99,5 +101,18 @@ public class PitcherService {
                 .toList();
 
         return new PitcherAgent(pitchers, new PitcherScoringStrategy()).getSortedAndWeightedPitchers();
+    }
+
+    @Transactional
+    public Pitcher updatePitcherName(Long id, String firstName, String lastName) {
+        Pitcher pitcher = this.pitcherRepository.findById(id).filter(p -> p.getGhostedDate() == 0).orElse(null);
+
+        if(pitcher != null) {
+            pitcher.setFirstName(firstName);
+            pitcher.setLastName(lastName);
+            return this.pitcherRepository.save(pitcher);
+        }
+
+        return null;
     }
 }

@@ -32,8 +32,10 @@ function PlayerItem({ id, fullName, onDelete, onEdit }) {
 
   const handleEditConfirm = () => {
     console.log("Edited Name:", editedName);
+    localStorage.setItem('updatedName', editedName);
     onEdit(id, editedName); 
     setShowEditDialog(false);
+    return editedName;
   };
 
   const handleInputChange = (e) => {

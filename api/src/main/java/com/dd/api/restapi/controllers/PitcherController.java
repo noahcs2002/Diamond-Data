@@ -111,4 +111,18 @@ public class PitcherController {
                 .map(this.statisticsService::updatePitcherStatistics)
                 .toList();
     }
+
+    @RequestMapping("/change-name")
+    @PutMapping
+    public Pitcher changePitcherName(@RequestParam Long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam Long userId) throws NoAccessPermittedException {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(firstName);
+        Objects.requireNonNull(lastName);
+
+        if(!this.validator.validatePitcher(userId, id)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.service.updatePitcherName(id, firstName, lastName);
+    }
 }
