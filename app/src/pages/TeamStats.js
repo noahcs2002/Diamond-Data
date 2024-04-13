@@ -5,9 +5,10 @@ import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
 
 function TeamStats() {
-  const [teams, setTeams] = useState([]);
+  const [team, setTeam] = useState([]);
   const [players, setPlayers] = useState([]);
   const [selectedTeamStats, setSelectedTeamStats] = useState(null);
+  
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -18,13 +19,13 @@ function TeamStats() {
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
     console.log(user);
-    await fetchTeams(user);
+    await fetchTeam(user);
     await fetchPlayers();
     setLoading(false);
   }
 
-  const fetchTeams = async (user) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+  const fetchTeam = async (user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
     const url = new URL(endpoint);
     url.searchParams.append("userId", user.id); 
   
@@ -34,8 +35,10 @@ function TeamStats() {
         throw new Error('Network error');
       }
       const data = await response.json();
-      setTeams(data); 
-    } catch (error) {
+      console.log(data);
+      setTeam(data); 
+    } 
+    catch (error) {
       console.error('Error fetching teams:', error);
     }
   };
@@ -123,17 +126,11 @@ function TeamStats() {
       <Navbar />
       <h1 className='title'>Team Stats</h1>
       <div className="teamList">
-        {teams.length > 0 ? (
-          teams.map((team) => (
-            <div key={team.id} className="teamItem" onClick={() => handleTeamClick(team)}>
-              <div className="teamInfo">
-                <div className="teamName">{team.name}</div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div>No teams available</div>
-        )}
+        <div key={team.id} className="teamItem" onClick={() => handleTeamClick(team)}>
+          <div className="teamInfo">
+            <div className="teamName">{team.name} - Click to see more </div>
+          </div>
+        </div>
       </div>
       {showModal && (
         <div className="modal">

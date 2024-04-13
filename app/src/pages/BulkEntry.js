@@ -23,14 +23,14 @@ function BulkEntry() {
 
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
-    const teams = await fetchTeams(user);
-    await fetchOffensiveData(selectedTeam || teams[0], user)    
-    await fetchDefensiveData(selectedTeam || teams[0], user)
-    await fetchPitcherData(selectedTeam || teams[0], user)
+    const team = await fetchTeam(user);
+    await fetchOffensiveData(team, user)    
+    await fetchDefensiveData(team, user)
+    await fetchPitcherData(team, user)
   }
 
-  const fetchTeams = async (user) => {
-    const endpoint = "http://localhost:8080/diamond-data/api/teams/get-all"
+  const fetchTeam = async (user) => {
+    const endpoint = "http://localhost:8080/diamond-data/api/teams/get-by-user"
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
 
@@ -42,10 +42,8 @@ function BulkEntry() {
       }
 
       const data = await res.json();
-      console.log(data);
-      setSelectedTeam(data[0])
-      setTeams(data);
-      localStorage.setItem('selectedTeam', teams[0]);
+      localStorage.setItem('team', data);
+      return data
     }
     catch(_e) {
       alert('Unable to fetch teams: ', _e);
@@ -231,15 +229,6 @@ function BulkEntry() {
       <Navbar />
       <div className="bulkEntry">
         <h1 className="title">Bulk Entry</h1>
-        <div className="teamSelection">
-          <select
-            id="teamSelect"
-            value={selectedTeam}
-            onChange={e => setSelectedTeam(e.target.value)}
-          >
-            {teamOptions}
-          </select>
-        </div>
         <button onClick={() => setIsEnteringNewGame(true)}>New Game</button>
         {isEnteringNewGame && <button onClick={saveGameData}>Save Game</button>}
         {}

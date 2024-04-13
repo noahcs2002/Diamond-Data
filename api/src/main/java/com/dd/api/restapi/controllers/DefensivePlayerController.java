@@ -3,7 +3,6 @@ package com.dd.api.restapi.controllers;
 import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.services.DefensivePlayerService;
-import com.dd.api.restapi.services.TeamService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,20 +15,16 @@ import java.util.Objects;
 public class DefensivePlayerController {
 
     @Autowired
-    private DefensivePlayerService service;
+    private final DefensivePlayerService service;
 
     @Autowired
-    private Validator validator;
-
-    @Autowired
-    private TeamService teamService;
+    private final Validator validator;
 
     private final String exceptionMessage = "Cannot access the specified resource with the specified user id: ";
 
     @Autowired
-    public DefensivePlayerController(DefensivePlayerService service, TeamService teamService, Validator validator) {
+    public DefensivePlayerController(DefensivePlayerService service, Validator validator) {
         this.service = service;
-        this.teamService = teamService;
         this.validator = validator;
     }
 

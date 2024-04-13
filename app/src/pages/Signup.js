@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import '../styles/Signup.scss';
 import { useNavigate } from 'react-router-dom';
-import { wait } from '@testing-library/user-event/dist/utils';
 
 function Signup() {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        teamname: ''
     });
     const nav = useNavigate();
 
@@ -93,6 +93,15 @@ function Signup() {
                             type="password"
                             name="confirmPassword"
                             value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>Team Name:
+                        <input
+                            type="text"
+                            name="teamName"
+                            value={formData.teamName}
                             onChange={handleChange}
                             required
                         />

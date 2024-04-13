@@ -7,11 +7,8 @@ import Footer from '../components/Footer';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
 
-function PlayerManagement({ onEdit }) {
-  const [offensiveData, setOffensiveData] = useState([]);
+function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
-  const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState(() => JSON.parse(localStorage.getItem('selectedTeam')) || ''); // Initialize from localStorage
   const [isAddingPlayer, setIsAddingPlayer] = useState(false);
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
@@ -19,21 +16,20 @@ function PlayerManagement({ onEdit }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    proc()
+    prop()
   }, []);
 
-  const proc = async () => {
+  const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
-    const teams = await fetchTeams(user);
-    await fetchPlayers(user, selectedTeam || teams[0]);
+    const team = await fetchTeam(user);
+    await fetchPlayers(user, team||JSON.parse(localStorage.getItem('team')));
     setLoading(false);
   }
 
-
   const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"];
 
-  const fetchTeams = async (user) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+  const fetchTeam = async (user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
     const url = new URL(endpoint);
     url.searchParams.append("userId", user.id);
     try {
@@ -42,9 +38,7 @@ function PlayerManagement({ onEdit }) {
         throw new Error('Network error: ');
       }
       const data = await response.json();
-      setTeams(data);
-      setSelectedTeam(data[0]);
-      localStorage.setItem('selectedTeam', JSON.stringify(data[0])); 
+      localStorage.setItem('team', data);
       return data
     } 
     catch (error) {
@@ -147,7 +141,6 @@ function PlayerManagement({ onEdit }) {
       }
       const newPlayer = await response.json();
 
-      setOffensiveData((prev) => [...prev, newPlayer]);
     } catch (error) {
       console.error("Error creating player:", error);
     }
@@ -228,31 +221,11 @@ const handlePositionChange = (position) => {
   });
 };
 
-
-  const teamOptions = teams.map(team => (
-    <option key={team.id} value={team.id}>{team.name}</option>
-  ));
-
-  const handleTeamSelect = (e) => {
-    const teamId = e.target.value;
-    setSelectedTeam(teamId);
-    localStorage.setItem('selectedTeam', teamId);
-  };
-
   return (
       <div>
         {loading ? <LoadingScreen/> : <>
         <Navbar />
         <div className="playerManagement">
-          <div className="teamSelection">
-            <select
-              id="teamSelect"
-              value={selectedTeam}
-              onChange={handleTeamSelect} 
-            >
-              {teamOptions}
-            </select>
-          </div>
           <h1 className='title'>Player Management</h1>
           <div className="positionList">
             <div className='positionContainer'>

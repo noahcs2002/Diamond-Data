@@ -11,8 +11,6 @@ function PlayerStats() {
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
-  const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -23,15 +21,15 @@ function PlayerStats() {
 
   const fetchAll = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
-    const teams = await fetchTeams(user);
-    await fetchOffensive(selectedTeam || teams[0], user);
-    await fetchDefensive(selectedTeam || teams[0], user);
-    await fetchPitcher(selectedTeam || teams[0], user);
+    const team = await fetchTeam(user);
+    await fetchOffensive(team, user);
+    await fetchDefensive(team, user);
+    await fetchPitcher(team, user);
     setLoading(false);
   }
 
-  const fetchTeams = async (user) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all'
+  const fetchTeam = async (user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
 
@@ -41,12 +39,8 @@ function PlayerStats() {
       if(!res.ok) {
         alert('Unable to fetch teams')
       }
-      const teams = await res.json();
-      setTeams(teams);
-      localStorage.setItem('teams', teams);
-      localStorage.setItem('selectedTeam', teams[0])
-      setSelectedTeam(teams[0]);
-      return teams;
+      const team = await res.json();
+      return team;
     }
     catch(_e) {
       alert("Failure getting teams: ", _e);
@@ -111,8 +105,6 @@ function PlayerStats() {
     }
 
   }
-
-
 
   const pitcherColumns = React.useMemo(() => [
     {
@@ -444,26 +436,12 @@ function PlayerStats() {
   const defensiveTable = useTable({ columns: defensiveColumns, data: defensiveData });
   const pitcherTable = useTable({ columns: pitcherColumns, data: pitcherData });
 
-  const teamOptions = teams.map(team => (
-    <option key={team.id} value={team.id}>{team.name}</option>
-  ));
-
-
   return (
     <div>
       {loading ? <LoadingScreen/> : <>
     <Navbar/>
     <div className="playerStats">
       <h1 className='title'> Player Stats</h1>
-      <div className="teamSelection">
-        <select
-          id="teamSelect"
-          value={selectedTeam}
-          onChange={e => setSelectedTeam(e.target.value)}
-        >
-          {teamOptions}
-        </select>
-      </div>
       <h2 className='headers'>Offensive Data</h2>
       <div className='tableWrapper'>
         <div className='offensiveTable'>
