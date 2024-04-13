@@ -4,11 +4,10 @@ import '../styles/PlayerManagement.scss';
 import '../styles/PlayerItem.scss';
 import Navbar from '../components/Navbar';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import LoadingScreen from '../components/LoadingScreen'
 
 function PlayerManagement({ onEdit }) {
   const [offensiveData, setOffensiveData] = useState([]);
-  const [defensiveData, setDefensiveData] = useState([]);
-  const [pitcherData, setPitcherData] = useState([]);
   const [rawPlayerData, setRawPlayerData] = useState([]);
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(() => JSON.parse(localStorage.getItem('selectedTeam')) || ''); // Initialize from localStorage
@@ -16,6 +15,7 @@ function PlayerManagement({ onEdit }) {
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
   const [selectedPositions, setSelectedPositions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     proc()
@@ -25,6 +25,7 @@ function PlayerManagement({ onEdit }) {
     const user = JSON.parse(localStorage.getItem('sessionData'));
     const teams = await fetchTeams(user);
     await fetchPlayers(user, selectedTeam || teams[0]);
+    setLoading(false);
   }
 
 
@@ -238,68 +239,69 @@ const handlePositionChange = (position) => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="playerManagement">
-        <div className="teamSelection">
-          <select
-            id="teamSelect"
-            value={selectedTeam}
-            onChange={handleTeamSelect} 
-          >
-            {teamOptions}
-          </select>
-        </div>
-        <h1 className='title'>Player Management</h1>
-        <div className="positionList">
-          <div className='positionContainer'>
-            <h2>Position Players</h2>
-            <div className='icons'>
-              <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
-            </div>
-            <div className='playerGrid'>
-              {rawPlayerData.map(player => (
-                <div className='playerItem' key={player.id}>
-                  <PlayerItem
-                    key={player.id}
-                    fullName={`${player.firstName} ${player.lastName}`}
-                    onDelete={() => handleDelete(player.id)} 
-                    onEdit={(newFullName) => handleEdit(`${player.firstName} ${player.lastName}`, newFullName)}
-                  />
-                </div>
-              ))}
+      <div>
+        {loading ? <LoadingScreen/> : <>
+        <Navbar />
+        <div className="playerManagement">
+          <div className="teamSelection">
+            <select
+              id="teamSelect"
+              value={selectedTeam}
+              onChange={handleTeamSelect} 
+            >
+              {teamOptions}
+            </select>
+          </div>
+          <h1 className='title'>Player Management</h1>
+          <div className="positionList">
+            <div className='positionContainer'>
+              <h2>Position Players</h2>
+              <div className='icons'>
+                <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
+              </div>
+              <div className='playerGrid'>
+                {rawPlayerData.map(player => (
+                  <div className='playerItem' key={player.id}>
+                    <PlayerItem
+                      key={player.id}
+                      fullName={`${player.firstName} ${player.lastName}`}
+                      onDelete={() => handleDelete(player.id)} 
+                      onEdit={(newFullName) => handleEdit(`${player.firstName} ${player.lastName}`, newFullName)}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        {isAddingPlayer && (
-          <div className="addPlayerModal">
-            <input
-              type="text"
-              placeholder="First Name"
-              value={newPlayerFirstName}
-              onChange={e => setNewPlayerFirstName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={newPlayerLastName}
-              onChange={e => setNewPlayerLastName(e.target.value)}
-            />
-             <div className="positionsSelection">
-              <label>Positions:</label>
-              {allPositions.map((position) => (
-                <div key={position}>
-                  <input type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
-                  <label htmlFor={position}>{position}</label>
-                </div>
-              ))}
+          {isAddingPlayer && (
+            <div className="addPlayerModal">
+              <input
+                type="text"
+                placeholder="First Name"
+                value={newPlayerFirstName}
+                onChange={e => setNewPlayerFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={newPlayerLastName}
+                onChange={e => setNewPlayerLastName(e.target.value)}
+              />
+              <div className="positionsSelection">
+                <label>Positions:</label>
+                {allPositions.map((position) => (
+                  <div key={position}>
+                    <input type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
+                    <label htmlFor={position}>{position}</label>
+                  </div>
+                ))}
+              </div>
+              <button onClick={handlePlayerCreate}>Save</button>
+              <button onClick={() => setIsAddingPlayer(false)}>Cancel</button>
             </div>
-            <button onClick={handlePlayerCreate}>Save</button>
-            <button onClick={() => setIsAddingPlayer(false)}>Cancel</button>
-          </div>
-        )}
+          )}
+        </div> </>}
       </div>
-    </div>
   );
 }
 
