@@ -2,6 +2,8 @@ package com.dd.api.auth.controllers;
 
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.providers.AuthorizationService;
+import com.dd.api.restapi.models.Team;
+import com.dd.api.restapi.services.TeamService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class AuthControllerTests {
 
     @MockBean
     private AuthorizationService service;
+
+    @MockBean
+    private TeamService teamService;
 
     @TestConfiguration
     static class TestDatabaseConfiguration {
@@ -74,10 +79,12 @@ public class AuthControllerTests {
         user.setEmail(email);
 
         when(service.createUser(user)).thenReturn(user);
+        when(teamService.createTeam(any())).thenReturn(new Team());
 
         MvcResult result = mockMvc.perform(post("/diamond-data/api/auth/sign-up")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(user)))
+                        .content(asJsonString(user))
+                        .param("teamName", "foo"))
                 .andExpect(status().isOk())
                 .andReturn();
 

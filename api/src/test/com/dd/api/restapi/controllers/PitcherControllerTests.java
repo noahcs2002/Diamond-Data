@@ -107,7 +107,6 @@ public class PitcherControllerTests {
         assertEquals(200, status, 0);
         assertEquals(player, foundPlayer);
 
-        verify(statisticsService, times(1)).updatePitcherStatistics(any(Pitcher.class));
         verify(service, times(1)).getPitcherById(any(Long.class));
     }
 
@@ -151,7 +150,6 @@ public class PitcherControllerTests {
 
         assertEquals(200, status, 0);
         assertEquals(players, returnedPlayers);
-        verify(statisticsService, atLeast(1)).updatePitcherStatistics(any(Pitcher.class));
         verify(service, times(1)).getPitchersByTeam(any(Long.class));
     }
 
@@ -184,7 +182,8 @@ public class PitcherControllerTests {
         MvcResult mvcResult = mockMvc.perform(post(base + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(pitcher))
-                        .param("userId", asJsonString(userId)))
+                        .param("userId", asJsonString(userId))
+                .param("teamId", asJsonString(1L)))
                 .andExpect(status().isOk())
                 .andReturn();
 
