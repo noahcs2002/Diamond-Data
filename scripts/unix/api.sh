@@ -1,5 +1,6 @@
-cd ../../api ;
+cd ../../api || exit 1
 
-mvn clean install ;
+kill $(lsof -t -i:8080) &>/dev/null
 
-java -jar target/api-0.0.1-SNAPSHOT.jar ;
+mvn clean install
+java -jar target/api-0.0.1-SNAPSHOT.jar
