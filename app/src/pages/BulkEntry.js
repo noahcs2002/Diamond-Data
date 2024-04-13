@@ -4,11 +4,10 @@ import Footer from '../components/Footer';
 import PlayerStatsModal from '../components/PlayerStatsModal';
 import { useTable } from 'react-table';
 import '../styles/BulkEntry.scss';
+import LoadingScreen from '../components/LoadingScreen';
 
 function BulkEntry() {
   const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState('');
-  const [currentTeamId, setCurrentTeamId] = useState('');
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
@@ -16,6 +15,7 @@ function BulkEntry() {
   const [showModal, setShowModal] = useState(false);
   const [isEnteringNewGame, setIsEnteringNewGame] = useState(false);
   const [newGameData, setNewGameData] = useState({ offensive: [], defensive: [], pitcher: [] });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     prop();
@@ -27,6 +27,7 @@ function BulkEntry() {
     await fetchOffensiveData(team, user)    
     await fetchDefensiveData(team, user)
     await fetchPitcherData(team, user)
+    setLoading(false);
   }
 
   const fetchTeam = async (user) => {
@@ -226,6 +227,7 @@ function BulkEntry() {
  
   return (
     <div>
+      {loading ? <LoadingScreen/> : <>
       <Navbar />
       <div className="bulkEntry">
         <h1 className="title">Bulk Entry</h1>
@@ -337,7 +339,7 @@ function BulkEntry() {
         </div>
       </div>
       {showModal && <PlayerStatsModal player={selectedPlayer} onClose={() => setShowModal(false)} />}
-      <Footer />
+      <Footer /></>}
     </div>
   );
   
