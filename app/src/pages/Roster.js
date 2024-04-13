@@ -160,15 +160,6 @@ function Roster() {
         <Navbar />
         <div className="roster">
           <h1 className="title">Roster</h1>
-          <div className="teamSelection">
-          <select
-            id="teamSelect"
-            value={selectedTeam}
-            onChange={handleTeamSelect} 
-          >
-            {teamOptions}
-          </select>
-        </div>
           <div className="columnHeaders">
             <h2>40 Man Roster</h2>
             <h2>Line-Up</h2>

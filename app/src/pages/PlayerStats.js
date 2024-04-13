@@ -455,15 +455,6 @@ function PlayerStats() {
     <Navbar/>
     <div className="playerStats">
       <h1 className='title'> Player Stats</h1>
-      <div className="teamSelection">
-        <select
-          id="teamSelect"
-          value={selectedTeam}
-          onChange={e => setSelectedTeam(e.target.value)}
-        >
-          {teamOptions}
-        </select>
-      </div>
       <h2 className='headers'>Offensive Data</h2>
       <div className='tableWrapper'>
         <div className='offensiveTable'>

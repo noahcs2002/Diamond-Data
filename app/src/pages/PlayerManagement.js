@@ -244,15 +244,6 @@ const handlePositionChange = (position) => {
         {loading ? <LoadingScreen/> : <>
         <Navbar />
         <div className="playerManagement">
-          <div className="teamSelection">
-            <select
-              id="teamSelect"
-              value={selectedTeam}
-              onChange={handleTeamSelect} 
-            >
-              {teamOptions}
-            </select>
-          </div>
           <h1 className='title'>Player Management</h1>
           <div className="positionList">
             <div className='positionContainer'>
