@@ -8,7 +8,7 @@ function Footer() {
         <div className="container">
             <SportsBaseballIcon />  
         </div>
-        <p> &copy; 2024 diamonddata.com </p>
+        <p> &copy; 2024 Diamond Data </p>
     </div>
   )
 }
