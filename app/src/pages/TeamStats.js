@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import '../styles/TeamStats.scss';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
 
 function TeamStats() {
@@ -163,6 +164,7 @@ function TeamStats() {
           </div>
         </div>
       )}</>}
+      <Footer />
     </div>
   );
 }

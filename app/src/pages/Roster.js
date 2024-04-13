@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/Roster.scss'
 import Navbar from '../components/Navbar'
+import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
 
 function Roster() {
@@ -215,6 +216,7 @@ function Roster() {
             </div>
           </div>
         </div> </>}
+        <Footer />
       </div>
     );
   }

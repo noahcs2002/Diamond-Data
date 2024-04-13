@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import '../styles/Settings.scss';
 
 function Settings() {
@@ -213,6 +214,7 @@ function Settings() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

@@ -36,7 +36,7 @@ function App() {
                 <Route path="/sign-up" exact element={<Signup/>} />
                 <Route path="/login" exact element={<Login/>} />
               </Routes>
-            <Footer />
+            {/* <Footer /> */}
           </Router>
         </div>
     </>

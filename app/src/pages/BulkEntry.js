@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import PlayerStatsModal from '../components/PlayerStatsModal';
 import { useTable } from 'react-table';
 import '../styles/BulkEntry.scss';
@@ -347,6 +348,7 @@ function BulkEntry() {
         </div>
       </div>
       {showModal && <PlayerStatsModal player={selectedPlayer} onClose={() => setShowModal(false)} />}
+      <Footer />
     </div>
   );
   
