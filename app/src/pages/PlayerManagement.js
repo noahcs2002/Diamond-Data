@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
 
-function PlayerManagement({ onEdit }) {
+function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
   const [isAddingPlayer, setIsAddingPlayer] = useState(false);
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
