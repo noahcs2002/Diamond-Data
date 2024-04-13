@@ -121,7 +121,7 @@ function TeamStats() {
     <div className="teamStats">
       {loading ? <LoadingScreen/> : <>
       <Navbar />
-      <h1>Team Stats</h1>
+      <h1 className='title'>Team Stats</h1>
       <div className="teamList">
         {teams.length > 0 ? (
           teams.map((team) => (
