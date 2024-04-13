@@ -27,7 +27,7 @@ public class Pitcher {
     private Character preference;
     private int appearances;
     private int balks;
-    private int battersFaces;
+    private int battersFaced;
     private int blownSaves;
     private int completeGames;
     private int earnedRuns;
@@ -64,7 +64,7 @@ public class Pitcher {
                    Team team,
                    int appearances,
                    int balks,
-                   int battersFaces,
+                   int battersFaced,
                    int blownSaves,
                    int completeGames,
                    int earnedRuns,
@@ -98,7 +98,7 @@ public class Pitcher {
         this.preference = preference;
         this.appearances = appearances;
         this.balks = balks;
-        this.battersFaces = battersFaces;
+        this.battersFaced = battersFaced;
         this.blownSaves = blownSaves;
         this.completeGames = completeGames;
         this.earnedRuns = earnedRuns;
@@ -182,12 +182,12 @@ public class Pitcher {
         this.balks = balks;
     }
 
-    public int getBattersFaces() {
-        return battersFaces;
+    public int getBattersFaced() {
+        return battersFaced;
     }
 
-    public void setBattersFaces(int battersFaces) {
-        this.battersFaces = battersFaces;
+    public void setBattersFaced(int battersFaced) {
+        this.battersFaced = battersFaced;
     }
 
     public int getBlownSaves() {
@@ -451,12 +451,12 @@ public class Pitcher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pitcher pitcher = (Pitcher) o;
-        return ghostedDate == pitcher.ghostedDate && appearances == pitcher.appearances && balks == pitcher.balks && battersFaces == pitcher.battersFaces && blownSaves == pitcher.blownSaves && completeGames == pitcher.completeGames && earnedRuns == pitcher.earnedRuns && Double.compare(earnedRunAverage, pitcher.earnedRunAverage) == 0 && flyouts == pitcher.flyouts && gamesFinished == pitcher.gamesFinished && gamesStarted == pitcher.gamesStarted && groundouts == pitcher.groundouts && holds == pitcher.holds && hits == pitcher.hits && inheritedRunners == pitcher.inheritedRunners && Double.compare(inningsPitched, pitcher.inningsPitched) == 0 && losses == pitcher.losses && numberOfPitches == pitcher.numberOfPitches && pickoffs == pitcher.pickoffs && qualityStarts == pitcher.qualityStarts && reliefWins == pitcher.reliefWins && saves == pitcher.saves && saveOpportunities == pitcher.saveOpportunities && Double.compare(savePercentage, pitcher.savePercentage) == 0 && shutouts == pitcher.shutouts && strikeouts == pitcher.strikeouts && unearnedRuns == pitcher.unearnedRuns && Double.compare(walksAndHitsPerInningPitched, pitcher.walksAndHitsPerInningPitched) == 0 && Double.compare(walks, pitcher.walks) == 0 && wildPitches == pitcher.wildPitches && wins == pitcher.wins && Double.compare(winningPercentage, pitcher.winningPercentage) == 0 && Objects.equals(id, pitcher.id) && Objects.equals(team, pitcher.team) && Objects.equals(firstName, pitcher.firstName) && Objects.equals(lastName, pitcher.lastName) && Objects.equals(preference, pitcher.preference);
+        return ghostedDate == pitcher.ghostedDate && appearances == pitcher.appearances && balks == pitcher.balks && battersFaced == pitcher.battersFaced && blownSaves == pitcher.blownSaves && completeGames == pitcher.completeGames && earnedRuns == pitcher.earnedRuns && Double.compare(earnedRunAverage, pitcher.earnedRunAverage) == 0 && flyouts == pitcher.flyouts && gamesFinished == pitcher.gamesFinished && gamesStarted == pitcher.gamesStarted && groundouts == pitcher.groundouts && holds == pitcher.holds && hits == pitcher.hits && inheritedRunners == pitcher.inheritedRunners && Double.compare(inningsPitched, pitcher.inningsPitched) == 0 && losses == pitcher.losses && numberOfPitches == pitcher.numberOfPitches && pickoffs == pitcher.pickoffs && qualityStarts == pitcher.qualityStarts && reliefWins == pitcher.reliefWins && saves == pitcher.saves && saveOpportunities == pitcher.saveOpportunities && Double.compare(savePercentage, pitcher.savePercentage) == 0 && shutouts == pitcher.shutouts && strikeouts == pitcher.strikeouts && unearnedRuns == pitcher.unearnedRuns && Double.compare(walksAndHitsPerInningPitched, pitcher.walksAndHitsPerInningPitched) == 0 && Double.compare(walks, pitcher.walks) == 0 && wildPitches == pitcher.wildPitches && wins == pitcher.wins && Double.compare(winningPercentage, pitcher.winningPercentage) == 0 && Objects.equals(id, pitcher.id) && Objects.equals(team, pitcher.team) && Objects.equals(firstName, pitcher.firstName) && Objects.equals(lastName, pitcher.lastName) && Objects.equals(preference, pitcher.preference);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, team, firstName, lastName, ghostedDate, preference, appearances, balks, battersFaces, blownSaves, completeGames, earnedRuns, earnedRunAverage, flyouts, gamesFinished, gamesStarted, groundouts, holds, hits, inheritedRunners, inningsPitched, losses, numberOfPitches, pickoffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningPitched, walks, wildPitches, wins, winningPercentage);
+        return Objects.hash(id, team, firstName, lastName, ghostedDate, preference, appearances, balks, battersFaced, blownSaves, completeGames, earnedRuns, earnedRunAverage, flyouts, gamesFinished, gamesStarted, groundouts, holds, hits, inheritedRunners, inningsPitched, losses, numberOfPitches, pickoffs, qualityStarts, reliefWins, saves, saveOpportunities, savePercentage, shutouts, strikeouts, unearnedRuns, walksAndHitsPerInningPitched, walks, wildPitches, wins, winningPercentage);
     }
 
     public Pitcher applyStatisticsUpdate(StatisticsService statisticsService) {

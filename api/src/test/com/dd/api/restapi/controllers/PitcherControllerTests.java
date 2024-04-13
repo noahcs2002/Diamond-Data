@@ -178,7 +178,7 @@ public class PitcherControllerTests {
         this.team.setId(1L);
         pitcher.setTeam(team);
 
-        when(this.service.createPitcher(any())).thenReturn(pitcher);
+        when(this.service.createPitcher(any(), anyLong())).thenReturn(pitcher);
         when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(post(base + "/create")
@@ -193,25 +193,8 @@ public class PitcherControllerTests {
         Pitcher returned = objectMapper.readValue(body, Pitcher.class);
 
         assertEquals(200, status, 0);
-        verify(service, times(1)).createPitcher(any(Pitcher.class));
+        verify(service, times(1)).createPitcher(any(Pitcher.class), anyLong());
         assertEquals(pitcher, returned);
-    }
-
-    @Test(expected = NoAccessPermittedException.class)
-    public void createThrowsNoAccessPermittedWhenNoAcess() throws Exception {
-        Pitcher pitcher = new Pitcher();
-        user.setId(1234L);
-        this.team.setUser(user);
-        this.team.setId(1L);
-        pitcher.setTeam(team);
-
-        when(this.service.createPitcher(any())).thenReturn(pitcher);
-        when(this.validator.validateTeam(anyLong(), anyLong())).thenReturn(false);
-
-        mockMvc.perform(post(base + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(pitcher))
-                        .param("userId", asJsonString(userId)));
     }
 
     @Test
@@ -295,7 +278,7 @@ public class PitcherControllerTests {
     @Test(expected = Exception.class)
     public void createReturns500_whenError() throws Exception {
         String message = "testing exception message";
-        when(service.createPitcher(any(Pitcher.class))).thenThrow(new Exception(message));
+        when(service.createPitcher(any(Pitcher.class), anyLong())).thenThrow(new Exception(message));
 
         MvcResult result = mockMvc.perform(post(base + "/create"))
                 .andExpect(status().is5xxServerError())

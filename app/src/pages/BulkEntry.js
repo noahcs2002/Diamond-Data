@@ -7,7 +7,6 @@ import '../styles/BulkEntry.scss';
 import LoadingScreen from '../components/LoadingScreen';
 
 function BulkEntry() {
-  const [teams, setTeams] = useState([]);
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
@@ -24,10 +23,29 @@ function BulkEntry() {
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
     const team = await fetchTeam(user);
-    await fetchOffensiveData(team, user)    
-    await fetchDefensiveData(team, user)
     await fetchPitcherData(team, user)
+    const players = await fetchPlayers(team, user);
+    await propogate(players);
     setLoading(false);
+  }
+
+  const propogate = async (players) => {
+    let off = [];
+    let def = [];
+
+    players.map((player) => {
+      let o = player.offensivePlayer;
+      let d = player.defensivePlayer;
+      o.firstName = player.firstName;
+      o.lastName = player.lastName;
+      d.firstName = player.firstName;
+      d.lastName = player.lastName;
+      off.push(o);
+      def.push(d);
+    });
+
+    setOffensiveData(off);
+    setDefensiveData(def);
   }
 
   const fetchTeam = async (user) => {
@@ -51,43 +69,26 @@ function BulkEntry() {
     }
   }
 
-  const fetchOffensiveData = async (team, user) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/offensive-players/get-by-team'
+  const fetchPlayers = async (team, user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
     url.searchParams.append('teamId', team.id);
 
     try {
       const res = await fetch(url);
+
       if (!res.ok) {
-        alert('Error getting offensive player data, status was not OK')
+        alert('Not ok in player fetching')
       }
-      const data = await res.json();
-      setOffensiveData(data);
+
+      const players = await res.json();
+      console.log('Players: ', players);
+      return players;
     }
     catch(_e) {
-      alert('Error getting offensive player data: ', _e);
+      console.error(_e);
     }
-  }
-
-  const fetchDefensiveData = async (team, user) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/defensive-players/get-by-team'
-    const url = new URL(endpoint);
-    url.searchParams.append('userId', user.id);
-    url.searchParams.append('teamId', team.id);
-
-    try {
-      const res = await fetch(url);
-      if (!res.ok) {
-        alert('Error getting defensive player data, status was not OK')
-      }
-      const data = await res.json();
-      setDefensiveData(data);
-    }
-    catch(_e) {
-      alert('Error getting defensive player data: ', _e);
-    }
-
   }
 
   const fetchPitcherData = async (team, user) => {
@@ -103,22 +104,12 @@ function BulkEntry() {
       }
       const data = await res.json();
       setPitcherData(data);
+      return data;
     }
     catch(_e) {
       alert('Error getting pitcher player data: ', _e);
     }
-
   }
-
-
-  const teamOptions = teams.map(team => (
-    <option key={team.id} value={team.id}>{team.name}</option>
-  ));
-
-  const handlePlayerClick = (player) => {
-    setSelectedPlayer(player);
-    setShowModal(true);
-  };
 
   const handleInputChange = (e, rowIndex, accessor, type) => {
     const updatedData = [...newGameData[type]];
@@ -157,7 +148,6 @@ function BulkEntry() {
     { Header: "EXTRA BASE HITS", accessor: "extraBaseHits" },
     { Header: "GRAND SLAMS", accessor: "grandSlams" },
     { Header: "GROUND INTO DOUBLE PLAY", accessor: "groundIntoDoublePlay" },
-    { Header: "GROUND OUT AIR OUT", accessor: "groundOutAirOut" },
     { Header: "HIT BY PITCH", accessor: "hitByPitch" },
     { Header: "HITS", accessor: "hits" },
     { Header: "HOME RUNS", accessor: "homeRuns" },
