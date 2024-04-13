@@ -483,6 +483,7 @@ const handlePositionChange = (position) => {
               <label> Left Handed </label>
 
               <button onClick={handlePitcherCreate}>Submit</button>
+              <button onClick={() => {setIsAddingPitcher(false)}}>Cancel</button>
           </div>
           }
         </div> </>}
