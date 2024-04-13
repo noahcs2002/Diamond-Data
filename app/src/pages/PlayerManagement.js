@@ -14,7 +14,9 @@ function PlayerManagement() {
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
   const [selectedPositions, setSelectedPositions] = useState([]);
+  const [isAddingPitcher, setIsAddingPitcher] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [pitcherPref, setPitcherPref] = useState('');
 
   useEffect(() => {
     prop()
@@ -49,6 +51,7 @@ function PlayerManagement() {
   };
 
   const fetchPitchers = async (user, team) => {
+    setLoading(true);
     const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
@@ -68,9 +71,11 @@ function PlayerManagement() {
     catch(_e) {
       alert(_e);
     }
+    setLoading(false);
   }
 
   const fetchPlayers = async (user, team) => {
+    setLoading(true)
    // if (!selectedTeam) return;
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
@@ -83,9 +88,11 @@ function PlayerManagement() {
       }
       const data = await response.json();
       setRawPlayerData(data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error fetching players:', error);
     }
+    setLoading(false);
   };
 
   const handlePlayerCreate = async () => {
@@ -94,7 +101,7 @@ function PlayerManagement() {
         lastName: newPlayerLastName,
         offensivePlayer: {
             team: {
-                id: 1203,
+                id: 0,
                 name: ''
             },
             atBats: 0,
@@ -130,7 +137,7 @@ function PlayerManagement() {
         defensivePlayer: {
             positions: selectedPositions,
             team: {
-                id: 1203,
+                id: 0,
                 name: ''
             },
             assists: 0,
@@ -149,9 +156,12 @@ function PlayerManagement() {
         assignment: 'n/a'
     };
 
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const team = await fetchTeam(user)
+
     const endpoint = `http://localhost:8080/diamond-data/api/players/create`;
     const url = new URL(endpoint);
-    url.searchParams.append('teamId', 1203);
+    url.searchParams.append('teamId', team.id);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -165,41 +175,121 @@ function PlayerManagement() {
       }
       const newPlayer = await response.json();
 
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error creating player:", error);
     }
     setIsAddingPlayer(false);
     setNewPlayerFirstName('');
     setNewPlayerLastName('');
     setSelectedPositions([]);
-};
+    window.location.reload();
+  };
 
-const handleDeletePlayer = async (id) => {
-  const url = new URL(`http://localhost:8080/diamond-data/api/players/delete`);
-  url.searchParams.append('id', id);
+  const handlePitcherCreate = async () => {
+    setLoading(true);
+    const pitcher = {
+      "firstName": newPlayerFirstName,
+      "lastName": newPlayerLastName,
+      "preference": pitcherPref,
+      "team" : {
+        "name": '',
+        "id": 0
+      },
+      "appearances": 0,
+      "balks": 0,
+      "battersFaced": 0,
+      "blownSaves": 0,
+      "completeGames": 0,
+      "earnedRuns": 0,
+      "earnedRunAverage": 0.0,
+      "flyouts": 0,
+      "gamesFinished": 0,
+      "gamesStarted": 0,
+      "groundouts": 0,
+      "holds": 0,
+      "hits": 0,
+      "inheritedRunners": 0,
+      "inningsPitched": 0.0,
+      "losses": 0,
+      "numberOfPitches": 0,
+      "pickoffs": 0,
+      "qualityStarts": 0,
+      "reliefWins": 0,
+      "saves": 0,
+      "saveOpportunities": 0,
+      "savePercentage": 0.0,
+      "shutouts": 0,
+      "strikeouts": 0,
+      "unearnedRuns": 0,
+      "walksAndHitsPerInningPitched": 0.0,
+      "wildPitches": 0,
+      "wins": 0,
+      "winningPercentage": 0.0
+    }
+    console.log(pitcher);
 
-  try {
-    const response = fetch(url, { method: 'DELETE' });
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const team = await fetchTeam(user) 
 
-    if (!response.ok) {
-      throw new Error(`Failed to delete player with id: ${id}`);
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/create';
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+    
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(pitcher),
+      })
+
+      if(!res.ok) {
+        console.log("res not okay: ", res);
+      }
+      window.location.reload();
+    }
+    catch(_e) {
+      console.error(_e);
     }
 
-    await fetchPlayers(); 
-  } catch (error) {
-    console.error('Error deleting player:', error);
+    // window.location.reload();
   }
-};
 
-const handleDelete = async (id) => {
-  try {
-    await handleDeletePlayer(id);
-    console.log('Player deleted successfully');
-  } catch (error) {
-    console.error('Error deleting player:', error);
+  const handleDeletePlayer = async (id) => {
+    setLoading(true);
+    const url = new URL(`http://localhost:8080/diamond-data/api/players/delete`);
+    url.searchParams.append('id', id);
+
+    try {
+      const response = await fetch(url, { method: 'DELETE' });
+      console.log(response);
+    } 
+    catch (error) {
+      console.error('Error deleting player in handleDeletePlayer:', error);
+    }
+    window.location.reload()
+  };
+
+  const handleDeletePitcher = async (id) => {
+    setLoading(true);
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/delete'
+    const url = new URL(endpoint);
+    url.searchParams.append('id', id);
+    url.searchParams.append('userId', user.id);
+
+    try {
+      const res = await fetch(url, {method:'DELETE'});
+      console.log(res);
+    }
+    catch(_e) {
+      console.error(_e);
+    }
+    window.location.reload();
   }
-};
-
 
 const handleEditPlayer = async (playerId, updatedFullName) => {
   setLoading(true)
@@ -262,15 +352,28 @@ const handleEditPlayer = async (playerId, updatedFullName) => {
 };
 
 const handleEditPitcher = async (playerId, updatedFullName) => {
+  setLoading(true);
   try {
     console.log('New name: ', updatedFullName)
     console.log('Player id: ', playerId);
     // Extract first name and last name from updated full name
-    const updatedFirstName = updatedFullName.split(' ')[0];
-    const updatedLastName = updatedFullName.split(' ')[1];
+    const [first, last] = updatedFullName.split(' ');
 
-    const endpoint = `http://localhost:8080/diamond-data/api/players/update`;
+    const endpoint = `http://localhost:8080/diamond-data/api/pitchers/change-name`;
+    const url = new URL(endpoint);
+    url.searchParams.append('id', playerId);
+    url.searchParams.append('firstName', first)
+    url.searchParams.append('lastName', last)
+    url.searchParams.append('userId', JSON.parse(localStorage.getItem('sessionData')).id)
 
+    const res = await fetch(url);
+    
+    if (!res.ok) {
+      console.log('Res not ok: ', res)
+    }
+
+    setLoading(false);
+    window.location.reload();
   } 
   catch (error) {
     console.error('Error updating player:', error);
@@ -305,8 +408,8 @@ const handlePositionChange = (position) => {
                     <PlayerItem
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
-                      onDelete={() => handleDelete(player.id)} 
-                      onEdit={(newFullName) => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
+                      onDelete={() => handleDeletePlayer(player.id)} 
+                      onEdit={() => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
                     />
                   </div>
                 ))}
@@ -315,7 +418,7 @@ const handlePositionChange = (position) => {
             <div className='positionContainer'>
               <h2>Pitchers</h2>
               <div className='icons'>
-                <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
+                <AddCircleIcon onClick={() => setIsAddingPitcher(true)} className='addCircleIcon' />
               </div>
               <div className='playerGrid'>
                 {pitcherData.map(player => (
@@ -323,8 +426,9 @@ const handlePositionChange = (position) => {
                     <PlayerItem
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
-                      onDelete={() => handleDelete(player.id)} 
-                      onEdit={(newFullName) => handleEditPitcher(player.id, newFullName)}
+                      // Make deletePitcher eventually
+                      onDelete={() => handleDeletePitcher(player.id)} 
+                      onEdit={() => handleEditPitcher(player.id, localStorage.getItem('updatedName'))}
                     />
                   </div>
                 ))}
@@ -358,6 +462,30 @@ const handlePositionChange = (position) => {
               <button onClick={() => setIsAddingPlayer(false)}>Cancel</button>
             </div>
           )}
+          {isAddingPitcher && 
+          <div>
+            <input
+                type="text"
+                placeholder="First Name"
+                value={newPlayerFirstName}
+                onChange={e => setNewPlayerFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={newPlayerLastName}
+                onChange={e => setNewPlayerLastName(e.target.value)}
+              />
+              <input type='radio' id='right-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('R')}}/>
+              <label> Right Handed </label>
+
+              <input type='radio' id='left-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('L')}}/>
+              <label> Left Handed </label>
+
+              <button onClick={handlePitcherCreate}>Submit</button>
+              <button onClick={() => {setIsAddingPitcher(false)}}>Cancel</button>
+          </div>
+          }
         </div> </>}
         <Footer />
       </div>

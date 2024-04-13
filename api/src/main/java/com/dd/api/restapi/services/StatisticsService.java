@@ -25,11 +25,32 @@ public class StatisticsService {
     }
 
     public Pitcher updatePitcherStatistics(Pitcher pitcher) {
-        pitcher.setEarnedRunAverage(pitcher.getEarnedRuns() * 9 / pitcher.getInningsPitched());
-        pitcher.setSavePercentage((double) pitcher.getSaves() / (double) pitcher.getSaveOpportunities());
-        pitcher.setWalksAndHitsPerInningPitched((pitcher.getWalks() + pitcher.getHits()) / pitcher.getInningsPitched());
-        pitcher.setWinningPercentage((double) pitcher.getWins() / (double) (pitcher.getWins() + pitcher.getLosses()));
+        pitcher.setEarnedRunAverage((double) pitcher.getEarnedRuns() * 9 / pitcher.getInningsPitched());
+
+        if (pitcher.getSaveOpportunities() != 0) {
+            pitcher.setSavePercentage((double) pitcher.getSaves() / pitcher.getSaveOpportunities());
+        }
+        else {
+            pitcher.setSavePercentage(0.0);
+        }
+
+        if (pitcher.getInningsPitched() != 0) {
+            pitcher.setWalksAndHitsPerInningPitched((double) (pitcher.getWalks() + pitcher.getHits()) / pitcher.getInningsPitched());
+        }
+        else {
+            pitcher.setWalksAndHitsPerInningPitched(0.0);
+        }
+
+        int totalGames = pitcher.getWins() + pitcher.getLosses();
+        if (totalGames != 0) {
+            pitcher.setWinningPercentage((double) pitcher.getWins() / totalGames);
+        }
+        else {
+            pitcher.setWinningPercentage(0.0);
+        }
+
         this.pitcherService.updatePitcher(pitcher.getId(), pitcher);
+
         return pitcher;
     }
 

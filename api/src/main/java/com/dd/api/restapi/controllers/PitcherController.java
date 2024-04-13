@@ -38,7 +38,7 @@ public class PitcherController {
         if (!this.validator.validatePitcher(userId, id)) {
             throw new NoAccessPermittedException(userId);
         }
-        return this.statisticsService.updatePitcherStatistics(this.service.getPitcherById(id));
+        return (this.service.getPitcherById(id));
     }
 
     @RequestMapping("/get-by-team")
@@ -51,15 +51,13 @@ public class PitcherController {
             throw new NoAccessPermittedException(userId);
         }
 
-        return this.service.getPitchersByTeam(teamId)
-                .stream()
-                .map(this.statisticsService::updatePitcherStatistics)
-                .toList();
+        return this.service.getPitchersByTeam(teamId);
     }
 
     @RequestMapping("/create")
     @PostMapping
     public Pitcher create(@RequestBody Pitcher pitcher, @RequestParam Long userId, @RequestParam Long teamId) throws NoAccessPermittedException {
+        System.out.println(pitcher);
         Objects.requireNonNull(pitcher);
         Objects.requireNonNull(userId);
         Objects.requireNonNull(teamId);
@@ -68,7 +66,7 @@ public class PitcherController {
             throw new NoAccessPermittedException(userId);
         }
 
-        return this.service.createPitcher(pitcher, teamId).applyStatisticsUpdate(statisticsService);
+        return this.service.createPitcher(pitcher, teamId);
     }
 
     @RequestMapping("/update")
