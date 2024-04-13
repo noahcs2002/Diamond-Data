@@ -214,7 +214,7 @@ public class PitcherAgentTests {
         Pitcher pitcher = new Pitcher(
                 "John",                  // firstName
                 "Doe",                   // lastName
-                'R',                     // preference (assumed to be 'R' for right-handed)
+                "R",                     // preference (assumed to be 'R' for right-handed)
                 null,                    // Team object
                 30,                      // appearances
                 2,                       // balks
@@ -246,7 +246,8 @@ public class PitcherAgentTests {
                 1.25,                    // walksAndHitsPerInningPitched
                 5,                       // wildPitches
                 10,                      // wins
-                0.667                    // winningPercentage
+                0.667,                    // winningPercentage
+                ""
         );
 
         double expected = (30 + 2 + 500 + 3 + 2 + 50 + 3.75 + 40 + 20 + 10 + 60 + 5 + 120 + 10 + 200.0 + 8 + 3000 + 3 + 5 + 4 + 15 + 20 + 0.75 + 2 + 180 + 15 + 40 + 1.25 + 5 + 10 + 0.667) * scale;
