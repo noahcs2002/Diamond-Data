@@ -3,6 +3,7 @@ import '../styles/PlayerStats.scss';
 import Navbar from '../components/Navbar';
 import { useTable } from 'react-table';
 import PlayerStatsModal from '../components/PlayerStatsModal';
+import LoadingScreen from '../components/LoadingScreen';
 
 function PlayerStats() {
 
@@ -12,6 +13,7 @@ function PlayerStats() {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -24,6 +26,7 @@ function PlayerStats() {
     await fetchOffensive(selectedTeam || teams[0], user);
     await fetchDefensive(selectedTeam || teams[0], user);
     await fetchPitcher(selectedTeam || teams[0], user);
+    setLoading(false);
   }
 
   const fetchTeams = async (user) => {
@@ -447,6 +450,7 @@ function PlayerStats() {
 
   return (
     <div>
+      {loading ? <LoadingScreen/> : <>
     <Navbar/>
     <div className="playerStats">
       <h1 className='title'> Player Stats</h1>
@@ -558,7 +562,7 @@ function PlayerStats() {
     </div>
     {showModal && 
       <PlayerStatsModal show={showModal} onClose={() => setShowModal(false)} />
-    }  
+    }  </>}
   </div> 
 )
 }

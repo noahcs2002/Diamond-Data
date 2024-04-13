@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/Roster.scss'
 import Navbar from '../components/Navbar'
+import LoadingScreen from '../components/LoadingScreen';
 
 function Roster() {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState();
   const [players, setPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
  
 
   useEffect(() => {
@@ -18,6 +20,7 @@ function Roster() {
     const players = await fetchPlayers(selectedTeam || teams[0], user);
     const finalised = await assignPlayers(players);
     setPlayers(finalised);
+    setLoading(false);
   }
 
   const assignPlayers = async (players) => {
@@ -152,6 +155,7 @@ function Roster() {
 
     return (
       <div>
+        {loading ? <LoadingScreen/> : <>
         <Navbar />
         <div className="roster">
           <h1 className="title">Roster</h1>
@@ -210,7 +214,7 @@ function Roster() {
               </div>
             </div>
           </div>
-        </div>
+        </div> </>}
       </div>
     );
   }

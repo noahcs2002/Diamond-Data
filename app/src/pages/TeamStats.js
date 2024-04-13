@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react'; 
 import '../styles/TeamStats.scss';
 import Navbar from '../components/Navbar';
+import LoadingScreen from '../components/LoadingScreen';
 
 function TeamStats() {
   const [teams, setTeams] = useState([]);
   const [players, setPlayers] = useState([]);
   const [selectedTeamStats, setSelectedTeamStats] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    prop();
+  }, []);
+
+  const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
     console.log(user);
-    fetchTeams(user);
-    fetchPlayers();
-  }, []);
+    await fetchTeams(user);
+    await fetchPlayers();
+    setLoading(false);
+  }
 
   const fetchTeams = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
@@ -111,6 +118,7 @@ function TeamStats() {
 
   return (
     <div className="teamStats">
+      {loading ? <LoadingScreen/> : <>
       <Navbar />
       <h1>Team Stats</h1>
       <div className="teamList">
@@ -154,7 +162,7 @@ function TeamStats() {
             <div className='stats'><strong>Singles:</strong> {selectedTeamStats.singles}</div>
           </div>
         </div>
-      )}
+      )}</>}
     </div>
   );
 }
