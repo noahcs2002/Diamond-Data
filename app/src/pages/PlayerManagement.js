@@ -49,6 +49,7 @@ function PlayerManagement() {
   };
 
   const fetchPitchers = async (user, team) => {
+    setLoading(true);
     const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
@@ -68,9 +69,11 @@ function PlayerManagement() {
     catch(_e) {
       alert(_e);
     }
+    setLoading(false);
   }
 
   const fetchPlayers = async (user, team) => {
+    setLoading(true)
    // if (!selectedTeam) return;
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
@@ -83,9 +86,11 @@ function PlayerManagement() {
       }
       const data = await response.json();
       setRawPlayerData(data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error fetching players:', error);
     }
+    setLoading(false);
   };
 
   const handlePlayerCreate = async () => {
@@ -149,9 +154,12 @@ function PlayerManagement() {
         assignment: 'n/a'
     };
 
+    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const team = await fetchTeam(user)
+
     const endpoint = `http://localhost:8080/diamond-data/api/players/create`;
     const url = new URL(endpoint);
-    url.searchParams.append('teamId', 1203);
+    url.searchParams.append('teamId', team.id);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -165,40 +173,31 @@ function PlayerManagement() {
       }
       const newPlayer = await response.json();
 
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error creating player:", error);
     }
     setIsAddingPlayer(false);
     setNewPlayerFirstName('');
     setNewPlayerLastName('');
     setSelectedPositions([]);
-};
+    window.location.reload();
+  };
 
-const handleDeletePlayer = async (id) => {
-  const url = new URL(`http://localhost:8080/diamond-data/api/players/delete`);
-  url.searchParams.append('id', id);
+  const handleDeletePlayer = async (id) => {
+    setLoading(true);
+    const url = new URL(`http://localhost:8080/diamond-data/api/players/delete`);
+    url.searchParams.append('id', id);
 
-  try {
-    const response = fetch(url, { method: 'DELETE' });
-
-    if (!response.ok) {
-      throw new Error(`Failed to delete player with id: ${id}`);
+    try {
+      const response = await fetch(url, { method: 'DELETE' });
+      console.log(response);
+    } 
+    catch (error) {
+      console.error('Error deleting player in handleDeletePlayer:', error);
     }
-
-    await fetchPlayers(); 
-  } catch (error) {
-    console.error('Error deleting player:', error);
-  }
-};
-
-const handleDelete = async (id) => {
-  try {
-    await handleDeletePlayer(id);
-    console.log('Player deleted successfully');
-  } catch (error) {
-    console.error('Error deleting player:', error);
-  }
-};
+    window.location.reload()
+  };
 
 
 const handleEditPlayer = async (playerId, updatedFullName) => {
@@ -282,7 +281,6 @@ const handleEditPitcher = async (playerId, updatedFullName) => {
       console.log('Res not ok: ', res)
     }
 
-    const data = await res.json();
     setLoading(false);
     window.location.reload();
   } 
@@ -319,7 +317,7 @@ const handlePositionChange = (position) => {
                     <PlayerItem
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
-                      onDelete={() => handleDelete(player.id)} 
+                      onDelete={() => handleDeletePlayer(player.id)} 
                       onEdit={() => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
                     />
                   </div>
@@ -337,7 +335,8 @@ const handlePositionChange = (position) => {
                     <PlayerItem
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
-                      onDelete={() => handleDelete(player.id)} 
+                      // Make deletePitcher eventually
+                      onDelete={() => handleDeletePlayer(player.id)} 
                       onEdit={() => handleEditPitcher(player.id, localStorage.getItem('updatedName'))}
                     />
                   </div>
