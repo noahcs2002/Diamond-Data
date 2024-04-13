@@ -9,7 +9,7 @@ public class PitcherScoringStrategy implements ScoringStrategy<Pitcher> {
         return
             (double) pitcher.getAppearances() * ((double) 1 / 30) +
             (double) pitcher.getBalks() * ((double) 1 / 30) +
-            (double) pitcher.getBattersFaces() * ((double) 1 / 30) +
+            (double) pitcher.getBattersFaced() * ((double) 1 / 30) +
             (double) pitcher.getBlownSaves() * ((double) 1 / 30) +
             (double) pitcher.getCompleteGames() * ((double) 1 / 30) +
             (double) pitcher.getEarnedRuns() * ((double) 1 / 30) +

@@ -59,15 +59,16 @@ public class PitcherController {
 
     @RequestMapping("/create")
     @PostMapping
-    public Pitcher create(@RequestBody Pitcher pitcher, @RequestParam Long userId) throws NoAccessPermittedException {
+    public Pitcher create(@RequestBody Pitcher pitcher, @RequestParam Long userId, @RequestParam Long teamId) throws NoAccessPermittedException {
         Objects.requireNonNull(pitcher);
         Objects.requireNonNull(userId);
+        Objects.requireNonNull(teamId);
 
-        if(!this.validator.validateTeam(userId, pitcher.getTeam().getId())) {
+        if(!this.validator.validateTeam(userId, teamId)) {
             throw new NoAccessPermittedException(userId);
         }
 
-        return this.service.createPitcher(pitcher).applyStatisticsUpdate(statisticsService);
+        return this.service.createPitcher(pitcher, teamId).applyStatisticsUpdate(statisticsService);
     }
 
     @RequestMapping("/update")

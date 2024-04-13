@@ -21,8 +21,13 @@ public class PitcherServiceTests {
     @Mock
     private PitcherRepository repository;
 
+    @Mock
+    private TeamService teamService;
+
     @InjectMocks
     private PitcherService service;
+
+
 
     @Before
     public void setUp() {
@@ -34,10 +39,10 @@ public class PitcherServiceTests {
 
         // Arrange
         Pitcher player = new Pitcher();
-        when(repository.save(player)).thenReturn(player);
+        when(repository.save(any(Pitcher.class))).thenReturn(player);
 
         // Act
-        Pitcher returnedPlayer = this.service.createPitcher(player);
+        Pitcher returnedPlayer = this.service.createPitcher(player, 1L);
 
         // Assert
         assertEquals(player, returnedPlayer);

@@ -3,6 +3,7 @@ package com.dd.api.restapi.services;
 import com.dd.api.ai.agents.PitcherAgent;
 import com.dd.api.ai.scoring.PitcherScoringStrategy;
 import com.dd.api.restapi.models.Pitcher;
+import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
@@ -18,14 +19,20 @@ public class PitcherService {
     @Autowired
     private final PitcherRepository pitcherRepository;
 
+    @Autowired
+    private final TeamService teamService;
+
 
     @Autowired
-    public PitcherService(PitcherRepository pitcherRepository) {
+    public PitcherService(PitcherRepository pitcherRepository, TeamService teamService) {
         this.pitcherRepository = pitcherRepository;
+        this.teamService = teamService;
     }
 
     @Transactional
-    public Pitcher createPitcher(Pitcher pitcher) {
+    public Pitcher createPitcher(Pitcher pitcher, Long teamId) {
+        Team team = this.teamService.getTeamById(teamId);
+        pitcher.setTeam(team);
         return this.pitcherRepository.save(pitcher);
     }
 

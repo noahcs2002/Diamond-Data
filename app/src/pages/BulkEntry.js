@@ -7,7 +7,6 @@ import '../styles/BulkEntry.scss';
 import LoadingScreen from '../components/LoadingScreen';
 
 function BulkEntry() {
-  const [teams, setTeams] = useState([]);
   const [offensiveData, setOffensiveData] = useState([]);
   const [defensiveData, setDefensiveData] = useState([]);
   const [pitcherData, setPitcherData] = useState([]);
@@ -24,9 +23,8 @@ function BulkEntry() {
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
     const team = await fetchTeam(user);
-    const pitcherData = await fetchPitcherData(team, user)
+    await fetchPitcherData(team, user)
     const players = await fetchPlayers(team, user);
-
     await propogate(players);
     setLoading(false);
   }
