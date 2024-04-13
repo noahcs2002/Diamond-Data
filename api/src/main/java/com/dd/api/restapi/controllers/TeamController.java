@@ -68,13 +68,4 @@ public class TeamController {
 
         return this.service.delete(id);
     }
-
-    // No validation here, validating at a lower level
-    @RequestMapping("/get-all")
-    @GetMapping
-    public List<Team> getAll(@RequestParam Long userId) {
-        Objects.requireNonNull(userId);
-
-        return this.service.getAllTeams(userId);
-    }
 }
