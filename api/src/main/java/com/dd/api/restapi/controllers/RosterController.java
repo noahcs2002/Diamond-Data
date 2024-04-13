@@ -1,6 +1,7 @@
 package com.dd.api.restapi.controllers;
 
 import com.dd.api.auth.validators.Validator;
+import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.services.RosterService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
@@ -45,5 +46,15 @@ public class RosterController {
         }
 
         return this.rosterService.updateAssignment(playerId, newAssignment);
+    }
+
+    @PutMapping
+    @RequestMapping("/update-pitcher-assignment")
+    public Pitcher updatePitcherAssignment(@RequestParam Long pitcherId, @RequestParam Long userId, @RequestParam String newAssignment) throws NoAccessPermittedException {
+        if(!this.validator.validatePitcher(userId, pitcherId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.updatePitcherAssignment(pitcherId, newAssignment);
     }
 }

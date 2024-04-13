@@ -30,7 +30,7 @@ function PlayerManagement() {
     setLoading(false);
   }
 
-  const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"];
+  const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"];
 
   const fetchTeam = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
@@ -225,7 +225,8 @@ function PlayerManagement() {
       "walksAndHitsPerInningPitched": 0.0,
       "wildPitches": 0,
       "wins": 0,
-      "winningPercentage": 0.0
+      "winningPercentage": 0.0,
+      "position": "n/a"
     }
     console.log(pitcher);
 
@@ -410,6 +411,7 @@ const handlePositionChange = (position) => {
                       fullName={`${player.firstName} ${player.lastName}`}
                       onDelete={() => handleDeletePlayer(player.id)} 
                       onEdit={() => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
+                      positions={player.defensivePlayer.positions}
                     />
                   </div>
                 ))}
