@@ -126,17 +126,25 @@ function BulkEntry() {
     setNewGameData({ offensive: [], defensive: [], pitcher: [] });
   };
 
-  const makeColumnsEditable = (columns, type) => columns.map(column => ({
+  const cancelNewGame = () => {
+    setIsEnteringNewGame(false);
+    setNewGameData({ offensive: [], defensive: [], pitcher: [] });
+  };
+
+  const makeColumnsEditable = (columns, type) =>
+  columns.map(column => ({
     ...column,
-    Cell: ({ row, value }) => {
-      return isEnteringNewGame ? (
+    Cell: ({ row, value, column: { id } }) => {
+      return isEnteringNewGame && id !== 'firstName' && id !== 'lastName' ? (
         <input
           type="number"
           defaultValue={value}
-          onChange={e => handleInputChange(e, row.index, column.accessor, type)}
+          onChange={e => handleInputChange(e, row.index, id, type)}
         />
-      ) : value;
-    }
+      ) : (
+        <span>{value}</span>
+      );
+    },
   }));
 
   const offensiveColumns = React.useMemo(() => makeColumnsEditable([
@@ -223,110 +231,119 @@ function BulkEntry() {
         <h1 className="title">Bulk Entry</h1>
         <button onClick={() => setIsEnteringNewGame(true)}>New Game</button>
         {isEnteringNewGame && <button onClick={saveGameData}>Save Game</button>}
+        {isEnteringNewGame && <button onClick={cancelNewGame}>Cancel</button>}
         {}
         <h2>Offensive Data</h2>
-        <div className="tableWrapper">
-          <table {...offensiveTableInstance.getTableProps()}>
-            <thead>
-              {offensiveTableInstance.headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...offensiveTableInstance.getTableBodyProps()}>
-              {offensiveTableInstance.rows.map(row => {
-                offensiveTableInstance.prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => (
-                      <td {...cell.getCellProps()}>
-                        {isEnteringNewGame ? (
-                          <input
-                            type="number"
-                            defaultValue={cell.value}
-                            
-                          />
-                        ) : cell.render('Cell')}
-                      </td>
+          <div className="tableWrapper">
+            <table {...offensiveTableInstance.getTableProps()}>
+              <thead>
+                {offensiveTableInstance.headerGroups.map(headerGroup => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map(column => (
+                      <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                     ))}
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </thead>
+              <tbody {...offensiveTableInstance.getTableBodyProps()}>
+                {offensiveTableInstance.rows.map(row => {
+                  offensiveTableInstance.prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map(cell => (
+                        <td {...cell.getCellProps()}>
+                          {isEnteringNewGame && cell.column.id !== 'firstName' && cell.column.id !== 'lastName' ? (
+                            <input
+                              type="number"
+                              defaultValue={cell.value}
+                              onChange={e => handleInputChange(e, row.index, cell.column.id, 'offensive')}
+                            />
+                          ) : (
+                            cell.render('Cell')
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         {}
         <h2>Defensive Data</h2>
-        <div className="tableWrapper">
-          <table {...defensiveTableInstance.getTableProps()}>
-            <thead>
-              {defensiveTableInstance.headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...defensiveTableInstance.getTableBodyProps()}>
-              {defensiveTableInstance.rows.map(row => {
-                defensiveTableInstance.prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => (
-                      <td {...cell.getCellProps()}>
-                        {isEnteringNewGame ? (
-                          <input
-                            type="number"
-                            defaultValue={cell.value}
-                            
-                          />
-                        ) : cell.render('Cell')}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+<div className="tableWrapper">
+  <table {...defensiveTableInstance.getTableProps()}>
+    <thead>
+      {defensiveTableInstance.headerGroups.map(headerGroup => (
+        <tr {...headerGroup.getHeaderGroupProps()}>
+          {headerGroup.headers.map(column => (
+            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+          ))}
+        </tr>
+      ))}
+    </thead>
+    <tbody {...defensiveTableInstance.getTableBodyProps()}>
+      {defensiveTableInstance.rows.map(row => {
+        defensiveTableInstance.prepareRow(row);
+        return (
+          <tr {...row.getRowProps()}>
+            {row.cells.map(cell => (
+              <td {...cell.getCellProps()}>
+                {isEnteringNewGame && cell.column.id !== 'firstName' && cell.column.id !== 'lastName' ? (
+                  <input
+                    type="number"
+                    defaultValue={cell.value}
+                    onChange={e => handleInputChange(e, row.index, cell.column.id, 'defensive')}
+                  />
+                ) : (
+                  cell.render('Cell')
+                )}
+              </td>
+            ))}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
         {}
-        <h2>Pitcher Data</h2>
-        <div className="tableWrapper">
-          <table {...pitcherTableInstance.getTableProps()}>
-            <thead>
-              {pitcherTableInstance.headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...pitcherTableInstance.getTableBodyProps()}>
-              {pitcherTableInstance.rows.map(row => {
-                pitcherTableInstance.prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => (
-                      <td {...cell.getCellProps()}>
-                        {isEnteringNewGame ? (
-                          <input
-                            type="number"
-                            defaultValue={cell.value}
-                          />
-                        ) : cell.render('Cell')}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        
+<h2>Pitcher Data</h2>
+<div className="tableWrapper">
+  <table {...pitcherTableInstance.getTableProps()}>
+    <thead>
+      {pitcherTableInstance.headerGroups.map(headerGroup => (
+        <tr {...headerGroup.getHeaderGroupProps()}>
+          {headerGroup.headers.map(column => (
+            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+          ))}
+        </tr>
+      ))}
+    </thead>
+    <tbody {...pitcherTableInstance.getTableBodyProps()}>
+      {pitcherTableInstance.rows.map(row => {
+        pitcherTableInstance.prepareRow(row);
+        return (
+          <tr {...row.getRowProps()}>
+            {row.cells.map(cell => (
+              <td {...cell.getCellProps()}>
+                {isEnteringNewGame && cell.column.id !== 'firstName' && cell.column.id !== 'lastName' ? (
+                  <input
+                    type="number"
+                    defaultValue={cell.value}
+                    onChange={e => handleInputChange(e, row.index, cell.column.id, 'pitcher')}
+                  />
+                ) : (
+                  cell.render('Cell')
+                )}
+              </td>
+            ))}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
       </div>
       {showModal && <PlayerStatsModal player={selectedPlayer} onClose={() => setShowModal(false)} />}
       <Footer /></>}
