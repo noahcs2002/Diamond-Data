@@ -17,8 +17,8 @@ function Roster() {
   }, []);
 
   const prop = async (user) => {
-    const teams = await fetchTeams(user.id);
-    const players = await fetchPlayers(selectedTeam || teams[0], user);
+    const team = await fetchTeam(user.id);
+    const players = await fetchPlayers(team, user);
     const finalised = await assignPlayers(players);
     setPlayers(finalised);
     setLoading(false);
@@ -64,8 +64,8 @@ function Roster() {
     }
   }
 
-  const fetchTeams = async (userId) => {
-    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-all';
+  const fetchTeam = async (userId) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
     const url = new URL(endpoint);
     url.searchParams.append('userId', userId);
 
@@ -74,10 +74,9 @@ function Roster() {
       if(!res.ok) {
         alert('Response not ok');
       }
-      const loadedTeams = await res.json();
-      setTeams(loadedTeams);
-      setSelectedTeam(loadedTeams[0]);
-      return loadedTeams;
+      const loadedTeam = await res.json();
+      localStorage.setItem('team', JSON.stringify(loadedTeam));
+      return loadedTeam;
     }
     catch(_e) {
       console.error(_e);
