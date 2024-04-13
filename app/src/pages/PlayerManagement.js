@@ -9,6 +9,7 @@ import LoadingScreen from '../components/LoadingScreen'
 
 function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
+  const [pitcherData, setPitcherData] = useState([]);
   const [isAddingPlayer, setIsAddingPlayer] = useState(false);
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
@@ -22,7 +23,8 @@ function PlayerManagement() {
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
     const team = await fetchTeam(user);
-    await fetchPlayers(user, team||JSON.parse(localStorage.getItem('team')));
+    await fetchPlayers(user, team);
+    await fetchPitchers(user, team);
     setLoading(false);
   }
 
@@ -45,6 +47,28 @@ function PlayerManagement() {
       console.error('Error fetching teams:', error);
     }
   };
+
+  const fetchPitchers = async (user, team) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+
+    try {
+      const res = await fetch(url);
+
+      if(!res.ok) {
+        alert('Res not ok');
+      }
+
+      const data = await res.json();
+      setPitcherData(data);
+      return data;
+    }
+    catch(_e) {
+      alert(_e);
+    }
+  }
 
   const fetchPlayers = async (user, team) => {
    // if (!selectedTeam) return;
@@ -177,36 +201,78 @@ const handleDelete = async (id) => {
 };
 
 
-const handleEdit = async (playerId, updatedFullName) => {
+const handleEditPlayer = async (playerId, updatedFullName) => {
+  setLoading(true)
   try {
+    console.log('Updated full name: ', updatedFullName);
+
+    const [first, last] = updatedFullName.split(' ');
+    first.trim();
+    last.trim();
+
+    const firstNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-first-name`;
+    const lastNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-last-name`;
+
+    const firstNameURL = new URL(firstNameEndpoint);
+    const lastNameURL = new URL(lastNameEndpoint);
+
+    firstNameURL.searchParams.append('id', playerId);
+    lastNameURL.searchParams.append('id', playerId);
+
+    firstNameURL.searchParams.append('newFirstName', first)
+    lastNameURL.searchParams.append('newLastName', last)
+
+    try {
+      const firstNameRes = await fetch(firstNameURL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!firstNameRes.ok) {
+        console.log('error');
+      }
+
+      const lastNameRes = await fetch(lastNameURL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!firstNameRes.ok) {
+        console.log('error');
+      }
+    }
+    catch(_e) {
+      console.log(_e);
+    }
+
+  } 
+  catch (error) {
+    console.log('Error updating player:', error);
+  }
+  try {
+    window.location.reload();
+  }
+  catch(_e) {
+
+  }
+};
+
+const handleEditPitcher = async (playerId, updatedFullName) => {
+  try {
+    console.log('New name: ', updatedFullName)
+    console.log('Player id: ', playerId);
     // Extract first name and last name from updated full name
     const updatedFirstName = updatedFullName.split(' ')[0];
     const updatedLastName = updatedFullName.split(' ')[1];
 
-    const playerUpdateRequestModel = {
-      firstName: updatedFirstName,
-      lastName: updatedLastName,
-    };
-
     const endpoint = `http://localhost:8080/diamond-data/api/players/update`;
-    const url = new URL(endpoint);
-    url.searchParams.append('id', playerId);
 
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(playerUpdateRequestModel),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to update player with id: ${playerId}`);
-    }
-
-    console.log('Player updated successfully');
-    await fetchPlayers(); // Optionally update local state after successful update
-  } catch (error) {
+  } 
+  catch (error) {
     console.error('Error updating player:', error);
   }
 };
@@ -240,7 +306,25 @@ const handlePositionChange = (position) => {
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
                       onDelete={() => handleDelete(player.id)} 
-                      onEdit={(newFullName) => handleEdit(`${player.firstName} ${player.lastName}`, newFullName)}
+                      onEdit={(newFullName) => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className='positionContainer'>
+              <h2>Pitchers</h2>
+              <div className='icons'>
+                <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
+              </div>
+              <div className='playerGrid'>
+                {pitcherData.map(player => (
+                  <div className='playerItem' key={player.id}>
+                    <PlayerItem
+                      key={player.id}
+                      fullName={`${player.firstName} ${player.lastName}`}
+                      onDelete={() => handleDelete(player.id)} 
+                      onEdit={(newFullName) => handleEditPitcher(player.id, newFullName)}
                     />
                   </div>
                 ))}
