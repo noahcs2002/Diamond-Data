@@ -2,6 +2,8 @@ package com.dd.api.auth.controllers;
 
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.providers.AuthorizationService;
+import com.dd.api.restapi.models.Team;
+import com.dd.api.restapi.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,11 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/diamond-data/api/auth")
 public class AuthController {
 
+    @Autowired
     private final AuthorizationService service;
 
     @Autowired
-    public AuthController(AuthorizationService service) {
+    private final TeamService teamService;
+
+    @Autowired
+    public AuthController(AuthorizationService service, TeamService teamService) {
         this.service = service;
+        this.teamService = teamService;
     }
 
     @RequestMapping("/login")
@@ -24,8 +31,15 @@ public class AuthController {
 
     @RequestMapping("/sign-up")
     @PostMapping
-    public User signUp(@RequestBody User user) {
-        return this.service.createUser(user);
+    public User signUp(@RequestBody User user, @RequestParam String teamName) {
+        System.out.println(teamName);
+        Team team = new Team();
+        User res = this.service.createUser(user);
+        team.setName(teamName);
+        team.setUser(res);
+
+        this.teamService.createTeam(team);
+        return res;
     }
 
     @RequestMapping("/delete-account")

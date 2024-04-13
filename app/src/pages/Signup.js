@@ -8,7 +8,9 @@ function Signup() {
         email: '',
         password: '',
         confirmPassword: '',
-        teamname: ''
+        teamName: '',
+        name: '',
+        phoneNumber: ''
     });
     const nav = useNavigate();
 
@@ -26,9 +28,22 @@ function Signup() {
         let body = {};
         body.email = formData.email;
         body.password = formData.password;
+        body.name = formData.name;
+        body.phoneNumber = formData.phoneNumber || '';
+
+        if (formData.password !== formData.confirmPassword) {
+            alert('Passwords do not match')
+            return;
+        }
+
+        if (formData.password.length < 8) {
+            alert('Please use a password with at least 8 characters');
+            return;
+        }
 
         const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/sign-up';
         const url = new URL(endpointUrl);
+        url.searchParams.append('teamName', formData.teamName);
         await fetch(url, {
             method: 'POST',
             headers: {
@@ -38,6 +53,7 @@ function Signup() {
         })
         .then(response => response.json())
         .then(data => {
+            localStorage.setItem('sessionData', JSON.stringify(data));
             if (data) {
                 nav('/home', {
                     state: {
@@ -104,6 +120,23 @@ function Signup() {
                             value={formData.teamName}
                             onChange={handleChange}
                             required
+                        />
+                    </label>
+                    <label>Name:
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>Phone number:
+                        <input
+                            type="text"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
                         />
                     </label>
                     <button type="submit">Sign Up</button>
