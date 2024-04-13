@@ -86,15 +86,6 @@ function Insights() {
       <Navbar />
       <div className="insights">
         <h1 className="title">Team Insights</h1>
-        <div className="teamSelection">
-          <select
-            id="teamSelect"
-            value={selectedTeam}
-            onChange={e => setSelectedTeam(e.target.value)}
-          >
-            {teamOptions}
-          </select>
-        </div>
         <div className="content">
           <div className="left-column">
             <div className="column">
