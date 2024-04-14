@@ -1,7 +1,7 @@
 /* Styling for ConfirmModal.js */
 @import './Global.scss';
 
-.modal {
+.confirmModal {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,7 @@
     border: 1px solid var(--border-color);
   }
   
-  .modalContent {
+  .confirmModalContent {
     background-color: var(--background-color);
     // margin: 5% auto;
     padding: 20px;

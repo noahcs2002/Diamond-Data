@@ -5,8 +5,8 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, message }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal">
-      <div className="modalContent">
+    <div className="confirmModal">
+      <div className="confirmModalContent">
         <p className='confirmDeleteText'>{message}</p>
         <button onClick={onConfirm}>Yes</button>
         <button onClick={onClose}>No</button>
