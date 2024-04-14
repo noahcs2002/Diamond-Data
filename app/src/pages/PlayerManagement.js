@@ -438,54 +438,64 @@ const handlePositionChange = (position) => {
             </div>
           </div>
           {isAddingPlayer && (
-            <div className="addPlayerModal">
-              <input
-                type="text"
-                placeholder="First Name"
-                value={newPlayerFirstName}
-                onChange={e => setNewPlayerFirstName(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Last Name"
-                value={newPlayerLastName}
-                onChange={e => setNewPlayerLastName(e.target.value)}
-              />
-              <div className="positionsSelection">
-                <label>Positions:</label>
-                {allPositions.map((position) => (
-                  <div key={position}>
-                    <input type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
-                    <label htmlFor={position}>{position}</label>
-                  </div>
-                ))}
+            <div className="modal">
+              <div className='modalContent'>
+                <span className="close" onClick={() => setIsAddingPlayer(false)}>&times;</span>
+                <h2>Player Name:</h2>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  value={newPlayerFirstName}
+                  onChange={e => setNewPlayerFirstName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={newPlayerLastName}
+                  onChange={e => setNewPlayerLastName(e.target.value)}
+                />
+                <div className="positionsSelection">
+                  <h2>Positions:</h2>
+                  {allPositions.map((position) => (
+                    <div key={position}>
+                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
+                      <label htmlFor={position}>{position}</label>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={handlePlayerCreate}>Save</button>
+                {/* <button onClick={() => setIsAddingPlayer(false)}>Cancel</button> */}
               </div>
-              <button onClick={handlePlayerCreate}>Save</button>
-              <button onClick={() => setIsAddingPlayer(false)}>Cancel</button>
             </div>
           )}
           {isAddingPitcher && 
-          <div>
-            <input
-                type="text"
-                placeholder="First Name"
-                value={newPlayerFirstName}
-                onChange={e => setNewPlayerFirstName(e.target.value)}
-              />
+          <div className='modal'>
+            <div className='modalContent'>
+              <span className="close" onClick={() => setIsAddingPitcher(false)}>&times;</span>
+              <h2>Pitcher Name:</h2>
               <input
-                type="text"
-                placeholder="Last Name"
-                value={newPlayerLastName}
-                onChange={e => setNewPlayerLastName(e.target.value)}
-              />
-              <input type='radio' id='right-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('R')}}/>
-              <label> Right Handed </label>
+                  type="text"
+                  placeholder="First Name"
+                  value={newPlayerFirstName}
+                  onChange={e => setNewPlayerFirstName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={newPlayerLastName}
+                  onChange={e => setNewPlayerLastName(e.target.value)}
+                />
+                <div className='handSelections'>
+                  <h2>Left or Right Handed:</h2>
+                  <input type='radio' id='right-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('R')}}/>
+                  <label> Right Handed </label>
 
-              <input type='radio' id='left-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('L')}}/>
-              <label> Left Handed </label>
-
-              <button onClick={handlePitcherCreate}>Submit</button>
-              <button onClick={() => {setIsAddingPitcher(false)}}>Cancel</button>
+                  <input type='radio' id='left-handed-checkbox' name='preference-checkbox' onChange={() => {setPitcherPref('L')}}/>
+                  <label> Left Handed </label>
+                </div>
+                <button onClick={handlePitcherCreate}>Submit</button>
+                {/* <button onClick={() => {setIsAddingPitcher(false)}}>Cancel</button> */}
+              </div>
           </div>
           }
         </div> </>}
