@@ -76,6 +76,13 @@ function Settings() {
       try {
         await updateUserName(user.id, formData.name);
         await updateUserPhoneNumber(user.id, formData.phoneNumber);
+
+        localStorage.setItem('sessionData', JSON.stringify({
+          ...user,
+          name: formData.name,
+          phoneNumber: formData.phoneNumber
+        }));
+        
         alert('User settings updated successfully.');
       } catch (error) {
         console.error('An error occurred while updating settings:', error);
