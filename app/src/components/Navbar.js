@@ -5,19 +5,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import SettingsIcon from '@mui/icons-material/Settings'; // Import the Settings icon
 import '../styles/Navbar.scss';
+import ConfirmModal from './ConfirmModal';
 
 function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);
     const navigate = useNavigate();
+    const [showConfirmLogout, setShowConfirmLogout] = useState(false);
 
     const toggleNavbar = () => {
         setOpenLinks(!openLinks);
     };
 
     const handleLogout = () => {
-        if (window.confirm("Logout?")) {
-            navigate('/');
-        }
+        setShowConfirmLogout(true);
     };
 
     return (
@@ -55,6 +55,12 @@ function Navbar() {
                     <ReorderIcon />
                 </button> */}
             </div>
+            <ConfirmModal 
+            isOpen={showConfirmLogout}
+            message="Are you sure you want to logout?"
+            onClose={() => setShowConfirmLogout(false)}
+            onConfirm={() => navigate('/')} // Navigate to home on confirm
+        />
         </div>
     )
 }

@@ -145,7 +145,7 @@ function Signup() {
             </div>
 
             <footer>
-                &copy; 2024 diamonddata.com
+                2024 Diamond Data
             </footer>
         </div>
     );
