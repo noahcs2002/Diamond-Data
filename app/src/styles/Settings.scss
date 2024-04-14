@@ -167,7 +167,7 @@
       }
   }
 
-    .modal {
+    .settingsModal {
       display: block;
       position: fixed;
       // z-index: 1;
@@ -178,7 +178,7 @@
       overflow: auto;
       background-color: rgba(0, 0, 0, 0.4);
 
-      .modalContent {
+      .settingsModalContent {
         background-color: var(--background3-color);
         margin: 15% auto;
         padding: 20px;
@@ -186,11 +186,50 @@
         width: 50%; /* Adjusted for consistency */
         border-radius: 5px;
         max-height: 80vh;
+        min-height: 200px;
         overflow-y: auto;
         position: relative;
         display: flex;
         flex-direction: column;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        width: 700px;
+
+        .updateTeamButton {
+          margin-top: 10px;
+          padding: 5px 10px;
+          font-size: 1rem;
+          border-radius: 5px;
+          background-color: var(--button2-color);
+          color: var(--text-color);
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          display: inline-block;
+          width: 150px;
+      
+          &:hover {
+            background-color: var(--box-shadow-color);
+          }
+        }
+
+        .close {
+          /* Close button styles */
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          cursor: pointer;
+          font-size: 28px;
+          font-weight: bold;
+          color: var(--box-shadow-color);
+          &:hover {
+            color: black;
+          }
+        }
+
+        .changeTeamName {
+          // height: 30px;
+          font-size: 1.25rem;
+        }
 
         &::-webkit-scrollbar {
           width: 8px; 

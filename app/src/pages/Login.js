@@ -93,7 +93,7 @@ function Login() {
             </div>
 
             <footer>
-                &copy; 2024 diamonddata.com     {/* Just creating a basic footer for the page. */}
+                2024 Diamond Data     {/* Just creating a basic footer for the page. */}
             </footer>
         </div>
     );

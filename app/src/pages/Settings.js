@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/Settings.scss';
+import ConfirmModal from '../components/ConfirmModal';
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ function Settings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTeam, setCurrentTeam] = useState(null);
   const [activeTab, setActiveTab] = useState('userSettings');
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [isUserSettingsModalOpen, setIsUserSettingsModalOpen] = useState(false);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
@@ -70,13 +73,19 @@ function Settings() {
     }
   };
 
-  const handleSaveChanges = async () => {
-    const user = JSON.parse(localStorage.getItem('sessionData'));
-    if (user) {
-      try {
+  const handleSaveChangesClick = () => {
+    setConfirmMessage('Are you sure you want to save these changes?');
+    setIsUserSettingsModalOpen(true);
+  };
+
+  const confirmSaveChanges = async () => {
+    setIsModalOpen(false); // Close the modal
+    try {
+      const user = JSON.parse(localStorage.getItem('sessionData'));
+      if (user) {
         await updateUserName(user.id, formData.name);
         await updateUserPhoneNumber(user.id, formData.phoneNumber);
-
+  
         localStorage.setItem('sessionData', JSON.stringify({
           ...user,
           name: formData.name,
@@ -84,12 +93,12 @@ function Settings() {
         }));
         
         alert('User settings updated successfully.');
-      } catch (error) {
-        console.error('An error occurred while updating settings:', error);
-        alert('An error occurred while updating settings. Please try again.');
+      } else {
+        alert('User information not found. Please log in again.');
       }
-    } else {
-      alert('User information not found. Please log in again.');
+    } catch (error) {
+      console.error('An error occurred while updating settings:', error);
+      alert('An error occurred while updating settings. Please try again.');
     }
   };
  
@@ -208,7 +217,7 @@ function Settings() {
                 Phone Number:
                 <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
               </label>
-              <button type="button" onClick={handleSaveChanges} className="save-changes-btn">Save Changes</button>
+              <button type="button" onClick={handleSaveChangesClick} className="save-changes-btn">Save Changes</button>
             </form>
           </div>
         )}
@@ -225,14 +234,14 @@ function Settings() {
                 </div>
             </div>
             {isModalOpen && (
-              <div className="modal">
-                <div className="modalContent">
+              <div className="settingsModal">
+                <div className="settingsModalContent">
                   <span className="close" onClick={closeModal}>&times;</span>
                   {currentTeam ? (
                     <>
-                      <h2>Update and Delete Team</h2>
-                      <input type="text" value={currentTeam.name} onChange={(e) => setCurrentTeam({ ...currentTeam, name: e.target.value })} placeholder="Edit Team Name" />
-                      <button onClick={handleUpdateTeam}>Update Team</button>
+                      <h2>Update Team Name</h2>
+                      <input className='changeTeamName' type="text" value={currentTeam.name} onChange={(e) => setCurrentTeam({ ...currentTeam, name: e.target.value })} placeholder="Edit Team Name" />
+                      <button className='updateTeamButton' onClick={handleUpdateTeam}>Update Team</button>
                     </>
                   ) : (
                     <>
@@ -246,6 +255,12 @@ function Settings() {
           </div>
         )}
       </div>
+      <ConfirmModal 
+      isOpen={isUserSettingsModalOpen}
+      onClose={() => setIsUserSettingsModalOpen(false)}
+      onConfirm={confirmSaveChanges}
+      message={confirmMessage}
+      />
       <Footer />
     </div>
   );
