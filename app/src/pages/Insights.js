@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/Insights.scss';
+import ConfirmModal from '../components/ConfirmModal';
 
 function Insights() {
   const [teams, setTeams] = useState([]);
@@ -14,6 +15,8 @@ function Insights() {
   const [editedNoteIndex, setEditedNoteIndex] = useState(null); 
   const [userId, setUserId] = useState(null);
   const [editedNoteText, setEditedNoteText] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState(null);
 
   const teamOptions = teams.map(team => (
     <option key={team.id} value={team.id}>{team.name}</option>
@@ -119,19 +122,36 @@ function Insights() {
     }
   };
   
-  const deleteNote = async (noteId) => {
+  const deleteNote = async () => {
     try {
+      // Ensure noteToDelete is not null
+      if (!noteToDelete) return;
+
       const user = JSON.parse(localStorage.getItem('sessionData'));
       const endpoint = `http://localhost:8080/diamond-data/api/notes/delete`;
       const url = new URL(endpoint);
       url.searchParams.append('userId', user.id);
-      url.searchParams.append('noteId', noteId);
+      url.searchParams.append('noteId', noteToDelete.id);
       await axios.delete(url.toString());
-      const updatedNotes = reportNotes.filter(note => note.id !== noteId);
+      const updatedNotes = reportNotes.filter(note => note.id !== noteToDelete.id);
       setReportNotes(updatedNotes);
+
+      // Close modal and reset noteToDelete
+      closeModal();
     } catch (error) {
       console.error('Error deleting note:', error);
+      closeModal();
     }
+  };
+
+  const openModal = (note) => {
+    setIsModalOpen(true);
+    setNoteToDelete(note);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setNoteToDelete(null);
   };
 
   const handleNoteInputChange = (event, isEditing) => {
@@ -148,7 +168,6 @@ function Insights() {
       <div className="insights">
         <h1 className="title">Team Insights</h1>
         <div className="content">
-          <div className="left-column">
             <div className="column">
               <h2>AI-generated Roster Lineup</h2>
               <div className="scrollable-cards">
@@ -165,48 +184,54 @@ function Insights() {
             </div>
             <div className="column">
               <h2>Team Records</h2>
-              <p>Team records data goes here...</p>
+              <p className='teamRecordsData'>Team records data goes here...</p>
             </div>
             <div className="column">
-  <h2>Coach's Notes</h2>
-  <div>
-    <textarea
-      value={newReportNote}
-      onChange={handleNoteInputChange}
-      placeholder="Type your note here..."
-    />
-    <button onClick={addNote}>Add Note</button>
-  </div>
-  {}
-  {console.log(reportNotes)}
-  {reportNotes.map((note, index) => (
-  <div className="note-container" key={note.id}>
-    {editedNoteIndex === index ? (
-      <div>
-        <textarea
-          value={editedNoteText} 
-          onChange={(e) => handleNoteInputChange(e, true)} 
-          placeholder="Edit your note here..."
-        />
-        <div className="note-actions">
-          <button className="save-note" onClick={() => editNote(note.id, editedNoteText)}>Save</button>
-          <button className="cancel-edit" onClick={() => setEditedNoteIndex(null)}>Cancel</button>
-        </div>
-      </div>
-    ) : (
-      <div>
-        <p className="note-text">{note.text}</p>
-        <div className="note-actions">
-          <button className="edit-note" onClick={() => setEditedNoteIndex(index)}>Edit</button>
-          <button className="delete-note" onClick={() => deleteNote(note.id)}>Delete</button>
-        </div>
-      </div>
-    )}
-  </div>
-))}
-</div>
-          </div>
-          
+              <h2>Coach's Notes</h2>
+              <div>
+                <textarea className='addNote'
+                  value={newReportNote}
+                  onChange={handleNoteInputChange}
+                  placeholder="Type your note here..."
+                />
+                <button className='addNoteButton' onClick={addNote}>Add Note</button>
+              </div>
+              {}
+              {console.log(reportNotes)}
+              {reportNotes.map((note, index) => (
+              <div className="note-container" key={note.id}>
+                {editedNoteIndex === index ? (
+                  <div>
+                    <textarea className='notes'
+                      value={editedNoteText} 
+                      onChange={(e) => handleNoteInputChange(e, true)} 
+                      placeholder="Edit your note here..."
+                    />
+                    <div className="note-actions">
+                      <button className="save-note" onClick={() => editNote(note.id, editedNoteText)}>Save</button>
+                      <button className="cancel-edit" onClick={() => setEditedNoteIndex(null)}>Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="note-text">{note.text}</p>
+                    <div className="note-actions">
+                      <button className="edit-note" onClick={() => setEditedNoteIndex(index)}>Edit</button>
+                      <button className="delete-note" onClick={() => openModal(note)}>Delete</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+            </div>
+          {isModalOpen && (
+          <ConfirmModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            onConfirm={deleteNote}
+            message="Are you sure you want to delete this note?"
+          />
+        )}
         </div>
       </div>
       <Footer />

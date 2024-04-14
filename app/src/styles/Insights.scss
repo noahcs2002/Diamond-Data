@@ -5,25 +5,13 @@
 .insights {
   width: 100%;
   height: auto;
+  min-height: 750px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: 100;
   background: linear-gradient(0deg, var(--background-color), var(--background3-color));
-  
-  .teamSelection select {
-    padding: 2px;
-    font-size: 25px;
-    border-radius: 5px;
-    width: auto;
-    margin: 20px 0; 
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto; 
-    background-color: #FFF; 
-    border: 1px solid #ccc; 
-  }
 
   .title {
     font-size: 4rem;
@@ -38,116 +26,161 @@
     width: 90%;
     margin: 20px 0;
 
-    .note-container {
-      margin-bottom: 20px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    
-    .note-text {
-      margin-bottom: 10px;
-    }
-    
-    .note-actions {
-      display: flex;
-      align-items: center;
-    }
-    
-    .edit-note,
-    .delete-note {
-      margin-right: 10px;
-      cursor: pointer;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: #fff;
-    }
-    
-    .edit-note:hover,
-    .delete-note:hover {
-      background-color: #0056b3;
-    }
-    
-    textarea {
-      width: 100%;
-      height: 100px;
-      resize: none;
-      margin-bottom: 10px;
-    }
-    
-    .left-column {
-      display: flex;
-      flex-direction: row;
-      width: 60%;
+    .column {
+      flex: 1;
+      margin-right: 20px; 
+      padding: 20px;
+      border: 2px solid var(--border2-color); 
+      border-radius: 10px; 
       
-      .column {
-        flex: 1;
-        margin-right: 20px; 
-        padding: 20px;
-        border: 2px solid var(--border2-color); 
-        border-radius: 10px; /* Rounded corners */
-        
-        h2 {
-          margin-bottom: 30px;
-        }
-        
-        .scrollable-cards {
-          height: 400px; 
-          overflow-y: auto;
+      h2 {
+        margin-bottom: 30px;
+      }
+      
+      .scrollable-cards {
+        height: 400px; 
+        overflow-y: auto;
+        padding-right: 10px; 
 
-          padding-right: 10px; 
-          &::-webkit-scrollbar {
+        &::-webkit-scrollbar {
+        width: 10px; 
+        }
+  
+        &::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-color); 
+        border-radius: 4px; 
+        }
+  
+        &::-webkit-scrollbar-track {
+        background-color: var(--scrollbar2-color); 
+        border-radius: 4px; 
+        }
+
+        .card {
+          margin-bottom: 10px;
+          padding: 10px;
+          border: 2px solid var(--border2-color); 
+          border-radius: 10px; 
+        }
+      }
+
+      .teamRecordsData {
+        font-size: 1rem;
+      }
+
+      .addNote {
+        width: 100%;
+        height: 100px;
+        resize: none;
+        margin-bottom: 10px;
+        background-color: var(--background-color);
+        font-size: 1rem;
+        border-radius: 5px;
+
+        &::-webkit-scrollbar {
           width: 10px; 
           }
     
           &::-webkit-scrollbar-thumb {
           background-color: var(--scrollbar-color); 
-          border-radius: 4px; 
+          border-radius: 5px; 
           }
     
           &::-webkit-scrollbar-track {
           background-color: var(--scrollbar2-color); 
-          border-radius: 4px; 
-        }
-
-          .card {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 2px solid var(--border2-color); 
-            border-radius: 10px; 
+          border-radius: 5px; 
           }
-        }
       }
-    }
-    
-    .right-column {
-      width: 35%;
-      display: flex;
-      flex-direction: column;
-      .comparison {
+
+      .addNoteButton {
+        padding: 5px 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        background-color: var(--button2-color);
+        color: var(--text-color);
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+        width: auto;
         margin-bottom: 20px;
-        padding: 20px;
-        border: 2px solid var(--border2-color); 
-        border-radius: 10px; 
-
-        .comparison-cards {
-          display: flex;
-          justify-content: space-around; 
-          margin-top: 10px; 
-          
-          .card {
-            width: calc(50% - 40px); 
-            border: 2px solid var(--border2-color); 
-            border-radius: 10px; 
-            padding: 10px;
-          }
+        
+        &:hover {
+          background-color: var(--box-shadow-color);
         }
       }
 
-     
-    
+      .note-container {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid var(--border2-color);
+        border-radius: 5px;
+
+        .notes {
+          width: 99%;
+          height: 50px;
+          resize: none;
+          margin-bottom: 10px;
+          background-color: var(--background-color);
+          font-size: 1rem;
+          border-radius: 5px;
+
+          &::-webkit-scrollbar {
+            width: 10px; 
+            }
+      
+            &::-webkit-scrollbar-thumb {
+            background-color: var(--scrollbar-color); 
+            border-radius: 5px; 
+            }
+      
+            &::-webkit-scrollbar-track {
+            background-color: var(--scrollbar2-color); 
+            border-radius: 5px; 
+            }
+        }
+
+        .note-actions {
+          display: flex;
+          align-items: center;
+
+          .save-note,
+          .cancel-edit {
+            margin-right: 10px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--button2-color);
+            color: var(--text-color);
+          }
+            
+          .save-note:hover,
+          .cancel-edit:hover {
+            background-color: var(--box-shadow-color);
+          }
+
+          .edit-note,
+          .delete-note {
+            margin-right: 10px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--button2-color);
+            color: var(--text-color);
+          }
+            
+          .edit-note:hover,
+          .delete-note:hover {
+            background-color: var(--box-shadow-color);
+          }
+        }
+
+        .note-text {
+          margin-bottom: 10px;
+        }
       }
     }
   }
+}
