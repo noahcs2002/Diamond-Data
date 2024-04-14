@@ -165,28 +165,6 @@ function Settings() {
     }
   };
 
-  const handleDeleteTeam = async (id) => {
-    const url = new URL(`http://localhost:8080/diamond-data/api/teams/delete`)    
-    const user = JSON.parse(localStorage.getItem('sessionData'));
-    url.searchParams.append('id', id);
-    url.searchParams.append('userId', user.id); 
-    console.log(url);
-  
-    try {
-      const response = await fetch(url, { method: 'DELETE' });
-  
-      if (!response.ok) {
-        throw new Error(`Failed to delete team with id: ${id}`);
-      }
-
-      await fetchTeam(user); 
-      closeModal(); 
-    } 
-    catch (error) {
-      console.error('Error deleting team:', error);
-    }
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -239,15 +217,12 @@ function Settings() {
             <h1>Team Management</h1>
             <div className="teamList">
               <h2>Edit your Team</h2>
-              {team.map((teamItem) => (
-                <div className="teamItem" key={teamItem.id}>
-                  <div className="teamName">{teamItem.name}</div>
+              <div className="teamItem" key={team.id}>
+                  <div className="teamName">{team.name}</div>
                   <div className='current-team-buttons'>
-                    <button onClick={() => selectTeam(teamItem)}>Edit</button>
-                    <button onClick={() => handleDeleteTeam(teamItem.id)}>Delete</button>
+                    <button onClick={() => selectTeam(team)}>Edit</button>
                   </div>
                 </div>
-              ))}
             </div>
             {isModalOpen && (
               <div className="modal">
@@ -258,7 +233,6 @@ function Settings() {
                       <h2>Update and Delete Team</h2>
                       <input type="text" value={currentTeam.name} onChange={(e) => setCurrentTeam({ ...currentTeam, name: e.target.value })} placeholder="Edit Team Name" />
                       <button onClick={handleUpdateTeam}>Update Team</button>
-                      <button onClick={() => handleDeleteTeam(currentTeam.id)}>Delete Team</button>
                     </>
                   ) : (
                     <>
