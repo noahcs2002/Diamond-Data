@@ -132,8 +132,8 @@ function PlayerStats() {
       accessor: "balks",
     },
     {
-      Header: "BATTERS FACES",
-      accessor: "battersFaces",
+      Header: "BATTERS FACED",
+      accessor: "battersFaced",
     },
     {
       Header: "BLOWN SAVES",
@@ -301,7 +301,7 @@ function PlayerStats() {
     },
     {
       Header: "STOLEN BASE ATTEMPTS",
-      accessor: "atolenBaseAttempts",
+      accessor: "stolenBaseAttempts",
     },
     {
       Header: "TOTAL CHANCES",
