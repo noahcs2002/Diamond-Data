@@ -23,10 +23,59 @@ function PlayerManagement() {
   }, []);
 
   const prop = async () => {
-    const user = JSON.parse(localStorage.getItem('sessionData'));
+    let team = {};
+    let players = [];
+    let pitchers = {};
+    const user = await JSON.parse(localStorage.getItem('sessionData'));
+
+    try {
+      team = await JSON.parse(localStorage.getItem('cachedTeam'));
+
+      if (team === null || team === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      team = await fetchTeam(user);
+    }
+
+    try {
+      players = await JSON.parse(localStorage.getItem('cachedPlayers'))
+      if(players === null || players === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      players = await fetchPlayers(user, team);
+    }
+
+    try {
+      pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+      if (pitchers === null || pitchers === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      pitchers = await fetchPitchers(user, team);
+    }
+
+    if(team === undefined || pitchers === undefined || players === undefined) {
+      window.location.reload();
+    }
+
+    setPitcherData(pitchers);
+    setRawPlayerData(players);
+    setLoading(false);
+  }
+
+  const fullRefresh = async () => {
+    setLoading(true)
+    const user = await JSON.parse(localStorage.getItem('sessionData'));
     const team = await fetchTeam(user);
-    await fetchPlayers(user, team);
-    await fetchPitchers(user, team);
+    const players = await fetchPlayers(user, team);
+    const pitcher = await fetchPitchers(user, team);
+    setRawPlayerData(players);
+    setPitcherData(pitcher);
     setLoading(false);
   }
 
@@ -42,7 +91,7 @@ function PlayerManagement() {
         throw new Error('Network error: ');
       }
       const data = await response.json();
-      localStorage.setItem('team', data);
+      localStorage.setItem('cachedTeam', data);
       return data
     } 
     catch (error) {
@@ -66,6 +115,7 @@ function PlayerManagement() {
 
       const data = await res.json();
       setPitcherData(data);
+      localStorage.setItem('cachedPitchers', JSON.stringify(data));
       return data;
     }
     catch(_e) {
@@ -87,7 +137,7 @@ function PlayerManagement() {
         throw new Error("Network error");
       }
       const data = await response.json();
-      setRawPlayerData(data);
+      localStorage.setItem('cachedPlayers', JSON.stringify(data));
     } 
     catch (error) {
       console.error('Error fetching players:', error);
@@ -173,7 +223,6 @@ function PlayerManagement() {
       if (!response.ok) {
         throw new Error("Failed to create player");
       }
-      const newPlayer = await response.json();
 
     } 
     catch (error) {
@@ -183,6 +232,7 @@ function PlayerManagement() {
     setNewPlayerFirstName('');
     setNewPlayerLastName('');
     setSelectedPositions([]);
+    await fetchPlayers(user, team);
     window.location.reload();
   };
 
@@ -250,13 +300,12 @@ function PlayerManagement() {
       if(!res.ok) {
         console.log("res not okay: ", res);
       }
-      window.location.reload();
     }
     catch(_e) {
       console.error(_e);
     }
-
-    // window.location.reload();
+    await fetchPitchers(user, team);
+    window.location.reload();
   }
 
   const handleDeletePlayer = async (id) => {
@@ -265,12 +314,29 @@ function PlayerManagement() {
     url.searchParams.append('id', id);
 
     try {
-      const response = await fetch(url, { method: 'DELETE' });
-      console.log(response);
+      await fetch(url, { method: 'DELETE' });
     } 
     catch (error) {
       console.error('Error deleting player in handleDeletePlayer:', error);
     }
+
+    let team = {};
+    let user = {};
+
+    try {
+      user = JSON.parse(localStorage.getItem('sessionData'));
+      team = JSON.parse(localStorage.getItem('cachedTeam'));
+
+      if(team === undefined || team === null) {
+        throw new Error();
+      }
+    }
+    catch(_e) {
+      team = await fetchTeam(user);
+    }
+
+    // await fullRefresh();
+    await fetchPlayers(user, team);
     window.location.reload()
   };
 
@@ -289,7 +355,22 @@ function PlayerManagement() {
     catch(_e) {
       console.error(_e);
     }
-    window.location.reload();
+
+    let team = {};
+
+    try {
+      team = JSON.parse(localStorage.getItem('cachedTeam'));
+
+      if(team === undefined || team === null) {
+        throw new Error();
+      }
+    }
+    catch(_e) {
+      team = await fetchTeam(user);
+    }
+
+    await fetchPitchers(user, team);
+    window.location.reload()
   }
 
   const handleEditPlayer = async (playerId, updatedFullName) => {
