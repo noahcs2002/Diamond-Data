@@ -43,7 +43,6 @@ function TeamStats() {
       players = await fetchPlayers();
     }
 
-    setTeam(team);
     setPlayers(players);
     setLoading(false);
   }
@@ -59,8 +58,8 @@ function TeamStats() {
         throw new Error('Network error');
       }
       const data = await response.json();
-      setTeam(data); 
       localStorage.setItem('cachedTeam', JSON.stringify(data));
+      setTeam(data);
     } 
     catch (error) {
       console.error('Error fetching teams:', error);
@@ -80,7 +79,6 @@ function TeamStats() {
       console.error('Error fetching players:', error);
     }
   };
-
 
   const aggregateTeamStats = (teamId) => {
     const teamPlayers = players.filter(player => player.offensivePlayer.team.id === teamId);
