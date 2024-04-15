@@ -300,6 +300,7 @@ function PlayerManagement() {
       if(!res.ok) {
         console.log("res not okay: ", res);
       }
+      // window.location.reload();
     }
     catch(_e) {
       console.error(_e);

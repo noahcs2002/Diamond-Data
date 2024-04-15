@@ -18,9 +18,33 @@ function TeamStats() {
 
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
-    console.log(user);
-    await fetchTeam(user);
-    await fetchPlayers();
+    let team = {};
+    let players = {};
+
+    try {
+      team = await JSON.parse(localStorage.getItem('cachedTeam'));
+
+      if (team === null || team === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      team = await fetchTeam(user);
+    }
+
+    try {
+      players = await JSON.parse(localStorage.getItem('cachedPlayers'))
+
+      if (players === undefined || players === null) {
+        throw new Error();
+      }
+    }
+    catch {
+      players = await fetchPlayers();
+    }
+
+    setTeam(team);
+    setPlayers(players);
     setLoading(false);
   }
 
@@ -35,8 +59,8 @@ function TeamStats() {
         throw new Error('Network error');
       }
       const data = await response.json();
-      console.log(data);
       setTeam(data); 
+      localStorage.setItem('cachedTeam', JSON.stringify(data));
     } 
     catch (error) {
       console.error('Error fetching teams:', error);
@@ -50,6 +74,7 @@ function TeamStats() {
         throw new Error('Failed to fetch players');
       }
       const data = await response.json();
+      localStorage.setItem('cachedPlayers', JSON.stringify(data));
       setPlayers(data);
     } catch (error) {
       console.error('Error fetching players:', error);
