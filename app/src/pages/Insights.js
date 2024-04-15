@@ -56,6 +56,14 @@ function Insights() {
     fetchUserData();
   }, []);
 
+  
+useEffect(() => {
+  const notesFromLocalStorage = JSON.parse(localStorage.getItem('reportNotes'));
+  if (notesFromLocalStorage) {
+    setReportNotes(notesFromLocalStorage);
+  }
+}, []);
+
   useEffect(() => {
     const fetchNotes = async () => {
       try {
@@ -68,13 +76,14 @@ function Insights() {
         url.searchParams.append('userId', user.id);
         const response = await axios.get(url.toString());
         setReportNotes(response.data);
+
+        localStorage.setItem('reportNotes', JSON.stringify(response.data));
       } catch (error) {
         console.error('Error fetching notes:', error);
       }
     };
     fetchNotes();
   }, [selectedTeam, userId]);
-
 
 
   const handlePlayerSelectionChange = (index, playerId) => {
@@ -98,6 +107,7 @@ function Insights() {
       const response = await axios.post(endpoint, requestBody, { params });
       setReportNotes([...reportNotes, { id: response.data.id, text: newReportNote }]);
       setNewReportNote('');
+      localStorage.setItem('reportNotes', JSON.stringify([...reportNotes, { id: response.data.id, text: newReportNote }]));
     } catch (error) {
       console.error('Error adding note:', error);
     }
