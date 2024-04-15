@@ -21,10 +21,46 @@ function PlayerStats() {
 
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
-    const team = await fetchTeam(user);
-    await fetchPitcherData(team, user)
-    const players = await fetchPlayers(team, user);
+
+    let team = {};
+    let players = {};
+    let pitchers = {};
+
+    try {
+     team = await JSON.parse(localStorage.getItem('cachedTeam'))
+
+     if(team === undefined || team === null) {
+      throw new Error();
+     }
+    }
+    catch {
+      team = await fetchTeam(user);
+    }
+
+    try {
+      players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+
+      if (players === undefined || players === null) {
+        throw new Error();
+      }
+    }
+    catch {
+      players = await fetchPlayers(user, team);
+    }
+
+    try {
+      pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+
+      if (pitchers === undefined || pitchers === null) {
+        throw new Error();
+      }
+    }
+    catch {
+      pitchers = await fetchPitcherData(team, user);
+    }
+
     await propogate(players);
+    setPitcherData(pitchers);
     setLoading(false);
   }
 
@@ -60,7 +96,7 @@ function PlayerStats() {
       }
 
       const data = await res.json();
-      localStorage.setItem('team', data);
+      localStorage.setItem('cachedTeam', data);
       return data
     }
     catch(_e) {
@@ -68,11 +104,12 @@ function PlayerStats() {
     }
   }
 
-  const fetchPlayers = async (team, user) => {
+  const fetchPlayers = async (user, team) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
     url.searchParams.append('teamId', team.id);
+    console.log(url);
 
     try {
       const res = await fetch(url);
@@ -82,7 +119,8 @@ function PlayerStats() {
       }
 
       const players = await res.json();
-      console.log('Players: ', players);
+      console.log(players);
+      localStorage.setItem('cachedPlayers', JSON.stringify(players));
       return players;
     }
     catch(_e) {
@@ -103,6 +141,7 @@ function PlayerStats() {
       }
       const data = await res.json();
       setPitcherData(data);
+      localStorage.setItem('cachedPitchers', JSON.stringify(data));
       return data;
     }
     catch(_e) {
