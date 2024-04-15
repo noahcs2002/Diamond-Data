@@ -104,11 +104,12 @@ function PlayerStats() {
     }
   }
 
-  const fetchPlayers = async (team, user) => {
+  const fetchPlayers = async (user, team) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
     url.searchParams.append('teamId', team.id);
+    console.log(url);
 
     try {
       const res = await fetch(url);
@@ -118,6 +119,7 @@ function PlayerStats() {
       }
 
       const players = await res.json();
+      console.log(players);
       localStorage.setItem('cachedPlayers', JSON.stringify(players));
       return players;
     }
