@@ -17,6 +17,68 @@ function Insights() {
   const [editedNoteText, setEditedNoteText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
+  const [lineupPlayers, setLineupPlayers] = useState([]);
+
+  const dummyTeamRecords = [
+    { name: 'New York Yankees', wins: 98, losses: 64 },
+    { name: 'Los Angeles Dodgers', wins: 105, losses: 57 },
+    { name: 'Houston Astros', wins: 95, losses: 67 },
+    { name: 'Atlanta Braves', wins: 88, losses: 73 },
+    { name: 'Chicago White Sox', wins: 93, losses: 69 },
+    { name: 'San Francisco Giants', wins: 107, losses: 55 },
+    { name: 'Toronto Blue Jays', wins: 91, losses: 71 },
+    { name: 'St Louis Cardinals', wins: 106, losses: 56 },
+   
+  ];
+
+  useEffect(() => {
+    fetchLineupPlayers();
+  }, []);
+
+  const renderLineupPlayers = () => {
+    console.log('Lineup Players:', lineupPlayers);
+    return lineupPlayers.map((player, index) => (
+      <div className="card" key={index}>
+        {index + 1}. {player.firstName} {player.lastName}
+      </div>
+    ));
+  };
+
+  const fetchLineupPlayers = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem('sessionData'));
+      const team = await fetchTeam(user);
+      if (!team || !user) return;
+  
+      const lineupPlayers = await fetchPlayers(team, user);
+      
+      const filteredLineupPlayers = lineupPlayers.filter(player => player.assignment === 'Line-Up');
+  
+      setLineupPlayers(filteredLineupPlayers);
+    } catch (error) {
+      console.error('Error fetching lineup players:', error);
+    }
+  };
+
+  const fetchPlayers = async (team, user) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/rosters/get';
+
+    const url = new URL(endpoint);
+    url.searchParams.append('teamId', team.id);
+    url.searchParams.append('userId', user.id);
+
+    try{
+      const res = await fetch(url);
+      if (!res.ok) {
+        alert('Res not ok');
+      }
+      const players = await res.json();
+      return players;
+    }
+    catch(_e) {
+      console.error(_e);
+    }
+  }
 
   const teamOptions = teams.map(team => (
     <option key={team.id} value={team.id}>{team.name}</option>
@@ -134,7 +196,7 @@ useEffect(() => {
   
   const deleteNote = async () => {
     try {
-      // Ensure noteToDelete is not null
+
       if (!noteToDelete) return;
 
       const user = JSON.parse(localStorage.getItem('sessionData'));
@@ -146,7 +208,7 @@ useEffect(() => {
       const updatedNotes = reportNotes.filter(note => note.id !== noteToDelete.id);
       setReportNotes(updatedNotes);
 
-      // Close modal and reset noteToDelete
+
       closeModal();
     } catch (error) {
       console.error('Error deleting note:', error);
@@ -178,23 +240,21 @@ useEffect(() => {
       <div className="insights">
         <h1 className="title">Team Insights</h1>
         <div className="content">
-            <div className="column">
-              <h2>AI-generated Roster Lineup</h2>
-              <div className="scrollable-cards">
-                <div className="card">Player 1 Info</div>
-                <div className="card">Player 2 Info</div>
-                <div className="card">Player 3 Info</div>
-                <div className="card">Player 4 Info</div>
-                <div className="card">Player 5 Info</div>
-                <div className="card">Player 6 Info</div>
-                <div className="card">Player 7 Info</div>
-                <div className="card">Player 8 Info</div>
-                <div className="card">Player 9 Info</div>
-              </div>
+        <div className="column">
+            <h2>Team Lineup</h2>
+            <div className="scrollable-cards">
+              {renderLineupPlayers()}
             </div>
+          </div>
             <div className="column">
-              <h2>Team Records</h2>
-              <p className='teamRecordsData'>Team records data goes here...</p>
+            <h2>Team Records</h2>
+              <ul className='teamRecordsData'>
+                {dummyTeamRecords.map((team, index) => (
+                <li key={index}>
+                  <strong>{team.name}:</strong> {team.wins}-{team.losses}
+                </li>
+              ))}
+              </ul>
             </div>
             <div className="column">
               <h2>Coach's Notes</h2>
