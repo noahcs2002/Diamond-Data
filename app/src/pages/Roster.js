@@ -192,6 +192,17 @@ function Roster() {
       catch(_e) {
         console.error(_e);
       }
+
+      if (newAssignment === 'Line-Up') {
+        const storedLineup = JSON.parse(localStorage.getItem('lineup')) || [];
+        const updatedLineup = [...storedLineup, playerId];
+        localStorage.setItem('lineup', JSON.stringify(updatedLineup));
+      } else if (newAssignment !== 'Line-Up' && playerPosition.trim() === 'Line-Up') {
+        const storedLineup = JSON.parse(localStorage.getItem('lineup')) || [];
+        const updatedLineup = storedLineup.filter(id => id !== playerId);
+        localStorage.setItem('lineup', JSON.stringify(updatedLineup));
+      }
+
     }
 
     setPlayers(prevPlayers => {

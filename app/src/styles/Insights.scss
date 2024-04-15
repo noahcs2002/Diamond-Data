@@ -19,6 +19,40 @@
     margin-bottom: 10px;
     color: var(--text3-color);
   }
+
+  
+  .playerListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the top */
+    flex-grow: 1; /* Allow the container to grow vertically */
+  }
+
+  .playerGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .playerCard {
+    background-color: var(--background3-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px var(--box-shadow-color);
+    width: 300px; 
+    text-align: center; 
+    padding-bottom: 10px;
+  }
+
+  .playerList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 0;
+    overflow-y: auto; /* For scrolling */
+  }
+
   
   .content {
     display: flex;
