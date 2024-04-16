@@ -3,13 +3,11 @@ import '../styles/Roster.scss'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
+import { compile } from 'sass';
 
 function Roster() {
-  const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState();
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
- 
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
@@ -17,12 +15,85 @@ function Roster() {
   }, []);
 
   const prop = async (user) => {
-    const team = await fetchTeam(user.id);
-    const players = await fetchPlayers(team, user);
-    const pitchers = await fetchPitchers(team, user);
-    const finalised = await assignPlayers(players);
-    const assignedPitchers = await assignPitchers(pitchers);
-    const combined = await combine(finalised, assignedPitchers)
+
+    let team = undefined 
+    let players = undefined
+    let pitchers = undefined
+    let finalised = undefined
+    let assignedPitchers = undefined
+    let combined = undefined
+
+    try {
+      team = await JSON.parse(localStorage.getItem('cachedTeam'));
+
+      if (team === null || team === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      team = await fetchTeam(user.id);
+    }
+
+    try {
+      players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+
+      if (players === null || players === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      players = await fetchPlayers(team, user);
+    }
+
+    try {
+      pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+
+      if (pitchers === null || pitchers === undefined) {
+        throw new Error();
+      }
+    }
+
+    catch {
+      pitchers = await fetchPitchers(team, user);
+    }
+
+    try {
+      finalised = await JSON.parse(localStorage.getItem('cachedAssignedPlayers'));
+
+      if (finalised === null || finalised === undefined) {
+        throw new Error();
+      }
+    }
+
+    catch {
+      finalised = await assignPlayers(players);
+    }
+
+    console.log(finalised);
+
+    try {
+      assignedPitchers = await JSON.parse(localStorage.getItem('cachedAssignedPitchers'));
+
+      if (assignedPitchers === null || assignedPitchers === undefined) {
+        throw new Error();
+      }
+    }
+
+    catch {
+      assignedPitchers = await assignPitchers(pitchers);
+    }
+
+    try {
+      combined = await JSON.parse(localStorage.getItem('cachedCombined'));
+
+      if (combined === null || combined === undefined) {
+        throw new Error();
+      } 
+    }
+    catch {
+      combined = await combine(finalised, assignedPitchers)
+    }
+
     setPlayers(combined);
     setLoading(false);
   }
@@ -38,6 +109,7 @@ function Roster() {
       roster.push(p)
     })
 
+    localStorage.setItem('cachedCombined', JSON.stringify(roster));
     return roster;
   } 
 
@@ -55,6 +127,7 @@ function Roster() {
       }
 
       const data = await res.json();
+      localStorage.setItem('cachedPitchers', JSON.stringify(data));
       return data;
     }
     catch(_e) {
@@ -77,6 +150,7 @@ function Roster() {
       }
       res.push(p);
     })
+    localStorage.setItem('cachedAssignedPitchers', JSON.stringify(res));
     return res;
   }
 
@@ -95,6 +169,7 @@ function Roster() {
           };
           roster.push(p);
         });
+        localStorage.setItem('cachedAssignedPlayers', JSON.stringify(roster));
         return roster;
   } 
 
@@ -111,6 +186,7 @@ function Roster() {
         alert('Res not ok');
       }
       const players = await res.json();
+      localStorage.setItem('cachedPlayers', JSON.stringify(players));
       return players;
     }
     catch(_e) {
@@ -129,90 +205,38 @@ function Roster() {
         alert('Response not ok');
       }
       const loadedTeam = await res.json();
-      localStorage.setItem('team', JSON.stringify(loadedTeam));
+      localStorage.setItem('cachedTeam', JSON.stringify(loadedTeam));
       return loadedTeam;
     }
     catch(_e) {
       console.error(_e);
     }
   };
-
     
-  const teamOptions = teams.map(team => (
-    <option key={team.id} value={team.id}>{team.name}</option>
-  ));
-
   const handleDragStart = (e, playerId, playerPosition) => {
     e.dataTransfer.setData("playerId", playerId);
     e.dataTransfer.setData('playerPosition', playerPosition)
   };
 
   const handleDrop = async (e, newAssignment) => {
-    setLoading(true);
-    e.preventDefault();
-    const user = JSON.parse(localStorage.getItem('sessionData'));
+    console.log('e (relevant info): ', e.dataTransfer.getData('playerId'))
+    console.log('newAssignment: ', newAssignment);
 
-    const playerId = e.dataTransfer.getData("playerId");
-    const playerPosition = e.dataTransfer.getData('playerPosition');
-    console.log(playerPosition);
+    const id = e.dataTransfer.getData('playerId');
 
-    if(playerPosition.trim() === 'Pitcher') {
-      const endpoint = 'http://localhost:8080/diamond-data/api/rosters/update-pitcher-assignment';
-      const url = new URL(endpoint);
-      url.searchParams.append('pitcherId', playerId)
-      url.searchParams.append('userId', user.id)
-      url.searchParams.append('newAssignment', newAssignment);
+    const combined = await JSON.parse(localStorage.getItem('cachedCombined'));
 
-      try {
-        const res = await fetch(url, {method: 'PUT'})
-        if (!res.ok) {
-          console.log('Res not okay: ', res);
-        }
-        window.location.reload();
+    console.log(combined);
+
+    combined.forEach((p) => {
+      if (p.id == id) {
+        console.log('Player hit: ', p)
+        p.assignment = newAssignment;
       }
-      catch(_e) {
-        console.error(_e);
-      }
-    }
-    else {
+    })
 
-      const endpoint = 'http://localhost:8080/diamond-data/api/rosters/update-assignment';
-      const url = new URL(endpoint);
-      url.searchParams.append('playerId', playerId)
-      url.searchParams.append('userId', user.id)
-      url.searchParams.append('newAssignment', newAssignment);
-
-      try{
-        const res = await fetch(url);
-        if (!res.ok) {
-          alert('Res not ok');
-        }
-        window.location.reload();
-      }
-      catch(_e) {
-        console.error(_e);
-      }
-
-      if (newAssignment === 'Line-Up') {
-        const storedLineup = JSON.parse(localStorage.getItem('lineup')) || [];
-        const updatedLineup = [...storedLineup, playerId];
-        localStorage.setItem('lineup', JSON.stringify(updatedLineup));
-      } else if (newAssignment !== 'Line-Up' && playerPosition.trim() === 'Line-Up') {
-        const storedLineup = JSON.parse(localStorage.getItem('lineup')) || [];
-        const updatedLineup = storedLineup.filter(id => id !== playerId);
-        localStorage.setItem('lineup', JSON.stringify(updatedLineup));
-      }
-
-    }
-
-    setPlayers(prevPlayers => {
-      const updatedPlayers = prevPlayers.map(player => 
-        player.id === playerId ? { ...player, assignment: newAssignment } : player
-      );
-    
-      localStorage.setItem('players', JSON.stringify(updatedPlayers));
-      return updatedPlayers;
-    });
+    localStorage.setItem('cachedCombined', JSON.stringify(combined));
+    setPlayers(combined);
   };
 
   const handleDragOver = (e) => {
@@ -229,6 +253,38 @@ function Roster() {
       </div>
     ));
 
+    const saveRoster = async () => {
+      console.log('Save button clicked');
+      const newRoster = await JSON.parse(localStorage.getItem('cachedCombined'));
+      console.log('newRoster: ', newRoster);
+      const user = await JSON.parse(localStorage.getItem('sessionData'));
+      let team = await JSON.parse(localStorage.getItem('cachedTeam'));
+
+      if (team === undefined) {
+        team = await fetchTeam(useEffect);
+      }
+
+      const endpoint = 'http://localhost:8080/diamond-data/api/rosters/bulk-update';
+      const url = new URL(endpoint);
+      url.searchParams.append('teamId', team.id);
+      url.searchParams.append('userId', user.id);
+
+      const res = await fetch(url, {
+        body: localStorage.getItem('cachedCombined'),
+        method: 'PUT',
+        headers: {
+          'Content-Type':'application/json'
+        }
+      })
+
+      if(!res.ok) {
+        console.error('res not okay: ', res);
+      }
+
+      const data = await res.json();
+      console.log('returned result: ', data);
+
+    }
 
     return (
       <div>
@@ -236,6 +292,7 @@ function Roster() {
         <Navbar />
         <div className="roster">
           <h1 className="title">Roster</h1>
+          <button onClick={saveRoster}> Save </button>
           <div className="columnHeaders">
             <h2>40 Man Roster</h2>
             <h2>Line-Up</h2>

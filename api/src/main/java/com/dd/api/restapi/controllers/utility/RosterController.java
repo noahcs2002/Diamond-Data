@@ -3,6 +3,8 @@ package com.dd.api.restapi.controllers.utility;
 import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
+import com.dd.api.restapi.requestmodels.BulkPositionUpdateRequestModel;
+import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import com.dd.api.restapi.services.RosterService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +58,20 @@ public class RosterController {
         }
 
         return this.rosterService.updatePitcherAssignment(pitcherId, newAssignment);
+    }
+
+    @PutMapping
+    @RequestMapping("bulk-update")
+    public List<TruncatedPlayerModel> bulkUpdate(@RequestParam Long userId,
+                                                     @RequestParam Long teamId,
+                                                     @RequestBody List<TruncatedPlayerModel> models) throws NoAccessPermittedException {
+        if(!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        System.out.println(userId);
+        System.out.println(teamId);
+        System.out.println(models);
+        return this.rosterService.performBulkPositionUpdate(models);
     }
 }

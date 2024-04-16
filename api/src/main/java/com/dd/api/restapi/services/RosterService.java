@@ -4,6 +4,8 @@ import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.restapi.repositories.PlayerRepository;
+import com.dd.api.restapi.requestmodels.BulkPositionUpdateRequestModel;
+import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,5 +60,18 @@ public class RosterService {
                 })
                 .toList()
                 .get(0);
+    }
+
+    public List<TruncatedPlayerModel> performBulkPositionUpdate(List<TruncatedPlayerModel> models) {
+        models.forEach(p -> {
+             if (p.getPosition().equalsIgnoreCase("pitcher")) {
+                 this.updatePitcherAssignment(p.getId(), p.getAssignment());
+             }
+             else {
+                 this.updateAssignment(p.getId(), p.getAssignment());
+             }
+        });
+
+        return models;
     }
 }
