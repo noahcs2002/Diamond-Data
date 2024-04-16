@@ -2,8 +2,10 @@ package com.dd.api.restapi.services;
 
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
+import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.restapi.repositories.PlayerRepository;
+import com.dd.api.restapi.requestmodels.BulkPlayerChangeRequestModel;
 import com.dd.api.restapi.requestmodels.BulkPositionUpdateRequestModel;
 import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import jakarta.transaction.Transactional;
@@ -22,9 +24,21 @@ public class RosterService {
     private final PitcherRepository pitcherRepository;
 
     @Autowired
-    public RosterService(PlayerRepository repository, PitcherRepository pitcherRepository) {
+    private final PlayerService playerService;
+
+    @Autowired
+    private final TeamService teamService;
+
+    @Autowired
+    private final PitcherService pitcherService;
+
+    @Autowired
+    public RosterService(PlayerRepository repository, PitcherRepository pitcherRepository, PlayerService playerService, TeamService teamService, PitcherService pitcherService) {
         this.repository = repository;
         this.pitcherRepository = pitcherRepository;
+        this.playerService = playerService;
+        this.teamService = teamService;
+        this.pitcherService = pitcherService;
     }
 
     @Transactional
@@ -73,5 +87,34 @@ public class RosterService {
         });
 
         return models;
+    }
+
+    public BulkPlayerChangeRequestModel bulkUpdatePlayers(BulkPlayerChangeRequestModel model, Long teamId) {
+        model.getPlayers()
+                .forEach(p -> {
+                    Player instance = this.repository.findById(p.getId()).orElse(null);
+
+                    if (instance == null) {
+                        Team team = this.teamService.getTeamById(teamId);
+                        this.playerService.createPlayer(p, team);
+                    }
+                    else {
+                        this.repository.save(instance);
+                    }
+                });
+
+        model.getPitchers()
+                .forEach(p -> {
+                    Pitcher instance = this.pitcherRepository.findById(p.getId()).orElse(null);
+
+                    if (instance == null) {
+                        this.pitcherService.createPitcher(p, teamId);
+                    }
+                    else {
+                        this.pitcherRepository.save(instance);
+                    }
+                });
+
+        return model;
     }
 }

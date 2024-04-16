@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
+import SavingScreen from '../components/SavingScreen'
 
 function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
@@ -17,6 +18,8 @@ function PlayerManagement() {
   const [isAddingPitcher, setIsAddingPitcher] = useState(false);
   const [loading, setLoading] = useState(true);
   const [pitcherPref, setPitcherPref] = useState('');
+  const [playerCreationCount, setPlayerCreationCount] = useState(0);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     prop()
@@ -65,17 +68,8 @@ function PlayerManagement() {
 
     setPitcherData(pitchers);
     setRawPlayerData(players);
-    setLoading(false);
-  }
-
-  const fullRefresh = async () => {
-    setLoading(true)
-    const user = await JSON.parse(localStorage.getItem('sessionData'));
-    const team = await fetchTeam(user);
-    const players = await fetchPlayers(user, team);
-    const pitcher = await fetchPitchers(user, team);
-    setRawPlayerData(players);
-    setPitcherData(pitcher);
+    console.log(pitchers);
+    console.log(players);
     setLoading(false);
   }
 
@@ -147,6 +141,7 @@ function PlayerManagement() {
 
   const handlePlayerCreate = async () => {
     const playerCreationRequestModel = {
+        id: playerCreationCount,
         firstName: newPlayerFirstName,
         lastName: newPlayerLastName,
         offensivePlayer: {
@@ -206,38 +201,19 @@ function PlayerManagement() {
         assignment: 'n/a'
     };
 
-    const user = JSON.parse(localStorage.getItem('sessionData'));
-    const team = await fetchTeam(user)
+    const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+    players.push(playerCreationRequestModel);
+    localStorage.setItem('cachedPlayers', JSON.stringify(players));
+    setRawPlayerData(players);
 
-    const endpoint = `http://localhost:8080/diamond-data/api/players/create`;
-    const url = new URL(endpoint);
-    url.searchParams.append('teamId', team.id);
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(playerCreationRequestModel),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to create player");
-      }
-
-    } 
-    catch (error) {
-      console.error("Error creating player:", error);
-    }
     setIsAddingPlayer(false);
     setNewPlayerFirstName('');
     setNewPlayerLastName('');
     setSelectedPositions([]);
-    await fetchPlayers(user, team);
-    window.location.reload();
+    setPlayerCreationCount(playerCreationCount + 1);
   };
 
   const handlePitcherCreate = async () => {
-    setLoading(true);
     const pitcher = {
       "firstName": newPlayerFirstName,
       "lastName": newPlayerLastName,
@@ -278,212 +254,121 @@ function PlayerManagement() {
       "winningPercentage": 0.0,
       "assignment": "n/a"
     }
-    console.log(pitcher);
 
-    const user = JSON.parse(localStorage.getItem('sessionData'));
-    const team = await fetchTeam(user) 
-
-    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/create';
-    const url = new URL(endpoint);
-    url.searchParams.append('userId', user.id);
-    url.searchParams.append('teamId', team.id);
-    
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(pitcher),
-      })
-
-      if(!res.ok) {
-        console.log("res not okay: ", res);
-      }
-      // window.location.reload();
-    }
-    catch(_e) {
-      console.error(_e);
-    }
-    await fetchPitchers(user, team);
-    window.location.reload();
+    const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+    pitchers.push(pitcher);
+    localStorage.setItem('cachedPitchers', JSON.stringify(pitchers));
+    setPitcherData(pitchers);
+    setPitcherPref('');
+    setIsAddingPitcher(false);
+    setNewPlayerFirstName('')
+    setNewPlayerLastName('')
+    setPlayerCreationCount(playerCreationCount + 1);
   }
 
   const handleDeletePlayer = async (id) => {
-    setLoading(true);
-    const url = new URL(`http://localhost:8080/diamond-data/api/players/delete`);
-    url.searchParams.append('id', id);
-
-    try {
-      await fetch(url, { method: 'DELETE' });
-    } 
-    catch (error) {
-      console.error('Error deleting player in handleDeletePlayer:', error);
-    }
-
-    let team = {};
-    let user = {};
-
-    try {
-      user = JSON.parse(localStorage.getItem('sessionData'));
-      team = JSON.parse(localStorage.getItem('cachedTeam'));
-
-      if(team === undefined || team === null) {
-        throw new Error();
-      }
-    }
-    catch(_e) {
-      team = await fetchTeam(user);
-    }
-
-    // await fullRefresh();
-    await fetchPlayers(user, team);
-    window.location.reload()
+    const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+    const newPlayers = players.filter(item => item.id !== id);
+    console.log(newPlayers);
+    setRawPlayerData(newPlayers);
+    localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));
   };
 
   const handleDeletePitcher = async (id) => {
-    setLoading(true);
-    const user = JSON.parse(localStorage.getItem('sessionData'));
-    const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/delete'
-    const url = new URL(endpoint);
-    url.searchParams.append('id', id);
-    url.searchParams.append('userId', user.id);
-
-    try {
-      const res = await fetch(url, {method:'DELETE'});
-      console.log(res);
-    }
-    catch(_e) {
-      console.error(_e);
-    }
-
-    let team = {};
-
-    try {
-      team = JSON.parse(localStorage.getItem('cachedTeam'));
-
-      if(team === undefined || team === null) {
-        throw new Error();
-      }
-    }
-    catch(_e) {
-      team = await fetchTeam(user);
-    }
-
-    await fetchPitchers(user, team);
-    window.location.reload()
+    const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+    const newPitchers = pitchers.filter(p => p.id !== id);
+    console.log(newPitchers);
+    setPitcherData(newPitchers);
+    localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers));
   }
 
   const handleEditPlayer = async (playerId, updatedFullName) => {
-    setLoading(true)
-    try {
-      console.log('Updated full name: ', updatedFullName);
-
-      const [first, last] = updatedFullName.split(' ');
-      first.trim();
-      last.trim();
-
-      const firstNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-first-name`;
-      const lastNameEndpoint = `http://localhost:8080/diamond-data/api/players/change-last-name`;
-
-      const firstNameURL = new URL(firstNameEndpoint);
-      const lastNameURL = new URL(lastNameEndpoint);
-
-      firstNameURL.searchParams.append('id', playerId);
-      lastNameURL.searchParams.append('id', playerId);
-
-      firstNameURL.searchParams.append('newFirstName', first)
-      lastNameURL.searchParams.append('newLastName', last)
-
-      try {
-        const firstNameRes = await fetch(firstNameURL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!firstNameRes.ok) {
-          console.log('error');
-        }
-
-        const lastNameRes = await fetch(lastNameURL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!firstNameRes.ok) {
-          console.log('error');
-        }
-      }
-      catch(_e) {
-        console.log(_e);
-      }
-
-    } 
-    catch (error) {
-      console.log('Error updating player:', error);
-    }
-    try {
-      window.location.reload();
-    }
-    catch(_e) {
-
-    }
-  };
-
-const handleEditPitcher = async (playerId, updatedFullName) => {
-  setLoading(true);
-  try {
-    console.log('New name: ', updatedFullName)
-    console.log('Player id: ', playerId);
-    // Extract first name and last name from updated full name
+    const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
     const [first, last] = updatedFullName.split(' ');
 
-    const endpoint = `http://localhost:8080/diamond-data/api/pitchers/change-name`;
+    players.map((p) => {
+      if (p.id === playerId) {
+        p.firstName = first;
+        p.lastName = last;
+      }
+    })
+
+    setRawPlayerData(players);
+    localStorage.setItem('cachedPlayers', JSON.stringify(players));
+  };
+
+  const handleEditPitcher = async (playerId, updatedFullName) => {
+    const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+    const [first, last] = updatedFullName.split(' ');
+
+    pitchers.map((p) => {
+      if (p.id === playerId) {
+        p.firstName = first;
+        p.lastName = last;
+      }
+    })
+
+    setPitcherData(pitchers);
+    localStorage.setItem('cachedPitchers', JSON.stringify(pitchers)); 
+  };
+
+  const handlePositionChange = (position) => {
+    setSelectedPositions(prev => {
+      if (prev.includes(position)) {
+        return prev.filter(p => p !== position);
+      } else {
+        return [...prev, position];
+      }
+    });
+  };
+
+  const saveChanges = async () => {
+    setSaving(true);
+    const user = await JSON.parse(localStorage.getItem('sessionData'));
+
+    let team = {};
+    try {
+      team = await JSON.parse(localStorage.getItem('cachedTeam'));
+    }
+    catch {
+      team = await fetchTeam(user);
+    }
+
+    const endpoint = 'http://localhost:8080/diamond-data/api/rosters/bulk-player-changes';
     const url = new URL(endpoint);
-    url.searchParams.append('id', playerId);
-    url.searchParams.append('firstName', first)
-    url.searchParams.append('lastName', last)
-    url.searchParams.append('userId', JSON.parse(localStorage.getItem('sessionData')).id)
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+    console.log(url);
 
-    const res = await fetch(url);
-    
-    if (!res.ok) {
-      console.log('Res not ok: ', res)
-    }
+    const res = await fetch(url, {
+       body: JSON.stringify({players: rawPlayerData, pitchers: pitcherData}),
+       method: 'PUT',
+       headers: {
+        'Content-Type':'application/json'
+       }
+    })
 
-    setLoading(false);
-    window.location.reload();
-  } 
-  catch (error) {
-    console.error('Error updating player:', error);
+    const j = await res.json();
+    console.log(j);
+
+
+    setPlayerCreationCount(0);
+    setSaving(false);
   }
-};
-
-const handlePositionChange = (position) => {
-  setSelectedPositions(prev => {
-    if (prev.includes(position)) {
-      return prev.filter(p => p !== position);
-    } else {
-      return [...prev, position];
-    }
-  });
-};
 
   return (
       <div>
         {loading ? <LoadingScreen/> : <>
+        {saving ? <SavingScreen/> : <>
         <Navbar />
         <div className="playerManagement">
           <h1 className='title'>Player Management</h1>
           <div className="positionList">
             <div className='positionContainer'>
+              <button onClick={saveChanges}>Save</button>
               <h2>Position Players</h2>
               <div className='icons'>
-                <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' />
+                {playerCreationCount < 15 ? <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' /> : <> <div>Please save your changes to add a new player</div></> }
               </div>
               <div className='playerGrid'>
                 {rawPlayerData.map(player => (
@@ -502,7 +387,7 @@ const handlePositionChange = (position) => {
             <div className='positionContainer'>
               <h2>Pitchers</h2>
               <div className='icons'>
-                <AddCircleIcon onClick={() => setIsAddingPitcher(true)} className='addCircleIcon' />
+                {playerCreationCount < 15 ? <AddCircleIcon onClick={() => setIsAddingPitcher(true)} className='addCircleIcon' />: <div>Please save your changes to add a new pitcher </div>}
               </div>
               <div className='playerGrid'>
                 {pitcherData.map(player => (
@@ -580,7 +465,7 @@ const handlePositionChange = (position) => {
               </div>
           </div>
           }
-        </div> </>}
+        </div> </>}</>}
         <Footer />
       </div>
   );
