@@ -111,19 +111,99 @@ function BulkEntry() {
     }
   }
 
-  const handleInputChange = (e, rowIndex, accessor, type) => {
+  const handleInputChange = (e, rowIndex, accessor, type, playerId) => {
     const updatedData = [...newGameData[type]];
     if (!updatedData[rowIndex]) {
-      updatedData[rowIndex] = {};
+      updatedData[rowIndex] = {id: playerId};
     }
     updatedData[rowIndex][accessor] = parseInt(e.target.value, 10);
-    setNewGameData({ ...newGameData, [type]: updatedData });
+    setNewGameData({ ...newGameData, [type]: updatedData});
   };
 
   const saveGameData = async () => {
-    console.log('Saving game data:', newGameData);
+    setLoading(true);
+    // Iterate over offensive data
+    newGameData.offensive.forEach(offense => {
+      // Find the offensive player with the matching id
+      const player = offensiveData.find(player => player.id === offense.id);
+      if (player) {
+        // Update the player's stats
+        Object.keys(offense).forEach(stat => {
+          if (stat !== 'id') { // Skip 'id' property
+            player[stat] = offense[stat];
+          }
+        });
+      }
+    });
+
+    // Iterate over defensive data
+    newGameData.defensive.forEach(defense => {
+      // Find the defensive player with the matching id
+      const player = defensiveData.find(player => player.id === defense.id);
+      if (player) {
+        // Update the player's stats
+        Object.keys(defense).forEach(stat => {
+          if (stat !== 'id') { // Skip 'id' property
+            player[stat] = defense[stat];
+          }
+        });
+      }
+    });
+
+    // Iterate over pitcher data
+    newGameData.pitcher.forEach(pitcher => {
+      // Find the pitcher player with the matching id
+      const player = pitcherData.find(player => player.id === pitcher.id);
+      if (player) {
+        // Update the player's stats
+        Object.keys(pitcher).forEach(stat => {
+          if (stat !== 'id') { // Skip 'id' property
+            player[stat] = pitcher[stat];
+          }
+        });
+      }
+    });
+    const endpoint = 'http://localhost:8080/diamond-data/api/stats/record-new-game';
+    const user = await JSON.parse(localStorage.getItem('sessionData'));
+    let team = {};
+
+    try {
+      team = await JSON.parse(localStorage.getItem('cachedTeam'));
+      if (team === null || team === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      team = await fetchTeam(user);
+    }
+
+    const url = new URL(endpoint);
+    url.searchParams.append('teamId', team.id);
+    url.searchParams.append('userId', user.id);
+    const body = {newPitchers: pitcherData, newOffensivePlayers: offensiveData, newDefensivePlayers: defensiveData};
+    console.log(body);
+
+    try {
+      const res = await fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type' : 'application/json'
+        }
+      })
+
+      console.log(res);
+    }
+    catch(_e) {
+      console.error(_e);
+    }
+
+
     setIsEnteringNewGame(false);
     setNewGameData({ offensive: [], defensive: [], pitcher: [] });
+    await fetchPitcherData(team, user);
+    await fetchPlayers(team, user);
+    setLoading(false);
   };
 
   const cancelNewGame = () => {
@@ -139,7 +219,7 @@ function BulkEntry() {
         <input
           type="number"
           defaultValue={value}
-          onChange={e => handleInputChange(e, row.index, id, type)}
+          onChange={e => handleInputChange(e, row.index, id, type, row.original.id)}
         />
       ) : (
         <span>{value}</span>
@@ -173,6 +253,7 @@ function BulkEntry() {
     { Header: "TRIPLES", accessor: "triples" },
     { Header: "WALKS", accessor: "walks" },
     { Header: "WALK OFFS", accessor: "walkOffs" },
+    // { Header: "ID", accessor: "id" }
   ], 'offensive'), []);
 
   const defensiveColumns = React.useMemo(() => makeColumnsEditable([
@@ -188,6 +269,7 @@ function BulkEntry() {
     { Header: "PUTOUTS", accessor: "putouts" },
     { Header: "TOTAL CHANCES", accessor: "totalChances" },
     { Header: "TRIPLE PLAYS", accessor: "triplePlays" },
+    // { Header: "ID", accessor: "id" }
   ], 'defensive'), []);
 
   const pitcherColumns = React.useMemo(() => makeColumnsEditable([
@@ -216,12 +298,12 @@ function BulkEntry() {
     { Header: "WILD PITCHES", accessor: "wildPitches" },
     { Header: "WINS", accessor: "wins" },
     { Header: "WALKS", accessor: "walks" },
+    // { Header: "ID", accessor: "id" }
   ], 'pitcher'), []);
 
   const offensiveTableInstance = useTable({ columns: offensiveColumns, data: offensiveData });
   const defensiveTableInstance = useTable({ columns: defensiveColumns, data: defensiveData });
   const pitcherTableInstance = useTable({ columns: pitcherColumns, data: pitcherData });
-
  
   return (
     <div>
@@ -256,7 +338,7 @@ function BulkEntry() {
                             <input
                               type="number"
                               defaultValue={cell.value}
-                              onChange={e => handleInputChange(e, row.index, cell.column.id, 'offensive')}
+                              onChange={e => handleInputChange(e, row.index, cell.column.id, 'offensive', row.original.id)}
                             />
                           ) : (
                             cell.render('Cell')
@@ -293,7 +375,7 @@ function BulkEntry() {
                   <input
                     type="number"
                     defaultValue={cell.value}
-                    onChange={e => handleInputChange(e, row.index, cell.column.id, 'defensive')}
+                    onChange={e => handleInputChange(e, row.index, cell.column.id, 'defensive', row.original.id)}
                   />
                 ) : (
                   cell.render('Cell')
@@ -331,7 +413,7 @@ function BulkEntry() {
                   <input
                     type="number"
                     defaultValue={cell.value}
-                    onChange={e => handleInputChange(e, row.index, cell.column.id, 'pitcher')}
+                    onChange={e => handleInputChange(e, row.index, cell.column.id, 'pitcher', row.original.id)}
                   />
                 ) : (
                   cell.render('Cell')

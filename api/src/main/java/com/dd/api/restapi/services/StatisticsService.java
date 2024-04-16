@@ -3,8 +3,12 @@ package com.dd.api.restapi.services;
 import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Pitcher;
+import com.dd.api.restapi.requestmodels.StatisticUpdateRequestModel;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StatisticsService {
@@ -17,6 +21,31 @@ public class StatisticsService {
 
     @Autowired
     private final PitcherService pitcherService;
+
+    public boolean runUpdates(Long teamId, StatisticUpdateRequestModel update ) {
+
+        try {
+            update.getNewDefensivePlayers()
+                    .forEach(p -> {
+                        this.defensivePlayerService.updateDefensivePlayer(p.getId(), p);
+                    });
+
+            update.getNewPitchers()
+                    .forEach(p -> {
+                        this.pitcherService.updatePitcher(p.getId(), p);
+                    });
+
+            update.getNewOffensivePlayers()
+                    .forEach(p -> {
+                        this.offensivePlayerService.update(p.getId(), p);
+                    });
+            return true;
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
 
     public StatisticsService(OffensivePlayerService offensivePlayerService, DefensivePlayerService defensivePlayerService, PitcherService pitcherService) {
         this.offensivePlayerService = offensivePlayerService;
