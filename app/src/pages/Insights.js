@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/Insights.scss';
 import ConfirmModal from '../components/ConfirmModal';
+import LoadingScreen from '../components/LoadingScreen';
 
 function Insights() {
   const [teams, setTeams] = useState([]);
@@ -18,6 +19,7 @@ function Insights() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [lineupPlayers, setLineupPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const dummyTeamRecords = [
     { name: 'New York Yankees', wins: 98, losses: 64 },
@@ -32,8 +34,25 @@ function Insights() {
   ];
 
   useEffect(() => {
-    fetchLineupPlayers();
+    setLoading(true);
+    prop();
   }, []);
+
+  const prop = async () => {
+    let lineup = [];
+    try {
+      lineup = await JSON.parse(localStorage.getItem('cachedLineupPlayers'));
+
+      if (lineup === null || lineup === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      lineup = await fetchLineupPlayers();
+    }
+    setLineupPlayers(lineup);
+    setLoading(false);
+  }
 
   const renderLineupPlayers = () => {
     console.log('Lineup Players:', lineupPlayers);
@@ -53,9 +72,11 @@ function Insights() {
       const lineupPlayers = await fetchPlayers(team, user);
       
       const filteredLineupPlayers = lineupPlayers.filter(player => player.assignment === 'Line-Up');
-  
+      localStorage.setItem('cachedLineupPlayers', JSON.stringify(filteredLineupPlayers));
       setLineupPlayers(filteredLineupPlayers);
-    } catch (error) {
+      return filteredLineupPlayers;
+    } 
+    catch (error) {
       console.error('Error fetching lineup players:', error);
     }
   };
@@ -236,6 +257,7 @@ useEffect(() => {
 
   return (  
     <div>
+    {loading ? <LoadingScreen/> : <>
       <Navbar />
       <div className="insights">
         <h1 className="title">Team Insights</h1>
@@ -304,7 +326,7 @@ useEffect(() => {
         )}
         </div>
       </div>
-      <Footer />
+      <Footer /></>}
     </div>
   );
 }

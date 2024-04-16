@@ -3,9 +3,13 @@ package com.dd.api.restapi.controllers.utility;
 import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
+import com.dd.api.restapi.requestmodels.BulkPlayerChangeRequestModel;
+import com.dd.api.restapi.requestmodels.BulkPositionUpdateRequestModel;
+import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import com.dd.api.restapi.services.RosterService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,5 +60,54 @@ public class RosterController {
         }
 
         return this.rosterService.updatePitcherAssignment(pitcherId, newAssignment);
+    }
+
+    @PutMapping
+    @RequestMapping("bulk-update")
+    public List<TruncatedPlayerModel> bulkUpdate(@RequestParam Long userId,
+                                                     @RequestParam Long teamId,
+                                                     @RequestBody List<TruncatedPlayerModel> models) throws NoAccessPermittedException {
+        if(!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        System.out.println(userId);
+        System.out.println(teamId);
+        System.out.println(models);
+        return this.rosterService.performBulkPositionUpdate(models);
+    }
+
+    @PutMapping
+    @RequestMapping("/bulk-player-changes")
+    public BulkPlayerChangeRequestModel bulkPlayerChange(@RequestParam Long userId,
+                                                         @RequestParam Long teamId,
+                                                         @RequestBody BulkPlayerChangeRequestModel model)
+            throws NoAccessPermittedException {
+        if (!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.bulkUpdatePlayers(model, teamId);
+    }
+
+    @DeleteMapping
+    @RequestMapping("/bulk-delete-pitchers")
+    public boolean bulkDeletePitchers(@RequestParam Long userId, @RequestParam Long teamId, @RequestBody List<Pitcher> pitchers) throws NoAccessPermittedException {
+        if(!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.bulkDeletePitchers(pitchers);
+    }
+
+    @DeleteMapping
+    @RequestMapping("/bulk-delete-players")
+    public boolean bulkDeletePlayers(@RequestParam Long userId, @RequestParam  Long teamId, @RequestBody List<Player> playersToDelete) throws NoAccessPermittedException {
+
+        if(!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.bulkDeletePlayers(playersToDelete);
     }
 }
