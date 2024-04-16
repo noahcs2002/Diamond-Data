@@ -3,11 +3,12 @@ import '../styles/Roster.scss'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
-import { compile } from 'sass';
+import SavingScreen from '../components/SavingScreen';
 
 function Roster() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
@@ -254,6 +255,7 @@ function Roster() {
     ));
 
     const saveRoster = async () => {
+      setSaving(true);
       console.log('Save button clicked');
       const newRoster = await JSON.parse(localStorage.getItem('cachedCombined'));
       console.log('newRoster: ', newRoster);
@@ -283,11 +285,13 @@ function Roster() {
 
       const data = await res.json();
       console.log('returned result: ', data);
+      setSaving(false);
 
     }
 
     return (
       <div>
+        {saving ? <SavingScreen/> : <>
         {loading ? <LoadingScreen/> : <>
         <Navbar />
         <div className="roster">
@@ -339,7 +343,7 @@ function Roster() {
               </div>
             </div>
           </div>
-        </div> </>}
+        </div> </>}</>}
         <Footer />
       </div>
     );
