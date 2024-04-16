@@ -1,4 +1,4 @@
-package com.dd.api.restapi.controllers;
+package com.dd.api.restapi.controllers.utility;
 
 import com.dd.api.auth.validators.Validator;
 import com.dd.api.restapi.models.Pitcher;
