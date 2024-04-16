@@ -89,4 +89,25 @@ public class RosterController {
 
         return this.rosterService.bulkUpdatePlayers(model, teamId);
     }
+
+    @DeleteMapping
+    @RequestMapping("/bulk-delete-pitchers")
+    public boolean bulkDeletePitchers(@RequestParam Long userId, @RequestParam Long teamId, @RequestBody List<Pitcher> pitchers) throws NoAccessPermittedException {
+        if(!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.bulkDeletePitchers(pitchers);
+    }
+
+    @DeleteMapping
+    @RequestMapping("/bulk-delete-players")
+    public boolean bulkDeletePlayers(@RequestParam Long userId, @RequestParam  Long teamId, @RequestBody List<Player> playersToDelete) throws NoAccessPermittedException {
+
+        if(!this.validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.bulkDeletePlayers(playersToDelete);
+    }
 }

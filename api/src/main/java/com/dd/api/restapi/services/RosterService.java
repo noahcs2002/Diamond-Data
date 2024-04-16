@@ -90,10 +90,10 @@ public class RosterService {
     }
 
     public BulkPlayerChangeRequestModel bulkUpdatePlayers(BulkPlayerChangeRequestModel model, Long teamId) {
+
         model.getPlayers()
                 .forEach(p -> {
                     Player instance = this.repository.findById(p.getId()).orElse(null);
-
                     if (instance == null) {
                         Team team = this.teamService.getTeamById(teamId);
                         this.playerService.createPlayer(p, team);
@@ -108,7 +108,6 @@ public class RosterService {
         model.getPitchers()
                 .forEach(p -> {
                     Pitcher instance = this.pitcherRepository.findById(p.getId()).orElse(null);
-
                     if (instance == null) {
                         this.pitcherService.createPitcher(p, teamId);
                     }
@@ -119,5 +118,35 @@ public class RosterService {
                 });
 
         return model;
+    }
+
+    public boolean bulkDeletePlayers(List<Player> playersToDelete) {
+
+        playersToDelete.forEach(p -> {
+            try {
+                this.playerService.deletePlayer(p.getId());
+            }
+            catch(Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        });
+
+        return true;
+    }
+
+    public boolean bulkDeletePitchers(List<Pitcher> pitchers) {
+
+        pitchers.forEach(p -> {
+            try{
+                this.pitcherService.deletePitcher(p.getId());
+            }
+            catch(Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        });
+
+
+        return true;
+
     }
 }
