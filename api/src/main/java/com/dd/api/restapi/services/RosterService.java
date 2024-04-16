@@ -100,6 +100,8 @@ public class RosterService {
                     }
                     else {
                         this.repository.save(instance);
+                        this.playerService.changeFirstName(p.getId(), p.getFirstName());
+                        this.playerService.changeLastName(p.getId(), p.getLastName());
                     }
                 });
 
@@ -112,6 +114,7 @@ public class RosterService {
                     }
                     else {
                         this.pitcherRepository.save(instance);
+                        this.pitcherService.updatePitcherName(p.getId(), p.getFirstName(), p.getLastName());
                     }
                 });
 
