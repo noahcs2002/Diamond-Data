@@ -268,72 +268,14 @@ function PlayerManagement() {
 
   const handleDeletePlayer = async (id) => {
 
-    const playerCreationRequestModel = {
-      id: id,
-      firstName: 'DELETE',
-      lastName: 'PLAYER',
-      offensivePlayer: {
-          team: {
-              id: 0,
-              name: ''
-          },
-          atBats: 0,
-          battingAverage: 0,
-          caughtStealing: 0,
-          doubles: 0,
-          extraBaseHits: 0,
-          gamesPlayed: 0,
-          grandSlams: 0,
-          groundIntoDoublePlay: 0,
-          groundOutAirOut: 0,
-          hitByPitch: 0,
-          hits: 0,
-          homeRuns: 0,
-          intentionalWalks: 0,
-          leftOnBase: 0,
-          onBasePercentage: 0,
-          onBasePlusSlugging: 0,
-          plateAppearances: 0,
-          reachedOnError: 0,
-          runs: 0,
-          runsBattedIn: 0,
-          sacrificeBunt: 0,
-          sacrificeFly: 0,
-          singles: 0,
-          sluggingPercentage: 0,
-          stolenBases: 0,
-          totalBases: 0,
-          triples: 0,
-          walks: 0,
-          walkOffs: 0
-      },
-      defensivePlayer: {
-          positions: selectedPositions,
-          team: {
-              id: 0,
-              name: ''
-          },
-          assists: 0,
-          caughtStealingPercent: 0,
-          doublePlay: 0,
-          errors: 0,
-          fieldingPercentage: 0,
-          inningsPlayed: 0,
-          outs: 0,
-          outfieldAssists: 0,
-          passedBalls: 0,
-          putouts: 0,
-          totalChances: 0,
-          triplePlays: 0
-      },
-      assignment: 'n/a'
-    };
+    const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+
+    const player = players.filter(p => p.id === id)[0]; 
     
     let deletedPlayers = JSON.parse(localStorage.getItem('deletedPlayers')) || [];
-    deletedPlayers.push(playerCreationRequestModel);
+    deletedPlayers.push(player);
     localStorage.setItem('deletedPlayers', JSON.stringify(deletedPlayers));
 
-    const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
     const newPlayers = players.filter(item => item.id !== id);
 
     console.log(newPlayers);
@@ -342,57 +284,25 @@ function PlayerManagement() {
   };
 
   const handleDeletePitcher = async (id) => {
+    console.log(id);
+    const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
 
-    const pitcher = {
-      "firstName": 'DELETE',
-      "lastName": 'PLAYER',
-      "preference": pitcherPref,
-      "team" : {
-        "name": '',
-        "id": 0
-      },
-      "appearances": 0,
-      "balks": 0,
-      "battersFaced": 0,
-      "blownSaves": 0,
-      "completeGames": 0,
-      "earnedRuns": 0,
-      "earnedRunAverage": 0.0,
-      "flyouts": 0,
-      "gamesFinished": 0,
-      "gamesStarted": 0,
-      "groundouts": 0,
-      "holds": 0,
-      "hits": 0,
-      "inheritedRunners": 0,
-      "inningsPitched": 0.0,
-      "losses": 0,
-      "numberOfPitches": 0,
-      "pickoffs": 0,
-      "qualityStarts": 0,
-      "reliefWins": 0,
-      "saves": 0,
-      "saveOpportunities": 0,
-      "savePercentage": 0.0,
-      "shutouts": 0,
-      "strikeouts": 0,
-      "unearnedRuns": 0,
-      "walksAndHitsPerInningPitched": 0.0,
-      "wildPitches": 0,
-      "wins": 0,
-      "winningPercentage": 0.0,
-      "assignment": "n/a"
+    const pitcher = pitchers.filter(p => p.id === id)[0];
+    console.log(pitcher); 
+  
+    let deletedPitchers= JSON.parse(localStorage.getItem('deletedPitchers'))
+    
+    if (deletedPitchers === null | deletedPitchers === undefined) {
+      deletedPitchers = [];
     }
-
-    let deletedPitchers= JSON.parse(localStorage.getItem('deletedPitchers')) || [];
     deletedPitchers.push(pitcher);
     localStorage.setItem('deletedPitchers', JSON.stringify(deletedPitchers));
 
-    const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
-    const newPitchers = pitchers.filter(p => p.id !== id);
+    const newPitchers = pitchers.filter(p => p !== pitcher);
     console.log(newPitchers);
     setPitcherData(newPitchers);
     localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers ));
+    console.log('deleted pitchers: ', deletedPitchers);
   }
 
   const handleEditPlayer = async (playerId, updatedFullName) => {
@@ -440,6 +350,7 @@ function PlayerManagement() {
     const user = await JSON.parse(localStorage.getItem('sessionData'));
 
     let team = {};
+
     try {
       team = await JSON.parse(localStorage.getItem('cachedTeam'));
     }
@@ -495,6 +406,8 @@ function PlayerManagement() {
 
     console.log(playerRes);
     console.log(pitRes);
+    localStorage.setItem('deletedPitchers', JSON.stringify([]));
+    localStorage.setItem('deletedPlayers', JSON.stringify([]));
 
     setPlayerCreationCount(0);
     setSaving(false);
