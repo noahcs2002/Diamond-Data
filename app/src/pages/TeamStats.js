@@ -13,7 +13,12 @@ function TeamStats() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    prop();
+    try {
+      prop();
+    }
+    catch {
+      window.location.reload();
+    }
   }, []);
 
   const prop = async () => {
@@ -43,6 +48,7 @@ function TeamStats() {
       players = await fetchPlayers();
     }
 
+    setTeam(team);
     setPlayers(players);
     setLoading(false);
   }
@@ -59,7 +65,7 @@ function TeamStats() {
       }
       const data = await response.json();
       localStorage.setItem('cachedTeam', JSON.stringify(data));
-      setTeam(data);
+      return data;
     } 
     catch (error) {
       console.error('Error fetching teams:', error);
@@ -75,7 +81,8 @@ function TeamStats() {
       const data = await response.json();
       localStorage.setItem('cachedPlayers', JSON.stringify(data));
       setPlayers(data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error fetching players:', error);
     }
   };
