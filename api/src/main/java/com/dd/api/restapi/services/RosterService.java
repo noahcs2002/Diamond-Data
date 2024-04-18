@@ -107,13 +107,15 @@ public class RosterService {
 
         model.getPitchers()
                 .forEach(p -> {
-                    Pitcher instance = this.pitcherRepository.findById(p.getId()).orElse(null);
-                    if (instance == null) {
+                    if (p.getId() == null) {
                         this.pitcherService.createPitcher(p, teamId);
                     }
                     else {
-                        this.pitcherRepository.save(instance);
-                        this.pitcherService.updatePitcherName(p.getId(), p.getFirstName(), p.getLastName());
+                        Pitcher instance = this.pitcherRepository.findById(p.getId()).orElse(null);
+                        if (instance != null) {
+                            this.pitcherRepository.save(instance);
+                            this.pitcherService.updatePitcherName(p.getId(), p.getFirstName(), p.getLastName());
+                        }
                     }
                 });
 
