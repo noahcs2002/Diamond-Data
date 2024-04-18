@@ -74,8 +74,8 @@ function TeamStats() {
       }
       const data = await response.json();
       localStorage.setItem('cachedPlayers', JSON.stringify(data));
-      setPlayers(data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error fetching players:', error);
     }
   };
