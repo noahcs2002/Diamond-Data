@@ -262,7 +262,7 @@ useEffect(() => {
       <div className="insights">
         <h1 className="title">Team Insights</h1>
         <div className="content">
-        <div className="column">
+          <div className="column">
             <h2>Team Lineup</h2>
             <div className="scrollable-cards">
               {renderLineupPlayers()}
