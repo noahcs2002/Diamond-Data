@@ -9,8 +9,6 @@ body {
   min-height: 100vh;
 }
 
-
-
 .roster {
   background: linear-gradient(45deg, var(--background-color), var(--background2-color));
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
@@ -23,6 +21,56 @@ body {
   padding: 0 20px;
   padding-top: 30px;
   min-height: 100vh;
+
+  .titleAndButton {
+    display: grid;
+    justify-items: center;
+
+    .title {
+      font-size: 4rem;
+      font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      margin-bottom: 30px;
+      color: var(--text3-color);
+      text-align: center;
+      margin-top: 10px;
+    }
+  
+    .saveButton {
+        display: inline-block;
+        margin: 0 10px;
+        padding: 10px 20px;
+        background-color: var(--button2-color);
+        color: var(--text-color);
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+  
+    .saveButton:hover {
+      background-color: var(--hover-color);
+    }
+  }
+
+
+
+  .columnHeaders {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin-bottom: 10px;
+    text-align: center;
+
+    h2 {
+      background-color: var(--background3-color);
+      border-radius: 10px;
+      padding: 10px 20px;
+      color: var(--text4-color);
+      font-size: 2.5rem;
+      width: calc(20% - 10px); /* Set the same width as the columns */
+      box-sizing: border-box; 
+      margin-right: 10px;
+    }
+  }
 
   .teamSelection select {
     padding: 2px;
@@ -37,34 +85,6 @@ body {
     border: 1px solid #ccc; 
   }
 
-  .title {
-    font-size: 4rem;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin-bottom: 30px;
-    color: var(--text3-color);
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .columnHeaders {
-    display: flex;
-    justify-content: space-between;
-    padding: 0;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  .columnHeaders h2 {
-    background-color: var(--background3-color);
-    border-radius: 10px;
-    padding: 10px 20px;
-    color: var(--text4-color);
-    font-size: 2.5rem;
-    width: calc(20% - 10px); /* Set the same width as the columns */
-    box-sizing: border-box; 
-    margin-right: 10px;
-  }
-
   .columns {
     display: grid;
     grid-template-columns: calc(20% - 10px) repeat(4, calc(20% - 10px));
@@ -72,29 +92,46 @@ body {
     margin-top: -30px;
     height: 700px;
     
+
+    .fixedColumn {
+      background-color: var(--background-color);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch; 
+
+      .playerListContainer {
+        // display: flex;
+        // flex-direction: column;
+        // align-items: flex-start; /* Align items to the top */
+        // flex-grow: 1; /* Allow the container to grow vertically */
+
+        .playerList {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    }
+
+    .column {
+      background-color: var(--background-color);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch; 
+
+      .playerGrid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
   }
 
-  .fixedColumn, .column {
-    background-color: var(--background-color);
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch; 
-  }
 
-  .playerListContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align items to the top */
-    flex-grow: 1; /* Allow the container to grow vertically */
-  }
-
-  .playerGrid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
 
   .playerCard {
     background-color: var(--background3-color);
@@ -102,17 +139,10 @@ body {
     border-radius: 8px;
     padding: 10px;
     box-shadow: 0 2px 4px var(--box-shadow-color);
-    width: 300px; 
+    width: 90%; 
+    max-width: 300px;
     text-align: center; 
     padding-bottom: 10px;
-  }
-
-  .playerList {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 0;
-    overflow-y: auto; /* For scrolling */
   }
 
   h2 {

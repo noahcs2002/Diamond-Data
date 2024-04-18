@@ -370,7 +370,7 @@ function PlayerStats() {
       accessor: "caughtStealing",
     },
     {
-      Header: "CAUGHT STEALIN PERCENTAGE",
+      Header: "CAUGHT STEALING PERCENTAGE",
       accessor: "caughtStealingPercentage",
     },
     {

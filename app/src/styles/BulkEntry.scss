@@ -4,36 +4,61 @@
 // BULK ENTRY
 
 .bulkEntry {
-    background: linear-gradient(120deg, var(--background-color), var(--background2-color));
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-    font-weight: 100;
-    width: 100%;
-    height: auto;
+  background: linear-gradient(120deg, var(--background-color), var(--background2-color));
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: 100;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+
+  .teamSelection select {
+    padding: 2px;
+    font-size: 25px;
+    border-radius: 5px;
+    width: auto;
+    margin: 20px 0; 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+    background-color: #FFF; 
+    border: 1px solid #ccc; 
+  }
+
+  .bulkEntryHeading {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
     flex-direction: column;
-    display: flex;
+    align-items: center;
+    justify-content: center; 
+    text-align: center;
 
-    .teamSelection select {
-      padding: 2px;
-      font-size: 25px;
-      border-radius: 5px;
-      width: auto;
-      margin: 20px 0; 
-      display: block; 
-      margin-left: auto; 
-      margin-right: auto; 
-      background-color: #FFF; 
-      border: 1px solid #ccc; 
+    .title {
+      font-size: 4rem; 
+      font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      margin-bottom: 10px; 
+      color: var(--text3-color); 
     }
-
-   
-  .title {
-    font-size: 4rem; 
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin-bottom: 10px; 
-    color: var(--text3-color); 
+  
+    .bulkEntryButtons {
+      display: flex;
+      justify-content: center;
+      margin: 0 10px;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: var(--button2-color);
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+  
+    }
+  
+    .bulkEntryButtons:hover {
+      background-color: var(--hover-color);
+    }
   }
 
   .tableWrapper {
