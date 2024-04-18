@@ -1,0 +1,12 @@
+version: '3'
+services:
+  api:
+    build: ./api
+    ports:
+      - "8080:8080"
+    # Add any other configurations specific to your API service
+  app:
+    build: ./app
+    ports:
+      - "3000:3000"
+    # Add any other configurations specific to your React app service
