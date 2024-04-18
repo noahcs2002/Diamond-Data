@@ -310,11 +310,13 @@ function BulkEntry() {
       {loading ? <LoadingScreen/> : <>
       <Navbar />
       <div className="bulkEntry">
-        <h1 className="title">Bulk Entry</h1>
-        <button onClick={() => setIsEnteringNewGame(true)}>New Game</button>
-        {isEnteringNewGame && <button onClick={saveGameData}>Save Game</button>}
-        {isEnteringNewGame && <button onClick={cancelNewGame}>Cancel</button>}
-        {}
+        <div className='bulkEntryHeading'>
+          <h1 className="title">Bulk Entry</h1>
+          <button  className='bulkEntryButtons' onClick={() => setIsEnteringNewGame(true)}>New Game</button>
+          {isEnteringNewGame && <button className='bulkEntryButtons' onClick={saveGameData}>Save Game</button>}
+          {isEnteringNewGame && <button className='bulkEntryButtons' onClick={cancelNewGame}>Cancel</button>}
+          {}
+        </div>
         <h2>Offensive Data</h2>
           <div className="tableWrapper">
             <table {...offensiveTableInstance.getTableProps()}>

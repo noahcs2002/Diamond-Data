@@ -295,8 +295,10 @@ function Roster() {
         {loading ? <LoadingScreen/> : <>
         <Navbar />
         <div className="roster">
-          <h1 className="title">Roster</h1>
-          <button onClick={saveRoster}> Save </button>
+          <div className='titleAndButton'>
+            <h1 className="title">Roster</h1>
+            <button className='saveButton' onClick={saveRoster}> Save </button>
+          </div>
           <div className="columnHeaders">
             <h2>40 Man Roster</h2>
             <h2>Line-Up</h2>
