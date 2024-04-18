@@ -74,4 +74,14 @@ public class Note {
     public int hashCode() {
         return Objects.hash(id, body, team, ghostedDate);
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", body='" + body + '\'' +
+                ", team=" + team +
+                ", ghostedDate=" + ghostedDate +
+                '}';
+    }
 }
