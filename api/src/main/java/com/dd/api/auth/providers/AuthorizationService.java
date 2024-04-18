@@ -66,9 +66,6 @@ public class AuthorizationService {
 
     @Transactional
     public User getNonTransientUser(User user) {
-        String protectedPassword = Salt.applyDoubleEndedSalt(user.getPassword());
-        user.setPassword(Base64.encodeBase64String(protectedPassword.getBytes()));
-
         return this.repository.findAll()
                 .stream()
                 .filter(p -> p.transientEqualityCheck(user))
