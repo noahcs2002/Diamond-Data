@@ -143,10 +143,6 @@ function Signup() {
                     <p>Already have an account? <a onClick={handleLogin}>Log in</a></p>
                 </form>
             </div>
-
-            <footer>
-                2024 Diamond Data
-            </footer>
         </div>
     );
 }

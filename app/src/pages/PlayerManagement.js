@@ -422,7 +422,9 @@ function PlayerManagement() {
           <h1 className='title'>Player Management</h1>
           <div className="positionList">
             <div className='positionContainer'>
-              <button onClick={saveChanges}>Save</button>
+              <div className='buttonWrapper'>
+                <button  className='playerManagementButton'onClick={saveChanges}>Save Changes</button>
+              </div>
               <h2>Position Players</h2>
               <div className='icons'>
                 {playerCreationCount < 15 ? <AddCircleIcon onClick={() => setIsAddingPlayer(true)} className='addCircleIcon' /> : <> <div>Please save your changes to add a new player</div></> }

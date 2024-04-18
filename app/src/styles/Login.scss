@@ -78,6 +78,7 @@
     
     a {
       color: blue;
+      cursor: pointer;
     }
   
     p {
@@ -90,18 +91,5 @@
     text-align: center;
     font-size: 1.5rem;
   }
-
-  // FOOTER
-
-  footer {
-    background-color: var(--footer-color);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    color: var(--text-color);
-    padding: 10px;
-    text-align: center;
-  }
-
 }
 
