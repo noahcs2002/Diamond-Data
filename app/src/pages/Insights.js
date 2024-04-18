@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import '../styles/Insights.scss';
 import ConfirmModal from '../components/ConfirmModal';
 import LoadingScreen from '../components/LoadingScreen';
+import { LocalLaundryService } from '@mui/icons-material';
 
 function Insights() {
   const [teams, setTeams] = useState([]);
@@ -40,6 +41,9 @@ function Insights() {
 
   const prop = async () => {
     let lineup = [];
+    let notes = [];
+    let team = {};
+    const user = await JSON.parse(localStorage.getItem('sessionData'));
     try {
       lineup = await JSON.parse(localStorage.getItem('cachedLineupPlayers'));
 
@@ -50,18 +54,59 @@ function Insights() {
     catch {
       lineup = await fetchLineupPlayers();
     }
+
+    try {
+      team = await JSON.parse(localStorage.getItem('cachedTeam'));
+
+      if (team === undefined || team === null) {
+        throw new Error();
+      }
+    }
+    catch {
+      team = await fetchTeam(user);
+    }
+
+    try {
+      notes = await JSON.parse(localStorage.getItem('cachedNotes'));
+
+      if (notes === undefined || notes === null) {
+        throw new Error();
+      }
+    }
+    catch { 
+      notes = await fetchNotes(user, team)
+    }
+
+    setReportNotes(notes);
     setLineupPlayers(lineup);
     setLoading(false);
   }
 
   const renderLineupPlayers = () => {
-    console.log('Lineup Players:', lineupPlayers);
     return lineupPlayers.map((player, index) => (
       <div className="card" key={index}>
         {index + 1}. {player.firstName} {player.lastName}
       </div>
     ));
   };
+
+  const fetchNotes = async (user, team) => {
+    const endpoint = 'http://localhost:8080/diamond-data/api/notes/get-by-team';
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', user.id);
+    url.searchParams.append('teamId', team.id);
+
+    try {
+      const res = await fetch(url);
+      const notes = await res.json();
+      localStorage.setItem('cachedNotes', JSON.stringify(notes));
+      console.log(notes);
+      return notes;
+    }
+    catch {
+      console.error('Error fetching notes');
+    }
+  }
 
   const fetchLineupPlayers = async () => {
     try {
@@ -100,15 +145,6 @@ function Insights() {
       console.error(_e);
     }
   }
-
-  const teamOptions = teams.map(team => (
-    <option key={team.id} value={team.id}>{team.name}</option>
-  ));
-
-  const playerOptions = players.map(player => (
-    <option key={player.id} value={player.id}>{player.name}</option>
-  ));
-
   
   const fetchTeam = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
@@ -128,75 +164,55 @@ function Insights() {
     }
   };
 
- 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const user = JSON.parse(localStorage.getItem('sessionData'));
-      if (user) {
-        setUserId(user.id);
-      }
-    };
-    fetchUserData();
-  }, []);
-
-  
-useEffect(() => {
-  const notesFromLocalStorage = JSON.parse(localStorage.getItem('reportNotes'));
-  if (notesFromLocalStorage) {
-    setReportNotes(notesFromLocalStorage);
-  }
-}, []);
-
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem('sessionData'));
-        const team = await fetchTeam(user);
-        if (!selectedTeam || !userId) return;
-        const endpoint = `http://localhost:8080/diamond-data/api/notes/get-by-team`;
-        const url = new URL(endpoint);
-        url.searchParams.append('teamId', team.id);
-        url.searchParams.append('userId', user.id);
-        const response = await axios.get(url.toString());
-        setReportNotes(response.data);
-
-        localStorage.setItem('reportNotes', JSON.stringify(response.data));
-      } catch (error) {
-        console.error('Error fetching notes:', error);
-      }
-    };
-    fetchNotes();
-  }, [selectedTeam, userId]);
-
-
-  const handlePlayerSelectionChange = (index, playerId) => {
-    const updatedSelection = [...selectedPlayers];
-    updatedSelection[index] = playerId;
-    setSelectedPlayers(updatedSelection);
-  };
-
   const addNote = async () => {
     try {
+      let team = {};
       const user = JSON.parse(localStorage.getItem('sessionData'));
-      const team = await fetchTeam(user);
+
+      try {
+        team = await JSON.parse(localStorage.getItem('cachedTeam'));
+
+        if(team === undefined || team === null) {
+          throw new Error();
+        }
+      }
+      catch {
+        team = await fetchTeam(user);
+      }
+
       const endpoint = `http://localhost:8080/diamond-data/api/notes/create`;
-      const requestBody = {
-        note: newReportNote
-      };
-      const params = {
-        userId: user.id,
-        teamId: team.id,
-      };
-      const response = await axios.post(endpoint, requestBody, { params });
-      setReportNotes([...reportNotes, { id: response.data.id, text: newReportNote }]);
+      const url = new URL(endpoint);
+      url.searchParams.append('userId', user.id);
+      url.searchParams.append('teamId', team.id);
+
+      const note = {
+        body: newReportNote,
+        team: team
+      }
+
+      const response = await fetch(url, {
+        body: JSON.stringify(note),
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        method: 'POST'
+      })
+      
+      const data = await response.json();
+      const notes = await JSON.parse(localStorage.getItem('cachedNotes'));
+      notes.filter(n => n.id !== data.id);
+      notes.push(data);
+      localStorage.setItem('cachedNotes', JSON.stringify(notes));
+      setReportNotes(notes);
       setNewReportNote('');
-      localStorage.setItem('reportNotes', JSON.stringify([...reportNotes, { id: response.data.id, text: newReportNote }]));
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error adding note:', error);
     }
   };
 
   const editNote = async (noteId, newText) => {
+    let notes = await JSON.parse(localStorage.getItem('cachedNotes'));
     try {
       const user = JSON.parse(localStorage.getItem('sessionData'));
       const endpoint = `http://localhost:8080/diamond-data/api/notes/update`;
@@ -205,12 +221,14 @@ useEffect(() => {
       url.searchParams.append('userId', user.id);
       url.searchParams.append('newNoteText', newText);
       const response = await axios.put(url.toString());
-      const updatedNotes = reportNotes.map(note =>
-        note.id === noteId ? { ...note, text: newText } : note
-      );
-      setReportNotes(updatedNotes);
+
+      notes = notes.filter(note => note.id !== noteId);
+      notes.push(response.data);
+      setReportNotes(notes);
+      localStorage.setItem('cachedNotes', JSON.stringify(notes));
       setEditedNoteIndex(null);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error updating note:', error);
     }
   };
@@ -227,8 +245,8 @@ useEffect(() => {
       url.searchParams.append('noteId', noteToDelete.id);
       await axios.delete(url.toString());
       const updatedNotes = reportNotes.filter(note => note.id !== noteToDelete.id);
+      localStorage.setItem('cachedNotes', JSON.stringify(updatedNotes));
       setReportNotes(updatedNotes);
-
 
       closeModal();
     } catch (error) {
@@ -288,10 +306,9 @@ useEffect(() => {
                 />
                 <button className='addNoteButton' onClick={addNote}>Add Note</button>
               </div>
-              {}
-              {console.log(reportNotes)}
+
               {reportNotes.map((note, index) => (
-              <div className="note-container" key={note.id}>
+              <div className="note-container" key={note.id+note.body}>
                 {editedNoteIndex === index ? (
                   <div>
                     <textarea className='notes'
@@ -306,7 +323,7 @@ useEffect(() => {
                   </div>
                 ) : (
                   <div>
-                    <p className="note-text">{note.text}</p>
+                    <p className="note-text">{note.body}</p>
                     <div className="note-actions">
                       <button className="edit-note" onClick={() => setEditedNoteIndex(index)}>Edit</button>
                       <button className="delete-note" onClick={() => openModal(note)}>Delete</button>
