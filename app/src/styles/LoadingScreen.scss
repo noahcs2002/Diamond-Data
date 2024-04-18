@@ -10,6 +10,9 @@ body
   background:var(--background2-color);
 }
 .loadingScreen {
+  background-color: var(--background2-color);
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,8 +23,8 @@ body
   color: var(--background3-color);
 
   .baseballIcon {
-    width: 200px; /* Adjust size as needed */
-    height: 200px; /* Adjust size as needed */
+    width: 200px; 
+    height: 200px; 
     margin-bottom: 10px;
     animation: spin 3s linear infinite;
   }
