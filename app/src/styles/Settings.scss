@@ -80,16 +80,16 @@
 
     .settings-form {
       width: 60vw; /* Adjusted for consistency */
-    max-width: 800px; /* Consistent with the user settings form */
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px var(--box-shadow-color);
-    margin-bottom: 100px;
-    background-color: #f0f0f0; /* Optional: background color for contrast */
+      max-width: 800px; /* Consistent with the user settings form */
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--box-shadow-color);
+      margin-bottom: 100px;
+      background-color: #f0f0f0; /* Optional: background color for contrast */
     
       input, select {
         width: 100%;
@@ -107,7 +107,23 @@
           border-radius: 5px; /* Consistent border-radius */
         }
       }
-  }
+
+      .saveChangesButton {
+        display: inline-block;
+        margin: 0 10px;
+        padding: 10px 20px;
+        background-color: var(--button2-color);
+        color: var(--text-color);
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 20%;
+      }
+
+      .saveChangesButton:hover {
+        background-color: var(--hover-color);
+      }
+    }
   }
 
   .team-management-tab {

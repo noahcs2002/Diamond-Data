@@ -11,7 +11,9 @@ function Login() {
         localStorage.clear();
     }, [])
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+
+        e.preventDefault();
 
         const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/login';
 
@@ -57,17 +59,13 @@ function Login() {
     return (
         <div className="login-page">
             <div className="title-container">
-                {/*<img src = {Logo} alt = "Logo" className = "center" />*/}
-                <h1 className="title">
-                    {/* <img src = {Logo} alt = "Logo" className = "center" /> */}
-                    Diamond Data
-                </h1>
+                <h1 className="title">Diamond Data</h1>
             </div>
 
             {/* Email and Password boxes */}
             <div className="login-container">
                 <h2>Login</h2>
-                <form className="loginForm">
+                <form className="loginForm" onSubmit={handleLogin}>
                     <label>Email:
                         <input
                         type="text"
@@ -86,15 +84,6 @@ function Login() {
                     <p>Don't have an account? <a onClick={handleSignUp}>Sign up</a></p>     {/* Adding a link to signup */}
                 </form>
             </div>
-            <div>
-                {/* <button onClick={() => {handleLogin("root@dd-devs", "rootPassword1234$$")} }>
-                    click me
-                </button> */}
-            </div>
-
-            <footer>
-                2024 Diamond Data     {/* Just creating a basic footer for the page. */}
-            </footer>
         </div>
     );
 }

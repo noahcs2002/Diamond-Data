@@ -217,7 +217,7 @@ function Settings() {
                 Phone Number:
                 <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
               </label>
-              <button type="button" onClick={handleSaveChangesClick} className="save-changes-btn">Save Changes</button>
+              <button className="saveChangesButton" type="button" onClick={handleSaveChangesClick}>Save Changes</button>
             </form>
           </div>
         )}
