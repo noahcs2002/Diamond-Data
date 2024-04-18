@@ -93,10 +93,12 @@ function Settings() {
         }));
         
         alert('User settings updated successfully.');
-      } else {
+      }
+       else {
         alert('User information not found. Please log in again.');
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('An error occurred while updating settings:', error);
       alert('An error occurred while updating settings. Please try again.');
     }

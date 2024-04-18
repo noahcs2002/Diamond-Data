@@ -23,12 +23,6 @@ public class TeamService {
     }
 
     @Transactional
-    public Team createTeam(Team team) {
-        team.setUser(authorizationService.getNonTransientUser(team.getUser()));
-        return this.repository.save(team);
-    }
-
-    @Transactional
     public Team getTeamByUser(Long userId) {
         return this.repository.findAll()
                 .stream()
@@ -36,6 +30,12 @@ public class TeamService {
                 .filter(t -> t.getGhostedDate() == 0)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transactional
+    public Team createTeam(Team team) {
+        team.setUser(authorizationService.getNonTransientUser(team.getUser()));
+        return this.repository.save(team);
     }
 
     @Transactional
