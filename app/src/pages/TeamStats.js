@@ -48,6 +48,7 @@ function TeamStats() {
       players = await fetchPlayers();
     }
 
+    console.log(players);
     setTeam(team);
     setPlayers(players);
     setLoading(false);
@@ -144,6 +145,7 @@ function TeamStats() {
   
     return aggregatedStats;
   };
+
   const handleTeamClick = (team) => {
     const stats = aggregateTeamStats(team.id);
     setSelectedTeamStats({ ...stats, name: team.name });

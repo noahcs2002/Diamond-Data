@@ -207,6 +207,8 @@ function BulkEntry() {
     setNewGameData({ offensive: [], defensive: [], pitcher: [] });
     const updatedPitchers = await fetchPitcherData(team, user);
     const updatedPlayers = await fetchPlayers(team, user);
+    localStorage.setItem('cachedPlayers', JSON.stringify(updatedPlayers));
+    localStorage.setItem('cachedPitchers', JSON.stringify(updatedPitchers));
     await propogate(updatedPlayers);
     setPitcherData(updatedPitchers);
     setLoading(false);
