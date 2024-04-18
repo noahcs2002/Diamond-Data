@@ -118,10 +118,14 @@ function BulkEntry() {
     }
     updatedData[rowIndex][accessor] = parseInt(e.target.value, 10);
     setNewGameData({ ...newGameData, [type]: updatedData});
+    console.log(newGameData);
   };
 
   const saveGameData = async () => {
     setLoading(true);
+    newGameData.offensive = newGameData.offensive.filter(o => o !== undefined);
+    newGameData.defensive = newGameData.offensive.filter(o => o !== undefined);
+    newGameData.pitcher = newGameData.pitcher.filter(o => o !== undefined);
     // Iterate over offensive data
     newGameData.offensive.forEach(offense => {
       // Find the offensive player with the matching id
@@ -201,8 +205,10 @@ function BulkEntry() {
 
     setIsEnteringNewGame(false);
     setNewGameData({ offensive: [], defensive: [], pitcher: [] });
-    await fetchPitcherData(team, user);
-    await fetchPlayers(team, user);
+    const updatedPitchers = await fetchPitcherData(team, user);
+    const updatedPlayers = await fetchPlayers(team, user);
+    await propogate(updatedPlayers);
+    setPitcherData(updatedPitchers);
     setLoading(false);
   };
 
