@@ -207,6 +207,12 @@ function Insights() {
   };
 
   const addNote = async () => {
+    toast.loading('Adding note', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true 
+    })
     try {
       let team = {};
       const user = JSON.parse(localStorage.getItem('sessionData'));
@@ -247,6 +253,13 @@ function Insights() {
       localStorage.setItem('cachedNotes', JSON.stringify(notes));
       setReportNotes(notes);
       setNewReportNote('');
+      toast.dismiss();
+      toast.success('Note added successfully!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true 
+      })
     } 
     catch (error) {
       toast.error('Error adding note, please try again', {
@@ -257,9 +270,16 @@ function Insights() {
       })
       console.error('Error adding note:', error);
     }
+
   };
 
   const editNote = async (noteId, newText) => {
+    toast.loading('Saving note', {
+      position:'bottom-right',
+      autoClose: 2500,
+      hideProgressBar:true,
+      closeOnClick:true 
+    })
     let notes = await JSON.parse(localStorage.getItem('cachedNotes'));
     try {
       const user = JSON.parse(localStorage.getItem('sessionData'));
@@ -275,6 +295,13 @@ function Insights() {
       setReportNotes(notes);
       localStorage.setItem('cachedNotes', JSON.stringify(notes));
       setEditedNoteIndex(null);
+      toast.dismiss();
+      toast.success('Note saved', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true 
+      })
     } 
     catch (error) {
       toast.error('Error editing note, please try again', {
@@ -284,10 +311,17 @@ function Insights() {
         closeOnClick:true
       })
     }
+
   };
   
   const deleteNote = async () => {
     try {
+      toast.loading('Deleting note', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true  
+      })
 
       if (!noteToDelete) return;
 
@@ -302,6 +336,13 @@ function Insights() {
       setReportNotes(updatedNotes);
 
       closeModal();
+      toast.dismiss();
+      toast.success('Note deleted successfully!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true 
+      })
     } 
     catch (error) {
       toast.error('Error deleting notes, please try again', {

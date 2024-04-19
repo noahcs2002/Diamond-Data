@@ -33,12 +33,22 @@ function Signup() {
         body.phoneNumber = formData.phoneNumber || '';
 
         if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match')
+            toast.error('Passwords don\'t match!', {
+                position:'bottom-right',
+                autoClose: 2500,
+                hideProgressBar:true,
+                closeOnClick:true 
+            })
             return;
         }
 
         if (formData.password.length < 8) {
-            alert('Please use a password with at least 8 characters');
+            toast.error('Please use a password longer than 8 characters', {
+                position:'bottom-right',
+                autoClose: 2500,
+                hideProgressBar:true,
+                closeOnClick:true 
+            })
             return;
         }
 
