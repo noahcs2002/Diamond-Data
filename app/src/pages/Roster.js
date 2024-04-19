@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
 import SavingScreen from '../components/SavingScreen';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Roster() {
   const [players, setPlayers] = useState([]);
@@ -97,6 +98,12 @@ function Roster() {
 
     setPlayers(combined);
     setLoading(false);
+    toast.success('Data loaded successfully!', {
+      position:'bottom-right',
+      autoClose: 1500,
+      hideProgressBar:true,
+      closeOnClick:true
+    })
   }
 
   const combine = async (players, pitchers) => {
@@ -132,7 +139,12 @@ function Roster() {
       return data;
     }
     catch(_e) {
-      console.error(_e);
+      toast.error('Error fetching pitchers, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -191,7 +203,12 @@ function Roster() {
       return players;
     }
     catch(_e) {
-      console.error(_e);
+      toast.error('Error fetching players, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -210,7 +227,12 @@ function Roster() {
       return loadedTeam;
     }
     catch(_e) {
-      console.error(_e);
+      toast.error('Error fetching team, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   };
     
@@ -286,11 +308,17 @@ function Roster() {
       const data = await res.json();
       console.log('returned result: ', data);
       setSaving(false);
-
+      toast.success('Data saved successfully!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true 
+      })
     }
 
     return (
       <div>
+        <ToastContainer/>
         {saving ? <SavingScreen/> : <>
         {loading ? <LoadingScreen/> : <>
         <Navbar />

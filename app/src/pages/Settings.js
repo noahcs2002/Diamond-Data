@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/Settings.scss';
 import ConfirmModal from '../components/ConfirmModal';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ function Settings() {
     phoneNumber: '',
     name: '',
   });
+  let currentId = React.useRef(null);
 
   const [team, setTeam] = useState([]);
   const [newTeamName, setNewTeamName] = useState('');
@@ -46,9 +48,14 @@ function Settings() {
         const errorData = await response.json();
         throw new Error(`Error updating user name: ${errorData.message}`);
       }
-    } catch (error) {
-      console.error('Error updating user name:', error);
-      throw error;
+    } 
+    catch (error) {
+      toast.error('Error updaing username, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   };
   
@@ -67,10 +74,16 @@ function Settings() {
         const errorData = await response.json(); 
         throw new Error(`Error updating user phone number: ${errorData.message}`);
       }
-    } catch (error) {
-      console.error('Error updating user phone number:', error);
-      throw error; 
+    } 
+    catch (error) {
+      toast.error('Error updating phone number, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
+    
   };
 
   const handleSaveChangesClick = () => {
@@ -79,7 +92,13 @@ function Settings() {
   };
 
   const confirmSaveChanges = async () => {
-    setIsModalOpen(false); // Close the modal
+    setIsUserSettingsModalOpen(false); // Close the modal
+    currentId.current = toast.loading('Saving changes...', {
+      position:'bottom-right',
+      autoClose: 1500,
+      hideProgressBar:true,
+      closeOnClick:true
+    })
     try {
       const user = JSON.parse(localStorage.getItem('sessionData'));
       if (user) {
@@ -92,16 +111,32 @@ function Settings() {
           phoneNumber: formData.phoneNumber
         }));
         
-        alert('User settings updated successfully.');
       }
-       else {
-        alert('User information not found. Please log in again.');
+      else {
+        toast.error('Error saving data, please try again', {
+          position:'bottom-right',
+          autoClose: 2500,
+          hideProgressBar:true,
+          closeOnClick:true 
+        }) 
       }
     } 
     catch (error) {
-      console.error('An error occurred while updating settings:', error);
-      alert('An error occurred while updating settings. Please try again.');
+      toast.error('Error saving data, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
+    toast.dismiss();
+    toast.success('User information changed successfully!', {
+      position:'bottom-right',
+      autoClose: 1500,
+      hideProgressBar:true,
+      closeOnClick:true
+    })
+    setIsUserSettingsModalOpen(false);
   };
  
    const fetchTeam = async (user) => {
@@ -119,7 +154,12 @@ function Settings() {
       return data;
     } 
     catch (error) {
-      console.error('Error fetching teams:', error);
+      toast.error('Error fetching teams, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   };
 
@@ -171,7 +211,14 @@ function Settings() {
   
       fetchTeam(user);
       closeModal();
-    } catch (error) {
+    } 
+    catch (error) {
+      toast.error('Error updating team, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
       console.error('Error updating team:', error);
     }
   };
@@ -196,6 +243,7 @@ function Settings() {
 
   return (
     <div>
+      <ToastContainer/>
       <Navbar />
       <div className="Settings">
         <div className="tab">

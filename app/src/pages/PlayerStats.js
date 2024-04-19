@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { useTable } from 'react-table';
 import PlayerStatsModal from '../components/PlayerStatsModal';
 import LoadingScreen from '../components/LoadingScreen';
+import { ToastContainer, toast } from 'react-toastify';
 
 function PlayerStats() {
 
@@ -62,6 +63,12 @@ function PlayerStats() {
     await propogate(players);
     setPitcherData(pitchers);
     setLoading(false);
+    toast.success('Data loaded successfully!', {
+      position:'bottom-right',
+      autoClose: 1500,
+      hideProgressBar:true,
+      closeOnClick:true
+    })
   }
 
   const propogate = async (players) => {
@@ -100,7 +107,12 @@ function PlayerStats() {
       return data
     }
     catch(_e) {
-      alert('Unable to fetch teams: ', _e);
+      toast.error('Error fetching team, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -124,7 +136,12 @@ function PlayerStats() {
       return players;
     }
     catch(_e) {
-      console.error(_e);
+      toast.error('Error fetching players, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -145,7 +162,12 @@ function PlayerStats() {
       return data;
     }
     catch(_e) {
-      alert('Error getting pitcher player data: ', _e);
+      toast.error('Error fetching notes, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -481,6 +503,7 @@ function PlayerStats() {
 
   return (
     <div>
+      <ToastContainer/>
       {loading ? <LoadingScreen/> : <>
     <Navbar/>
     <div className="playerStats">

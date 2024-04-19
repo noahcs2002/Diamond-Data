@@ -5,6 +5,7 @@ import PlayerStatsModal from '../components/PlayerStatsModal';
 import { useTable } from 'react-table';
 import '../styles/BulkEntry.scss';
 import LoadingScreen from '../components/LoadingScreen';
+import { ToastContainer, toast } from 'react-toastify';
 
 function BulkEntry() {
   const [offensiveData, setOffensiveData] = useState([]);
@@ -27,6 +28,12 @@ function BulkEntry() {
     const players = await fetchPlayers(team, user);
     await propogate(players);
     setLoading(false);
+    toast.success('Data loaded successfully!', {
+      position:'bottom-right',
+      autoClose: 1500,
+      hideProgressBar:true,
+      closeOnClick:true
+    })
   }
 
   const propogate = async (players) => {
@@ -65,7 +72,12 @@ function BulkEntry() {
       return data
     }
     catch(_e) {
-      alert('Unable to fetch teams: ', _e);
+      toast.error('Error loading team', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -87,7 +99,12 @@ function BulkEntry() {
       return players;
     }
     catch(_e) {
-      console.error(_e);
+      toast.error('Error loading players', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -107,7 +124,12 @@ function BulkEntry() {
       return data;
     }
     catch(_e) {
-      alert('Error getting pitcher player data: ', _e);
+      toast.error('Error loading pitcher data, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -199,7 +221,12 @@ function BulkEntry() {
       console.log(res);
     }
     catch(_e) {
-      console.error(_e);
+      toast.error('Error saving game, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
 
 
@@ -315,6 +342,7 @@ function BulkEntry() {
  
   return (
     <div>
+      <ToastContainer/>
       {loading ? <LoadingScreen/> : <>
       <Navbar />
       <div className="bulkEntry">

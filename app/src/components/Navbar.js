@@ -51,15 +51,16 @@ function Navbar() {
                 <Link className="navbarLink" to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                 </Link>
-                {/* <button onClick={toggleNavbar}>
-                    <ReorderIcon />
-                </button> */}
             </div>
             <ConfirmModal 
             isOpen={showConfirmLogout}
             message="Are you sure you want to logout?"
             onClose={() => setShowConfirmLogout(false)}
-            onConfirm={() => navigate('/')} // Navigate to home on confirm
+            onConfirm={() => navigate('/', {
+                state: {
+                    isLogOut: true
+                }
+            })} // Navigate to home on confirm
         />
         </div>
     )

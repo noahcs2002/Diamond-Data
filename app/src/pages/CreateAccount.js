@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import '../styles/CreateAccount.scss';
-import Navbar from "../components/Navbar";
+import { ToastContainer, toast } from "react-toastify";
 
 function CreateAccount({stateFunction, onDismiss}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const handleCreateAccount = () => {
-        console.log('clicked');
-        stateFunction(true);
-    };
 
     const handleDismissal = () => {
         onDismiss(false);
@@ -17,6 +12,7 @@ function CreateAccount({stateFunction, onDismiss}) {
 
     return (
         <div>
+            <ToastContainer/>
             {/* <Navbar/> */}
             <div className="createAccount-page">
                 <div className="title-container">
@@ -52,9 +48,6 @@ function CreateAccount({stateFunction, onDismiss}) {
                         <p>Already have an account? <a onClick={handleDismissal}>Sign in</a></p>
                     </form>
                 </div>
-                <footer>
-                    &copy; 2024 Diamond Data
-                </footer>
             </div>
         </div>
         

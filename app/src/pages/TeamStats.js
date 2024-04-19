@@ -3,6 +3,7 @@ import '../styles/TeamStats.scss';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
+import { ToastContainer, toast } from 'react-toastify';
 
 function TeamStats() {
   const [team, setTeam] = useState([]);
@@ -52,6 +53,12 @@ function TeamStats() {
     setTeam(team);
     setPlayers(players);
     setLoading(false);
+    toast.success('Data loaded successfully!', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+    })
   }
 
   const fetchTeam = async (user) => {
@@ -69,6 +76,12 @@ function TeamStats() {
       return data;
     } 
     catch (error) {
+      toast.error('Error fetching teams, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
       console.error('Error fetching teams:', error);
     }
   };
@@ -84,7 +97,12 @@ function TeamStats() {
       setPlayers(data);
     } 
     catch (error) {
-      console.error('Error fetching players:', error);
+      toast.error('Error fetching players, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   };
 
@@ -154,6 +172,7 @@ function TeamStats() {
 
   return (
     <div className="teamStats">
+      <ToastContainer/>
       {loading ? <LoadingScreen/> : <>
       <Navbar />
       <h1 className='title'>Team Stats</h1>
