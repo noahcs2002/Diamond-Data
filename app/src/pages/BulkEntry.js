@@ -376,12 +376,17 @@ function BulkEntry() {
                             <input
                               type="number"
                               defaultValue={cell.value}
+                              min="0"
                               onChange={e => handleInputChange(e, row.index, cell.column.id, 'offensive', row.original.id)}
-                            />
-                          ) : (
+                              onKeyDown={(e) => {
+                              if (e.key === '-' || e.key === 'e') {
+                                 e.preventDefault();
+                              }
+                              }}
+                                />) : (
                             cell.render('Cell')
-                          )}
-                        </td>
+                             )}
+                          </td>
                       ))}
                     </tr>
                   );

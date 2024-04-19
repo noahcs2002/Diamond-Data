@@ -65,7 +65,6 @@ function Login() {
                 transition: Bounce,
             })
         }
-        
     };
 
     const handleSignUp = () => {
