@@ -8,6 +8,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
 import SavingScreen from '../components/SavingScreen'
 import { ToastContainer, toast } from 'react-toastify';
+import { LocalLaundryService } from '@mui/icons-material';
 
 function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
@@ -104,7 +105,7 @@ function PlayerManagement() {
   };
 
   const fetchPitchers = async (user, team) => {
-    setLoading(true);
+    // setLoading(true);
     const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
@@ -134,7 +135,7 @@ function PlayerManagement() {
   }
 
   const fetchPlayers = async (user, team) => {
-    setLoading(true)
+    // setLoading(true)
    // if (!selectedTeam) return;
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
@@ -428,8 +429,11 @@ function PlayerManagement() {
       } 
     })
 
-    console.log(playerRes);
-    console.log(pitRes);
+    const newPlayers = await fetchPlayers(user, team);
+    const newPitchers = await fetchPitchers(user, team);
+
+    localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers));
+    localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));
     localStorage.setItem('deletedPitchers', JSON.stringify([]));
     localStorage.setItem('deletedPlayers', JSON.stringify([]));
 
