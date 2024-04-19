@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import '../styles/Insights.scss';
 import ConfirmModal from '../components/ConfirmModal';
 import LoadingScreen from '../components/LoadingScreen';
-import { LocalLaundryService } from '@mui/icons-material';
+import { LocalLaundryService, LocalSee, South } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -98,6 +98,7 @@ function Insights() {
     setReportNotes(notes);
     setLineupPlayers(lineup);
     setLoading(false);
+    console.log('After loading home page, cachedPlayers=', JSON.parse(localStorage.getItem('cachedPlayers')))
   }
 
   const renderLineupPlayers = () => {
@@ -167,6 +168,7 @@ function Insights() {
         alert('Res not ok');
       }
       const players = await res.json();
+      localStorage.setItem('cachedPlayers', JSON.stringify(players));
       return players;
     }
     catch(_e) {

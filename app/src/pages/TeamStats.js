@@ -49,7 +49,7 @@ function TeamStats() {
       players = await fetchPlayers();
     }
 
-    console.log(players);
+    console.log('Players: ', players);
     setTeam(team);
     setPlayers(players);
     setLoading(false);
@@ -165,9 +165,20 @@ function TeamStats() {
   };
 
   const handleTeamClick = (team) => {
-    const stats = aggregateTeamStats(team.id);
-    setSelectedTeamStats({ ...stats, name: team.name });
-    setShowModal(true);
+    try {
+      const stats = aggregateTeamStats(team.id);
+      setSelectedTeamStats({ ...stats, name: team.name });
+      setShowModal(true); 
+    }
+    catch {
+      toast.error('Error loading teams stats, please try again', {
+        position:'bottom-right',
+        autoClose: 2500,
+        closeOnClick: true,
+        hideProgressBar:true,
+      })
+    }
+
   };
 
   return (
