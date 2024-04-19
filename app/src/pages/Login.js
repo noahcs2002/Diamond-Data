@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from "react";
 import '../styles/Login.scss';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const nav = useNavigate();
+    const location = useLocation();
+    let toastId = React.useRef(null);
 
     useEffect(() => {
         localStorage.clear();
     }, [])
 
+    const dismissToast = () => {
+        toast.dismiss(toastId.current);
+    }
+
     const handleLogin = async (e) => {
+        toastId.current = toast('Signing in...', {
+            position: 'bottom-right',
+            autoClose:2500,
+            hideProgressBar:true,
+            closeOnClick:true,
+            draggable:false,
+        })
 
         e.preventDefault();
 
@@ -21,36 +36,37 @@ function Login() {
         url.searchParams.append('email', email);
         url.searchParams.append('password', password);
 
-        await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                alert('Error signing in: credentials invalid');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data) {
-                localStorage.setItem('sessionData', JSON.stringify(data))
-                nav('/home', {
-                    state: {
-                        userSessionData: data
-                    }
-                })
-            }
-        })
-        .catch(error => {
-            alert('Invalid username or password')
-        });
+        const res = await fetch(url);
+        try {
+            const resData = await res.json();
+            toast.success(`Welcome, ${resData.name}!`, {
+                position:'bottom-right',
+                autoClose: 1500,
+                hideProgressBar:true,
+                closeOnClick:true
+            })
+            localStorage.setItem('sessionData', JSON.stringify(resData));
+            nav('/home', {
+                state: {
+                    name: resData.name
+                }
+            });
+        }
+        catch (error){
+            dismissToast();
+            toast.error('Invalid credentials', {
+                position: "bottom-right",
+                autoClose: 2500,
+                hideProgressBar: true,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            })
+        }
+        
     };
-
-    const handleDebug = () => {
-    
-    }
 
     const handleSignUp = () => {
         nav('/sign-up');
@@ -58,6 +74,7 @@ function Login() {
 
     return (
         <div className="login-page">
+        <ToastContainer/>
             <div className="title-container">
                 <h1 className="title">Diamond Data</h1>
             </div>

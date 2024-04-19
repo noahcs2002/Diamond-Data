@@ -1,12 +1,15 @@
 import React from "react";
 import '../styles/LoadingScreen.scss';
+import SportsBaseball from "@mui/icons-material/SportsBaseball";
 
 const SavingScreen = () => {
 
     return (
         <div className="loadingScreen">
-            Saving
-            <span className="load"></span>
+            <div className="baseballIcon">
+                <SportsBaseball style={{ fontSize: '10em' }}/>
+            </div>
+            <p className="loadingText">Saving Changes</p>
         </div>
     )
 }

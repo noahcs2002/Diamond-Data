@@ -6,6 +6,8 @@ import '../styles/Insights.scss';
 import ConfirmModal from '../components/ConfirmModal';
 import LoadingScreen from '../components/LoadingScreen';
 import { LocalLaundryService } from '@mui/icons-material';
+import { useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Insights() {
   const [teams, setTeams] = useState([]);
@@ -22,6 +24,9 @@ function Insights() {
   const [lineupPlayers, setLineupPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const location = useLocation();
+  const state = location.state;
+
   const dummyTeamRecords = [
     { name: 'New York Yankees', wins: 98, losses: 64 },
     { name: 'Los Angeles Dodgers', wins: 105, losses: 57 },
@@ -35,7 +40,9 @@ function Insights() {
   ];
 
   useEffect(() => {
+
     setLoading(true);
+    
     prop();
   }, []);
 
@@ -104,7 +111,12 @@ function Insights() {
       return notes;
     }
     catch {
-      console.error('Error fetching notes');
+      toast.error('Error fetching notes, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   }
 
@@ -122,7 +134,12 @@ function Insights() {
       return filteredLineupPlayers;
     } 
     catch (error) {
-      console.error('Error fetching lineup players:', error);
+      toast.error('Error fetching players, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   };
 
@@ -142,6 +159,12 @@ function Insights() {
       return players;
     }
     catch(_e) {
+      toast.error('Error fetching players, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
       console.error(_e);
     }
   }
@@ -160,6 +183,12 @@ function Insights() {
       return data
     } 
     catch (error) {
+      toast.error('Error fetching team, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
       console.error('Error fetching teams:', error);
     }
   };
@@ -207,6 +236,12 @@ function Insights() {
       setNewReportNote('');
     } 
     catch (error) {
+      toast.error('Error adding note, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
       console.error('Error adding note:', error);
     }
   };
@@ -229,7 +264,12 @@ function Insights() {
       setEditedNoteIndex(null);
     } 
     catch (error) {
-      console.error('Error updating note:', error);
+      toast.error('Error editing note, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   };
   
@@ -249,7 +289,14 @@ function Insights() {
       setReportNotes(updatedNotes);
 
       closeModal();
-    } catch (error) {
+    } 
+    catch (error) {
+      toast.error('Error deleting notes, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
       console.error('Error deleting note:', error);
       closeModal();
     }
@@ -275,6 +322,7 @@ function Insights() {
 
   return (  
     <div>
+      <ToastContainer/>
     {loading ? <LoadingScreen/> : <>
       <Navbar />
       <div className="insights">

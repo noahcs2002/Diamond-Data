@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Signup.scss';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -44,32 +45,32 @@ function Signup() {
         const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/sign-up';
         const url = new URL(endpointUrl);
         url.searchParams.append('teamName', formData.teamName);
-        await fetch(url, {
+        const res = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),
         })
-        .then(response => response.json())
-        .then(data => {
-            localStorage.setItem('sessionData', JSON.stringify(data));
-            if (data) {
-                nav('/home', {
-                    state: {
-                        userSessionId: data
-                    }
-                })
-            }
+
+        const data = await res.json();
+        localStorage.setItem('sessionData', JSON.stringify(data));
+        toast.success('Signed up successfully! Welcome to Diamond Data!', {
+            position:'bottom-right',
+            autoClose: 1500,
+            hideProgressBar:true,
+            closeOnClick:true
         })
-        .catch(error => {
-            alert('Account already exists, or passwords do not match');
+        nav('/home', {
+            state: {
+                userSessionId: data,
+                name: data.name
+            }
         });
-    };
+       };
 
     const handleLogin = () => {
         console.log('Navigate to login page');
-        // Replace '/login' with the actual path to login page
         nav('/login');
     };
 

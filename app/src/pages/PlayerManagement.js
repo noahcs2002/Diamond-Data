@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
 import SavingScreen from '../components/SavingScreen'
+import { ToastContainer, toast } from 'react-toastify';
 
 function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
@@ -23,7 +24,7 @@ function PlayerManagement() {
 
   useEffect(() => {
     prop()
-  }, []);
+  },[]);
 
   const prop = async () => {
     let team = {};
@@ -68,9 +69,13 @@ function PlayerManagement() {
 
     setPitcherData(pitchers);
     setRawPlayerData(players);
-    console.log(pitchers);
-    console.log(players);
     setLoading(false);
+    toast.success('Data loaded successfully!', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+    })
   }
 
   const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"];
@@ -89,7 +94,12 @@ function PlayerManagement() {
       return data
     } 
     catch (error) {
-      console.error('Error fetching teams:', error);
+      toast.error('Error fetching team, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
   };
 
@@ -113,7 +123,12 @@ function PlayerManagement() {
       return data;
     }
     catch(_e) {
-      alert(_e);
+      toast.error('Error fetching pitchers, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
     setLoading(false);
   }
@@ -134,7 +149,12 @@ function PlayerManagement() {
       localStorage.setItem('cachedPlayers', JSON.stringify(data));
     } 
     catch (error) {
-      console.error('Error fetching players:', error);
+      toast.error('Error fetching players, please try again', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     }
     setLoading(false);
   };
@@ -411,10 +431,17 @@ function PlayerManagement() {
 
     setPlayerCreationCount(0);
     setSaving(false);
+    toast.success('Data saved successfully!', {
+      position:'bottom-right',
+      autoClose: 2500,
+      hideProgressBar:true,
+      closeOnClick:true 
+    })
   }
 
   return (
       <div>
+        <ToastContainer/>
         {loading ? <LoadingScreen/> : <>
         {saving ? <SavingScreen/> : <>
         <Navbar />
