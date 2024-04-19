@@ -40,7 +40,11 @@ function Insights() {
   ];
 
   useEffect(() => {
-
+    toast.dismiss();
+    toast.loading('Gathering all your information', {
+      position:'bottom-right',
+      hideProgressBar:true,
+    })
     setLoading(true);
     
     prop();
@@ -84,6 +88,13 @@ function Insights() {
       notes = await fetchNotes(user, team)
     }
 
+    toast.dismiss();
+    toast.success('Data gathered successfully!', {
+      position:'bottom-right',
+      autoClose: 2500,
+      hideProgressBar:true,
+      closeOnClick:true
+    })
     setReportNotes(notes);
     setLineupPlayers(lineup);
     setLoading(false);

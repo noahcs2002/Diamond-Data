@@ -10,6 +10,7 @@ function Roster() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [changes, setChanges] = useState(0);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
@@ -17,6 +18,11 @@ function Roster() {
   }, []);
 
   const prop = async (user) => {
+    toast.dismiss();
+    toast.loading('Getting all your players', {
+      position:'bottom-right',
+      hideProgressBar:true,
+    })
 
     let team = undefined 
     let players = undefined
@@ -54,50 +60,17 @@ function Roster() {
         throw new Error();
       }
     }
-
     catch {
-      pitchers = await fetchPitchers(team, user);
+      pitchers = await fetchPitchers(team, user);  
     }
 
-    try {
-      finalised = await JSON.parse(localStorage.getItem('cachedAssignedPlayers'));
-
-      if (finalised === null || finalised === undefined) {
-        throw new Error();
-      }
-    }
-
-    catch {
-      finalised = await assignPlayers(players);
-    }
-
-    console.log(finalised);
-
-    try {
-      assignedPitchers = await JSON.parse(localStorage.getItem('cachedAssignedPitchers'));
-
-      if (assignedPitchers === null || assignedPitchers === undefined) {
-        throw new Error();
-      }
-    }
-
-    catch {
-      assignedPitchers = await assignPitchers(pitchers);
-    }
-
-    try {
-      combined = await JSON.parse(localStorage.getItem('cachedCombined'));
-
-      if (combined === null || combined === undefined) {
-        throw new Error();
-      } 
-    }
-    catch {
-      combined = await combine(finalised, assignedPitchers)
-    }
+    finalised = await assignPlayers(players);
+    assignedPitchers = await assignPitchers(pitchers);
+    combined = await combine(finalised, assignedPitchers)
 
     setPlayers(combined);
     setLoading(false);
+    toast.dismiss();
     toast.success('Data loaded successfully!', {
       position:'bottom-right',
       autoClose: 1500,
@@ -242,9 +215,16 @@ function Roster() {
   };
 
   const handleDrop = async (e, newAssignment) => {
-    console.log('e (relevant info): ', e.dataTransfer.getData('playerId'))
-    console.log('newAssignment: ', newAssignment);
-
+    setChanges(changes + 1);
+    if (changes === 1 || (changes + 1) % 10 === 0) {
+      toast.dismiss()
+      toast.info('Make sure to save your changes!', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true 
+      })
+    }
     const id = e.dataTransfer.getData('playerId');
 
     const combined = await JSON.parse(localStorage.getItem('cachedCombined'));
@@ -277,11 +257,12 @@ function Roster() {
     ));
 
     const saveRoster = async () => {
-      toast.loading('Saving changes', {
+      setChanges(0);
+      toast.loading('Saving roster transactions', {
         position:'bottom-right',
         hideProgressBar:true,
       })
-      // setSaving(true);
+      setSaving(true);
       console.log('Save button clicked');
       const newRoster = await JSON.parse(localStorage.getItem('cachedCombined'));
       console.log('newRoster: ', newRoster);
@@ -323,7 +304,7 @@ function Roster() {
         }
       })
       localStorage.setItem('cachedLineupPlayers', JSON.stringify(cacheableRoster));
-      // setSaving(false);
+      setSaving(false);
       toast.dismiss();
       toast.success('Roster saved successfully!', {
         position:'bottom-right',

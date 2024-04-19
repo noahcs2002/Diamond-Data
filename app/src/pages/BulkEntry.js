@@ -235,8 +235,6 @@ function BulkEntry() {
       })
     }
 
-
-    
     const updatedPitchers = await fetchPitcherData(team, user);
     const updatedPlayers = await fetchPlayers(team, user);
     localStorage.setItem('cachedPlayers', JSON.stringify(updatedPlayers));

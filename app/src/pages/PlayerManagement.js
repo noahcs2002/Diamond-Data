@@ -22,6 +22,7 @@ function PlayerManagement() {
   const [pitcherPref, setPitcherPref] = useState('');
   const [playerCreationCount, setPlayerCreationCount] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [changes, setChanges] = useState(0);
 
   useEffect(() => {
     prop()
@@ -161,6 +162,16 @@ function PlayerManagement() {
   };
 
   const handlePlayerCreate = async () => {
+    setChanges(changes + 1)
+    if (changes === 1 || (changes + 1) % 10 === 0) {
+      toast.dismiss();
+      toast.info('Make sure to save your changes!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true  
+      })
+    }
     const playerCreationRequestModel = {
         id: playerCreationCount,
         firstName: newPlayerFirstName,
@@ -235,6 +246,16 @@ function PlayerManagement() {
   };
 
   const handlePitcherCreate = async () => {
+    setChanges(changes + 1)
+    if (changes === 1 || (changes + 1) % 10 === 0) {
+      toast.dismiss();
+      toast.info('Make sure to save your changes!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true  
+      })
+    }
     const pitcher = {
       "firstName": newPlayerFirstName,
       "lastName": newPlayerLastName,
@@ -289,6 +310,16 @@ function PlayerManagement() {
 
   const handleDeletePlayer = async (id) => {
 
+    setChanges(changes + 1)
+    if (changes === 1 || (changes + 1) % 10 === 0) {
+      toast.dismiss();
+      toast.info('Make sure to save your changes!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true  
+      })
+    }
     const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
 
     const player = players.filter(p => p.id === id)[0]; 
@@ -305,6 +336,16 @@ function PlayerManagement() {
   };
 
   const handleDeletePitcher = async (id) => {
+    setChanges(changes + 1)
+    if (changes === 1 || (changes + 1) % 10 === 0) {
+      toast.dismiss();
+      toast.info('Make sure to save your changes!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true  
+      })
+    }
     console.log(id);
     const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
 
@@ -327,6 +368,16 @@ function PlayerManagement() {
   }
 
   const handleEditPlayer = async (playerId, updatedFullName) => {
+    setChanges(changes + 1)
+    if (changes === 1 || (changes + 1) % 10 === 0) {
+      toast.dismiss();
+      toast.info('Make sure to save your changes!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true  
+      })
+    }
     const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
     const [first, last] = updatedFullName.split(' ');
 
@@ -342,6 +393,16 @@ function PlayerManagement() {
   };
 
   const handleEditPitcher = async (playerId, updatedFullName) => {
+    setChanges(changes + 1)
+    if (changes === 1 || (changes + 1) % 10 === 0) {
+      toast.dismiss();
+      toast.info('Make sure to save your changes!', {
+        position:'bottom-right',
+        autoClose: 2500,
+        hideProgressBar:true,
+        closeOnClick:true  
+      })
+    }
     const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
     const [first, last] = updatedFullName.split(' ');
 
@@ -367,7 +428,8 @@ function PlayerManagement() {
   };
 
   const saveChanges = async () => {
-    // setSaving(true);
+    setSaving(true);
+    setChanges(0);
     toast.loading('Saving player changes', {
       position:'bottom-right',
       hideProgressBar:true,
@@ -438,7 +500,7 @@ function PlayerManagement() {
     localStorage.setItem('deletedPlayers', JSON.stringify([]));
 
     setPlayerCreationCount(0);
-    // setSaving(false);
+    setSaving(false);
     toast.dismiss();
     toast.success('Players saved successfully!', {
       position:'bottom-right',
