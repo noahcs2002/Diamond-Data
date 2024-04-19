@@ -277,7 +277,11 @@ function Roster() {
     ));
 
     const saveRoster = async () => {
-      setSaving(true);
+      toast.loading('Saving changes', {
+        position:'bottom-right',
+        hideProgressBar:true,
+      })
+      // setSaving(true);
       console.log('Save button clicked');
       const newRoster = await JSON.parse(localStorage.getItem('cachedCombined'));
       console.log('newRoster: ', newRoster);
@@ -306,9 +310,22 @@ function Roster() {
       }
 
       const data = await res.json();
-      console.log('returned result: ', data);
-      setSaving(false);
-      toast.success('Data saved successfully!', {
+      console.log(data);
+      let cacheableRoster = [];
+
+      newRoster.map(e => {
+        const [first, last] = e.name.split(' ');
+        if (e.assignment === 'Line-Up') {
+          cacheableRoster.push({
+            firstName: first,
+            lastName: last
+          }) 
+        }
+      })
+      localStorage.setItem('cachedLineupPlayers', JSON.stringify(cacheableRoster));
+      // setSaving(false);
+      toast.dismiss();
+      toast.success('Roster saved successfully!', {
         position:'bottom-right',
         autoClose: 2500,
         hideProgressBar:true,

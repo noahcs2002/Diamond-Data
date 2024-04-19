@@ -144,7 +144,13 @@ function BulkEntry() {
   };
 
   const saveGameData = async () => {
+    toast.loading('Saving new game data', {
+      position:'bottom-right',
+      hideProgressBar:true,
+    })
     setLoading(true);
+    setIsEnteringNewGame(false);
+    setNewGameData({ offensive: [], defensive: [], pitcher: [] });
     newGameData.offensive = newGameData.offensive.filter(o => o !== undefined);
     newGameData.defensive = newGameData.offensive.filter(o => o !== undefined);
     newGameData.pitcher = newGameData.pitcher.filter(o => o !== undefined);
@@ -230,8 +236,7 @@ function BulkEntry() {
     }
 
 
-    setIsEnteringNewGame(false);
-    setNewGameData({ offensive: [], defensive: [], pitcher: [] });
+    
     const updatedPitchers = await fetchPitcherData(team, user);
     const updatedPlayers = await fetchPlayers(team, user);
     localStorage.setItem('cachedPlayers', JSON.stringify(updatedPlayers));
@@ -239,6 +244,13 @@ function BulkEntry() {
     await propogate(updatedPlayers);
     setPitcherData(updatedPitchers);
     setLoading(false);
+    toast.dismiss();
+    toast.success('New game data saved successfully!', {
+      position:'bottom-right',
+      autoClose: 2500,
+      hideProgressBar:true,
+      closeOnClick:true 
+    })
   };
 
   const cancelNewGame = () => {

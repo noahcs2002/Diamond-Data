@@ -366,7 +366,11 @@ function PlayerManagement() {
   };
 
   const saveChanges = async () => {
-    setSaving(true);
+    // setSaving(true);
+    toast.loading('Saving player changes', {
+      position:'bottom-right',
+      hideProgressBar:true,
+    })
     const user = await JSON.parse(localStorage.getItem('sessionData'));
 
     let team = {};
@@ -430,8 +434,9 @@ function PlayerManagement() {
     localStorage.setItem('deletedPlayers', JSON.stringify([]));
 
     setPlayerCreationCount(0);
-    setSaving(false);
-    toast.success('Data saved successfully!', {
+    // setSaving(false);
+    toast.dismiss();
+    toast.success('Players saved successfully!', {
       position:'bottom-right',
       autoClose: 2500,
       hideProgressBar:true,
