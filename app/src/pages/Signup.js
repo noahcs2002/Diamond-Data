@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Signup.scss';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -42,31 +42,41 @@ function Signup() {
             return;
         }
 
-        const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/sign-up';
-        const url = new URL(endpointUrl);
-        url.searchParams.append('teamName', formData.teamName);
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        })
+        try {
+            const endpointUrl = 'http://localhost:8080/diamond-data/api/auth/sign-up';
+            const url = new URL(endpointUrl);
+            url.searchParams.append('teamName', formData.teamName);
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            })
 
-        const data = await res.json();
-        localStorage.setItem('sessionData', JSON.stringify(data));
-        toast.success('Signed up successfully! Welcome to Diamond Data!', {
-            position:'bottom-right',
-            autoClose: 1500,
-            hideProgressBar:true,
-            closeOnClick:true
-        })
-        nav('/home', {
-            state: {
-                userSessionId: data,
-                name: data.name
-            }
-        });
+            const data = await res.json();
+            localStorage.setItem('sessionData', JSON.stringify(data));
+            toast.success('Signed up successfully! Welcome to Diamond Data!', {
+                position:'bottom-right',
+                autoClose: 2500,
+                hideProgressBar:true,
+                closeOnClick:true
+            })
+            nav('/home', {
+                state: {
+                    userSessionId: data,
+                    name: data.name
+                }
+            });
+        }
+        catch {
+            toast.error('Account already exists!', {
+                position:'bottom-right',
+                autoClose: 2500,
+                hideProgressBar:true,
+                closeOnClick:true 
+            })
+        }
        };
 
     const handleLogin = () => {
@@ -76,6 +86,7 @@ function Signup() {
 
     return (
         <div className="signup-page">
+            <ToastContainer/>
             <div className="title-container">
                 {/*<img src = {Logo} alt = "Logo" className = "center" />*/}
                 <h1 className="title">
