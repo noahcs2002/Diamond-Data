@@ -2,6 +2,7 @@ package com.dd.api.restapi.services;
 
 import com.dd.api.ai.agents.DefensivePlayerAgent;
 import com.dd.api.ai.scoring.DefensivePlayerScoringStrategy;
+import com.dd.api.restapi.calculators.DefensivePlayerStatisticsCalculator;
 import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.repositories.DefensivePlayerRepository;
 import com.dd.api.util.TruncatedSystemTimeProvider;
@@ -55,7 +56,8 @@ public class DefensivePlayerService {
     @Transactional
     public DefensivePlayer updateDefensivePlayer(Long id, DefensivePlayer player) {
         player.setId(id);
-        return this.repository.save(player);
+        DefensivePlayer newPlayer = DefensivePlayerStatisticsCalculator.updateStatistics(player);
+        return this.repository.save(newPlayer);
     }
 
     @Transactional

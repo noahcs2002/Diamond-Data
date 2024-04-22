@@ -2,6 +2,7 @@ package com.dd.api.restapi.services;
 
 import com.dd.api.ai.agents.PitcherAgent;
 import com.dd.api.ai.scoring.PitcherScoringStrategy;
+import com.dd.api.restapi.calculators.PitcherStatisticsCalculator;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
@@ -58,7 +59,7 @@ public class PitcherService {
     public Pitcher updatePitcher(Long id, Pitcher newModel) {
         Pitcher pitcher = this.pitcherRepository.getReferenceById(id);
         newModel.setId(pitcher.getId());
-        pitcher = newModel;
+        pitcher = PitcherStatisticsCalculator.updateStats(newModel);
         this.pitcherRepository.save(pitcher);
         return pitcher;
     }
