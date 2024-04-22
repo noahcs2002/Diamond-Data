@@ -181,76 +181,92 @@ function PlayerStats() {
       accessor: "lastName",
     },
     {
-      Header: "PREFERENCE",
-      accessor: "preference",
-    },
-    {
-      Header: "APPEARANCES",
-      accessor: "appearances",
-    },
-    {
-      Header: "BALKS",
-      accessor: "balks",
-    },
-    {
-      Header: "BATTERS FACED",
-      accessor: "battersFaced",
-    },
-    {
-      Header: "BLOWN SAVES",
-      accessor: "blownSaves",
-    },
-    {
-      Header: "COMPLETE GAMES",
-      accessor: "completeGames",
-    },
-    {
-      Header: "EARNED RUNS",
-      accessor: "earnedRuns",
-    },
-    {
-      Header: "EARNED RUN AVERAGE",
-      accessor: "earnedRunAverage",
-    },
-    {
-      Header: "FLYOUTS",
-      accessor: "flyouts",
-    },
-    {
-      Header: "GAMES FINISHED",
-      accessor: "gamesFinished",
-    },
-    {
-      Header: "GAMES STARTED",
-      accessor: "gamesStarted",
-    },
-    {
-      Header: "GROUNDOUTS",
-      accessor: "groundouts",
-    },
-    {
-      Header: "HOLDS",
-      accessor: "holds",
-    },
-    {
-      Header: "HITS",
-      accessor: "hits",
-    },
-    {
-      Header: "INHERITED RUNNERS",
-      accessor: "inheritedRunners",
-    },
-    {
-      Header: "INNINGS PITCHED",
-      accessor: "inningsPitched",
+      Header: "WINS",
+      accessor: "wins",
     },
     {
       Header: "LOSSES",
       accessor: "losses",
     },
     {
+      Header: "APPEARANCES",
+      accessor: "appearances",
+    },
+    {
+      Header: "GAMES STARTED",
+      accessor: "gamesStarted",
+    },
+    {
+      Header: "GAMES FINISHED",
+      accessor: "gamesFinished",
+    },
+    {
+      Header: "SHUTOUTS",
+      accessor: "shutouts",
+    },
+    {
+      Header: "SAVES",
+      accessor: "saves",
+    },
+    {
+      Header: "SAVE OPPORTUNITIES",
+      accessor: "saveOpportunities",
+    },
+    {
+      Header: "INNINGS PITCHED",
+      accessor: "inningsPitched",
+    },
+    {
+      Header: "HITS",
+      accessor: "hits",
+    },
+    {
+      Header: "UNEARNED RUNS",
+      accessor: "unearnedRuns",
+    },
+    {
+      Header: "EARNED RUNS",
+      accessor: "earnedRuns",
+    },
+    {
+      Header: "STRIKEOUTS",
+      accessor: "strikeouts",
+    },
+    {
+      Header: "WALKS",
+      accessor: "walks",
+    },
+    {
       Header: "NUMBER OF PITCHES",
       accessor: "numberOfPitches",
+    },
+    {
+      Header: "WILD PITCHES",
+      accessor: "wildPitches",
+    },
+    {
+      Header: "BATTERS FACED",
+      accessor: "battersFaced",
+    },
+    {
+      Header: "FLYOUTS",
+      accessor: "flyouts",
+    },
+    {
+      Header: "GROUNDOUTS",
+      accessor: "groundouts",
+    },
+    {
+      Header: "BLOWN SAVES",
+      accessor: "blownSaves",
+    },
+    {
+      Header: "INHERITED RUNNERS",
+      accessor: "inheritedRunners",
+    },
+    {
+      Header: "HOLDS",
+      accessor: "holds",
     },
     {
       Header: "PICKOFFS",
@@ -265,48 +281,11 @@ function PlayerStats() {
       accessor: "reliefWins",
     },
     {
-      Header: "SAVES",
-      accessor: "saves",
+      Header: "BALKS",
+      accessor: "balks",
     },
-    {
-      Header: "SAVE OPPORTUNITIES",
-      accessor: "saveOpportunities",
-    },
-    {
-      Header: "SAVE PERCENTAGE",
-      accessor: "savePercentage",
-    },
-    {
-      Header: "SHUTOUTS",
-      accessor: "shutouts",
-    },
-    {
-      Header: "STRIKEOUTS",
-      accessor: "strikeouts",
-    },
-    {
-      Header: "UNEARNED RUNS",
-      accessor: "unearnedRuns",
-    },
-    {
-      Header: "WALKS AND HITS PER INING PITCHED",
-      accessor: "walksAndHitsPerInningPitched",
-    },
-    {
-      Header: "WALKS",
-      accessor: "walks",
-    },
-    {
-      Header: "WILD PITCHES",
-      accessor: "wildPitches",
-    },
-    {
-      Header: "WINS",
-      accessor: "wins",
-    },
-  ],
-  []);
-
+  ], []);
+  
   const defensiveColumns = React.useMemo(() => [
     {
       Header: "FIRST NAME",
@@ -321,20 +300,12 @@ function PlayerStats() {
       accessor: "assists",
     },
     {
-      Header: "CAUGHT STEALING PERCENT",
-      accessor: "caughtStealingPercent",
-    },
-    {
       Header: "DOUBLE PLAY",
       accessor: "doublePlay",
     },
     {
       Header: "ERRORS",
       accessor: "errors",
-    },
-    {
-      Header: "FIELDING PERCENTAGE",
-      accessor: "fieldingPercentage",
     },
     {
       Header: "INNINGS PLAYED",
@@ -357,23 +328,11 @@ function PlayerStats() {
       accessor: "putouts",
     },
     {
-      Header: "STOLEN BASES ALLOWED",
-      accessor: "stolenBasesAllowed",
-    },
-    {
-      Header: "STOLEN BASE ATTEMPTS",
-      accessor: "stolenBaseAttempts",
-    },
-    {
-      Header: "TOTAL CHANCES",
-      accessor: "totalChances",
-    },
-    {
       Header: "TRIPLE PLAYS",
       accessor: "triplePlays",
     },
   ], []);
-
+  
   const offensiveColumns = React.useMemo(() => [
     {
       Header: "FIRST NAME",
@@ -473,7 +432,7 @@ function PlayerStats() {
     },
     {
       Header: "STRIKEOUTS",
-      accessor: 'strikeouts'
+      accessor: "strikeouts",
     },
     {
       Header: "SLUGGING PERCENTAGE",
@@ -500,6 +459,7 @@ function PlayerStats() {
       accessor: "walkOffs",
     },
   ], []);
+  
 
   const offensiveTable = useTable({ columns: offensiveColumns, data: offensiveData });
   const defensiveTable = useTable({ columns: defensiveColumns, data: defensiveData });

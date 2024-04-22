@@ -6,6 +6,7 @@ public class OffensivePlayerStatisticCalculator {
 
     public static OffensivePlayer updateOffensivePlayerStatistics(OffensivePlayer player) {
         player.setExtraBaseHits(player.getDoubles() + player.getTriples() + player.getHomeRuns());
+        player.setHits(player.getDoubles() + player.getSingles() + player.getTriples() + player.getHomeRuns());
         player.setTotalBases((player.getDoubles() * 2) + (player.getTriples() * 3) + (player.getHomeRuns() * 4) + (player.getSingles()));
         player.setCaughtStealingPercentage((double) (player.getCaughtStealing()) / (player.getStolenBases() + player.getCaughtStealing()));
         player.setSluggingPercentage((double) ((player.getSingles()) + (player.getDoubles() * 2) + (player.getTriples() * 3) + (player.getHomeRuns() * 4)) / player.getAtBats());
