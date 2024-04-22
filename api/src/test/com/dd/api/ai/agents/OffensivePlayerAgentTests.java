@@ -235,6 +235,7 @@ public class OffensivePlayerAgentTests {
                 70,                    // runsBattedIn
                 5,                     // sacrificeBunt
                 7,                     // sacrificeFly
+                0,                     // strikeouts
                 120,                   // singles
                 0.550,                 // sluggingPercentage
                 15,                    // stolenBases
