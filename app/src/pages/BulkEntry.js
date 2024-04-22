@@ -295,7 +295,6 @@ function BulkEntry() {
     { Header: "STRIKEOUTS", accessor: "strikeouts" },
     { Header: "SINGLES", accessor: "singles" },
     { Header: "STOLEN BASES", accessor: "stolenBases" },
-    { Header: "TOTAL BASES", accessor: "totalBases" },
     { Header: "TRIPLES", accessor: "triples" },
     { Header: "WALKS", accessor: "walks" },
     { Header: "WALK OFFS", accessor: "walkOffs" },
@@ -313,7 +312,6 @@ function BulkEntry() {
     { Header: "OUTFIELD ASSISTS", accessor: "outfieldAssists" },
     { Header: "PASSED BALLS", accessor: "passedBalls" },
     { Header: "PUTOUTS", accessor: "putouts" },
-    { Header: "TOTAL CHANCES", accessor: "totalChances" },
     { Header: "TRIPLE PLAYS", accessor: "triplePlays" },
     // { Header: "ID", accessor: "id" }
   ], 'defensive'), []);
@@ -343,7 +341,6 @@ function BulkEntry() {
     { Header: "SHUTOUTS", accessor: "shutouts" },
     { Header: "STRIKEOUTS", accessor: "strikeouts" },
     { Header: "UNEARNED RUNS", accessor: "unearnedRuns" },
-    { Header: "WALKS AND HITS PER INNING PITCHED", accessor: "walksAndHitsPerInningPitched" },
     { Header: "WILD PITCHES", accessor: "wildPitches" },
     { Header: "WINS", accessor: "wins" },
     { Header: "WALKS", accessor: "walks" },
