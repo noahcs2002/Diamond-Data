@@ -189,6 +189,10 @@ function PlayerStats() {
       accessor: "losses",
     },
     {
+      Header: "ERA",
+      accessor: "earnedRunAverage"
+    },
+    {
       Header: "APPEARANCES",
       accessor: "appearances",
     },
