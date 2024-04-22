@@ -472,6 +472,10 @@ function PlayerStats() {
       accessor: "singles",
     },
     {
+      Header: "STRIKEOUTS",
+      accessor: 'strikeouts'
+    },
+    {
       Header: "SLUGGING PERCENTAGE",
       accessor: "sluggingPercentage",
     },

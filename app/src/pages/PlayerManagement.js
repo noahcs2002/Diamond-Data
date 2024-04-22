@@ -203,6 +203,7 @@ function PlayerManagement() {
             runsBattedIn: 0,
             sacrificeBunt: 0,
             sacrificeFly: 0,
+            strikeout: 0,
             singles: 0,
             sluggingPercentage: 0,
             stolenBases: 0,
