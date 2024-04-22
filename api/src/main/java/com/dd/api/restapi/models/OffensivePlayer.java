@@ -39,6 +39,7 @@ public class OffensivePlayer {
     private int runsBattedIn;
     private int sacrificeBunt;
     private int sacrificeFly;
+    private int strikeouts;
     private int singles;
     private double sluggingPercentage;
     private int stolenBases;
@@ -72,6 +73,7 @@ public class OffensivePlayer {
                            int runsBattedIn,
                            int sacrificeBunt,
                            int sacrificeFly,
+                           int strikeouts,
                            int singles,
                            double sluggingPercentage,
                            int stolenBases,
@@ -102,6 +104,7 @@ public class OffensivePlayer {
         this.runsBattedIn = runsBattedIn;
         this.sacrificeBunt = sacrificeBunt;
         this.sacrificeFly = sacrificeFly;
+        this.strikeouts = strikeouts;
         this.singles = singles;
         this.sluggingPercentage = sluggingPercentage;
         this.stolenBases = stolenBases;
@@ -371,16 +374,24 @@ public class OffensivePlayer {
         this.caughtStealingPercentage = caughtStealingPercentage;
     }
 
+    public int getStrikeouts() {
+        return strikeouts;
+    }
+
+    public void setStrikeouts(int strikeouts) {
+        this.strikeouts = strikeouts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OffensivePlayer player = (OffensivePlayer) o;
-        return atBats == player.atBats && Double.compare(battingAverage, player.battingAverage) == 0 && caughtStealing == player.caughtStealing && Double.compare(caughtStealingPercentage, player.caughtStealingPercentage) == 0 && doubles == player.doubles && extraBaseHits == player.extraBaseHits && gamesPlayed == player.gamesPlayed && grandSlams == player.grandSlams && groundIntoDoublePlay == player.groundIntoDoublePlay && hitByPitch == player.hitByPitch && hits == player.hits && homeRuns == player.homeRuns && intentionalWalks == player.intentionalWalks && leftOnBase == player.leftOnBase && Double.compare(onBasePercentage, player.onBasePercentage) == 0 && Double.compare(onBasePlusSlugging, player.onBasePlusSlugging) == 0 && plateAppearances == player.plateAppearances && reachedOnError == player.reachedOnError && runs == player.runs && runsBattedIn == player.runsBattedIn && sacrificeBunt == player.sacrificeBunt && sacrificeFly == player.sacrificeFly && singles == player.singles && Double.compare(sluggingPercentage, player.sluggingPercentage) == 0 && stolenBases == player.stolenBases && totalBases == player.totalBases && triples == player.triples && walks == player.walks && walkOffs == player.walkOffs && ghostedDate == player.ghostedDate && Objects.equals(id, player.id) && Objects.equals(team, player.team);
+        OffensivePlayer that = (OffensivePlayer) o;
+        return atBats == that.atBats && Double.compare(battingAverage, that.battingAverage) == 0 && caughtStealing == that.caughtStealing && Double.compare(caughtStealingPercentage, that.caughtStealingPercentage) == 0 && doubles == that.doubles && extraBaseHits == that.extraBaseHits && gamesPlayed == that.gamesPlayed && grandSlams == that.grandSlams && groundIntoDoublePlay == that.groundIntoDoublePlay && hitByPitch == that.hitByPitch && hits == that.hits && homeRuns == that.homeRuns && intentionalWalks == that.intentionalWalks && leftOnBase == that.leftOnBase && Double.compare(onBasePercentage, that.onBasePercentage) == 0 && Double.compare(onBasePlusSlugging, that.onBasePlusSlugging) == 0 && plateAppearances == that.plateAppearances && reachedOnError == that.reachedOnError && runs == that.runs && runsBattedIn == that.runsBattedIn && sacrificeBunt == that.sacrificeBunt && sacrificeFly == that.sacrificeFly && strikeouts == that.strikeouts && singles == that.singles && Double.compare(sluggingPercentage, that.sluggingPercentage) == 0 && stolenBases == that.stolenBases && totalBases == that.totalBases && triples == that.triples && walks == that.walks && walkOffs == that.walkOffs && ghostedDate == that.ghostedDate && Objects.equals(id, that.id) && Objects.equals(team, that.team);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, team, atBats, battingAverage, caughtStealing, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunt, sacrificeFly, singles, sluggingPercentage, stolenBases, totalBases, triples, walks, walkOffs, ghostedDate);
+        return Objects.hash(id, team, atBats, battingAverage, caughtStealing, caughtStealingPercentage, doubles, extraBaseHits, gamesPlayed, grandSlams, groundIntoDoublePlay, hitByPitch, hits, homeRuns, intentionalWalks, leftOnBase, onBasePercentage, onBasePlusSlugging, plateAppearances, reachedOnError, runs, runsBattedIn, sacrificeBunt, sacrificeFly, strikeouts, singles, sluggingPercentage, stolenBases, totalBases, triples, walks, walkOffs, ghostedDate);
     }
 }

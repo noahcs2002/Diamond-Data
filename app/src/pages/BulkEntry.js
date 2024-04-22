@@ -292,6 +292,7 @@ function BulkEntry() {
     { Header: "RUNS BATTED IN", accessor: "runsBattedIn" },
     { Header: "SACRIFICE BUNT", accessor: "sacrificeBunt" },
     { Header: "SACRIFICE FLY", accessor: "sacrificeFly" },
+    { Header: "STRIKEOUTS", accessor: "strikeouts" },
     { Header: "SINGLES", accessor: "singles" },
     { Header: "STOLEN BASES", accessor: "stolenBases" },
     { Header: "TOTAL BASES", accessor: "totalBases" },
