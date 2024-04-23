@@ -209,7 +209,8 @@ function Settings() {
         throw new Error('Error updating team');
       }
   
-      fetchTeam(user);
+      const team = await fetchTeam(user);
+      localStorage.setItem('cachedTeam', JSON.stringify(team));
       closeModal();
     } 
     catch (error) {
