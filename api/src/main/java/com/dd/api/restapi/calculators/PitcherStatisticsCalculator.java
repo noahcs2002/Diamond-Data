@@ -1,9 +1,6 @@
 package com.dd.api.restapi.calculators;
 
 import com.dd.api.restapi.models.Pitcher;
-import org.springframework.security.core.parameters.P;
-
-import javax.swing.plaf.SpinnerUI;
 
 public class PitcherStatisticsCalculator {
     public static Pitcher updateStats(Pitcher pitcher) {

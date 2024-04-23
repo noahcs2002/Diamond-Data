@@ -3,10 +3,8 @@ package com.dd.api.auth.providers;
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.security.Salt;
 import com.dd.api.util.TruncatedSystemTimeProvider;
-import io.micrometer.observation.Observation;
 import jakarta.transaction.Transactional;
 import org.apache.commons.codec.binary.Base64;
-import org.aspectj.lang.annotation.After;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

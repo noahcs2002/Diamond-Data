@@ -8,7 +8,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
 import SavingScreen from '../components/SavingScreen'
 import { ToastContainer, toast } from 'react-toastify';
-import { LocalLaundryService } from '@mui/icons-material';
 
 function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
@@ -106,7 +105,6 @@ function PlayerManagement() {
   };
 
   const fetchPitchers = async (user, team) => {
-    // setLoading(true);
     const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team'
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
@@ -136,8 +134,6 @@ function PlayerManagement() {
   }
 
   const fetchPlayers = async (user, team) => {
-    // setLoading(true)
-   // if (!selectedTeam) return;
     const endpoint = 'http://localhost:8080/diamond-data/api/players/get-by-team';
     const url = new URL(endpoint);
     url.searchParams.append("userId", user.id);
@@ -553,7 +549,6 @@ function PlayerManagement() {
                     <PlayerItem
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
-                      // Make deletePitcher eventually
                       onDelete={() => handleDeletePitcher(player.id)} 
                       onEdit={() => handleEditPitcher(player.id, localStorage.getItem('updatedName'))}
                     />
@@ -589,7 +584,6 @@ function PlayerManagement() {
                   ))}
                 </div>
                 <button onClick={handlePlayerCreate}>Save</button>
-                {/* <button onClick={() => setIsAddingPlayer(false)}>Cancel</button> */}
               </div>
             </div>
           )}
@@ -619,7 +613,6 @@ function PlayerManagement() {
                   <label> Left Handed </label>
                 </div>
                 <button onClick={handlePitcherCreate}>Submit</button>
-                {/* <button onClick={() => {setIsAddingPitcher(false)}}>Cancel</button> */}
               </div>
           </div>
           }

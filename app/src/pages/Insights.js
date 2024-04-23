@@ -5,19 +5,13 @@ import Footer from '../components/Footer';
 import '../styles/Insights.scss';
 import ConfirmModal from '../components/ConfirmModal';
 import LoadingScreen from '../components/LoadingScreen';
-import { LocalLaundryService, LocalSee, South } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Insights() {
-  const [teams, setTeams] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState('');
-  const [players, setPlayers] = useState([]);
-  const [selectedPlayers, setSelectedPlayers] = useState([null, null]); 
   const [reportNotes, setReportNotes] = useState([]); 
   const [newReportNote, setNewReportNote] = useState(''); 
   const [editedNoteIndex, setEditedNoteIndex] = useState(null); 
-  const [userId, setUserId] = useState(null);
   const [editedNoteText, setEditedNoteText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
@@ -25,7 +19,6 @@ function Insights() {
   const [loading, setLoading] = useState(true);
 
   const location = useLocation();
-  const state = location.state;
 
   const dummyTeamRecords = [
     { name: 'New York Yankees', wins: 98, losses: 64 },
@@ -440,4 +433,5 @@ function Insights() {
     </div>
   );
 }
+
 export default Insights;
