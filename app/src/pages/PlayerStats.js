@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../styles/PlayerStats.scss';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { useTable } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
 import PlayerStatsModal from '../components/PlayerStatsModal';
 import LoadingScreen from '../components/LoadingScreen';
 import { ToastContainer, toast } from 'react-toastify';
@@ -245,6 +245,10 @@ function PlayerStats() {
       accessor: "numberOfPitches",
     },
     {
+      Header: "WHIP",
+      accessor: "walksAndHitsPerInningPitched"
+    },
+    {
       Header: "WILD PITCHES",
       accessor: "wildPitches",
     },
@@ -465,9 +469,9 @@ function PlayerStats() {
   ], []);
   
 
-  const offensiveTable = useTable({ columns: offensiveColumns, data: offensiveData });
-  const defensiveTable = useTable({ columns: defensiveColumns, data: defensiveData });
-  const pitcherTable = useTable({ columns: pitcherColumns, data: pitcherData });
+  const offensiveTable = useTable({ columns: offensiveColumns, data: offensiveData }, useSortBy);
+  const defensiveTable = useTable({ columns: defensiveColumns, data: defensiveData }, useSortBy);
+  const pitcherTable = useTable({ columns: pitcherColumns, data: pitcherData }, useSortBy);
 
   return (
     <div>
@@ -484,8 +488,11 @@ function PlayerStats() {
               {offensiveTable.headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                       {column.render("Header")}
+                      <span>
+                        {column.isSorted ? (column.isSortedDesc ? '↓' : '↑') : ''}
+                      </span>
                     </th>
                   ))}
                 </tr>
@@ -516,8 +523,11 @@ function PlayerStats() {
               {defensiveTable.headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps(column.getSortByToggleProps()))}>
                       {column.render("Header")}
+                      <span>
+                        {column.isSorted ? (column.isSortedDesc ? '↓' : '↑') : ''}
+                      </span>
                     </th>
                   ))}
                 </tr>
@@ -548,8 +558,11 @@ function PlayerStats() {
               {pitcherTable.headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                       {column.render("Header")}
+                      <span>
+                        {column.isSorted ? (column.isSortedDesc ? '↓' : '↑') : ''}
+                      </span>
                     </th>
                   ))}
                 </tr>

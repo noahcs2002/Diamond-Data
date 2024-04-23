@@ -358,7 +358,7 @@ function BulkEntry() {
       <Navbar />
       <div className="bulkEntry">
         <div className='bulkEntryHeading'>
-          <h1 className="title">Bulk Entry</h1>
+          <h1 className="title">Game Day</h1>
           <button  className='bulkEntryButtons' onClick={() => setIsEnteringNewGame(true)}>New Game</button>
           {isEnteringNewGame && <button className='bulkEntryButtons' onClick={saveGameData}>Save Game</button>}
           {isEnteringNewGame && <button className='bulkEntryButtons' onClick={cancelNewGame}>Cancel</button>}
