@@ -8,7 +8,6 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const nav = useNavigate();
-    const location = useLocation();
     let toastId = React.useRef(null);
 
     useEffect(() => {
@@ -78,7 +77,6 @@ function Login() {
                 <h1 className="title">Diamond Data</h1>
             </div>
 
-            {/* Email and Password boxes */}
             <div className="login-container">
                 <h2>Login</h2>
                 <form className="loginForm" onSubmit={handleLogin}>
@@ -97,7 +95,7 @@ function Login() {
                     />
                     </label>
                     <button onClick={handleLogin} type='button'>Login</button>
-                    <p>Don't have an account? <a onClick={handleSignUp}>Sign up</a></p>     {/* Adding a link to signup */}
+                    <p>Don't have an account? <a onClick={handleSignUp}>Sign up</a></p>
                 </form>
             </div>
         </div>

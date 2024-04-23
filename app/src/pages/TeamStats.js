@@ -144,20 +144,23 @@ function TeamStats() {
 
     if (aggregatedStats.atBats > 0) {
       aggregatedStats.battingAverage = aggregatedStats.hits / aggregatedStats.atBats;
-    } else {
+    } 
+    else {
       aggregatedStats.battingAverage = 0;
     }
   
     
     if (aggregatedStats.atBats + aggregatedStats.walks > 0) {
       aggregatedStats.onBasePercentage = (aggregatedStats.hits + aggregatedStats.walks) / (aggregatedStats.atBats + aggregatedStats.walks);
-    } else {
+    } 
+    else {
       aggregatedStats.onBasePercentage = 0;
     }
   
     if (aggregatedStats.atBats > 0) {
       aggregatedStats.sluggingPercentage = aggregatedStats.totalBases / aggregatedStats.atBats;
-    } else {
+    } 
+        else {
       aggregatedStats.sluggingPercentage = 0;
     }
   
