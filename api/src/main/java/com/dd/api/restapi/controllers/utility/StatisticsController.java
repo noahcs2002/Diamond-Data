@@ -7,8 +7,6 @@ import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/diamond-data/api/stats")
 public class StatisticsController {

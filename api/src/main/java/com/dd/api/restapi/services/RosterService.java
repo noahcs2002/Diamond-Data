@@ -6,7 +6,6 @@ import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.restapi.repositories.PlayerRepository;
 import com.dd.api.restapi.requestmodels.BulkPlayerChangeRequestModel;
-import com.dd.api.restapi.requestmodels.BulkPositionUpdateRequestModel;
 import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

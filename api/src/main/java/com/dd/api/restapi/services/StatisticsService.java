@@ -4,11 +4,8 @@ import com.dd.api.restapi.models.DefensivePlayer;
 import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.requestmodels.StatisticUpdateRequestModel;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class StatisticsService {
