@@ -32,7 +32,7 @@ function Navbar() {
                     <Link to="/PlayerStats"> Player Stats </Link>
                     <Link to="/Roster"> Roster </Link>
                     {/* <Link to="/Insights"> Insights </Link> */}
-                    <Link to="/BulkEntry"> Bulk Entry </Link>
+                    <Link to="/BulkEntry"> Game Day </Link>
                     <button className="navbarLink" onClick={handleLogout}>Logout</button>
                     <Link to="/Settings">
                         <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
@@ -46,7 +46,7 @@ function Navbar() {
                 <Link className="navbarLink" to="/PlayerStats"> Player Stats </Link>
                 <Link className="navbarLink" to="/Roster"> Roster </Link>
                 {/* <Link to="/Insights"> Insights </Link> */}
-                <Link className="navbarLink" to="/BulkEntry"> Bulk Entry </Link>
+                <Link className="navbarLink" to="/BulkEntry"> Game Day </Link>
                 <button className="navbarLink" onClick={handleLogout}>Logout</button>
                 <Link className="navbarLink" to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
