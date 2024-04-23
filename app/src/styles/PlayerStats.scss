@@ -2,6 +2,16 @@
 @import './Global.scss';
 
 .playerStats {
+
+  th:nth-child(1),
+  td:nth-child(1),
+  th:nth-child(2),
+  td:nth-child(2) {
+    position: sticky;
+    left: 0;
+    background-color: white; /* Adjust as needed */
+  }
+
   background: linear-gradient(45deg, var(--background-color), var(--background2-color));
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: 100;

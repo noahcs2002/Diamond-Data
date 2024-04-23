@@ -66,16 +66,7 @@ function Insights() {
       lineup = await fetchLineupPlayers();
     }
 
-    try {
-      team = await JSON.parse(localStorage.getItem('cachedTeam'));
-
-      if (team === undefined || team === null) {
-        throw new Error();
-      }
-    }
-    catch {
-      team = await fetchTeam(user);
-    }
+    team = await fetchTeam(user);
 
     try {
       notes = await JSON.parse(localStorage.getItem('cachedNotes'));
