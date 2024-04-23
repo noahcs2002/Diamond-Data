@@ -138,7 +138,7 @@ function BulkEntry() {
     if (!updatedData[rowIndex]) {
       updatedData[rowIndex] = {id: playerId};
     }
-    updatedData[rowIndex][accessor] = parseInt(e.target.value, 10);
+    updatedData[rowIndex][accessor] = parseFloat(e.target.value, 10);
     setNewGameData({ ...newGameData, [type]: updatedData});
     console.log(newGameData);
   };
@@ -428,8 +428,14 @@ function BulkEntry() {
                 {isEnteringNewGame && cell.column.id !== 'firstName' && cell.column.id !== 'lastName' ? (
                   <input
                     type="number"
+                    min="0"
                     defaultValue={cell.value}
                     onChange={e => handleInputChange(e, row.index, cell.column.id, 'defensive', row.original.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === '-' || e.key === 'e') {
+                         e.preventDefault();
+                      }
+                      }}
                   />
                 ) : (
                   cell.render('Cell')
@@ -466,8 +472,15 @@ function BulkEntry() {
                 {isEnteringNewGame && cell.column.id !== 'firstName' && cell.column.id !== 'lastName' ? (
                   <input
                     type="number"
+                    step="0.1"
+                    min="0"
                     defaultValue={cell.value}
                     onChange={e => handleInputChange(e, row.index, cell.column.id, 'pitcher', row.original.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === '-' || e.key === 'e') {
+                         e.preventDefault();
+                      }
+                      }}
                   />
                 ) : (
                   cell.render('Cell')
