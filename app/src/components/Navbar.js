@@ -4,15 +4,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings'; // Import the Settings icon
 import '../styles/Navbar.scss';
 import ConfirmModal from './ConfirmModal';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);
     const navigate = useNavigate();
     const [showConfirmLogout, setShowConfirmLogout] = useState(false);
+    const version = '1.0.0';
+    const releaseDate = 'April 19th, 2024';
 
     const handleLogout = () => {
         setShowConfirmLogout(true);
     };
+
+    const showToast = () => {
+        toast.dismiss();
+        toast.info(
+            <div>
+                <span>
+                    Version {version}
+                </span>
+                <br/>
+                <span>
+                    Released {releaseDate}
+                </span>
+            </div>, {
+            position:'bottom-right',
+            autoClose: 5000,
+            hideProgressBar:false,
+            closeOnClick:true,
+            pauseOnHover: false
+        }) 
+    }
 
     return (
         <div className="navbar">
@@ -27,6 +50,8 @@ function Navbar() {
                     <Link to="/Roster"> Roster </Link>
                     <Link to="/BulkEntry"> Game Day </Link>
                     <button className="navbarLink" onClick={handleLogout}>Logout</button>
+
+                    <Link onClick={showToast}>Info </Link>
                     <Link to="/Settings">
                         <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                     </Link>
@@ -40,6 +65,7 @@ function Navbar() {
                 <Link className="navbarLink" to="/Roster"> Roster </Link>
                 <Link className="navbarLink" to="/BulkEntry"> Game Day </Link>
                 <button className="navbarLink" onClick={handleLogout}>Logout</button>
+                <Link onClick={showToast}>Info </Link>
                 <Link className="navbarLink" to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                 </Link>
