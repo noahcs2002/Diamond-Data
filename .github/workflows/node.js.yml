@@ -30,12 +30,6 @@ jobs:
     - name: Install testing library
       run: cd app && npm install --save-dev @testing-library/dom
 
-    # - name: Install Plotly
-    #   run : cd app && npm i plotly.js
-      
-    # - name: Run tests
-    #   run: cd app && npm test
-
     - name: Build React app
       env:
         CI: ""
@@ -46,17 +40,3 @@ jobs:
       with:
         name: build-artifact
         path: build
-
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
-
-  #   - name: Download build artifacts
-  #     uses: actions/download-artifact@v2
-  #     with:
-  #       name: build-artifact
-  #       path: build
