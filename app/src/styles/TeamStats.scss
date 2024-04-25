@@ -46,7 +46,7 @@
       }
   
       &:last-child {
-        margin-bottom: 0; /* Remove margin from the last item to avoid extra space at the bottom */
+        margin-bottom: 0; 
       }
     }
   
@@ -131,8 +131,3 @@
   }
 }
 
-// @media (max-width: 768px) {
-//   .teamList {
-//     width: 90%;
-//   }
-// }
