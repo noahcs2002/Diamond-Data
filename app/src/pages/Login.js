@@ -14,10 +14,6 @@ function Login() {
         localStorage.clear();
     }, [])
 
-    const dismissToast = () => {
-        toast.dismiss(toastId.current);
-    }
-
     const handleLogin = async (e) => {
         toastId.current = toast('Signing in...', {
             position: 'bottom-right',
@@ -52,7 +48,7 @@ function Login() {
             });
         }
         catch (error){
-            dismissToast();
+            toast.dismiss();
             toast.error('Invalid credentials', {
                 position: "bottom-right",
                 autoClose: 2500,
