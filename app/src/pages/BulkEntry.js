@@ -6,6 +6,7 @@ import { useTable } from 'react-table';
 import '../styles/BulkEntry.scss';
 import LoadingScreen from '../components/LoadingScreen';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function BulkEntry() {
   const [offensiveData, setOffensiveData] = useState([]);
@@ -16,13 +17,20 @@ function BulkEntry() {
   const [isEnteringNewGame, setIsEnteringNewGame] = useState(false);
   const [newGameData, setNewGameData] = useState({ offensive: [], defensive: [], pitcher: [] });
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
   useEffect(() => {
     prop();
   }, []);
 
   const prop = async () => {
-    const user = JSON.parse(localStorage.getItem('sessionData'));
+    const user = await JSON.parse(localStorage.getItem('sessionData'));
+
+    if(user === undefined || user === null) {
+      nav('/')
+      return;
+    }
+    
     const team = await fetchTeam(user);
     await fetchPitcherData(team, user)
     const players = await fetchPlayers(team, user);
