@@ -31,7 +31,7 @@ public class NoteController {
         Objects.requireNonNull(note);
         Objects.requireNonNull(userId);
         Objects.requireNonNull(teamId);
-        System.out.println(note);
+        
 
         if(!this.validator.validateTeam(userId, teamId)) {
             throw new NoAccessPermittedException(userId);

@@ -32,7 +32,7 @@ public class AuthController {
     @RequestMapping("/sign-up")
     @PostMapping
     public User signUp(@RequestBody User user, @RequestParam String teamName) {
-        System.out.println(teamName);
+        
         Team team = new Team();
         User res = this.service.createUser(user);
         team.setName(teamName);
