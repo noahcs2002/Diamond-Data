@@ -30,45 +30,59 @@ function Roster() {
     let finalised = undefined
     let assignedPitchers = undefined
     let combined = undefined
+    let cachedVerdict = undefined;
 
     try {
-      team = await JSON.parse(localStorage.getItem('cachedTeam'));
+      cachedVerdict = JSON.parse(localStorage.getItem('cachedPlayersMAIN'));
 
-      if (team === null || team === undefined) {
-        throw new Error();
+      if (cachedVerdict === undefined || cachedVerdict === null) {
+        throw new Error()
       }
+
+      setPlayers(cachedVerdict);
     }
     catch {
-      team = await fetchTeam(user.id);
-    }
 
-    try {
-      players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+      try {
+        team = await JSON.parse(localStorage.getItem('cachedTeam'));
 
-      if (players === null || players === undefined) {
-        throw new Error();
+        if (team === null || team === undefined) {
+          throw new Error();
+        }
       }
-    }
-    catch {
-      players = await fetchPlayers(team, user);
-    }
-
-    try {
-      pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
-
-      if (pitchers === null || pitchers === undefined) {
-        throw new Error();
+      catch {
+        team = await fetchTeam(user.id);
       }
-    }
-    catch {
-      pitchers = await fetchPitchers(team, user);  
+
+      try {
+        players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+
+        if (players === null || players === undefined) {
+          throw new Error();
+        }
+      }
+      catch {
+        players = await fetchPlayers(team, user);
+      }
+
+      try {
+        pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+
+        if (pitchers === null || pitchers === undefined) {
+          throw new Error();
+        }
+      }
+      catch {
+        pitchers = await fetchPitchers(team, user);  
+      }
+
+      finalised = await assignPlayers(players);
+      assignedPitchers = await assignPitchers(pitchers);
+      combined = await combine(finalised, assignedPitchers)
+      setPlayers(combined);
+
     }
 
-    finalised = await assignPlayers(players);
-    assignedPitchers = await assignPitchers(pitchers);
-    combined = await combine(finalised, assignedPitchers)
-
-    setPlayers(combined);
     setLoading(false);
     toast.dismiss();
     toast.success('Data loaded successfully!', {
@@ -263,14 +277,12 @@ function Roster() {
         hideProgressBar:true,
       })
       setSaving(true);
-      console.log('Save button clicked');
       const newRoster = await JSON.parse(localStorage.getItem('cachedCombined'));
-      console.log('newRoster: ', newRoster);
       const user = await JSON.parse(localStorage.getItem('sessionData'));
       let team = await JSON.parse(localStorage.getItem('cachedTeam'));
 
       if (team === undefined) {
-        team = await fetchTeam(useEffect);
+        team = await fetchTeam(user);
       }
 
       const endpoint = 'http://localhost:8080/diamond-data/api/rosters/bulk-update';
@@ -291,6 +303,7 @@ function Roster() {
       }
 
       const data = await res.json();
+      localStorage.setItem('cachedPlayersMAIN', JSON.stringify(data));
       console.log(data);
       let cacheableRoster = [];
 
