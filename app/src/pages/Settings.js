@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import '../styles/Settings.scss';
 import ConfirmModal from '../components/ConfirmModal';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -23,6 +24,7 @@ function Settings() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
+    
     if (user) {
       setFormData({
         email: user.email,

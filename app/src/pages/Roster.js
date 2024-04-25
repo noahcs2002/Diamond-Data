@@ -5,15 +5,23 @@ import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
 import SavingScreen from '../components/SavingScreen';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Roster() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [changes, setChanges] = useState(0);
+  const nav = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
+
+    if(user === undefined || user === null) {
+      nav('/')
+      return;
+    }
+
     prop(user)
   }, []);
 

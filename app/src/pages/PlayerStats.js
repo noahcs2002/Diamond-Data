@@ -6,6 +6,7 @@ import { useTable, useSortBy } from 'react-table';
 import PlayerStatsModal from '../components/PlayerStatsModal';
 import LoadingScreen from '../components/LoadingScreen';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function PlayerStats() {
 
@@ -14,6 +15,7 @@ function PlayerStats() {
   const [pitcherData, setPitcherData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
 
   useEffect(() => {
@@ -22,6 +24,11 @@ function PlayerStats() {
 
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
+
+    if(user === undefined || user === null) {
+      nav('/')
+      return;
+    }
 
     let team = {};
     let players = {};

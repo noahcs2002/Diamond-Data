@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import LoadingScreen from '../components/LoadingScreen';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function TeamStats() {
   const [team, setTeam] = useState([]);
@@ -12,6 +13,7 @@ function TeamStats() {
   
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
   useEffect(() => {
     try {
@@ -24,6 +26,12 @@ function TeamStats() {
 
   const prop = async () => {
     const user = JSON.parse(localStorage.getItem('sessionData'));
+
+    if(user === undefined || user === null) {
+      nav('/')
+      return;
+    }
+
     let team = {};
     let players = {};
 

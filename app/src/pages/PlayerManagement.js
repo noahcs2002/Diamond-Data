@@ -8,6 +8,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LoadingScreen from '../components/LoadingScreen'
 import SavingScreen from '../components/SavingScreen'
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
@@ -22,6 +23,7 @@ function PlayerManagement() {
   const [playerCreationCount, setPlayerCreationCount] = useState(0);
   const [saving, setSaving] = useState(false);
   const [changes, setChanges] = useState(0);
+  const nav = useNavigate();
 
   useEffect(() => {
     prop()
@@ -32,6 +34,11 @@ function PlayerManagement() {
     let players = [];
     let pitchers = {};
     const user = await JSON.parse(localStorage.getItem('sessionData'));
+
+    if(user === undefined || user === null) {
+      nav('/')
+      return;
+    }
 
     try {
       team = await JSON.parse(localStorage.getItem('cachedTeam'));

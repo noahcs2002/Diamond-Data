@@ -7,6 +7,7 @@ import ConfirmModal from '../components/ConfirmModal';
 import LoadingScreen from '../components/LoadingScreen';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Insights() {
   const [reportNotes, setReportNotes] = useState([]); 
@@ -17,6 +18,7 @@ function Insights() {
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [lineupPlayers, setLineupPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
   const location = useLocation();
 
@@ -48,6 +50,12 @@ function Insights() {
     let notes = [];
     let team = {};
     const user = await JSON.parse(localStorage.getItem('sessionData'));
+
+    if(user === undefined || user === null) {
+      nav('/')
+      return;
+    }
+
     try {
       lineup = await JSON.parse(localStorage.getItem('cachedLineupPlayers'));
 
