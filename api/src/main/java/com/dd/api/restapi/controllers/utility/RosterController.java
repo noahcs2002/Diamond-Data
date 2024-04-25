@@ -69,9 +69,9 @@ public class RosterController {
             throw new NoAccessPermittedException(userId);
         }
 
-        System.out.println(userId);
-        System.out.println(teamId);
-        System.out.println(models);
+        
+        
+        
         return this.rosterService.performBulkPositionUpdate(models);
     }
 

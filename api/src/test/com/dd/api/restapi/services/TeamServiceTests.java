@@ -149,8 +149,8 @@ public class TeamServiceTests {
         when(this.authorizationService.getNonTransientUser(any(User.class))).thenReturn(user);
 
         Team res = this.service.updateTeam(1L, newModel);
-        System.out.println(res);
-        System.out.println(newModel);
+        
+        
 
         assertEquals(res, newModel);
         verify(this.repository, times(1)).findById(anyLong());

@@ -128,7 +128,7 @@ public class RosterService {
                 this.playerService.deletePlayer(p.getId());
             }
             catch(Exception ex) {
-                System.out.println(ex.getMessage());
+                
             }
         });
 
@@ -142,7 +142,7 @@ public class RosterService {
                 this.pitcherService.deletePitcher(p.getId());
             }
             catch(Exception ex) {
-                System.out.println(ex.getMessage());
+                
             }
         });
 

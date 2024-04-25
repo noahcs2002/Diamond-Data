@@ -57,7 +57,7 @@ public class PitcherController {
     @RequestMapping("/create")
     @PostMapping
     public Pitcher create(@RequestBody Pitcher pitcher, @RequestParam Long userId, @RequestParam Long teamId) throws NoAccessPermittedException {
-        System.out.println(pitcher);
+        
         Objects.requireNonNull(pitcher);
         Objects.requireNonNull(userId);
         Objects.requireNonNull(teamId);
