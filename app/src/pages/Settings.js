@@ -188,6 +188,11 @@ function Settings() {
   };
 
   const handleUpdateTeam = async () => {
+    toast.dismiss();
+    toast.loading('Saving changes...', {
+        position:'bottom-right',
+        hideProgressBar:true,
+    })
     const user = JSON.parse(localStorage.getItem('sessionData'));
     const url = new URL(`http://localhost:8080/diamond-data/api/teams/update`);
     url.searchParams.append('id', currentTeam.id);
@@ -209,8 +214,16 @@ function Settings() {
         throw new Error('Error updating team');
       }
   
-      fetchTeam(user);
+      const team = await fetchTeam(user);
+      localStorage.setItem('cachedTeam', JSON.stringify(team));
       closeModal();
+      toast.dismiss();
+      toast.success('Team updated successfully!', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
     } 
     catch (error) {
       toast.error('Error updating team, please try again', {
