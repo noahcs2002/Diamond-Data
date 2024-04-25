@@ -190,7 +190,8 @@ function PlayerStats() {
     },
     {
       Header: "ERA",
-      accessor: "earnedRunAverage"
+      accessor: "earnedRunAverage",
+      Cell: ({value}) => parseFloat(value).toFixed(2)
     },
     {
       Header: "APPEARANCES",
