@@ -366,6 +366,7 @@ function BulkEntry() {
         </div>
         <h2>Offensive Data</h2>
           <div className="tableWrapper">
+            <div className='offensiveTable'>
             <table {...offensiveTableInstance.getTableProps()}>
               <thead>
                 {offensiveTableInstance.headerGroups.map(headerGroup => (
@@ -404,10 +405,12 @@ function BulkEntry() {
                 })}
               </tbody>
             </table>
+            </div>
           </div>
         {}
         <h2>Defensive Data</h2>
 <div className="tableWrapper">
+  <div className='defensiveTable'>
   <table {...defensiveTableInstance.getTableProps()}>
     <thead>
       {defensiveTableInstance.headerGroups.map(headerGroup => (
@@ -447,11 +450,13 @@ function BulkEntry() {
       })}
     </tbody>
   </table>
+  </div>
 </div>
         {}
         
 <h2>Pitcher Data</h2>
 <div className="tableWrapper">
+  <div className='pitcherTable'>
   <table {...pitcherTableInstance.getTableProps()}>
     <thead>
       {pitcherTableInstance.headerGroups.map(headerGroup => (
@@ -492,6 +497,7 @@ function BulkEntry() {
       })}
     </tbody>
   </table>
+  </div>
 </div>
       </div>
       {showModal && <PlayerStatsModal player={selectedPlayer} onClose={() => setShowModal(false)} />}
