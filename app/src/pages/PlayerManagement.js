@@ -145,6 +145,7 @@ function PlayerManagement() {
       }
       const data = await response.json();
       localStorage.setItem('cachedPlayers', JSON.stringify(data));
+      return data;
     } 
     catch (error) {
       toast.error('Error fetching players, please try again', {
@@ -437,6 +438,9 @@ function PlayerManagement() {
 
     try {
       team = await JSON.parse(localStorage.getItem('cachedTeam'));
+      if (team === undefined || team === null) {
+        throw new Error();
+      }
     }
     catch {
       team = await fetchTeam(user);
@@ -446,9 +450,6 @@ function PlayerManagement() {
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
     url.searchParams.append('teamId', team.id);
-    console.log(url);
-    console.log(pitcherData);
-    console.log(rawPlayerData);
 
     const res = await fetch(url, {
        body: JSON.stringify({players: rawPlayerData, pitchers: pitcherData}),
@@ -457,8 +458,6 @@ function PlayerManagement() {
         'Content-Type':'application/json'
        }
     })
-
-    const j = await res.json();
 
     const deletePitcherEndpoint = 'http://localhost:8080/diamond-data/api/rosters/bulk-delete-pitchers'
     const deletePlayerEndpoint = 'http://localhost:8080/diamond-data/api/rosters/bulk-delete-players'
@@ -472,7 +471,7 @@ function PlayerManagement() {
     deletePlayerUrl.searchParams.append('userId', user.id);
     deletePlayerUrl.searchParams.append('teamId', team.id); 
 
-    const pitRes = await fetch(deletePitcherUrl, {
+    await fetch(deletePitcherUrl, {
       method: 'DELETE',
       body: localStorage.getItem('deletedPitchers'),
       headers: {
@@ -480,7 +479,7 @@ function PlayerManagement() {
       } 
     })
 
-    const playerRes = await fetch(deletePlayerUrl, {
+    await fetch(deletePlayerUrl, {
       method: 'DELETE',
       body: localStorage.getItem('deletedPlayers'),
       headers: {
@@ -490,6 +489,7 @@ function PlayerManagement() {
 
     const newPlayers = await fetchPlayers(user, team);
     const newPitchers = await fetchPitchers(user, team);
+    console.log(newPlayers);
 
     localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers));
     localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));
