@@ -25,7 +25,7 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log('Form submitted:', formData);
+        
         let body = {};
         body.email = formData.email;
         body.password = formData.password;
@@ -90,7 +90,7 @@ function Signup() {
        };
 
     const handleLogin = () => {
-        console.log('Navigate to login page');
+        
         nav('/login');
     };
 

@@ -90,7 +90,7 @@ function Insights() {
     setReportNotes(notes);
     setLineupPlayers(lineup);
     setLoading(false);
-    console.log('After loading home page, cachedPlayers=', JSON.parse(localStorage.getItem('cachedPlayers')))
+    
   }
 
   const renderLineupPlayers = () => {
@@ -111,7 +111,7 @@ function Insights() {
       const res = await fetch(url);
       const notes = await res.json();
       localStorage.setItem('cachedNotes', JSON.stringify(notes));
-      console.log(notes);
+      
       return notes;
     }
     catch {

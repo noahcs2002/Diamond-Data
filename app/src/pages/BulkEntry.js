@@ -103,7 +103,7 @@ function BulkEntry() {
       }
 
       const players = await res.json();
-      console.log('Players: ', players);
+      
       return players;
     }
     catch(_e) {
@@ -148,7 +148,7 @@ function BulkEntry() {
     }
     updatedData[rowIndex][accessor] = parseFloat(e.target.value, 10);
     setNewGameData({ ...newGameData, [type]: updatedData});
-    console.log(newGameData);
+    
   };
 
   const saveGameData = async () => {
@@ -221,7 +221,7 @@ function BulkEntry() {
     url.searchParams.append('teamId', team.id);
     url.searchParams.append('userId', user.id);
     const body = {newPitchers: pitcherData, newOffensivePlayers: offensiveData, newDefensivePlayers: defensiveData};
-    console.log(body);
+    
 
     try {
       const res = await fetch(url, {
@@ -232,7 +232,7 @@ function BulkEntry() {
         }
       })
 
-      console.log(res);
+      
     }
     catch(_e) {
       toast.error('Error saving game, please try again', {
@@ -482,23 +482,27 @@ function BulkEntry() {
           <tr {...row.getRowProps()}>
             {row.cells.map(cell => (
               <td {...cell.getCellProps()}>
-                {isEnteringNewGame && cell.column.id !== 'firstName' && cell.column.id !== 'lastName' ? (
+              {isEnteringNewGame && cell.column.id !== 'firstName' && cell.column.id !== 'lastName' ? (
+                cell.column.id === 'inningsPitched' ? (
                   <input
                     type="number"
-                    step="0.1"
-                    min="0"
                     defaultValue={cell.value}
+                    step="0.1" // Allow decimals
+                    min="0"
                     onChange={e => handleInputChange(e, row.index, cell.column.id, 'pitcher', row.original.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === '-' || e.key === 'e') {
-                         e.preventDefault();
-                      }
-                      }}
                   />
                 ) : (
-                  cell.render('Cell')
-                )}
-              </td>
+                  <input
+                    type="number"
+                    defaultValue={cell.value}
+                    min="0"
+                    onChange={e => handleInputChange(e, row.index, cell.column.id, 'pitcher', row.original.id)}
+                  />
+                )
+              ) : (
+                cell.render('Cell')
+              )}
+            </td>
             ))}
           </tr>
         );

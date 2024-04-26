@@ -128,7 +128,7 @@ function PlayerStats() {
     const url = new URL(endpoint);
     url.searchParams.append('userId', user.id);
     url.searchParams.append('teamId', team.id);
-    console.log(url);
+    
 
     try {
       const res = await fetch(url);
@@ -138,7 +138,7 @@ function PlayerStats() {
       }
 
       const players = await res.json();
-      console.log(players);
+      
       localStorage.setItem('cachedPlayers', JSON.stringify(players));
       return players;
     }
@@ -254,7 +254,8 @@ function PlayerStats() {
     },
     {
       Header: "WHIP",
-      accessor: "walksAndHitsPerInningPitched"
+      accessor: "walksAndHitsPerInningPitched",
+      Cell: ({value}) => parseFloat(value).toFixed(2)
     },
     {
       Header: "WILD PITCHES",

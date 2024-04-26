@@ -256,11 +256,11 @@ function Roster() {
 
     const combined = await JSON.parse(localStorage.getItem('cachedCombined'));
 
-    console.log(combined);
+    
 
     combined.forEach((p) => {
       if (p.id == id) {
-        console.log('Player hit: ', p)
+        
         p.assignment = newAssignment;
       }
     })
@@ -317,7 +317,7 @@ function Roster() {
 
       const data = await res.json();
       localStorage.setItem('cachedPlayersMAIN', JSON.stringify(data));
-      console.log(data);
+      
       let cacheableRoster = [];
 
       newRoster.map(e => {

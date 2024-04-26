@@ -57,7 +57,7 @@ function TeamStats() {
       players = await fetchPlayers();
     }
 
-    console.log('Players: ', players);
+    
     setTeam(team);
     setPlayers(players);
     setLoading(false);

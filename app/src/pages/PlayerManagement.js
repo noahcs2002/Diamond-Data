@@ -335,7 +335,7 @@ function PlayerManagement() {
 
     const newPlayers = players.filter(item => item.id !== id);
 
-    console.log(newPlayers);
+    
     setRawPlayerData(newPlayers);
     localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));
   };
@@ -351,11 +351,11 @@ function PlayerManagement() {
         closeOnClick:true  
       })
     }
-    console.log(id);
+    
     const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
 
     const pitcher = pitchers.filter(p => p.id === id)[0];
-    console.log(pitcher); 
+     
   
     let deletedPitchers= JSON.parse(localStorage.getItem('deletedPitchers'))
     
@@ -366,10 +366,10 @@ function PlayerManagement() {
     localStorage.setItem('deletedPitchers', JSON.stringify(deletedPitchers));
 
     const newPitchers = pitchers.filter(p => p !== pitcher);
-    console.log(newPitchers);
+    
     setPitcherData(newPitchers);
     localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers ));
-    console.log('deleted pitchers: ', deletedPitchers);
+    
   }
 
   const handleEditPlayer = async (playerId, updatedFullName) => {
@@ -496,7 +496,7 @@ function PlayerManagement() {
 
     const newPlayers = await fetchPlayers(user, team);
     const newPitchers = await fetchPitchers(user, team);
-    console.log(newPlayers);
+    
 
     localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers));
     localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));
