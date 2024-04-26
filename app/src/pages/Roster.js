@@ -6,6 +6,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import SavingScreen from '../components/SavingScreen';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { South } from '@mui/icons-material';
 
 function Roster() {
   const [players, setPlayers] = useState([]);
@@ -26,84 +27,65 @@ function Roster() {
   }, []);
 
   const prop = async (user) => {
-    try{
-      toast.dismiss();
-      toast.loading('Getting all your players', {
-        position:'bottom-right',
-        hideProgressBar:true,
-      })
+    toast.dismiss();
+    toast.loading('Getting all your players', {
+      position:'bottom-right',
+      hideProgressBar:true,
+    })
 
-      let team = undefined 
-      let players = undefined
-      let pitchers = undefined
-      let finalised = undefined
-      let assignedPitchers = undefined
-      let combined = undefined
-      let cachedVerdict = undefined;
+    let team = undefined 
+    let players = undefined
+    let pitchers = undefined
+    let finalised = undefined
+    let assignedPitchers = undefined
+    let combined = undefined
 
-      try {
-        cachedVerdict = JSON.parse(localStorage.getItem('cachedPlayersMAIN'));
+    try {
+      team = await JSON.parse(localStorage.getItem('cachedTeam'));
 
-        if (cachedVerdict === undefined || cachedVerdict === null) {
-          throw new Error()
-        }
-
-        setPlayers(cachedVerdict);
+      if (team === null || team === undefined) {
+        throw new Error();
       }
-      catch {
-
-        try {
-          team = await JSON.parse(localStorage.getItem('cachedTeam'));
-
-          if (team === null || team === undefined) {
-            throw new Error();
-          }
-        }
-        catch {
-          team = await fetchTeam(user.id);
-        }
-
-        try {
-          players = await JSON.parse(localStorage.getItem('cachedPlayers'));
-
-          if (players === null || players === undefined) {
-            throw new Error();
-          }
-        }
-        catch {
-          players = await fetchPlayers(team, user);
-        }
-
-        try {
-          pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
-
-          if (pitchers === null || pitchers === undefined) {
-            throw new Error();
-          }
-        }
-        catch {
-          pitchers = await fetchPitchers(team, user);  
-        }
-
-        finalised = await assignPlayers(players);
-        assignedPitchers = await assignPitchers(pitchers);
-        combined = await combine(finalised, assignedPitchers)
-
-        cachedVerdict.length > combined.length ? (setPlayers(cachedVerdict)) : (setPlayers(combined))
-      }
-
-      setLoading(false);
-      toast.dismiss();
-      toast.success('Data loaded successfully!', {
-        position:'bottom-right',
-        autoClose: 1500,
-        hideProgressBar:true,
-        closeOnClick:true
-      })
     }
     catch {
-      
+      team = await fetchTeam(user.id);
     }
+
+    try {
+      players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+
+      if (players === null || players === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      players = await fetchPlayers(team, user);
+    }
+
+    try {
+      pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+
+      if (pitchers === null || pitchers === undefined) {
+        throw new Error();
+      }
+    }
+    catch {
+      pitchers = await fetchPitchers(team, user);  
+    }
+
+    finalised = await assignPlayers(players);
+    assignedPitchers = await assignPitchers(pitchers);
+    combined = await combine(finalised, assignedPitchers)
+
+    setPlayers(combined);
+    setLoading(false);
+    toast.dismiss();
+    toast.success('Data loaded successfully!', {
+      position:'bottom-right',
+      autoClose: 1500,
+      hideProgressBar:true,
+      closeOnClick:true
+    })
   }
 
   const combine = async (players, pitchers) => {
