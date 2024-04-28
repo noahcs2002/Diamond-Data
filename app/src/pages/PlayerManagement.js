@@ -458,45 +458,21 @@ function PlayerManagement() {
     url.searchParams.append('userId', user.id);
     url.searchParams.append('teamId', team.id);
 
-    const res = await fetch(url, {
-       body: JSON.stringify({players: rawPlayerData, pitchers: pitcherData}),
+    await fetch(url, {
+       body: JSON.stringify({
+        players: rawPlayerData, 
+        pitchers: pitcherData, 
+        pitchersToDelete: JSON.parse(localStorage.getItem('deletedPitchers')), 
+        playersToDelete: JSON.parse(localStorage.getItem('deletedPlayers'))
+      }),
        method: 'PUT',
        headers: {
         'Content-Type':'application/json'
        }
     })
 
-    const deletePitcherEndpoint = 'http://localhost:8080/diamond-data/api/rosters/bulk-delete-pitchers'
-    const deletePlayerEndpoint = 'http://localhost:8080/diamond-data/api/rosters/bulk-delete-players'
-
-    const deletePitcherUrl = new URL(deletePitcherEndpoint);
-    const deletePlayerUrl = new URL(deletePlayerEndpoint);
-
-    deletePitcherUrl.searchParams.append('userId', user.id);
-    deletePitcherUrl.searchParams.append('teamId', team.id);
-    
-    deletePlayerUrl.searchParams.append('userId', user.id);
-    deletePlayerUrl.searchParams.append('teamId', team.id); 
-
-    await fetch(deletePitcherUrl, {
-      method: 'DELETE',
-      body: localStorage.getItem('deletedPitchers'),
-      headers: {
-        'Content-Type':'application/json'
-      } 
-    })
-
-    await fetch(deletePlayerUrl, {
-      method: 'DELETE',
-      body: localStorage.getItem('deletedPlayers'),
-      headers: {
-        'Content-Type':'application/json'
-      } 
-    })
-
     const newPlayers = await fetchPlayers(user, team);
     const newPitchers = await fetchPitchers(user, team);
-    
 
     localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers));
     localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));

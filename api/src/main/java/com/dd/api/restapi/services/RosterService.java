@@ -6,12 +6,16 @@ import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.restapi.repositories.PlayerRepository;
 import com.dd.api.restapi.requestmodels.BulkPlayerChangeRequestModel;
+import com.dd.api.restapi.requestmodels.EditModel;
 import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.hibernate.internal.util.collections.ArrayHelper.forEach;
 
 @Service
 public class RosterService {
@@ -88,36 +92,53 @@ public class RosterService {
         return models;
     }
 
-    public BulkPlayerChangeRequestModel bulkUpdatePlayers(BulkPlayerChangeRequestModel model, Long teamId) {
+    public EditModel bulkUpdatePlayers(EditModel model, Long teamId) {
 
-        model.getPlayers()
-                .forEach(p -> {
-                    Player instance = this.repository.findById(p.getId()).orElse(null);
-                    if (instance == null) {
-                        Team team = this.teamService.getTeamById(teamId);
-                        this.playerService.createPlayer(p, team);
-                    }
-                    else {
-                        this.repository.save(instance);
-                        this.playerService.changeFirstName(p.getId(), p.getFirstName());
-                        this.playerService.changeLastName(p.getId(), p.getLastName());
-                    }
-                });
+        List<Player> players = model.getPlayers();
+        List<Pitcher> pitchers = model.getPitchers();
+        List<Player> playersToDelete = model.getPlayersToDelete();
+        List<Pitcher> pitchersToDelete = model.getPitchersToDelete();
 
-        model.getPitchers()
-                .forEach(p -> {
-                    if (p.getId() == null) {
-                        this.pitcherService.createPitcher(p, teamId);
-                    }
-                    else {
-                        Pitcher instance = this.pitcherRepository.findById(p.getId()).orElse(null);
-                        if (instance != null) {
-                            this.pitcherRepository.save(instance);
-                            this.pitcherService.updatePitcherName(p.getId(), p.getFirstName(), p.getLastName());
-                        }
-                    }
-                });
 
+        if(players != null && !players.isEmpty()) {
+           players.forEach(p -> {
+                Player instance = this.repository.findById(p.getId()).orElse(null);
+                if (instance == null) {
+                    Team team = this.teamService.getTeamById(teamId);
+                    this.playerService.createPlayer(p, team);
+                }
+                else {
+                    this.repository.save(instance);
+                    this.playerService.changeFirstName(p.getId(), p.getFirstName());
+                    this.playerService.changeLastName(p.getId(), p.getLastName());
+                }
+            });
+        }
+
+
+        if(pitchers != null && !pitchers.isEmpty()) {
+           pitchers.forEach(p -> {
+                if (p.getId() == null) {
+                    this.pitcherService.createPitcher(p, teamId);
+                }
+                else {
+                    Pitcher instance = this.pitcherRepository.findById(p.getId()).orElse(null);
+                    if (instance != null) {
+                        this.pitcherRepository.save(instance);
+                        this.pitcherService.updatePitcherName(p.getId(), p.getFirstName(), p.getLastName());
+                    }
+                }
+            });
+        }
+
+
+        if(!pitchersToDelete.isEmpty()) {
+            this.bulkDeletePitchers(model.getPitchersToDelete());
+        }
+
+        if(!playersToDelete.isEmpty()) {
+            this.bulkDeletePlayers(model.getPlayersToDelete());
+        }
         return model;
     }
 
@@ -146,8 +167,6 @@ public class RosterService {
             }
         });
 
-
         return true;
-
     }
 }

@@ -1,9 +1,11 @@
 package com.dd.api.restapi.controllers.utility;
 
 import com.dd.api.auth.validators.Validator;
+import com.dd.api.restapi.requestmodels.DeleteRequestModel;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.requestmodels.BulkPlayerChangeRequestModel;
+import com.dd.api.restapi.requestmodels.EditModel;
 import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import com.dd.api.restapi.services.RosterService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/diamond-data/api/rosters")
@@ -26,6 +29,21 @@ public class RosterController {
     public RosterController(RosterService rosterService, Validator validator){
         this.rosterService = rosterService;
         this.validator = validator;
+    }
+
+    @PutMapping
+    @RequestMapping("/perform-deletions")
+    public boolean bulkDeletions(@RequestParam Long userId, @RequestParam Long teamId, @RequestBody DeleteRequestModel deleteRequestModel) throws NoAccessPermittedException {
+        Objects.requireNonNull(userId);
+        Objects.requireNonNull(teamId);
+        Objects.requireNonNull(deleteRequestModel);
+
+        if (!validator.validateTeam(userId, teamId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return  this.rosterService.bulkDeletePlayers(deleteRequestModel.getPlayersToDelete()) &&
+                this.rosterService.bulkDeletePitchers(deleteRequestModel.getPitchersToDelete());
     }
 
     @GetMapping
@@ -77,13 +95,15 @@ public class RosterController {
 
     @PutMapping
     @RequestMapping("/bulk-player-changes")
-    public BulkPlayerChangeRequestModel bulkPlayerChange(@RequestParam Long userId,
+    public EditModel bulkPlayerChange(@RequestParam Long userId,
                                                          @RequestParam Long teamId,
-                                                         @RequestBody BulkPlayerChangeRequestModel model)
+                                                         @RequestBody EditModel model)
             throws NoAccessPermittedException {
         if (!this.validator.validateTeam(userId, teamId)) {
             throw new NoAccessPermittedException(userId);
         }
+
+        System.out.println(model);
 
         return this.rosterService.bulkUpdatePlayers(model, teamId);
     }
