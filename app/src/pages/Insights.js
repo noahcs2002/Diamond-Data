@@ -50,6 +50,8 @@ function Insights() {
     let notes = [];
     let team = {};
     const user = await JSON.parse(localStorage.getItem('sessionData'));
+    team = await fetchTeam(user);
+    console.log('Fetched team: ', team)
 
     if(user === undefined || user === null) {
       nav('/')
@@ -66,8 +68,6 @@ function Insights() {
     catch {
       lineup = await fetchLineupPlayers();
     }
-
-    team = await fetchTeam(user);
 
     try {
       notes = await JSON.parse(localStorage.getItem('cachedNotes'));
@@ -90,7 +90,6 @@ function Insights() {
     setReportNotes(notes);
     setLineupPlayers(lineup);
     setLoading(false);
-    
   }
 
   const renderLineupPlayers = () => {
@@ -181,10 +180,10 @@ function Insights() {
     try {
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error('Network error: ');
+        throw new Error('Network error: ', response);
       }
       const data = await response.json();
-      localStorage.setItem('team', data);
+      localStorage.setItem('cachedTeam', data);
       return data
     } 
     catch (error) {

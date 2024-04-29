@@ -26,6 +26,7 @@ public class TeamService {
     public Team getTeamByUser(Long userId) {
         return this.repository.findAll()
                 .stream()
+                .filter(t -> t.getUser() != null)
                 .filter(t -> t.getUser().getId().equals(userId))
                 .filter(t -> t.getGhostedDate() == 0)
                 .findFirst()
