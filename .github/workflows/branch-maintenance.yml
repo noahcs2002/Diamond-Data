@@ -14,9 +14,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const branchName = github.context.payload.pull_request.head.ref;
-            const owner = github.context.payload.repository.owner.login;
-            const repo = github.context.payload.repository.name;
+            const branchName = github.rest.context.payload.pull_request.head.ref;
+            const owner = github.rest.context.payload.repository.owner.login;
+            const repo = github.rest.context.payload.repository.name;
             
             try {
               await github.git.deleteRef({
