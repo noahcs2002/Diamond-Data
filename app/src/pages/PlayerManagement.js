@@ -471,11 +471,11 @@ function PlayerManagement() {
        }
     })
 
-    const newPlayers = await fetchPlayers(user, team);
-    const newPitchers = await fetchPitchers(user, team);
+    // const newPlayers = await fetchPlayers(user, team);
+    // const newPitchers = await fetchPitchers(user, team);
 
-    localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers));
-    localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));
+    // localStorage.setItem('cachedPitchers', JSON.stringify(newPitchers));
+    // localStorage.setItem('cachedPlayers', JSON.stringify(newPlayers));
     localStorage.setItem('deletedPitchers', JSON.stringify([]));
     localStorage.setItem('deletedPlayers', JSON.stringify([]));
 

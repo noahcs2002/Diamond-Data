@@ -103,8 +103,6 @@ public class RosterController {
             throw new NoAccessPermittedException(userId);
         }
 
-        System.out.println(model);
-
         return this.rosterService.bulkUpdatePlayers(model, teamId);
     }
 
