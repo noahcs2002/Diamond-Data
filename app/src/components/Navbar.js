@@ -10,8 +10,8 @@ function Navbar() {
     const [openLinks, setOpenLinks] = useState(false);
     const navigate = useNavigate();
     const [showConfirmLogout, setShowConfirmLogout] = useState(false);
-    const version = '1.0.0';
-    const releaseDate = 'April 19th, 2024';
+    const version = '1.1.0';
+    const releaseDate = 'April 29th, 2024';
 
     const handleLogout = () => {
         setShowConfirmLogout(true);
