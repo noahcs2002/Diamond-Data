@@ -6,6 +6,7 @@ As version fall in and out of scope of the security policy, they will be updated
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 1.1.0   | :white_check_mark: |
 | 1.0.0   | :white_check_mark: |
 | < 1.0   | :x:                |
 
