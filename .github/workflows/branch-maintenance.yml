@@ -6,17 +6,21 @@ on:
 
 jobs:
   delete_branch_job:
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'pr/')
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'pr/')
     runs-on: ubuntu-latest
     steps:
+      - name: Check Payload
+        run: echo "${{ toJson(github.event) }}"
+
       - name: Delete Branch
+        if: github.event.pull_request != null && github.event.pull_request.head != null && github.event.pull_request.head.ref != null
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branchName = github.context.payload.pull_request.head.ref;
-            const owner = github.context.payload.repository.owner.login;
-            const repo = github.context.payload.repository.name;
+            const owner = github.context.repo.owner;
+            const repo = github.context.repo.repo;
             
             try {
               await github.git.deleteRef({
