@@ -36,4 +36,5 @@ build/
 ### MacOS ###
 .DS_Store
 
+### Internal Development ###
 *.lock
