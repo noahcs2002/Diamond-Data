@@ -12,17 +12,23 @@ import { useNavigate } from 'react-router-dom';
 
 function PlayerManagement() {
   const [rawPlayerData, setRawPlayerData] = useState([]);
+  const [selectedPlayer, setSelectedPlayer] = useState({});
   const [pitcherData, setPitcherData] = useState([]);
   const [isAddingPlayer, setIsAddingPlayer] = useState(false);
   const [newPlayerFirstName, setNewPlayerFirstName] = useState('');
   const [newPlayerLastName, setNewPlayerLastName] = useState('');
+  const [editedFirstName, setEditedFirstName] = useState(selectedPlayer.firstName);
+  const [editedLastName, setEditedLastName] = useState(selectedPlayer.lastName);
   const [selectedPositions, setSelectedPositions] = useState([]);
   const [isAddingPitcher, setIsAddingPitcher] = useState(false);
+  const [isEditingPlayer, setIsEditingPlayer] = useState(false);
+  const [isEditingPitcher, setIsEditingPitcher] = useState(false);
   const [loading, setLoading] = useState(true);
   const [pitcherPref, setPitcherPref] = useState('');
   const [playerCreationCount, setPlayerCreationCount] = useState(0);
   const [saving, setSaving] = useState(false);
   const [changes, setChanges] = useState(0);
+  const [selectedPitcher, setSelectedPitcher] = useState({});
   const nav = useNavigate();
 
   useEffect(() => {
@@ -78,6 +84,7 @@ function PlayerManagement() {
     setPitcherData(pitchers);
     setRawPlayerData(players);
     setLoading(false);
+    
     toast.success('Data loaded successfully!', {
         position:'bottom-right',
         autoClose: 1500,
@@ -86,7 +93,7 @@ function PlayerManagement() {
     })
   }
 
-  const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"];
+  const allPositions = ["ALL", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"];
 
   const fetchTeam = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
@@ -164,6 +171,61 @@ function PlayerManagement() {
     }
     setLoading(false);
   };
+
+  const handlePlayerEditConfirm = async () => {
+    setIsEditingPlayer(false);
+    const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+    const selectedPlayerIndex = players.findIndex(p => p.id === selectedPlayer.id);
+    
+    
+    if (selectedPlayerIndex !== -1) {
+        players[selectedPlayerIndex].defensivePlayer.positions = selectedPositions;
+        players[selectedPlayerIndex].firstName = (editedFirstName !== null && editedFirstName !== undefined && editedFirstName !== '') ? editedFirstName : selectedPlayer.firstName;
+ 
+        players[selectedPlayerIndex].lastName = (editedLastName !== null && editedLastName !== undefined && editedLastName !== '') ? editedLastName : selectedPlayer.lastName;
+
+        const modified = [
+            ...players.slice(0, selectedPlayerIndex),
+            players[selectedPlayerIndex],
+            ...players.slice(selectedPlayerIndex + 1)
+        ];
+        localStorage.setItem('cachedPlayers', JSON.stringify(modified));
+        
+        setRawPlayerData(modified);
+    } 
+    else {
+    }
+    setSelectedPositions([])
+    setEditedFirstName('');
+    setEditedLastName('');
+  }
+
+  const handlePitcherEditConfirm = async () => {
+    setIsEditingPitcher(false);
+    const players = await JSON.parse(localStorage.getItem('cachedPitchers'));
+    const selectedPlayerIndex = players.findIndex(p => p.id === selectedPitcher.id);
+    
+    
+    if (selectedPlayerIndex !== -1) {
+        players[selectedPlayerIndex].firstName = (editedFirstName !== null && editedFirstName !== undefined && editedFirstName !== '') ? editedFirstName : selectedPitcher.firstName;
+        players[selectedPlayerIndex].lastName = (editedLastName !== null && editedLastName !== undefined && editedLastName !== '') ? editedLastName : selectedPitcher.lastName;
+        players[selectedPlayerIndex].preference = pitcherPref;
+
+        const modified = [
+            ...players.slice(0, selectedPlayerIndex),
+            players[selectedPlayerIndex],
+            ...players.slice(selectedPlayerIndex + 1)
+        ];
+        localStorage.setItem('cachedPitchers', JSON.stringify(modified));
+        
+        setPitcherData(modified);
+    } 
+    else {
+    }
+    setSelectedPositions([])
+    setEditedFirstName('');
+    setEditedLastName('');
+  }
 
   const handlePlayerCreate = async () => {
     setChanges(changes + 1)
@@ -372,54 +434,63 @@ function PlayerManagement() {
     
   }
 
-  const handleEditPlayer = async (playerId, updatedFullName) => {
-    setChanges(changes + 1)
-    if (changes === 1 || (changes + 1) % 10 === 0) {
-      toast.dismiss();
-      toast.info('Make sure to save your changes!', {
-        position:'bottom-right',
-        autoClose: 2500,
-        hideProgressBar:true,
-        closeOnClick:true  
-      })
-    }
-    const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
-    const [first, last] = updatedFullName.split(' ');
+  const handleEditPlayer = async (player) => {
+    setSelectedPlayer(player);
+    setSelectedPositions(player.defensivePlayer.positions);
+    setIsEditingPlayer(true);
+    // setChanges(changes + 1)
+    // if (changes === 1 || (changes + 1) % 10 === 0) {
+    //   toast.dismiss();
+    //   toast.info('Make sure to save your changes!', {
+    //     position:'bottom-right',
+    //     autoClose: 2500,
+    //     hideProgressBar:true,
+    //     closeOnClick:true  
+    //   })
+    // }
+    // const players = await JSON.parse(localStorage.getItem('cachedPlayers'));
+    // const [first, last] = updatedFullName.split(' ');
 
-    players.map((p) => {
-      if (p.id === playerId) {
-        p.firstName = first;
-        p.lastName = last;
-      }
-    })
+    // players.map((p) => {
+    //   if (p.id === playerId) {
+    //     p.firstName = first;
+    //     p.lastName = last;
+    //   }
+    // })
 
-    setRawPlayerData(players);
-    localStorage.setItem('cachedPlayers', JSON.stringify(players));
+    // setRawPlayerData(players);
+    // localStorage.setItem('cachedPlayers', JSON.stringify(players));
   };
 
-  const handleEditPitcher = async (playerId, updatedFullName) => {
-    setChanges(changes + 1)
-    if (changes === 1 || (changes + 1) % 10 === 0) {
-      toast.dismiss();
-      toast.info('Make sure to save your changes!', {
-        position:'bottom-right',
-        autoClose: 2500,
-        hideProgressBar:true,
-        closeOnClick:true  
-      })
-    }
-    const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
-    const [first, last] = updatedFullName.split(' ');
+  const handleEditPitcher = async (player) => {
+    
+    setSelectedPitcher(player);
+    setPitcherPref(player.preference);
+    setIsEditingPitcher(true);
 
-    pitchers.map((p) => {
-      if (p.id === playerId) {
-        p.firstName = first;
-        p.lastName = last;
-      }
-    })
+    // 
+    // setChanges(changes + 1)
+    // if (changes === 1 || (changes + 1) % 10 === 0) {
+    //   toast.dismiss();
+    //   toast.info('Make sure to save your changes!', {
+    //     position:'bottom-right',
+    //     autoClose: 2500,
+    //     hideProgressBar:true,
+    //     closeOnClick:true  
+    //   })
+    // }
+    // const pitchers = await JSON.parse(localStorage.getItem('cachedPitchers'));
+    // const [first, last] = updatedFullName.split(' ');
 
-    setPitcherData(pitchers);
-    localStorage.setItem('cachedPitchers', JSON.stringify(pitchers)); 
+    // pitchers.map((p) => {
+    //   if (p.id === playerId) {
+    //     p.firstName = first;
+    //     p.lastName = last;
+    //   }
+    // })
+
+    // setPitcherData(pitchers);
+    // localStorage.setItem('cachedPitchers', JSON.stringify(pitchers)); 
   };
 
   const handlePositionChange = (position) => {
@@ -488,6 +559,10 @@ function PlayerManagement() {
       hideProgressBar:true,
       closeOnClick:true 
     })
+    const p = await fetchPlayers(user, team);
+    const pi = await fetchPitchers(user, team);
+    setRawPlayerData(p);
+    setPitcherData(pi);
   }
 
   return (
@@ -514,8 +589,10 @@ function PlayerManagement() {
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
                       onDelete={() => handleDeletePlayer(player.id)} 
-                      onEdit={() => handleEditPlayer(player.id, localStorage.getItem('updatedName'))}
+                      // onEdit={() => handleEditPlayer(player.id, localStorage.getItem('updatedName'), player)}
+                      onEdit={() => handleEditPlayer(player)}
                       positions={player.defensivePlayer.positions}
+                      player={player}
                     />
                   </div>
                 ))}
@@ -533,7 +610,9 @@ function PlayerManagement() {
                       key={player.id}
                       fullName={`${player.firstName} ${player.lastName}`}
                       onDelete={() => handleDeletePitcher(player.id)} 
-                      onEdit={() => handleEditPitcher(player.id, localStorage.getItem('updatedName'))}
+                      onEdit={() => handleEditPitcher(player)}
+                      player={player}
+                      positions={[player.preference]}
                     />
                   </div>
                 ))}
@@ -543,7 +622,10 @@ function PlayerManagement() {
           {isAddingPlayer && (
             <div className="modal">
               <div className='modalContent'>
-                <span className="close" onClick={() => setIsAddingPlayer(false)}>&times;</span>
+                <span className="close" onClick={() => {
+                  setSelectedPositions([])
+                  setIsAddingPlayer(false)
+                }}>&times;</span>
                 <h2>Player Name:</h2>
                 <input
                   type="text"
@@ -561,12 +643,45 @@ function PlayerManagement() {
                   <h2>Positions:</h2>
                   {allPositions.map((position) => (
                     <div key={position}>
-                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
+                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={(selectedPositions.includes(position)) || (selectedPositions.includes("ALL"))} onChange={() => handlePositionChange(position)} />
                       <label htmlFor={position}>{position}</label>
                     </div>
                   ))}
                 </div>
                 <button onClick={handlePlayerCreate}>Save</button>
+              </div>
+            </div>
+          )}
+          {isEditingPlayer && (
+            <div className="modal">
+              <div className='modalContent'>
+                <span className="close" onClick={() => {
+                  setIsEditingPlayer(false)
+                  setSelectedPositions([])
+                }}>&times;</span>
+                <h2>Player Name:</h2>
+                <input
+                  type="text"
+                  placeholder={selectedPlayer.firstName}
+                  value={editedFirstName}
+                  onChange={e => setEditedFirstName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder={selectedPlayer.lastName}
+                  value={editedLastName}  
+                  onChange={e => setEditedLastName(e.target.value)}
+                />
+                <div className="positionsSelection">
+                  <h2>Positions:</h2>
+                  {allPositions.map((position) => (
+                    <div key={position}>
+                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={(selectedPositions.includes('ALL')) || (selectedPositions.includes(position))} onChange={() => handlePositionChange(position)} />
+                      <label htmlFor={position}>{position}</label>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={handlePlayerEditConfirm}>Save</button>
               </div>
             </div>
           )}
@@ -599,6 +714,36 @@ function PlayerManagement() {
               </div>
           </div>
           }
+          {isEditingPitcher && 
+          <div className='modal'>
+            <div className='modalContent'>
+              <span className="close" onClick={() => setIsEditingPitcher(false)}>&times;</span>
+              <h2>Pitcher Name:</h2>
+              <input
+                  type="text"
+                  placeholder={selectedPitcher.firstName}
+                  value={editedFirstName}
+                  onChange={e => setEditedFirstName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder={selectedPitcher.lastName}
+                  value={editedLastName}
+                  onChange={e => setEditedLastName(e.target.value)}
+                />
+                <div className='handSelections'>
+                  <h2>Left or Right Handed:</h2>
+                  <input type='radio' id='right-handed-checkbox' name='preference-checkbox' checked={pitcherPref === 'R'} onChange={() => {setPitcherPref('R')}}/>
+                  <label> Right Handed </label>
+
+                  <input type='radio' id='left-handed-checkbox' name='preference-checkbox' checked={pitcherPref === 'L'} onChange={() => {setPitcherPref('L')}}/>
+                  <label> Left Handed </label>
+                </div>
+                <button onClick={handlePitcherEditConfirm}>Submit</button>
+              </div>
+          </div>
+          }
+          
         </div> </>}</>}
         <Footer />
       </div>

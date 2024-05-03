@@ -49,9 +49,9 @@ function Navbar() {
                     <Link to="/PlayerStats"> Player Stats </Link>
                     <Link to="/Roster"> Roster </Link>
                     <Link to="/BulkEntry"> Game Day </Link>
+                    <Link onClick={showToast}>Info </Link>
                     <button className="navbarLink" onClick={handleLogout}>Logout</button>
 
-                    <Link onClick={showToast}>Info </Link>
                     <Link to="/Settings">
                         <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                     </Link>
@@ -64,8 +64,8 @@ function Navbar() {
                 <Link className="navbarLink" to="/PlayerStats"> Player Stats </Link>
                 <Link className="navbarLink" to="/Roster"> Roster </Link>
                 <Link className="navbarLink" to="/BulkEntry"> Game Day </Link>
-                <button className="navbarLink" onClick={handleLogout}>Logout</button>
                 <Link onClick={showToast}>Info </Link>
+                <button className="navbarLink" onClick={handleLogout}>Logout</button>
                 <Link className="navbarLink" to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                 </Link>

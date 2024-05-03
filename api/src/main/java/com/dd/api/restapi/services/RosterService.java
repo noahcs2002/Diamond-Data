@@ -99,7 +99,6 @@ public class RosterService {
         List<Player> playersToDelete = model.getPlayersToDelete();
         List<Pitcher> pitchersToDelete = model.getPitchersToDelete();
 
-
         if(players != null && !players.isEmpty()) {
            players.forEach(p -> {
                 Player instance = this.repository.findById(p.getId()).orElse(null);
@@ -108,7 +107,7 @@ public class RosterService {
                     this.playerService.createPlayer(p, team);
                 }
                 else {
-                    this.repository.save(instance);
+                    this.playerService.updatePositions(p.getId(), p.getDefensivePlayer().getPositions());
                     this.playerService.changeFirstName(p.getId(), p.getFirstName());
                     this.playerService.changeLastName(p.getId(), p.getLastName());
                 }
@@ -124,7 +123,7 @@ public class RosterService {
                 else {
                     Pitcher instance = this.pitcherRepository.findById(p.getId()).orElse(null);
                     if (instance != null) {
-                        this.pitcherRepository.save(instance);
+                        this.pitcherRepository.save(p);
                         this.pitcherService.updatePitcherName(p.getId(), p.getFirstName(), p.getLastName());
                     }
                 }
@@ -132,11 +131,11 @@ public class RosterService {
         }
 
 
-        if(!pitchersToDelete.isEmpty()) {
+        if(pitchersToDelete != null && !pitchersToDelete.isEmpty()) {
             this.bulkDeletePitchers(model.getPitchersToDelete());
         }
 
-        if(!playersToDelete.isEmpty()) {
+        if(playersToDelete != null && !playersToDelete.isEmpty()) {
             this.bulkDeletePlayers(model.getPlayersToDelete());
         }
         return model;

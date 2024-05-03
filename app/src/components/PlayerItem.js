@@ -3,7 +3,7 @@ import '../styles/PlayerItem.scss';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-function PlayerItem({ id, fullName, onDelete, onEdit, positions }) {
+function PlayerItem({ id, fullName, onDelete, onEdit, positions, player }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editedName, setEditedName] = useState(fullName);
@@ -25,8 +25,9 @@ function PlayerItem({ id, fullName, onDelete, onEdit, positions }) {
   };
 
   const handleEditClick = () => {
-    setShowEditDialog(true);
-    setEditedName(fullName);
+    onEdit(player)
+    // setShowEditDialog(true);
+    // setEditedName(fullName);
   };
 
   const handleEditConfirm = () => {
