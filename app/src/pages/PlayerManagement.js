@@ -29,7 +29,6 @@ function PlayerManagement() {
   const [saving, setSaving] = useState(false);
   const [changes, setChanges] = useState(0);
   const [selectedPitcher, setSelectedPitcher] = useState({});
-  const [selectedPreference, setSelectedPreference] = useState('')
   const nav = useNavigate();
 
   useEffect(() => {
@@ -94,7 +93,7 @@ function PlayerManagement() {
     })
   }
 
-  const allPositions = ["C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"];
+  const allPositions = ["ALL", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"];
 
   const fetchTeam = async (user) => {
     const endpoint = 'http://localhost:8080/diamond-data/api/teams/get-by-user';
@@ -623,7 +622,10 @@ function PlayerManagement() {
           {isAddingPlayer && (
             <div className="modal">
               <div className='modalContent'>
-                <span className="close" onClick={() => setIsAddingPlayer(false)}>&times;</span>
+                <span className="close" onClick={() => {
+                  setSelectedPositions([])
+                  setIsAddingPlayer(false)
+                }}>&times;</span>
                 <h2>Player Name:</h2>
                 <input
                   type="text"
@@ -641,7 +643,7 @@ function PlayerManagement() {
                   <h2>Positions:</h2>
                   {allPositions.map((position) => (
                     <div key={position}>
-                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
+                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={(selectedPositions.includes(position)) || (selectedPositions.includes("ALL"))} onChange={() => handlePositionChange(position)} />
                       <label htmlFor={position}>{position}</label>
                     </div>
                   ))}
@@ -653,7 +655,10 @@ function PlayerManagement() {
           {isEditingPlayer && (
             <div className="modal">
               <div className='modalContent'>
-                <span className="close" onClick={() => setIsEditingPlayer(false)}>&times;</span>
+                <span className="close" onClick={() => {
+                  setIsEditingPlayer(false)
+                  setSelectedPositions([])
+                }}>&times;</span>
                 <h2>Player Name:</h2>
                 <input
                   type="text"
@@ -671,7 +676,7 @@ function PlayerManagement() {
                   <h2>Positions:</h2>
                   {allPositions.map((position) => (
                     <div key={position}>
-                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={selectedPositions.includes(position)} onChange={() => handlePositionChange(position)} />
+                      <input  className='checkboxes' type="checkbox" id={position} name={position} value={position} checked={(selectedPositions.includes('ALL')) || (selectedPositions.includes(position))} onChange={() => handlePositionChange(position)} />
                       <label htmlFor={position}>{position}</label>
                     </div>
                   ))}
