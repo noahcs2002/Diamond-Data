@@ -38,3 +38,4 @@ build/
 
 ### Internal Development ###
 *.lock
+api/src/main/resources/application.properties
