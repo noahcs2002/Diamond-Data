@@ -181,4 +181,20 @@ public class PlayerService {
 
         return player;
     }
+
+    @Transactional
+    public void updatePositions(Long id, List<String> positions) {
+        Player player = this.repository.findAll()
+                .stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+
+        if(player != null) {
+            DefensivePlayer defensivePlayer = player.getDefensivePlayer();
+            defensivePlayer.setPositions(positions);
+            this.defensivePlayerService.updateDefensivePlayer(defensivePlayer.getId(), defensivePlayer);
+        }
+    }
 }

@@ -51,7 +51,7 @@ function Insights() {
     let team = {};
     const user = await JSON.parse(localStorage.getItem('sessionData'));
     team = await fetchTeam(user);
-    console.log('Fetched team: ', team)
+    
 
     if(user === undefined || user === null) {
       nav('/')
