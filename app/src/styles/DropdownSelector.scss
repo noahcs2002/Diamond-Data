@@ -1,0 +1,28 @@
+.dropdown-selector {
+    width: 200px;
+    margin-bottom: 20px;
+  }
+  
+  .dropdown-selector select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .dropdown-selector select:hover {
+    border-color: #aaa;
+  }
+  
+  .dropdown-selector select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+  }
+
+  .quickGameForm {
+    
+  }
