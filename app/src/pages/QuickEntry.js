@@ -21,24 +21,11 @@ const QuickEntry = () => {
     const [pitchCount, setPitchCount] = useState(0);
     const [strikeouts, setStrikeouts] = useState(0)
     const [inningsPitched, setInningsPitched] = useState(0);
+    const [pitcherDecision, setPitcherDecision] = useState('W')
+    const [atBatResult, setAtBatResult] = useState('SO')
 
     let user = {};
     let team = {};
-
-    const [pitcherFormData, setPitcherFormData] = useState({
-        hits: 0,
-        walks: 0,
-        homeruns: 0, 
-        inningsPitched: 0,
-        decision: 'ND',
-        pitchCount: 0,
-        walks: 0,
-        hits: 0,
-        strikeouts: 0,
-        homeruns: 0
-    })
-
-
 
     useEffect(() => {
         prop();
@@ -130,23 +117,33 @@ const QuickEntry = () => {
         setInningsPitched(validate(e));
     }
 
-    const recordPitcherGame = async () => {
-        console.log('Pitcher game recorded')
+    const recordPitcherGame = async (e) => {
+        e.preventDefault();
+        const gameUpdate = {
+            decision: pitcherDecision,
+            pitchCount: pitchCount,
+            inningsPitched: inningsPitched,
+            walks: walks,
+            strikeouts: strikeouts,
+            hits: hits,
+            homeruns: homeruns
+        }
+
+        console.log("Game update: ", gameUpdate)
 
     }
 
-    const recordAtBat = async () => {
-        console.log('At bat recorded')
+    const recordAtBat = async (e) => {
+        e.preventDefault();
+
+        const update = {
+            result: atBatResult
+        }
+
+        
+
+        console.log('Update: ', update)
     }
-
-    const handlePitcherChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-      };
-
 
     return (
         <div>
@@ -158,28 +155,28 @@ const QuickEntry = () => {
                 <div className="modalContent">
                     <form onSubmit={recordAtBat}>
                         <label htmlFor='strikeout'>SO</label>
-                        <input name='result' id='strikeout' type='radio'></input>
+                        <input name='result' id='strikeout' type='radio' onChange={() => setAtBatResult('SO')}></input>
 
                         <label htmlFor="ground-out">GO</label>
-                        <input name='result' id='ground-out' type='radio'></input>
+                        <input name='result' id='ground-out' type='radio' onChange={() => setAtBatResult('GO')}></input>
 
                         <label htmlFor="single">1B</label>
-                        <input name='result' id='single' type='radio'></input>
+                        <input name='result' id='single' type='radio' onChange={() => setAtBatResult('1B')}></input>
 
                         <label htmlFor="double">2B</label>
-                        <input name='result' id='double' type='radio'></input>
+                        <input name='result' id='double' type='radio' onChange={() => setAtBatResult('2B')}></input>
 
                         <label htmlFor="triple">3B</label>
-                        <input name='result' id='triple' type='radio'></input>
+                        <input name='result' id='triple' type='radio' onChange={() => setAtBatResult('3B')}></input>
 
                         <label htmlFor="homerun">HR</label>
-                        <input name='result' id='homerun' type='radio'></input>
+                        <input name='result' id='homerun' type='radio' onChange={() => setAtBatResult('HR')}></input>
 
                         <label htmlFor="hit-by-pitch">HBP</label>
-                        <input name='result' id='hit-by-pitch' type='radio'></input>
+                        <input name='result' id='hit-by-pitch' type='radio' onChange={() => setAtBatResult('HBP')}></input>
 
                         <label htmlFor='walk'>BB</label>
-                        <input name='result' id='walk' type='radio'></input>
+                        <input name='result' id='walk' type='radio' onChange={() => setAtBatResult('BB')}></input>
 
                         <button type="submit">Record AB</button>
                     </form>
@@ -188,13 +185,13 @@ const QuickEntry = () => {
                 <div>
                     <form onSubmit={recordPitcherGame}>
                         <label htmlFor="win">W</label>
-                        <input name='pitching-res' type="radio" id='win'></input> 
+                        <input name='pitching-res-buttons' type="radio" id='win' onChange={() => {setPitcherDecision('W')}} checked={pitcherDecision==='W'}></input> 
                         
                         <label htmlFor="loss">L</label>
-                        <input name='pitching-res' type="radio" id='loss'></input> 
+                        <input name='pitching-res-buttons' type="radio" id='loss' onChange={() => {setPitcherDecision('L')}}></input> 
 
                         <label htmlFor="no-decision">No Decision</label>
-                        <input name='pitching-res' type="radio" id='no-decision'></input> 
+                        <input name='pitching-res-buttons' type="radio" id='no-decision' onChange={() => {setPitcherDecision('ND')}}></input> 
 
                         <label htmlFor="inningsPitched">inningsPitched</label>
                         <input name='pitching-res' type='number' id='inningsPitched' onChange={handleInningsPitchedChanged} value={inningsPitched} step={.1}></input>
