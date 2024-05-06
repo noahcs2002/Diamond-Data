@@ -5,6 +5,7 @@ import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PlayerRepository;
+import com.dd.api.restapi.requestmodels.AtBatResultModel;
 import com.dd.api.restapi.requestmodels.PlayerUpdateRequestModel;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
@@ -196,5 +197,10 @@ public class PlayerService {
             defensivePlayer.setPositions(positions);
             this.defensivePlayerService.updateDefensivePlayer(defensivePlayer.getId(), defensivePlayer);
         }
+    }
+
+    public boolean recordAtBat(Player player, AtBatResultModel atBatResult) {
+        OffensivePlayer offensivePlayer = player.getOffensivePlayer();
+        return this.offensivePlayerService.recordAtBat(offensivePlayer, atBatResult);
     }
 }

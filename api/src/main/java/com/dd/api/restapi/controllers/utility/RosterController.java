@@ -1,12 +1,9 @@
 package com.dd.api.restapi.controllers.utility;
 
 import com.dd.api.auth.validators.Validator;
-import com.dd.api.restapi.requestmodels.DeleteRequestModel;
+import com.dd.api.restapi.requestmodels.*;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
-import com.dd.api.restapi.requestmodels.BulkPlayerChangeRequestModel;
-import com.dd.api.restapi.requestmodels.EditModel;
-import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
 import com.dd.api.restapi.services.RosterService;
 import com.dd.api.util.exceptions.NoAccessPermittedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,5 +122,25 @@ public class RosterController {
         }
 
         return this.rosterService.bulkDeletePlayers(playersToDelete);
+    }
+
+    @PutMapping
+    @RequestMapping("/record-at-bat")
+    public boolean recordAtBat(@RequestParam Long userId, @RequestParam Long playerId, @RequestBody AtBatResultModel atBatResult) throws NoAccessPermittedException {
+        if (!this.validator.validatePlayer(userId, playerId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.recordAtBat(playerId, atBatResult);
+    }
+
+    @PutMapping
+    @RequestMapping("/record-game-pitched")
+    public boolean recordGamePitched(@RequestParam Long userId, @RequestParam Long pitcherId, @RequestBody GamePitchedModel game) throws NoAccessPermittedException {
+        if (!this.validator.validatePitcher(userId, pitcherId)) {
+            throw new NoAccessPermittedException(userId);
+        }
+
+        return this.rosterService.recordGamePitched(pitcherId, game);
     }
 }

@@ -6,6 +6,7 @@ import com.dd.api.restapi.calculators.PitcherStatisticsCalculator;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
+import com.dd.api.restapi.requestmodels.GamePitchedModel;
 import com.dd.api.util.TruncatedSystemTimeProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,5 +114,29 @@ public class PitcherService {
         }
 
         return null;
+    }
+
+    public boolean recordGamePitched(Long pitcherId, GamePitchedModel game) {
+        Pitcher pitcher = this.getPitcherById(pitcherId);
+
+        switch (game.getDecision()) {
+            case "W" ->
+                pitcher.setWins(pitcher.getWins() + 1);
+
+            case "L" ->
+                pitcher.setLosses(pitcher.getLosses() + 1);
+
+            case "ND" -> {}
+            default -> {
+                System.out.println("Error recording result: " + game.getDecision());
+                return false;
+            }
+        }
+        pitcher.setNumberOfPitches(pitcher.getNumberOfPitches() + game.getPitchCount());
+        pitcher.setInningsPitched(pitcher.getInningsPitched() + game.getInningsPitched());
+        pitcher.setWalks((int) pitcher.getWalks() + game.getWalks());
+        pitcher.setStrikeouts(pitcher.getStrikeouts() + game.getStrikeouts());
+        pitcher.setHits(pitcher.getHits() + game.getHits());
+        return this.updatePitcher(pitcherId, pitcher) != null;
     }
 }

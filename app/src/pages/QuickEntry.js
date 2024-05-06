@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Navbar from '../components/Navbar';
-import { ToastContainer } from "react-toastify";
-import SavingScreen from "../components/SavingScreen";
 import LoadingScreen from "../components/LoadingScreen";
-import '../styles/PlayerManagement.scss';
+import '../styles/QuickEntry.scss';
 import PlayerDropdownSelector from "../helpers/PlayerDropdownSelector";
-import { UNSAFE_FetchersContext } from "react-router-dom";
-import { Button } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import { editableInputTypes } from "@testing-library/user-event/dist/utils";
 
 const QuickEntry = () => {
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [players, setPlayers] = useState([]);
     const [pitchers, setPitchers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState({});
@@ -24,7 +22,7 @@ const QuickEntry = () => {
     const [pitcherDecision, setPitcherDecision] = useState('W')
     const [atBatResult, setAtBatResult] = useState('SO')
 
-    let user = {};
+    const user = JSON.parse(localStorage.getItem('sessionData'));
     let team = {};
 
     useEffect(() => {
@@ -32,11 +30,15 @@ const QuickEntry = () => {
     }, [])
 
     const prop = async () => {
-        user = await JSON.parse(localStorage.getItem('sessionData'));
         team = await fetchTeam(user);
         const players = await fetchPlayers(user, team);
+        const pitchers = await fetchPitchers(user, team);
         setPlayers(players);
+        setPitchers(pitchers);
+        setSelectedPlayer(players[0])
+        setSelectedPitcher(pitchers[0])
         console.log(players);
+        setLoading(false);
     }
 
     const fetchTeam = async (user) => {
@@ -80,9 +82,47 @@ const QuickEntry = () => {
         }
     }
 
+    const fetchPitchers = async (user, team) => {
+        let p = [];
+        try {
+            p = await JSON.parse(localStorage.getItem('cachedPitchers'));
+            if (p === undefined || p === null) {
+                throw new Error();
+            }
+            return p;
+        }
+
+        catch {
+            const endpoint = 'http://localhost:8080/diamond-data/api/pitchers/get-by-team';
+            const url = new URL(endpoint);
+            url.searchParams.append('userId', user.id);
+            url.searchParams.append('teamId', team.id);
+
+            try {
+                const res = await fetch(url);
+                const pitcherRes = await res.json();
+                setPitchers(pitcherRes);
+                localStorage.setItem('cachedPitchers', JSON.stringify(pitcherRes));
+                return pitcherRes;
+            }
+            catch {
+                toast.error('Error fetching players, please try again', {
+                    position: 'bottom-right',
+                    autoClose: 2500,
+                    hideProgressBar: true,
+                    closeOnClick: true 
+                })
+                return [];
+            }
+        }
+    }
+
     const handleSelectPlayer = (player) => {
         setSelectedPlayer(player);
-        console.log("Selected player: ", player);
+    }
+
+    const handleSelectPitcher = (pitcher) => {
+        setSelectedPitcher(pitcher);
     }
 
     const validate = (e) => {
@@ -92,10 +132,6 @@ const QuickEntry = () => {
         }
         return 0;
     };
-
-    const handleHomerunChange = (e) => {
-        setHomeruns(validate(e));
-    }
 
     const handleHitsChange = (e) => {
         setHits(validate(e))
@@ -119,6 +155,7 @@ const QuickEntry = () => {
 
     const recordPitcherGame = async (e) => {
         e.preventDefault();
+        
         const gameUpdate = {
             decision: pitcherDecision,
             pitchCount: pitchCount,
@@ -126,10 +163,12 @@ const QuickEntry = () => {
             walks: walks,
             strikeouts: strikeouts,
             hits: hits,
-            homeruns: homeruns
         }
 
-        console.log("Game update: ", gameUpdate)
+        const endpoint = 'http://localhost:8080/diamond-data/api/rosters/record-game-pitched'
+        const url = new URL(endpoint);
+        url.searchParams.append('userId', user.id);
+
 
     }
 
@@ -140,9 +179,34 @@ const QuickEntry = () => {
             result: atBatResult
         }
 
-        
+        const endpoint = 'http://localhost:8080/diamond-data/api/rosters/record-at-bat';
+        const url = new URL(endpoint);
+        url.searchParams.append('userId', user.id);
+        url.searchParams.append('playerId', selectedPlayer);
+        console.log('userId: ', user.id)
 
-        console.log('Update: ', update)
+        try {
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(update)
+            })
+
+            const resJson = await res.json();
+            console.log(resJson);
+        }
+        catch (e){
+            console.log(e);
+            toast.error('Error recording AB, please try again', {
+                position: 'bottom-right',
+                autoClose: 2500,
+                hideProgressBar: true,
+                closeOnClick: true
+            })
+        }
+
     }
 
     return (
@@ -154,35 +218,39 @@ const QuickEntry = () => {
                     
                 <div className="modalContent">
                     <form onSubmit={recordAtBat}>
-                        <label htmlFor='strikeout'>SO</label>
                         <input name='result' id='strikeout' type='radio' onChange={() => setAtBatResult('SO')}></input>
+                        <label htmlFor='strikeout'>SO</label>
 
-                        <label htmlFor="ground-out">GO</label>
-                        <input name='result' id='ground-out' type='radio' onChange={() => setAtBatResult('GO')}></input>
+                        <input name='result' id='bunt' type='radio' onChange={() => setAtBatResult('BU')}></input>
+                        <label htmlFor="bunt">Bunt</label>
 
-                        <label htmlFor="single">1B</label>
+                        <input name='result' id='sac-fly' type='radio' onChange={() => setAtBatResult('SF')}></input>
+                        <label htmlFor="sac-fly">FO</label>
+
                         <input name='result' id='single' type='radio' onChange={() => setAtBatResult('1B')}></input>
+                        <label htmlFor="single">1B</label>
 
-                        <label htmlFor="double">2B</label>
                         <input name='result' id='double' type='radio' onChange={() => setAtBatResult('2B')}></input>
+                        <label htmlFor="double">2B</label>
 
-                        <label htmlFor="triple">3B</label>
                         <input name='result' id='triple' type='radio' onChange={() => setAtBatResult('3B')}></input>
+                        <label htmlFor="triple">3B</label>
 
-                        <label htmlFor="homerun">HR</label>
                         <input name='result' id='homerun' type='radio' onChange={() => setAtBatResult('HR')}></input>
+                        <label htmlFor="homerun">HR</label>
 
-                        <label htmlFor="hit-by-pitch">HBP</label>
                         <input name='result' id='hit-by-pitch' type='radio' onChange={() => setAtBatResult('HBP')}></input>
+                        <label htmlFor="hit-by-pitch">HBP</label>
 
-                        <label htmlFor='walk'>BB</label>
                         <input name='result' id='walk' type='radio' onChange={() => setAtBatResult('BB')}></input>
+                        <label htmlFor='walk'>BB</label>
 
                         <button type="submit">Record AB</button>
                     </form>
                 </div>
 
-                <div>
+                <div className="modalContent">
+                    <PlayerDropdownSelector options={pitchers} onSelect={handleSelectPitcher} message={"Select a pitcher"}/>
                     <form onSubmit={recordPitcherGame}>
                         <label htmlFor="win">W</label>
                         <input name='pitching-res-buttons' type="radio" id='win' onChange={() => {setPitcherDecision('W')}} checked={pitcherDecision==='W'}></input> 
@@ -207,9 +275,6 @@ const QuickEntry = () => {
 
                         <label htmlFor="hits">Hits</label>
                         <input name='pitching-res' type='number' id='hits' onChange={handleHitsChange} value={hits}></input>
-
-                        <label htmlFor="homeruns">Homeruns</label>
-                        <input name="pitching-res" type='number' id='homeruns' onChange={handleHomerunChange} value={homeruns}></input>
 
                         <button type='submit'>Record Game</button> 
                     </form>
