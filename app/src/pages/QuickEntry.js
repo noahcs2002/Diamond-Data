@@ -21,33 +21,37 @@ const QuickEntry = () => {
     const [inningsPitched, setInningsPitched] = useState(0);
     const [pitcherDecision, setPitcherDecision] = useState('W')
     const [atBatResult, setAtBatResult] = useState('SO')
+    const [team, setTeam] = useState({});
 
     const user = JSON.parse(localStorage.getItem('sessionData'));
-    let team = {};
 
     useEffect(() => {
         prop();
     }, [])
 
     const prop = async () => {
-        team = await fetchTeam(user);
-        const players = await fetchPlayers(user, team);
-        const pitchers = await fetchPitchers(user, team);
+        const t = await fetchTeam(user, true);
+        const players = await fetchPlayers(user, t);
+        const pitchers = await fetchPitchers(user, t);
         setPlayers(players);
         setPitchers(pitchers);
-        setSelectedPlayer(players[0])
-        setSelectedPitcher(pitchers[0])
+        setTeam(t);
+        setSelectedPlayer(players[0] !== undefined ? players[0].id : 0)
+        setSelectedPitcher(pitchers[0] !== undefined ? pitchers[0].id : 0)
         console.log(players);
+        console.log(pitchers);
         setLoading(false);
     }
 
-    const fetchTeam = async (user) => {
+    const fetchTeam = async (user, force) => {
 
         try {
             team = await JSON.parse(localStorage.getItem('cachedTeam'));
-            if (team === undefined || team === null) {
+            if (team === undefined || team === null || force) {
                 throw new Error();
             }
+            setTeam(team);
+            console.log('Returning through try: ', team);
             return team;
         }
         catch {
@@ -56,18 +60,24 @@ const QuickEntry = () => {
             url.searchParams.append('userId', user.id);
             const res = await fetch(url);
             const t = await res.json();
+            console.log(t);
             localStorage.setItem('cachedTeam', JSON.stringify(t));
-            return team;
+            setTeam(t);
+            console.log('Returning through catch: ', t);
+            return t;
         }
     }
 
-    const fetchPlayers = async (user, team) => {
+    const fetchPlayers = async (user, team, force) => {
+        setLoading(true);
+        console.log(team);
         let p = [];
         try {
             p = await JSON.parse(localStorage.getItem('cachedPlayers'));
-            if (p === undefined || p === null) {
+            if (p === undefined || p === null || force) {
                 throw new Error();
             }
+            setLoading(false);
             return p;
         }
         catch {
@@ -78,17 +88,21 @@ const QuickEntry = () => {
             const res = await fetch(url);
             const resJson = await res.json();
             localStorage.setItem('cachedPlayers', JSON.stringify(resJson))
+            setLoading(false);
             return resJson;
         }
     }
 
-    const fetchPitchers = async (user, team) => {
+    const fetchPitchers = async (user, team, force) => {
+        console.log(team);
+        setLoading(true);
         let p = [];
         try {
             p = await JSON.parse(localStorage.getItem('cachedPitchers'));
-            if (p === undefined || p === null) {
+            if (p === undefined || p === null || force) {
                 throw new Error();
             }
+            setLoading(false);
             return p;
         }
 
@@ -97,12 +111,14 @@ const QuickEntry = () => {
             const url = new URL(endpoint);
             url.searchParams.append('userId', user.id);
             url.searchParams.append('teamId', team.id);
+            console.log(url);
 
             try {
                 const res = await fetch(url);
                 const pitcherRes = await res.json();
                 setPitchers(pitcherRes);
                 localStorage.setItem('cachedPitchers', JSON.stringify(pitcherRes));
+                setLoading(false);
                 return pitcherRes;
             }
             catch {
@@ -112,6 +128,7 @@ const QuickEntry = () => {
                     hideProgressBar: true,
                     closeOnClick: true 
                 })
+                setLoading(false);
                 return [];
             }
         }
@@ -121,7 +138,8 @@ const QuickEntry = () => {
         setSelectedPlayer(player);
     }
 
-    const handleSelectPitcher = (pitcher) => {
+    const handleSelectPitcher = async (pitcher) => {
+        console.log('Pitcher passed in: ', pitcher);
         setSelectedPitcher(pitcher);
     }
 
@@ -154,6 +172,7 @@ const QuickEntry = () => {
     }
 
     const recordPitcherGame = async (e) => {
+        console.log('Selected pitcher: ', selectedPitcher);
         e.preventDefault();
         
         const gameUpdate = {
@@ -168,8 +187,27 @@ const QuickEntry = () => {
         const endpoint = 'http://localhost:8080/diamond-data/api/rosters/record-game-pitched'
         const url = new URL(endpoint);
         url.searchParams.append('userId', user.id);
+        url.searchParams.append('pitcherId', selectedPitcher);
+        console.log(selectedPitcher);
+        const res = await fetch(url, {
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(gameUpdate)
+        })
+        const resJson = await res.json();
 
-
+        if(resJson) {
+            toast.success('Game recorded!', {
+                position: 'bottom-right',
+                autoClose: 2500,
+                hideProgressBar: true,
+                closeOnClick: true 
+            })
+            const t = await fetchTeam(user);
+            await fetchPitchers(user, t, true);
+        }
     }
 
     const recordAtBat = async (e) => {
@@ -195,7 +233,16 @@ const QuickEntry = () => {
             })
 
             const resJson = await res.json();
-            console.log(resJson);
+            if (resJson) {
+                toast.success('Game recorded!', {
+                    position: 'bottom-right',
+                    autoClose: 2500,
+                    hideProgressBar: true,
+                    closeOnClick: true 
+                }) 
+                const t = await fetchTeam(user);
+                await fetchPlayers(user, t, true);
+            }
         }
         catch (e){
             console.log(e);

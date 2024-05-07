@@ -121,6 +121,7 @@ public class OffensivePlayerService {
         }
 
         offensivePlayer.setAtBats(offensivePlayer.getAtBats() + 1);
+        offensivePlayer = OffensivePlayerStatisticCalculator.updateOffensivePlayerStatistics(offensivePlayer);
         this.repository.save(offensivePlayer);
         return true;
     }

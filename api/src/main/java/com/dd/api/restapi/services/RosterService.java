@@ -170,7 +170,6 @@ public class RosterService {
 
     public boolean recordAtBat(Long playerId, AtBatResultModel atBatResult) {
 
-        String result = atBatResult.toString();
         Player player = this.playerService.getPlayerById(playerId);
         return this.playerService.recordAtBat(player, atBatResult);
     }
