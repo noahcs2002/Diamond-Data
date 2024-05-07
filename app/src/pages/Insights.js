@@ -89,6 +89,7 @@ function Insights() {
     })
     setReportNotes(notes);
     setLineupPlayers(lineup);
+    localStorage.setItem('cachedTeam', JSON.stringify(team))
     setLoading(false);
   }
 

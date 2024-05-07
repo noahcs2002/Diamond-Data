@@ -17,6 +17,10 @@ function Navbar() {
         setShowConfirmLogout(true);
     };
 
+    const handleQuickEntry = () => {
+        
+    }
+
     const showToast = () => {
         toast.dismiss();
         toast.info(
@@ -49,6 +53,7 @@ function Navbar() {
                     <Link to="/PlayerStats"> Player Stats </Link>
                     <Link to="/Roster"> Roster </Link>
                     <Link to="/BulkEntry"> Game Day </Link>
+                    <Link to="/QuickEntry">Quick Entry</Link>
                     <Link onClick={showToast}>Info </Link>
                     <button className="navbarLink" onClick={handleLogout}>Logout</button>
 
@@ -64,6 +69,7 @@ function Navbar() {
                 <Link className="navbarLink" to="/PlayerStats"> Player Stats </Link>
                 <Link className="navbarLink" to="/Roster"> Roster </Link>
                 <Link className="navbarLink" to="/BulkEntry"> Game Day </Link>
+                <Link to="/quick-entry" >Quick Entry</Link>
                 <Link onClick={showToast}>Info </Link>
                 <button className="navbarLink" onClick={handleLogout}>Logout</button>
                 <Link className="navbarLink" to="/Settings">

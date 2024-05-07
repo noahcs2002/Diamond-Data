@@ -1,13 +1,12 @@
 package com.dd.api.restapi.services;
 
+import com.dd.api.restapi.models.OffensivePlayer;
 import com.dd.api.restapi.models.Pitcher;
 import com.dd.api.restapi.models.Player;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.repositories.PitcherRepository;
 import com.dd.api.restapi.repositories.PlayerRepository;
-import com.dd.api.restapi.requestmodels.BulkPlayerChangeRequestModel;
-import com.dd.api.restapi.requestmodels.EditModel;
-import com.dd.api.restapi.requestmodels.TruncatedPlayerModel;
+import com.dd.api.restapi.requestmodels.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -167,5 +166,15 @@ public class RosterService {
         });
 
         return true;
+    }
+
+    public boolean recordAtBat(Long playerId, AtBatResultModel atBatResult) {
+
+        Player player = this.playerService.getPlayerById(playerId);
+        return this.playerService.recordAtBat(player, atBatResult);
+    }
+
+    public boolean recordGamePitched(Long pitcherId, GamePitchedModel game) {
+        return this.pitcherService.recordGamePitched(pitcherId, game);
     }
 }

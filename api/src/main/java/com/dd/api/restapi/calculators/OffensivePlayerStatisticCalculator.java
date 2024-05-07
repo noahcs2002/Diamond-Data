@@ -2,6 +2,8 @@ package com.dd.api.restapi.calculators;
 
 import com.dd.api.restapi.models.OffensivePlayer;
 
+import java.nio.DoubleBuffer;
+
 public class OffensivePlayerStatisticCalculator {
 
     public static OffensivePlayer updateOffensivePlayerStatistics(OffensivePlayer player) {
@@ -12,6 +14,7 @@ public class OffensivePlayerStatisticCalculator {
         player.setSluggingPercentage((double) ((player.getSingles()) + (player.getDoubles() * 2) + (player.getTriples() * 3) + (player.getHomeRuns() * 4)) / player.getAtBats());
         player.setOnBasePercentage((double) (player.getHits() + player.getWalks() + player.getHitByPitch()) / (player.getAtBats() + player.getHitByPitch() + player.getSacrificeFly() + player.getWalks()));
         player.setOnBasePlusSlugging(player.getOnBasePercentage() + player.getSluggingPercentage());
+        player.setBattingAverage((double) player.getHits() / player.getAtBats());
 
 
         if(Double.isNaN(player.getSluggingPercentage())) {
@@ -28,6 +31,10 @@ public class OffensivePlayerStatisticCalculator {
 
         if(Double.isNaN(player.getOnBasePlusSlugging())) {
             player.setOnBasePlusSlugging(0);
+        }
+
+        if (Double.isNaN((player.getBattingAverage()))) {
+            player.setBattingAverage(0);
         }
 
         return player;
