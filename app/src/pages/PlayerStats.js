@@ -364,6 +364,11 @@ function PlayerStats() {
       accessor: "atBats",
     },
     {
+      Header: 'AVG',
+      accessor: 'battingAverage',
+      Cell: ({value}) => parseFloat(value).toFixed(2) 
+    },
+    {
       Header: "CAUGHT STEALING",
       accessor: "caughtStealing",
     },
