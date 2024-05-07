@@ -172,6 +172,11 @@ const QuickEntry = () => {
     }
 
     const recordPitcherGame = async (e) => {
+        toast.dismiss();
+        toast.loading(`Saving game`, {
+            position: 'bottom-right',
+            hideProgressBar: true,
+        });
         console.log('Selected pitcher: ', selectedPitcher);
         e.preventDefault();
         
@@ -199,6 +204,7 @@ const QuickEntry = () => {
         const resJson = await res.json();
 
         if(resJson) {
+            toast.dismiss();
             toast.success('Game recorded!', {
                 position: 'bottom-right',
                 autoClose: 2500,
@@ -208,10 +214,24 @@ const QuickEntry = () => {
             const t = await fetchTeam(user);
             await fetchPitchers(user, t, true);
         }
+        else {
+            toast.dismiss();
+            toast.error('Error recording game, please try again!', {
+                position: 'bottom-right',
+                autoClose: 2500,
+                hideProgressBar: true,
+                closeOnClick: true 
+            });
+        }
     }
 
     const recordAtBat = async (e) => {
         e.preventDefault();
+        toast.dismiss();
+        toast.loading(`Saving game`, {
+            position: 'bottom-right',
+            hideProgressBar: true,
+        });
 
         const update = {
             result: atBatResult
@@ -234,6 +254,7 @@ const QuickEntry = () => {
 
             const resJson = await res.json();
             if (resJson) {
+                toast.dismiss();
                 toast.success('Game recorded!', {
                     position: 'bottom-right',
                     autoClose: 2500,
@@ -246,6 +267,7 @@ const QuickEntry = () => {
         }
         catch (e){
             console.log(e);
+            toast.dismiss();
             toast.error('Error recording AB, please try again', {
                 position: 'bottom-right',
                 autoClose: 2500,
