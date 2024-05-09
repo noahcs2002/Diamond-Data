@@ -4,6 +4,8 @@ import com.dd.api.auth.models.User;
 import com.dd.api.auth.providers.AuthorizationService;
 import com.dd.api.restapi.models.Team;
 import com.dd.api.restapi.services.TeamService;
+import com.dd.api.util.exceptions.NoSuchUserException;
+import com.dd.api.util.exceptions.PasswordMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,5 +62,13 @@ public class AuthController {
         return this.service.changePhoneNumber(userId, phoneNumber);
     }
 
+    @RequestMapping("/change-password")
+    @PutMapping
+    public User changePassword(@RequestParam Long userId,
+                               @RequestParam String newPassword,
+                               @RequestParam String confirmNewPassword)
+            throws PasswordMismatchException, NoSuchUserException {
 
+        return this.service.changePassword(userId, newPassword, confirmNewPassword);
+    }
 }

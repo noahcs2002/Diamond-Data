@@ -3,6 +3,9 @@ package com.dd.api.auth.providers;
 import com.dd.api.auth.models.User;
 import com.dd.api.auth.security.Salt;
 import com.dd.api.util.TruncatedSystemTimeProvider;
+import com.dd.api.util.exceptions.NoSuchUserException;
+import com.dd.api.util.exceptions.PasswordMismatchException;
+import com.mysql.cj.exceptions.PasswordExpiredException;
 import jakarta.transaction.Transactional;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +100,7 @@ public class AuthorizationService {
         return null;
     }
 
+    @Transactional
     public User changePhoneNumber(Long userId, String phoneNumber) {
         Objects.requireNonNull(phoneNumber);
         Objects.requireNonNull(userId);
@@ -114,5 +118,24 @@ public class AuthorizationService {
         }
 
         return null;
+    }
+
+    @Transactional
+    public User changePassword(Long userId, String newPassword, String confirmNewPassword) throws PasswordMismatchException, NoSuchUserException{
+        if (!newPassword.equals(confirmNewPassword)) {
+            throw new PasswordMismatchException();
+        }
+
+        User user = this.repository
+                .findById(userId)
+                .orElse(null);
+
+        if (user == null) {
+            throw new NoSuchUserException(userId);
+        }
+
+        String protectedPassword = Salt.applyDoubleEndedSalt(newPassword);
+        user.setPassword(Base64.encodeBase64String(protectedPassword.getBytes()));
+        return this.repository.save(user);
     }
 }
