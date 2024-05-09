@@ -1,7 +1,7 @@
 import React, {useState } from 'react';
 import Diamond_Data_Transparent from "../assets/Diamond_Data_Transparent.png"
 import { Link, useNavigate } from 'react-router-dom';
-import SettingsIcon from '@mui/icons-material/Settings'; // Import the Settings icon
+import SettingsIcon from '@mui/icons-material/Settings'; 
 import '../styles/Navbar.scss';
 import ConfirmModal from './ConfirmModal';
 import { ToastContainer, toast } from 'react-toastify';
@@ -55,7 +55,7 @@ function Navbar() {
                     <Link to="/BulkEntry"> Game Day </Link>
                     <Link to="/QuickEntry">Quick Entry</Link>
                     <Link onClick={showToast}>Info </Link>
-                    <button className="navbarLink" onClick={handleLogout}>Logout</button>
+                    <Link className="navbarLink" onClick={handleLogout}>Logout</Link>
 
                     <Link to="/Settings">
                         <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
@@ -71,7 +71,7 @@ function Navbar() {
                 <Link className="navbarLink" to="/BulkEntry"> Game Day </Link>
                 <Link to="/quick-entry" >Quick Entry</Link>
                 <Link onClick={showToast}>Info </Link>
-                <button className="navbarLink" onClick={handleLogout}>Logout</button>
+                <Link className="navbarLink" onClick={handleLogout}>Logout</Link>
                 <Link className="navbarLink" to="/Settings">
                     <SettingsIcon style={{ fontSize: 32, color: '#FFF' }} />
                 </Link>
