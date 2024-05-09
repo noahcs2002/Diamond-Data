@@ -11,6 +11,8 @@ function Settings() {
     email: '',
     phoneNumber: '',
     name: '',
+    newPassword: '',
+    confirmNewPassword: ''
   });
   let currentId = React.useRef(null);
 
@@ -21,9 +23,10 @@ function Settings() {
   const [activeTab, setActiveTab] = useState('userSettings');
   const [confirmMessage, setConfirmMessage] = useState('');
   const [isUserSettingsModalOpen, setIsUserSettingsModalOpen] = useState(false);
+  let user = {};
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('sessionData'));
+    user = JSON.parse(localStorage.getItem('sessionData'));
     
     if (user) {
       setFormData({
@@ -88,6 +91,42 @@ function Settings() {
     
   };
 
+  const changePassword = async (userId, newPassword, confirmNewPassword) => {
+    if (newPassword != confirmNewPassword) {
+      toast.dismiss();
+      toast.error('Passwords do not match!', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true 
+      })
+      throw new Error();
+    }
+
+    if (newPassword.length < 8) {
+      toast.dismiss();
+      toast.error('Please use a password longer than 8 characters', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true 
+      }) 
+      throw new Error();
+    }
+
+    const endpoint = 'http://localhost:8080/diamond-data/api/auth/change-password';
+    const url = new URL(endpoint);
+    url.searchParams.append('userId', userId);
+    url.searchParams.append('newPassword', formData.newPassword);
+    url.searchParams.append('confirmNewPassword', confirmNewPassword);
+
+    const res = await fetch(url, {
+      method: 'PUT',
+    })
+
+    const newUser = await res.json();
+  }
+
   const handleSaveChangesClick = () => {
     setConfirmMessage('Are you sure you want to save these changes?');
     setIsUserSettingsModalOpen(true);
@@ -106,6 +145,7 @@ function Settings() {
       if (user) {
         await updateUserName(user.id, formData.name);
         await updateUserPhoneNumber(user.id, formData.phoneNumber);
+        await changePassword(user.id, formData.newPassword, formData.confirmNewPassword);
   
         localStorage.setItem('sessionData', JSON.stringify({
           ...user,
@@ -122,6 +162,14 @@ function Settings() {
           closeOnClick:true 
         }) 
       }
+      toast.dismiss();
+      toast.success('User information changed successfully!', {
+        position:'bottom-right',
+        autoClose: 1500,
+        hideProgressBar:true,
+        closeOnClick:true
+      })
+      setIsUserSettingsModalOpen(false);
     } 
     catch (error) {
       toast.error('Error saving data, please try again', {
@@ -131,14 +179,7 @@ function Settings() {
         closeOnClick:true
       })
     }
-    toast.dismiss();
-    toast.success('User information changed successfully!', {
-      position:'bottom-right',
-      autoClose: 1500,
-      hideProgressBar:true,
-      closeOnClick:true
-    })
-    setIsUserSettingsModalOpen(false);
+    
   };
  
    const fetchTeam = async (user) => {
@@ -281,6 +322,14 @@ function Settings() {
               <label>
                 Phone Number:
                 <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+              </label>
+              <label>
+                New Password:
+                <input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} />
+              </label>
+              <label>
+                Confirm New Password:
+                <input type="password" name="confirmNewPassword" value={formData.confirmNewPassword} onChange={handleChange} />
               </label>
               <button className="saveChangesButton" type="button" onClick={handleSaveChangesClick}>Save Changes</button>
             </form>
