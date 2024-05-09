@@ -1,6 +1,9 @@
 @import './Global.scss';
 
-.modalContent {
+.quick-entry {
+  background: linear-gradient(180deg, var(--background-color), var(--background3-color));
+  
+  .modalContent {
     margin: 20px;
     padding: 20px;
     border: 1px solid #ccc;
@@ -11,7 +14,6 @@
   form {
     display: flex;
     flex-direction: column;
-    // gap: 10px;
   }
   
   label {
@@ -70,3 +72,57 @@
   .save-button:hover {
     background-color: var(--hover-color);
   }
+
+  .tab {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    max-width: 600px;
+    background-color: var(--background3-color);
+    border-radius: 20px;
+    margin: 0 auto 40px;
+    margin-top: 1.5%;
+
+    button {
+      position: relative;
+      flex: 1;
+      padding: 20px 0;
+      font-size: 20px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      z-index: 2;
+
+      &:hover {
+        color: var(--hover2-color);
+        // background-color: var(--background-color);
+      }
+    }
+
+    .active {
+      color: var(--text-color);
+      background-color: transparent;
+    }
+
+    .slider {
+      position: absolute;
+      bottom: 0;
+      height: 100%;
+      width: 50%;
+      background-color: var(--background2-color);
+      border-radius: 20px;
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .slider.left {
+      transform: translateX(-50%);
+    }
+
+    .slider.right {
+      transform: translateX(50%);
+    }
+  }
+}

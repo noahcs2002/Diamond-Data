@@ -9,16 +9,24 @@ public class GamePitchedModel {
     private int walks;
     private int strikeouts;
     private int hits;
+    private int earnedRuns;
+    private int unearnedRuns;
+    private boolean started;
 
     @JsonCreator
-    public GamePitchedModel(String decision, int pitchCount, double inningsPitched, int walks, int strikeouts, int hits) {
+    public GamePitchedModel(String decision, int pitchCount, double inningsPitched, int walks, int strikeouts, int hits, int earnedRuns, int unearnedRuns, boolean started) {
         this.decision = decision;
         this.pitchCount = pitchCount;
         this.inningsPitched = inningsPitched;
         this.walks = walks;
         this.strikeouts = strikeouts;
         this.hits = hits;
+        this.earnedRuns = earnedRuns;
+        this.unearnedRuns = unearnedRuns;
+        this.started = started;
     }
+
+
 
     public GamePitchedModel() {
     }
@@ -69,5 +77,29 @@ public class GamePitchedModel {
 
     public void setHits(int hits) {
         this.hits = hits;
+    }
+
+    public int getEarnedRuns() {
+        return earnedRuns;
+    }
+
+    public void setEarnedRuns(int earnedRuns) {
+        this.earnedRuns = earnedRuns;
+    }
+
+    public int getUnearnedRuns() {
+        return unearnedRuns;
+    }
+
+    public void setUnearnedRuns(int unearnedRuns) {
+        this.unearnedRuns = unearnedRuns;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }

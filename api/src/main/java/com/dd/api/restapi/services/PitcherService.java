@@ -132,11 +132,17 @@ public class PitcherService {
                 return false;
             }
         }
+        if (game.isStarted()){
+            pitcher.setGamesStarted(pitcher.getGamesStarted() + 1);
+        }
         pitcher.setNumberOfPitches(pitcher.getNumberOfPitches() + game.getPitchCount());
         pitcher.setInningsPitched(pitcher.getInningsPitched() + game.getInningsPitched());
         pitcher.setWalks((int) pitcher.getWalks() + game.getWalks());
         pitcher.setStrikeouts(pitcher.getStrikeouts() + game.getStrikeouts());
         pitcher.setHits(pitcher.getHits() + game.getHits());
+        pitcher.setAppearances(pitcher.getAppearances() + 1);
+        pitcher.setEarnedRuns(pitcher.getEarnedRuns() + game.getEarnedRuns());
+        pitcher.setUnearnedRuns(pitcher.getUnearnedRuns() + game.getUnearnedRuns());
         return this.updatePitcher(pitcherId, pitcher) != null;
     }
 }

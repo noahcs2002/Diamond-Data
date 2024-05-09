@@ -16,12 +16,16 @@ const QuickEntry = () => {
     const [hits, setHits] = useState(0);
     const [walks, setWalks] = useState(0)
     const [homeruns, setHomeruns] = useState(0)
+    const [earnedRuns, setEarnedRuns] = useState(0);
+    const [unearnedRuns, setUnearnedRuns] = useState(0);
     const [pitchCount, setPitchCount] = useState(0);
     const [strikeouts, setStrikeouts] = useState(0)
     const [inningsPitched, setInningsPitched] = useState(0);
     const [pitcherDecision, setPitcherDecision] = useState('W')
     const [atBatResult, setAtBatResult] = useState('SO')
     const [team, setTeam] = useState({});
+    const [activeTab, setActiveTab] = useState('batter');
+    const [started, setStarted] = useState(false);
 
     const user = JSON.parse(localStorage.getItem('sessionData'));
 
@@ -171,6 +175,18 @@ const QuickEntry = () => {
         setInningsPitched(validate(e));
     }
 
+    const handleEarnedRunsChanged = (e) => {
+        setEarnedRuns(validate(e));
+    }
+
+    const handleUnearnedRunsChanged = (e) => {
+        setUnearnedRuns(validate(e));
+    }
+
+    const handleStartedChange = (e) => {
+        setStarted(validate(e));
+    }
+
     const recordPitcherGame = async (e) => {
         toast.dismiss();
         toast.loading(`Saving game`, {
@@ -187,6 +203,9 @@ const QuickEntry = () => {
             walks: walks,
             strikeouts: strikeouts,
             hits: hits,
+            earnedRuns : earnedRuns,
+            unearnedRuns : unearnedRuns,
+            started: started
         }
 
         const endpoint = 'http://localhost:8080/diamond-data/api/rosters/record-game-pitched'
@@ -223,6 +242,14 @@ const QuickEntry = () => {
                 closeOnClick: true
             });
         }
+
+        setInningsPitched(0);
+        setPitchCount(0);
+        setWalks(0);
+        setStrikeouts(0);
+        setHits(0);
+        setEarnedRuns(0);
+        setUnearnedRuns(0);
     }
 
     const recordAtBat = async (e) => {
@@ -279,11 +306,16 @@ const QuickEntry = () => {
     }
 
     return (
-        <div>
+        <div className="quick-entry">
             <ToastContainer />
             <Navbar />
             {loading ? <LoadingScreen /> : <>
-
+            <div className="tab">
+                <div className={`slider ${activeTab === 'batter' ? 'left' : 'right'}`}></div>
+                <button onClick={() => setActiveTab('batter')} className={activeTab === 'batter' ? 'active' : ''}>Batter</button>
+                <button onClick={() => setActiveTab('pitcher')} className={activeTab === 'pitcher' ? 'active' : ''}>Pitcher</button>
+            </div>
+                {activeTab === 'batter' ? 
                 <div className="modalContent">
                     <PlayerDropdownSelector options={players} onSelect={handleSelectPlayer} message={"Select a player"} />
                     <form onSubmit={recordAtBat}>
@@ -327,11 +359,15 @@ const QuickEntry = () => {
 
                         <button type="submit" className="save-button">Record AB</button>
                     </form>
-                </div>
-
+                </div> 
+                : 
                 <div className="modalContent">
                     <PlayerDropdownSelector options={pitchers} onSelect={handleSelectPitcher} message={"Select a pitcher"} />
                     <form onSubmit={recordPitcherGame}>
+                        <div className="form-field">
+                            <input name='pitching-res' type="checkbox" id='started' onChange={() => { setStarted(!started) }}></input>
+                            <label htmlFor="started">Start?</label>
+                        </div>
                         <div className="form-field">
                             <input name='pitching-res-buttons' type="radio" id='win' onChange={() => { setPitcherDecision('W') }} checked={pitcherDecision === 'W'}></input>
                             <label htmlFor="win">W</label>
@@ -364,10 +400,17 @@ const QuickEntry = () => {
                             <input name='pitching-res' type='number' id='hits' onChange={handleHitsChange} value={hits}></input>
                             <label htmlFor="hits">Hits</label>
                         </div>
-
+                        <div className="form-field">
+                            <input name='pitching-res' type='number' id='earned-runs' onChange={handleEarnedRunsChanged} value={earnedRuns}></input>
+                            <label htmlFor="earned-runs">Earned Runs</label>
+                        </div>
+                        <div className="form-field">
+                            <input name='pitching-res' type='number' id='unearned-runs' onChange={handleUnearnedRunsChanged} value={unearnedRuns}></input>
+                            <label htmlFor="unearned-runs">Unearned Runs</label>
+                        </div>
                         <button type='submit' className="submit-button">Record Game</button>
                     </form>
-                </div>
+                </div>}
             </>}
         </div>
     )
