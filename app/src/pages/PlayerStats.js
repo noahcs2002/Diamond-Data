@@ -366,7 +366,7 @@ function PlayerStats() {
     {
       Header: 'AVG',
       accessor: 'battingAverage',
-      Cell: ({value}) => parseFloat(value).toFixed(2) 
+      Cell: ({value}) => parseFloat(value).toFixed(3).substring(1) 
     },
     {
       Header: "CAUGHT STEALING",
@@ -375,6 +375,7 @@ function PlayerStats() {
     {
       Header: "CAUGHT STEALING PERCENTAGE",
       accessor: "caughtStealingPercentage",
+      Cell: ({value}) => parseFloat(value).toFixed(3).substring(1) 
     },
     {
       Header: "DOUBLES",
@@ -419,10 +420,12 @@ function PlayerStats() {
     {
       Header: "ON BASE PERCENTAGE",
       accessor: "onBasePercentage",
+      Cell: ({value}) => parseFloat(value).toFixed(3).substring(1) 
     },
     {
       Header: "ON BASE PLUS SLUGGING",
       accessor: "onBasePlusSlugging",
+      Cell: ({value}) => parseFloat(value).toFixed(3).substring(1) 
     },
     {
       Header: "PLATE APPEARANCE",
@@ -459,6 +462,7 @@ function PlayerStats() {
     {
       Header: "SLUGGING PERCENTAGE",
       accessor: "sluggingPercentage",
+      Cell: ({value}) => parseFloat(value).toFixed(3).substring(1) 
     },
     {
       Header: "STOLEN BASES",
