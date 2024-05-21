@@ -4,7 +4,6 @@ import LoadingScreen from "../components/LoadingScreen";
 import '../styles/QuickEntry.scss';
 import PlayerDropdownSelector from "../helpers/PlayerDropdownSelector";
 import { ToastContainer, toast } from "react-toastify";
-import { editableInputTypes } from "@testing-library/user-event/dist/utils";
 
 const QuickEntry = () => {
 
@@ -15,7 +14,6 @@ const QuickEntry = () => {
     const [selectedPitcher, setSelectedPitcher] = useState({});
     const [hits, setHits] = useState(0);
     const [walks, setWalks] = useState(0)
-    const [homeruns, setHomeruns] = useState(0)
     const [earnedRuns, setEarnedRuns] = useState(0);
     const [unearnedRuns, setUnearnedRuns] = useState(0);
     const [pitchCount, setPitchCount] = useState(0);
@@ -130,7 +128,6 @@ const QuickEntry = () => {
                     position: 'bottom-right',
                     autoClose: 2500,
                     hideProgressBar: true,
-                    closeOnClick: true
                 })
                 setLoading(false);
                 return [];
@@ -228,7 +225,6 @@ const QuickEntry = () => {
                 position: 'bottom-right',
                 autoClose: 2500,
                 hideProgressBar: true,
-                closeOnClick: true
             })
             const t = await fetchTeam(user);
             await fetchPitchers(user, t, true);
@@ -239,7 +235,6 @@ const QuickEntry = () => {
                 position: 'bottom-right',
                 autoClose: 2500,
                 hideProgressBar: true,
-                closeOnClick: true
             });
         }
 
@@ -286,7 +281,6 @@ const QuickEntry = () => {
                     position: 'bottom-right',
                     autoClose: 2500,
                     hideProgressBar: true,
-                    closeOnClick: true
                 })
                 const t = await fetchTeam(user);
                 await fetchPlayers(user, t, true);
@@ -299,7 +293,6 @@ const QuickEntry = () => {
                 position: 'bottom-right',
                 autoClose: 2500,
                 hideProgressBar: true,
-                closeOnClick: true
             })
         }
 
@@ -307,7 +300,6 @@ const QuickEntry = () => {
 
     return (
         <div className="quick-entry">
-            <ToastContainer />
             <Navbar />
             {loading ? <LoadingScreen /> : <>
             <div className="tab">
@@ -315,7 +307,8 @@ const QuickEntry = () => {
                 <button onClick={() => setActiveTab('batter')} className={activeTab === 'batter' ? 'active' : ''}>Batter</button>
                 <button onClick={() => setActiveTab('pitcher')} className={activeTab === 'pitcher' ? 'active' : ''}>Pitcher</button>
             </div>
-                {activeTab === 'batter' ? 
+            <div>
+            {activeTab === 'batter' ? 
                 <div className="modalContent">
                     <PlayerDropdownSelector options={players} onSelect={handleSelectPlayer} message={"Select a player"} />
                     <form onSubmit={recordAtBat}>
@@ -411,7 +404,9 @@ const QuickEntry = () => {
                         <button type='submit' className="submit-button">Record Game</button>
                     </form>
                 </div>}
+            </div>
             </>}
+            <ToastContainer />
         </div>
     )
 }
