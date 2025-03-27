@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "dd_offense", schema = "sp24")
+@Table(name = "dd_offense")
 public class OffensivePlayer {
     // stat count: 29
 
