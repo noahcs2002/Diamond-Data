@@ -2,15 +2,33 @@
 A project by Jaylee Baker, Noah Sternberg, and Max Thompson
 
 ## Installation and Use
+
 Diamond Data is fully portable, and is built using Docker. You will need [Docker](https://docs.docker.com/engine/install/) or [Docker Desktop](https://www.docker.com/products/docker-desktop/) to run this application. Both of these will work functionally the same, however, only the engine is required.
 
-To run the app, we have built 2 `Dockerfile`s, one in the `app` and one in the `api`, as well as a `docker-compose.yml` to run them together. To use Diamond Data, simply enter a terminal from the root of the app, and the following command:
+To run the app, we have built 2 `Dockerfile`s, one in the `app` and one in the `api`, as well as a `docker-compose.yml` to run them together. 
+
+## Web Build:
+To use Diamond Data, checkout the `main` branch and simply enter a terminal from the root of the app, and the following command:
 
 ```bash
 docker-compose up --build
 ```
 
-That's it! Diamond Data is now running in a developement environment. Please note, this may take some time to kick up and get fully running.
+This version of the app runs a web-app version of the site using a hosted database.
+
+That's it! Diamond Data is now running in a development environment. Please note, this may take some time to kick up and get fully running.
+
+## Local Build
+To use a local build (for more optimal load times and processing speeds), you first need to install a version of MySQL and configure a user on your server called `dd` with the password `DiamondData`
+that has full permissions (as a sysadmin). At minimum, they need `read, write` and `alter` permissions within the schema. You also need to create a database called `diamond_data_local_db` for the app
+to manipulate.
+
+Then, checkout the `local-build` branch run the same command to start up the app
+
+```bash
+docker-compose up --build
+```
+
 
 ## Project Overview
 The team intends to construct a full-stack statistics web-app designed to make managing a high school team/college team’s
@@ -21,7 +39,7 @@ AI to visualising data, this will make the lives of team managers easier.
 
 - Managers can enter a few basic stats, such as hits, walks, outs, swings and misses etc, and the app will compute a wide
 range of statistics. The team has this full list in a working document, and it is available upon request.
-- The manager can customise their account. In the future, we plan to incoroporate more features to enable managers to communicate with thier players and other coaches.
+- The manager can customise their account. In the future, we plan to incorporate more features to enable managers to communicate with thier players and other coaches.
 - All stats will be visible in one cohesive dashboard, in an ”excel spreadsheet” format. 
 - Statistics can be compiled and viewed on a team-wide scale
 - The app will have a 'Bulk Entry' page for real time statistics entering

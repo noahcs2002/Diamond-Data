@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "dd_defense", schema = "sp24")
+@Table(name = "dd_defense")
 public class DefensivePlayer {
     // Stat count 12
 

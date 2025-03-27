@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "dd_pitchers", schema = "sp24")
+@Table(name = "dd_pitchers")
 public class Pitcher {
     // Stat count: 30
 
